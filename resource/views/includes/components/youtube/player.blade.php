@@ -1,0 +1,1 @@
+<iframe style="width: 100%;{{ isset($url) ?: 'display: none;' }}" class="{{ $class ?? null }}" height="{{ $height ?? 400 }}" src="{{ $url ?? null }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

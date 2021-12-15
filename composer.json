@@ -1,0 +1,24 @@
+{
+    "name": "loja-virtual/loja-virtual",
+    "description": "Uma loja virtual simples",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan de Menezes",
+            "email": "menezesryan1010@gmail.com",
+            "role": "developer",
+            "homepage": "https://ryan-menezes.github.io/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Src\\": "src/"
+        }
+    },
+    "require": {
+        "jenssegers/blade": "^1.4",
+        "illuminate/database": "^8.70"
+    }
+}

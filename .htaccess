@@ -1,0 +1,27 @@
+Options All -Indexes -Multiviews
+DirectoryIndex public/index.php
+Header add Access-Control-Allow-Origin "*" 
+
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+
+	# ROUTER WWW Redirect.
+	#RewriteCond %{HTTP_HOST} !^www\. [NC]
+	#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+	# ROUTER HTTPS Redirect
+	#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+	#RewriteCond %{HTTPS} off
+	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+	# Locking the HTACCESS file
+	<files "^.*">
+		order allow,deny
+		deny from all
+	</files>
+
+	# Rewriting the url
+	RewriteCond %{SCRIPT_FILENAME} !-f
+	RewriteCond %{SCRIPT_FILENAME} !-d
+	RewriteRule ^(.*)$ public/index.php?route=$1 [QSA,NC,L]
+</IfModule>

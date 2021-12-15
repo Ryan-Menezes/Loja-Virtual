@@ -1,0 +1,4 @@
+#/storage/app/public/*
+/storage/framework/cache/*
+/storage/logs/*
+/vendor/

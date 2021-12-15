@@ -1,0 +1,52 @@
+<?php
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Banner extends Model{
+	public $table = 'banners';
+	protected $fillable = ['title', 'link', 'image'];
+	public $timestamps = false;
+
+	public function getRolesCreateAttribute(){
+		return [
+			'title' 	=> "min:1|max:100",
+			'link' 		=> "min:1|max:191"
+		];
+	}
+
+	public function getRolesUpdateAttribute(){
+		return [
+			'title' 	=> "min:1|max:100",
+			'link' 		=> "min:1|max:191"
+		];
+	}
+
+	public function getMessagesAttribute(){
+		return [
+			'title.min' 	=> 'O campo titulo deve conter no mínimo %min% caracteres!',
+			'title.max' 	=> 'O campo titulo deve conter no máximo %max% caracteres!',
+			'link.min' 		=> 'O campo link deve conter no mínimo %min% caracteres!',
+			'link.max' 		=> 'O campo link deve conter no máximo %max% caracteres!'
+		];
+	}
+
+	public function scopeSearch($query, $page = 0, $filter = ''){
+		$limit = config('paginate.limit');
+		$page = ($page - 1) * $limit;
+
+		return $query
+					->orWhere('title', 'LIKE', "%{$filter}%")
+					->orWhere('link', 'LIKE', "%{$filter}%")
+					->orderBy('id', 'DESC')
+					->offset($page)
+					->limit($limit)
+					->get();
+	}
+
+	public function verifyPermission(string $permission){
+		if(!can($permission)){
+			abort(404);
+		}
+	}
+}
