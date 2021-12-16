@@ -36,6 +36,8 @@
 					<td>{{ $category->id }}</td>
 					<td>{{ $category->name }}</td>
 					<td>
+						<a href="{{ route('panel.categories.subcategories', ['category' => $category->id]) }}" style="margin-right: 5px;" title="Ver Sub Categorias">Sub Categorias({{ $category->subcategories->count() }}) <i class="fas fa-tag"></i></a>
+
 						@if(can('edit.categories'))
 							<a href="{{ route('panel.categories.edit', ['id' => $category->id]) }}" class="btn btn-sm btn-primary" title="Editar Categoria"><i class="fas fa-pencil-alt"></i></a>
 						@endif

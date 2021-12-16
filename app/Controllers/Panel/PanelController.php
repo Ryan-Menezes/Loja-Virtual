@@ -14,6 +14,7 @@ use App\Models\{
 	SlideShow,
 	Banner,
 	Category,
+	SubCategory,
 	Role,
 	Permission
 };
@@ -45,7 +46,7 @@ class PanelController extends Controller{
 			'bannersCount' 		=> Banner::count(),
 			'noticesCount' 		=> Notice::count(),
 			'commentsCount' 	=> Comment::count() + SubComment::count(),
-			'categoriesCount' 	=> Category::count(),
+			'categoriesCount' 	=> Category::count() + SubCategory::count(),
 			'rolesCount' 		=> Role::count(),
 			'permissionsCount' 	=> Permission::count()
 		];

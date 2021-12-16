@@ -29,7 +29,7 @@ class Permission extends Model{
 			'name.max' 				=> 'O campo nome deve conter no máximo %max% caracteres!',
 			'name.unique' 			=> 'Este nome já está sendo utilizado, Tente outro nome!',
 			'description.required' 	=> 'O preenchimento do campo descrição é obrigatório!',
-			'description.required' 	=> 'O campo descrição deve conter no mínimo %min% caracteres!'
+			'description.min' 		=> 'O campo descrição deve conter no mínimo %min% caracteres!'
 		];
 	}
 

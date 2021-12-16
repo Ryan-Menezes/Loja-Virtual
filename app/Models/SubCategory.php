@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model{
-	public $table = 'categories';
-	protected $fillable = ['name', 'slug', 'description'];
+class SubCategory extends Model{
+	public $table = 'subcategories';
+	protected $fillable = ['name', 'slug', 'description', 'category_id'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
@@ -33,12 +33,13 @@ class Category extends Model{
 		];
 	}
 
-	public function scopeSearch($query, $page = 0, $filter = ''){
+	public function scopeSearch($query, $id, $page = 0, $filter = ''){
 		$limit = config('paginate.limit');
 		$page = ($page - 1) * $limit;
 
 		return $query
-					->orWhere('name', 'LIKE', "%{$filter}%")
+					->where('category_id', $id)
+					->where('name', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
 					->limit($limit)
@@ -51,11 +52,7 @@ class Category extends Model{
 		}
 	}
 
-	public function notices(){
-		return $this->belongsToMany(Notice::class, 'notices_categories');
-	}
-
-	public function subcategories(){
-		return $this->hasMany(SubCategory::class, 'category_id', 'id');
+	public function category(){
+		return $this->belongsTo(Category::class, 'category_id', 'id');
 	}
 }

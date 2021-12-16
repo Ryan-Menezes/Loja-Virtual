@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16-Dez-2021 às 00:15
+-- Generation Time: 16-Dez-2021 às 22:33
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `banners` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
@@ -55,7 +55,6 @@ CREATE TABLE `categories` (
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`) VALUES
 (1, 'Biografia', 'biografia', ''),
 (2, 'Tecnologia', 'tecnologia', ''),
-(3, 'Jogos Digítais', 'jogos-digitais', ''),
 (5, 'Comida', 'comida', ''),
 (6, 'Esportes', 'esportes', ''),
 (7, 'Politica', 'politica', ''),
@@ -106,9 +105,9 @@ INSERT INTO `comments` (`id`, `name`, `email`, `content`, `visible`, `notice_id`
 --
 
 CREATE TABLE `coupons` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `percent` tinyint(100) NOT NULL,
+  `percent` tinyint(100) UNSIGNED NOT NULL,
   `expiration` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -263,6 +262,73 @@ INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `promotion_percent` tinyint(100) DEFAULT NULL,
+  `promotion_expiration` date DEFAULT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `products_subcategories`
+--
+
+CREATE TABLE `products_subcategories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
+  `subcategory_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product_colors`
+--
+
+CREATE TABLE `product_colors` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product_dimensions`
+--
+
+CREATE TABLE `product_dimensions` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` decimal(8,2) NOT NULL,
+  `product_color_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `product_images`
+--
+
+CREATE TABLE `product_images` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `source` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `product_color_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `roles`
 --
 
@@ -299,7 +365,6 @@ CREATE TABLE `roles_permissions` (
 INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (32, 1, 38),
 (33, 1, 54),
-(34, 1, 70),
 (35, 1, 30),
 (36, 1, 66),
 (37, 1, 46),
@@ -315,7 +380,6 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (47, 1, 56),
 (48, 1, 72),
 (49, 1, 32),
-(50, 1, 68),
 (51, 1, 48),
 (52, 1, 60),
 (53, 1, 64),
@@ -352,7 +416,9 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 (84, 1, 41),
 (85, 1, 73),
 (86, 1, 49),
-(87, 1, 25);
+(87, 1, 25),
+(88, 1, 70),
+(89, 1, 68);
 
 -- --------------------------------------------------------
 
@@ -361,12 +427,34 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 --
 
 CREATE TABLE `slideshow` (
-  `id` int(11) NOT NULL,
+  `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
   `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `subcategories`
+--
+
+CREATE TABLE `subcategories` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `category_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `subcategories`
+--
+
+INSERT INTO `subcategories` (`id`, `name`, `slug`, `description`, `category_id`) VALUES
+(1, 'Falcão', 'falcao', 'Série da Marvel', 18),
+(2, 'Loki', 'loki', 'Série da Marvel', 18);
 
 -- --------------------------------------------------------
 
@@ -500,6 +588,42 @@ ALTER TABLE `permissions`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Indexes for table `products_subcategories`
+--
+ALTER TABLE `products_subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `subcategory_id` (`subcategory_id`);
+
+--
+-- Indexes for table `product_colors`
+--
+ALTER TABLE `product_colors`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `product_dimensions`
+--
+ALTER TABLE `product_dimensions`
+  ADD KEY `product_color_id` (`product_color_id`);
+
+--
+-- Indexes for table `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_color_id` (`product_color_id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -519,6 +643,15 @@ ALTER TABLE `roles_permissions`
 --
 ALTER TABLE `slideshow`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `subcategories`
+--
+ALTER TABLE `subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `category_id` (`category_id`);
 
 --
 -- Indexes for table `subcomments`
@@ -549,7 +682,7 @@ ALTER TABLE `users_roles`
 -- AUTO_INCREMENT for table `banners`
 --
 ALTER TABLE `banners`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -567,7 +700,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `coupons`
 --
 ALTER TABLE `coupons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `notices`
@@ -588,6 +721,30 @@ ALTER TABLE `permissions`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 
 --
+-- AUTO_INCREMENT for table `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `products_subcategories`
+--
+ALTER TABLE `products_subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `product_colors`
+--
+ALTER TABLE `product_colors`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
@@ -597,13 +754,19 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `slideshow`
 --
 ALTER TABLE `slideshow`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `subcategories`
+--
+ALTER TABLE `subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `subcomments`
@@ -647,11 +810,42 @@ ALTER TABLE `notices_categories`
   ADD CONSTRAINT `notices_categories_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Limitadores para a tabela `products_subcategories`
+--
+ALTER TABLE `products_subcategories`
+  ADD CONSTRAINT `products_subcategories_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_subcategories_ibfk_2` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `product_colors`
+--
+ALTER TABLE `product_colors`
+  ADD CONSTRAINT `product_colors_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `product_dimensions`
+--
+ALTER TABLE `product_dimensions`
+  ADD CONSTRAINT `product_dimensions_ibfk_1` FOREIGN KEY (`product_color_id`) REFERENCES `product_colors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `product_images`
+--
+ALTER TABLE `product_images`
+  ADD CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`product_color_id`) REFERENCES `product_colors` (`id`);
+
+--
 -- Limitadores para a tabela `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
   ADD CONSTRAINT `roles_permissions_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `roles_permissions_ibfk_2` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `subcategories`
+--
+ALTER TABLE `subcategories`
+  ADD CONSTRAINT `subcategories_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `subcomments`

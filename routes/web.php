@@ -12,6 +12,7 @@ use App\Controllers\Panel\{
 	CommentController,
 	SubCommentController,
 	CategoryController,
+	SubCategoryController,
 	RoleController,
 	PermissionController
 };
@@ -94,7 +95,7 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		});
 	});
 
-	// ROUTE CAREGORIES
+	// ROUTE CATEGORIES
 	Route::group(['prefix' => 'categorias'], function(){
 		Route::any('/', [CategoryController::class, 'index'])->name('panel.categories');
 		Route::get('/novo', [CategoryController::class, 'create'])->name('panel.categories.create');
@@ -102,6 +103,16 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::get('/{id}/editar', [CategoryController::class, 'edit'])->name('panel.categories.edit');
 		Route::put('/{id}/editar/salvar', [CategoryController::class, 'update'])->name('panel.categories.update');
 		Route::delete('/{id}/deletar', [CategoryController::class, 'destroy'])->name('panel.categories.destroy');
+
+		// ROUTE SUBCATEGORIES
+		Route::group(['prefix' => '/{category}/subcategorias'], function(){
+			Route::any('/', [SubCategoryController::class, 'index'])->name('panel.categories.subcategories');
+			Route::get('/novo', [SubCategoryController::class, 'create'])->name('panel.categories.subcategories.create');
+			Route::post('/novo/salvar', [SubCategoryController::class, 'store'])->name('panel.categories.subcategories.store');
+			Route::get('/{id}/editar', [SubCategoryController::class, 'edit'])->name('panel.categories.subcategories.edit');
+			Route::put('/{id}/editar/salvar', [SubCategoryController::class, 'update'])->name('panel.categories.subcategories.update');
+			Route::delete('/{id}/deletar', [SubCategoryController::class, 'destroy'])->name('panel.categories.subcategories.destroy');
+		});
 	});
 
 	// ROUTE ROLES
