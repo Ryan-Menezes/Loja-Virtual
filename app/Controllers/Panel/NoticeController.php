@@ -46,7 +46,7 @@ class NoticeController extends Controller{
 
 	public function create(){
 		$this->notice->verifyPermission('create.notices');
-		$categories = Category::pluck('name', 'id')->all();
+		$categories = Category::all();
 
 		return view('panel.notices.create', compact('categories'));
 	}
@@ -57,13 +57,14 @@ class NoticeController extends Controller{
 
 		$content = [];
 		$data = $request->all();
-		$elements = $request->input('elements');
-		$titles = $request->input('titles');
-		$paragraphs = $request->input('paragraphs');
-		$youtubeUrls = $request->input('urls-video');
+
+		$elements = $data['elements'];
+		$titles = $data['titles'];
+		$paragraphs = $data['paragraphs'];
+		$youtubeUrls = $data['urls-video'];
 		$images = $request->file('images');
-		$titleImages = $request->input('title-images');
-		$titlesTag = $request->input('titles-tag');
+		$titleImages = $data['title-images'];
+		$titlesTag = $data['titles-tag'];
 		$titleIndex = 0;
 		$paragraphIndex = 0;
 		$youtubeIndex = 0;
@@ -133,7 +134,8 @@ class NoticeController extends Controller{
 		$notice = auth()->user()->notices()->create($data);
 
 		if($notice){
-			$notice->categories()->sync($data['categories']);
+			// cadastrando subcategorias
+			$notice->subcategories()->sync($data['subcategories']);
 
 			redirect(route('panel.notices.create'), ['success' => 'Artigo cadastrado com sucesso']);
 		}
@@ -145,7 +147,7 @@ class NoticeController extends Controller{
 	public function edit($id){
 		$this->notice->verifyPermission('edit.notices');
 		$notice = $this->notice->findOrFail($id);
-		$categories = Category::pluck('name', 'id')->all();
+		$categories = Category::all();
 
 		return view('panel.notices.edit', compact('categories', 'notice'));
 	}
@@ -158,16 +160,17 @@ class NoticeController extends Controller{
 
 		$content = [];
 		$data = $request->all();
-		$elements = $request->input('elements');
-		$titles = $request->input('titles');
-		$paragraphs = $request->input('paragraphs');
-		$youtubeUrls = $request->input('urls-video');
+
+		$elements = $data['elements'];
+		$titles = $data['titles'];
+		$paragraphs = $data['paragraphs'];
+		$youtubeUrls = $data['urls-video'];
 		$images = $request->file('images');
 		$poster = $request->file('poster');
-		$titleImages = $request->input('title-images');
-		$imagesEdit = explode(',', $request->input('images-notice-edit'));
-		$imagesRemove = explode(',', $request->input('images-notice-remove'));
-		$titlesTag = $request->input('titles-tag');
+		$titleImages = $data['title-images'];
+		$imagesEdit = explode(',', $data['images-notice-edit']);
+		$imagesRemove = explode(',', $data['images-notice-remove']);
+		$titlesTag = $data['titles-tag'];
 		$titleIndex = 0;
 		$paragraphIndex = 0;
 		$youtubeIndex = 0;
@@ -278,7 +281,8 @@ class NoticeController extends Controller{
 		$data['content'] = json_encode($content);
 
 		if($notice->update($data)){
-			$notice->categories()->sync($data['categories']);
+			// cadastrando subcategorias
+			$notice->subcategories()->sync($data['subcategories']);
 
 			if(!empty($posterPrev)){
 				Storage::delete($posterPrev);

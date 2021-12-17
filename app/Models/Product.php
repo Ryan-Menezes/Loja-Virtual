@@ -71,10 +71,10 @@ class Product extends Model{
 	}
 
 	public function subcategories(){
-		return $this->belongsToMany(SubCategory::class, 'products_subcategories');
+		return $this->belongsToMany(SubCategory::class, 'products_subcategories', 'product_id', 'subcategory_id');
 	}
 
 	public function colors(){
-		return $this->belongsToMany(SubCategory::class, 'products_subcategories');
+		return $this->hasMany(ProductColor::class, 'product_id', 'id');
 	}
 }

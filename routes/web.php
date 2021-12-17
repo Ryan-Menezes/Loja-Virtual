@@ -5,6 +5,7 @@ use App\Controllers\Panel\{
 	PanelController,
 	AuthController,
 	UserController,
+	ProductController,
 	CouponController,
 	SlideShowController,
 	BannerController,
@@ -36,6 +37,17 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::get('/{id}/editar', [UserController::class, 'edit'])->name('panel.users.edit');
 		Route::put('/{id}/editar/salvar', [UserController::class, 'update'])->name('panel.users.update');
 		Route::delete('/{id}', [UserController::class, 'destroy'])->name('panel.users.destroy');
+	});
+
+	// ROUTE PRODUCTS
+	Route::group(['prefix' => 'produtos'], function(){
+		Route::any('/', [ProductController::class, 'index'])->name('panel.products');
+		Route::get('/novo', [ProductController::class, 'create'])->name('panel.products.create');
+		Route::post('/novo/salvar', [ProductController::class, 'store'])->name('panel.products.store');
+		Route::any('/componente/{name}', [ProductController::class, 'component'])->name('panel.products.component');
+		Route::get('/{id}/editar', [ProductController::class, 'edit'])->name('panel.products.edit');
+		Route::put('/{id}/editar/salvar', [ProductController::class, 'update'])->name('panel.products.update');
+		Route::delete('/{id}/deletar', [ProductController::class, 'destroy'])->name('panel.products.destroy');
 	});
 
 	// ROUTE COUPONS

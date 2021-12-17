@@ -10,31 +10,31 @@
 			@endif
 
 			@if(can('view.clients'))
-				@include('includes.components.card', ['title' => 'Clientes', 'link' => route('panel.clients'), 'class' => 'bg-danger', 'amount' => $clientsCount, 'icon' => 'fas fa-user-circle'])
+				@include('includes.components.card', ['title' => 'Clientes', 'link' => route('panel.clients'), 'class' => 'bg-secondary', 'amount' => $clientsCount, 'icon' => 'fas fa-user-circle'])
 			@endif
 
 			@if(can('view.products'))
-				@include('includes.components.card', ['title' => 'Produtos', 'link' => route('panel.products'), 'class' => 'bg-danger', 'amount' => $productsCount, 'icon' => 'fas fa-box'])
+				@include('includes.components.card', ['title' => 'Produtos', 'link' => route('panel.products'), 'class' => 'bg-success', 'amount' => $productsCount, 'icon' => 'fas fa-box'])
 			@endif
 
 			@if(can('view.assessments'))
-				@include('includes.components.card', ['title' => 'Avaliações', 'link' => route('panel.assessments'), 'class' => 'bg-danger', 'amount' => $assessmentsCount, 'icon' => 'fas fa-star'])
+				@include('includes.components.card', ['title' => 'Avaliações', 'link' => route('panel.assessments'), 'class' => 'bg-warning', 'amount' => $assessmentsCount, 'icon' => 'fas fa-star'])
 			@endif
 
 			@if(can('view.requests'))
-				@include('includes.components.card', ['title' => 'Pedidos', 'link' => route('panel.requests'), 'class' => 'bg-danger', 'amount' => $requestsCount, 'icon' => 'fas fa-list'])
+				@include('includes.components.card', ['title' => 'Pedidos', 'link' => route('panel.requests'), 'class' => 'bg-info', 'amount' => $requestsCount, 'icon' => 'fas fa-list'])
 			@endif
 
 			@if(can('view.coupons'))
-				@include('includes.components.card', ['title' => 'Cupons', 'link' => route('panel.coupons'), 'class' => 'bg-danger', 'amount' => $couponsCount, 'icon' => 'fas fa-percent'])
+				@include('includes.components.card', ['title' => 'Cupons', 'link' => route('panel.coupons'), 'class' => 'bg-dark', 'amount' => $couponsCount, 'icon' => 'fas fa-percent'])
 			@endif
 
 			@if(can('view.slideshow'))
-				@include('includes.components.card', ['title' => 'Carrossel', 'link' => route('panel.slideshow'), 'class' => 'bg-danger', 'amount' => $slideshowCount, 'icon' => 'fas fa-image'])
+				@include('includes.components.card', ['title' => 'Carrossel', 'link' => route('panel.slideshow'), 'class' => 'bg-primary', 'amount' => $slideshowCount, 'icon' => 'fas fa-image'])
 			@endif
 
 			@if(can('view.banners'))
-				@include('includes.components.card', ['title' => 'Banners', 'link' => route('panel.banners'), 'class' => 'bg-danger', 'amount' => $bannersCount, 'icon' => 'fas fa-images'])
+				@include('includes.components.card', ['title' => 'Banners', 'link' => route('panel.banners'), 'class' => 'bg-secondary', 'amount' => $bannersCount, 'icon' => 'fas fa-images'])
 			@endif
 
 			@if(can('view.notices'))

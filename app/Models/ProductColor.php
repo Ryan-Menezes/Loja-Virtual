@@ -10,18 +10,18 @@ class ProductColor extends Model{
 
 	public function getRolesCreateAttribute(){
 		return [
-			'description' 	=> 'required|min:1'
+			'description' => 'required|min:1'
 		];
 	}
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'description' 	=> 'required|min:1'
+			'description' => 'required|min:1'
 		];
 	}
 
 	public function getMessagesAttribute(){
-		return [,
+		return [
 			'description.required' 	=> 'O preenchimento do campo descrição é obrigatório!',
 			'description.min' 		=> 'O campo descrição deve conter no mínimo %min% caracteres!'
 		];
@@ -39,5 +39,9 @@ class ProductColor extends Model{
 
 	public function images(){
 		return $this->hasMany(ProductImage::class, 'product_color_id', 'id');
+	}
+
+	public function sizes(){
+		return $this->hasMany(ProductSize::class, 'product_color_id', 'id');
 	}
 }

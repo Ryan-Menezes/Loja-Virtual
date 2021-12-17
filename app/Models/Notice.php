@@ -79,7 +79,7 @@ class Notice extends Model{
 		return $this->hasMany(Comment::class, 'notice_id', 'id');
 	}
 
-	public function categories(){
-		return $this->belongsToMany(Category::class, 'notices_categories');
+	public function subcategories(){
+		return $this->belongsToMany(SubCategory::class, 'notices_subcategories', 'notice_id', 'subcategory_id');
 	}
 }
