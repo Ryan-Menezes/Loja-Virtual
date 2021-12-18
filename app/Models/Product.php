@@ -18,7 +18,7 @@ class Product extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'name' 			=> "required|min:1|max:191|unique:{$this->name},name,{$this->name}",
+			'name' 			=> "required|min:1|max:191|unique:{$this->table},name,{$this->name}",
 			'description' 	=> 'required|min:1',
 			'promotion_percent' => 'numeric'
 		];

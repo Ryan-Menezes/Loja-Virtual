@@ -6,6 +6,7 @@
 				'type' => 'text', 
 				'name' => 'titles[]', 
 				'title' => 'Titulo',
+				'class' => 'required',
 				'value' => $value ?? null
 			])
 		</div>

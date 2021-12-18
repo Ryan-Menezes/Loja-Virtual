@@ -1,5 +1,5 @@
 @php
-	$id = md5(uniqid() . time());
+	$id = $id ?? md5(uniqid() . time());
 @endphp
 <div class="form-group content-group mb-2 border p-2 bg-light {{ $class ?? null }}">
 	<input type="hidden" name="elements[]" value="COLOREDITOR">
@@ -20,16 +20,20 @@
 	
 	<div class="accordion">
 		<h3>Imagens</h3>
-		<div id="product-images-{{ $id }}" class="product-images sortable">
+		<div id="product-images-{{ $id }}" class="product-images sortable row">
 			@if(isset($images) && (is_array($images) || is_object($images)))
 				@foreach($images as $image)
 					@include('includes.components.form.imageeditor', [
 						'nottitle' => 'true',
 						'description' => $image->description,
 						'image' => url('storage/app/public/' . $image->source),
-						'imageRemove' => $image->source
+						'imageRemove' => $image->source,
+						'id' => $id,
+						'class' => 'col-md-6'
 					])
 				@endforeach
+
+				<input type="hidden" name="images-remove">
 			@endif
 		</div>
 
@@ -40,7 +44,8 @@
 					@include('includes.components.form.sizeeditor', [
 						'description' => $size->description,
 						'price' => $size->price,
-						'price_previous' => $size->price_previous
+						'price_previous' => $size->price_previous,
+						'id' => $id
 					])
 				@endforeach
 			@endif
@@ -49,7 +54,7 @@
 
 	<div class="row text-center mt-5">
 		<div class="col-md-12">
-			<button type="button" class="btn border" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}">Adicionar imagem <i class="fas fa-image"></i></button>
+			<button type="button" class="btn border" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar imagem <i class="fas fa-image"></i></button>
 
 			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}">Adicionar tamanho <i class="fas fa-image"></i></button>
 		</div>

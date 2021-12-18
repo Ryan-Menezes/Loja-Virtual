@@ -31,7 +31,7 @@ $(document).ready(function(){
     })
 
     // Configurações do form validade
-    $('*').delegate('.form-validate', 'focus load', function(){
+    $('*').delegate('.form-validate', 'load focus blur', function(){
         $(this).validate({
             errorElement: 'span',
             messages: {
@@ -105,7 +105,7 @@ $(document).ready(function(){
     $('*').delegate('.btn-remove-element', 'click', function(){
         if(confirm('Deseja realmente remover este elemento?')){
             let data = $(this).data()
-            let input = $('input[type="hidden"][name="images-notice-remove"]')
+            let input = $('input[type="hidden"][name="images-remove"]')
 
             $(this).parents('.content-group:first').remove()
 

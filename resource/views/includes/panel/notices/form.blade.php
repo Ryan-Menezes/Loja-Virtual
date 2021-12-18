@@ -108,7 +108,7 @@
 				@endif
 
 				<input type="hidden" name="images-notice-edit" value="{{ implode(',', $images) }}">
-				<input type="hidden" name="images-notice-remove">
+				<input type="hidden" name="images-remove">
 			</div>
 
 			<div class="row text-center mt-5">

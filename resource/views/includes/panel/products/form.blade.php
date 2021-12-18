@@ -41,7 +41,7 @@
 				@include('includes.components.form.select', [
 					'name' => 'visible', 
 					'title' => 'Visibilidade',
-					'value' => (isset($notice) ? $notice->visible : null),
+					'value' => (isset($product) ? $product->visible : null),
 					'options' => [
 						0 => 'Invisivel',
 						1 => 'Visível'
@@ -64,7 +64,10 @@
 						@include('includes.components.form.coloreditor', [
 							'description' => $color->description,
 							'images' => $color->images,
-							'sizes' => $color->sizes
+							'sizes' => $color->sizes,
+							'urlimage' => route('panel.products.component', ['name' => 'form.imageeditor']),
+							'urlsize' => route('panel.products.component', ['name' => 'form.sizeeditor']),
+							'id' => $color->id
 						])
 					@endforeach
 				@endif

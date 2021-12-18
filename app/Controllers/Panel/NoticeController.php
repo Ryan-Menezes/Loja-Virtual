@@ -169,7 +169,7 @@ class NoticeController extends Controller{
 		$poster = $request->file('poster');
 		$titleImages = $data['title-images'];
 		$imagesEdit = explode(',', $data['images-notice-edit']);
-		$imagesRemove = explode(',', $data['images-notice-remove']);
+		$imagesRemove = explode(',', $data['images-remove']);
 		$titlesTag = $data['titles-tag'];
 		$titleIndex = 0;
 		$paragraphIndex = 0;

@@ -8,6 +8,8 @@ use Src\Classes\{
 use Src\Classes\Storage\Storage;
 use App\Models\{
 	Product,
+	ProductColor,
+	ProductImage,
 	Category
 };
 
@@ -131,8 +133,99 @@ class ProductController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
-		
-		dd($data);
+
+		$this->validator($data, $product->rolesUpdate, $product->messages);
+		$data['slug'] = slugify($data['name']);
+
+		if($product->update($data)){
+			// cadastrando subcategorias
+			$product->subcategories()->sync($data['subcategories']);
+
+			// excluindo todas as cores, imagens e tamanhos do produto
+			foreach($product->colors as $color){
+				foreach($color->sizes as $size){
+					$size->delete();
+				}
+
+				foreach(explode(',', $data['images-remove']) as $source){
+					$image = ProductImage::where('source', $source)->first();	
+
+					if($image){
+						Storage::delete($image->source);
+
+						$image->delete();
+					}
+				}
+
+				if(!in_array($color->id, $data['id-colors'])){
+					foreach($color->images as $image){
+						Storage::delete($image->source);
+
+						$image->delete();
+					}
+
+					$color->delete();
+				}
+			}
+
+			// cadastrando cores
+			for($i = 0; $i < count($data['id-colors']); $i++){
+				$id = $data['id-colors'][$i];
+				$description = $data['description-colors'][$i];
+
+				$color = $product->colors()->find($id);
+
+				if($color){
+					$color->update([
+						'description' => $description
+					]);
+				}else{
+					$color = $product->colors()->create([
+						'description' => $description
+					]);
+				}
+
+				if($color){
+					// cadastrando tamanhos
+					$descriptions = $data["description-size-{$id}"];
+					$prices = $data["price-size-{$id}"];
+					$pricesPrevious = $data["price-previous-size-{$id}"];
+
+					for($j = 0; $j < count($descriptions); $j++){
+						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
+							$size = $color->sizes()->create([
+								'description' 		=> $descriptions[$j],
+								'price' 			=> $prices[$j],
+								'price_previous' 	=> $pricesPrevious[$j]
+							]);
+						}
+					}
+
+					// cadastrando imagens
+					$images = $request->file("images-{$id}");
+
+					for($j = 0; $j < count($images); $j++){
+						if($images[$j]->error == 0){
+							$filename = $images[$j]->store('products');
+
+							if($filename){
+								$image = $color->images()->create([
+									'source' => $filename
+								]);
+
+								if(!$image){
+									Storage::delete($filename);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			redirect(route('panel.products.edit', ['id' => $product->id]), ['success' => 'Produto editado com sucesso']);
+		}
+
+		redirect(route('panel.products.edit', ['id' => $product->id]), ['error' => 'Produto NÃO editado, Ocorreu um erro no processo de edição!']);
 	}
 
 	public function destroy($id){
