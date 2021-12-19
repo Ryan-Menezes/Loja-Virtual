@@ -48,11 +48,13 @@
 					]
 				])
 
-				@include('includes.components.form.textarea', [
+				<label class="form-label">Descrição:</label>
+				@include('includes.components.form.texteditor', [
 					'name' => 'description',
 					'title' => 'Descrição',
 					'class' => 'required',
-					'value' => (isset($product) ? $product->description : null)
+					'value' => (isset($product) ? $product->description : null),
+					'notbtnremove' => true
 				])
 			</div>
 		</div>

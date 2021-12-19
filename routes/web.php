@@ -5,6 +5,7 @@ use App\Controllers\Panel\{
 	PanelController,
 	AuthController,
 	UserController,
+	ClientController,
 	ProductController,
 	CouponController,
 	SlideShowController,
@@ -19,6 +20,7 @@ use App\Controllers\Panel\{
 };
 use App\Controllers\Site\{
 	SiteController,
+	ProductController as ProductControllerSite,
 	NoticeController as NoticeControllerSite,
 	CommentController as CommentControllerSite,
 	CategoryController as CategoryControllerSite,
@@ -37,6 +39,13 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::get('/{id}/editar', [UserController::class, 'edit'])->name('panel.users.edit');
 		Route::put('/{id}/editar/salvar', [UserController::class, 'update'])->name('panel.users.update');
 		Route::delete('/{id}', [UserController::class, 'destroy'])->name('panel.users.destroy');
+	});
+
+	// ROUTE CLIENTS
+	Route::group(['prefix' => 'clientes'], function(){
+		Route::any('/', [ClientController::class, 'index'])->name('panel.clients');
+		Route::get('/{id}', [ClientController::class, 'show'])->name('panel.clients.show');
+		Route::delete('/{id}', [ClientController::class, 'destroy'])->name('panel.clients.destroy');
 	});
 
 	// ROUTE PRODUCTS
@@ -172,6 +181,12 @@ Route::group(['prefix' => '/'], function(){
 	// ROUTE CATEGORIES
 	Route::group(['prefix' => 'categorias'], function(){
 		Route::get('/{slug}', [CategoryControllerSite::class, 'show'])->name('site.categories.show');
+	});
+
+	// ROUTE PRODUCTS
+	Route::group(['prefix' => 'produtos'], function(){
+		Route::get('/', [ProductControllerSite::class, 'index'])->name('site.products');
+		Route::get('/{slug}', [ProductControllerSite::class, 'show'])->name('site.products.show');
 	});
 
 	// ROUTE SITEMAP

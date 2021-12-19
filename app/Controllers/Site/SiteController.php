@@ -6,15 +6,21 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
+	Product,
 	Notice,
-	Category
+	Category,
+	Banner,
+	SlideShow
 };
 
 class SiteController extends Controller{
 	public function index(){
-		$notices = Notice::where('visible', true)->orderBy('id', 'DESC')->get();
+		$products = Product::where('visible', true)->orderBy('id', 'DESC')->limit(20)->get();
+		$notices = Notice::orderBy('id', 'DESC')->limit(3)->get();
 		$categories = Category::all();
+		$banners = Banner::all();
+		$slideshow = SlideShow::all();
 
-		return view('site.index', compact('notices', 'categories'));
+		return view('site.index', compact('products', 'notices', 'categories', 'banners', 'slideshow'));
 	}
 }

@@ -55,4 +55,12 @@ class SubCategory extends Model{
 	public function category(){
 		return $this->belongsTo(Category::class, 'category_id', 'id');
 	}
+
+	public function notices(){
+		return $this->belongsToMany(Notice::class, 'notices_subcategories', 'notice_id', 'subcategory_id');
+	}
+
+	public function products(){
+		return $this->belongsToMany(Product::class, 'products_subcategories', 'product_id', 'subcategory_id');
+	}
 }

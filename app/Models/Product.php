@@ -50,6 +50,27 @@ class Product extends Model{
 		];
 	}
 
+	public function getPriceFormatAttribute(){
+		if(empty($this->sizes()->first()->price))
+			return null;
+
+		return number_format($this->sizes()->first()->price, 2, ',', '.');
+	}
+
+	public function getPricePreviousFormatAttribute(){
+		if(empty($this->sizes()->first()->price_previous))
+			return null;
+
+		return number_format($this->sizes()->first()->price_previous, 2, ',', '.');
+	}
+
+	public function getFirstImageAttribute(){
+		if(empty($this->images()->first()->source))
+			return null;
+
+		return $this->images()->first()->source;
+	}
+
 	public function scopeSearch($query, $page = 0, $filter = ''){
 		$limit = config('paginate.limit');
 		$page = ($page - 1) * $limit;
@@ -77,4 +98,12 @@ class Product extends Model{
 	public function colors(){
 		return $this->hasMany(ProductColor::class, 'product_id', 'id');
 	}
+
+	public function images(){
+        return $this->hasManyThrough(ProductImage::class, ProductColor::class);
+    }
+
+	public function sizes(){
+        return $this->hasManyThrough(ProductSize::class, ProductColor::class);
+    }
 }

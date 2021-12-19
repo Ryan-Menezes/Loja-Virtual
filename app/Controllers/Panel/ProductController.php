@@ -60,6 +60,12 @@ class ProductController extends Controller{
 
 		$this->validator($data, $this->product->rolesCreate, $this->product->messages);
 		$data['slug'] = slugify($data['name']);
+		if(empty($data['promotion_percent'])){
+			unset($data['promotion_percent']);
+		}
+		if(empty($data['promotion_expiration'])){
+			unset($data['promotion_expiration']);
+		}
 
 		$product = $this->product->create($data);
 
@@ -136,6 +142,12 @@ class ProductController extends Controller{
 
 		$this->validator($data, $product->rolesUpdate, $product->messages);
 		$data['slug'] = slugify($data['name']);
+		if(empty($data['promotion_percent'])){
+			unset($data['promotion_percent']);
+		}
+		if(empty($data['promotion_expiration'])){
+			unset($data['promotion_expiration']);
+		}
 
 		if($product->update($data)){
 			// cadastrando subcategorias

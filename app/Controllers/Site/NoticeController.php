@@ -5,7 +5,10 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\Notice;
+use App\Models\{
+	Notice,
+	Category
+};
 
 class NoticeController extends Controller{
 	private $notice;
@@ -33,6 +36,8 @@ class NoticeController extends Controller{
 		$notice->visits++;
 		$notice->save();
 
-		return view('site.notices.show', compact('notice'));
+		$categories = Category::all();
+
+		return view('site.notices.show', compact('notice', 'categories'));
 	}
 }

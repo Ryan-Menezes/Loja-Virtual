@@ -43,7 +43,7 @@
 
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/bootstrap.min.css') }}"/>
-    '
+
     <!-- Slick -->
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick.css') }}"/>
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick-theme.css') }}"/>
@@ -105,12 +105,13 @@
                         <div class="header-search">
                             <form>
                                 <select class="input-select">
-                                    <option value="0">All Categories</option>
-                                    <option value="1">Category 01</option>
-                                    <option value="1">Category 02</option>
+                                    <option value="0">Todos</option>
+                                    @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
-                                <input class="input" placeholder="Search here">
-                                <button class="search-btn">Search</button>
+                                <input type="text" class="input" placeholder="Buscar" name="search">
+                                <button class="search-btn">Buscar</button>
                             </form>
                         </div>
                     </div>
@@ -192,6 +193,18 @@
     </header>
     <!-- /HEADER -->
 
+    {{-- <section class="slideshow">
+        @foreach($slideshow as $slide)
+        <div class="carousel-item active" data-bs-interval="10000">
+            <img src="{{ url('storage/app/public/' . $slide->image) }}" class="d-block w-100" alt="{{ $slide->title }}" title="{{ $slide->title }}">
+            <div class="carousel-caption d-none d-md-block">
+                <h5>{{ $slide->title }}</h5>
+                <p>{{ $slide->description }}</p>
+            </div>
+        </div>
+        @endforeach
+    </section> --}}
+
     <!-- NAVIGATION -->
     <nav id="navigation">
         <!-- container -->
@@ -200,12 +213,10 @@
             <div id="responsive-nav">
                 <!-- NAV -->
                 <ul class="main-nav nav navbar-nav">
-                    <li class="active"><a href="#">Início</a></li>
-                    <li><a href="#">Categorias</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Laptops</a></li>
-                    <li><a href="#">Smartphones</a></li>
-                    <li><a href="#">Cameras</a></li>
+                    <li class="active"><a href="{{ route('site') }}" title="Página Inicial">Início</a></li>
+                    <li><a href="{{ route('site.products') }}" title="Página de Produtos">Produtos</a></li>
+                    <li><a href="{{ route('site.notices') }}" title="Página do Blog">Blog</a></li>
+                    <li><a href="#" title="Página de Categorias">Categorias</a></li>
                 </ul>
                 <!-- /NAV -->
             </div>
@@ -222,10 +233,18 @@
             <!-- row -->
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="breadcrumb-header">Regular Page</h3>
                     <ul class="breadcrumb-tree">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">Blank</li>
+                        @php $routeComplete = '' @endphp
+                        @foreach(explode('/', route()) as $route)
+                            @php $routeComplete .= $route . '/' @endphp
+
+                            @if(!$loop->last)
+                            <li><a href="{{ url($routeComplete) }}">{{ $route }}</a></li>
+                            @else
+                            @php $routeComplete = $route @endphp
+                            @endif
+                        @endforeach
+                        <li class="active">{{ trim($routeComplete, '/') }}</li>
                     </ul>
                 </div>
             </div>
@@ -248,42 +267,6 @@
         <!-- /container -->
     </div>
     <!-- /SECTION -->
-
-    <!-- NEWSLETTER -->
-    <div id="newsletter" class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="newsletter">
-                        <p>Sign Up for the <strong>NEWSLETTER</strong></p>
-                        <form>
-                            <input class="input" type="email" placeholder="Enter Your Email">
-                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-                        </form>
-                        <ul class="newsletter-follow">
-                            <li>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
-                            </li>
-                            <li>
-                                <a href="#"><i class="fa fa-pinterest"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- /row -->
-        </div>
-        <!-- /container -->
-    </div>
-    <!-- /NEWSLETTER -->
 
     <!-- FOOTER -->
     <footer id="footer">
