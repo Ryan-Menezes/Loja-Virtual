@@ -9,12 +9,14 @@ use App\Models\{
 	User,
 	Client,
 	Product,
+	Rating,
 	Notice,
 	Comment,
 	SubComment,
 	Coupon,
 	SlideShow,
 	Banner,
+	Depoiment,
 	Category,
 	SubCategory,
 	Role,
@@ -25,7 +27,7 @@ class PanelController extends Controller{
 	public function index(){
 		/*
 		$actions = ['view', 'create', 'edit', 'delete'];
-		$tables = ['users', 'clients', 'products', 'assessments', 'requests', 'coupons', 'slideshow', 'banners', 'notices', 'comments', 'categories', 'roles', 'permissions'];
+		$tables = ['users', 'clients', 'products', 'ratings', 'requests', 'coupons', 'slideshow', 'banners', 'depoiments', 'notices', 'comments', 'categories', 'roles', 'permissions'];
 
 		foreach($tables as $table){
 			foreach($actions as $action){
@@ -41,11 +43,12 @@ class PanelController extends Controller{
 			'usersCount' 		=> User::count(),
 			'clientsCount' 		=> Client::count(),
 			'productsCount'		=> Product::count(),
-			'assessmentsCount'	=> 0,
+			'ratingsCount'		=> Rating::count(),
 			'requestsCount' 	=> 0,
 			'couponsCount' 		=> Coupon::count(),
 			'slideshowCount' 	=> SlideShow::count(),
 			'bannersCount' 		=> Banner::count(),
+			'depoimentsCount'	=> Depoiment::count(),
 			'noticesCount' 		=> Notice::count(),
 			'commentsCount' 	=> Comment::count() + SubComment::count(),
 			'categoriesCount' 	=> Category::count() + SubCategory::count(),

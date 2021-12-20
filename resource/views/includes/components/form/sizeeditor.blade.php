@@ -27,6 +27,15 @@
 					])
 				</div>
 			</div>
+
+			@include('includes.components.form.input', [
+				'type' => 'number', 
+				'name' => isset($id) ? "quantity-size-{$id}[]" : 'quantity-size[]', 
+				'title' => 'Quantidade em Estoque',
+				'min' => 0,
+				'max' => 999999,
+				'value' => $quantity ?? null
+			])
 		</div>
 		<div class="col-md-1">
 			<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento" data-remove="{{ $imageRemove ?? null }}"><i class="fas fa-trash-alt"></i></button>

@@ -45,6 +45,7 @@
 						'description' => $size->description,
 						'price' => $size->price,
 						'price_previous' => $size->price_previous,
+						'quantity' => $size->quantity,
 						'id' => $id
 					])
 				@endforeach
@@ -56,7 +57,7 @@
 		<div class="col-md-12">
 			<button type="button" class="btn border" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar imagem <i class="fas fa-image"></i></button>
 
-			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}">Adicionar tamanho <i class="fas fa-image"></i></button>
+			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}">Adicionar tamanho <i class="fas fa-size"></i></button>
 		</div>
 	</div>
 </div>

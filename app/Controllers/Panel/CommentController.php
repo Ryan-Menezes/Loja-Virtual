@@ -5,10 +5,7 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\{
-	Comment,
-	Role
-};
+use App\Models\Comment;
 
 class CommentController extends Controller{
 	private $comment;

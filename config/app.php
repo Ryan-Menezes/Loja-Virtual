@@ -11,5 +11,18 @@ return [
 	'keywords' 		=> 'loja virtual, loja, virtual',
 	'social'		=> [
 		'facebook' => 'https://www.facebook.com/ryan.menezes.9081323/'
+	],
+	'contact' => [
+		'phone' 	=> '1199999999',
+		'email'		=> 'menezesryan1010@gmail.com'
+	],
+	'address' => [
+		'postalCode'	=> '99999-999',
+		'street' 		=> 'Rua Teste',
+		'number'		=> '999',
+		'district' 		=> 'Vila Teste',
+		'region'		=> 'São Paulo',
+		'state'			=> 'SP',
+		'country'		=> 'BRA'
 	]
 ];

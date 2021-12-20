@@ -17,8 +17,8 @@
 				@include('includes.components.card', ['title' => 'Produtos', 'link' => route('panel.products'), 'class' => 'bg-success', 'amount' => $productsCount, 'icon' => 'fas fa-box'])
 			@endif
 
-			@if(can('view.assessments'))
-				@include('includes.components.card', ['title' => 'Avaliações', 'link' => route('panel.assessments'), 'class' => 'bg-warning', 'amount' => $assessmentsCount, 'icon' => 'fas fa-star'])
+			@if(can('view.ratings'))
+				@include('includes.components.card', ['title' => 'Avaliações', 'link' => route('panel.ratings'), 'class' => 'bg-warning', 'amount' => $ratingsCount, 'icon' => 'fas fa-star'])
 			@endif
 
 			@if(can('view.requests'))
@@ -35,6 +35,10 @@
 
 			@if(can('view.banners'))
 				@include('includes.components.card', ['title' => 'Banners', 'link' => route('panel.banners'), 'class' => 'bg-secondary', 'amount' => $bannersCount, 'icon' => 'fas fa-images'])
+			@endif
+
+			@if(can('view.depoiments'))
+				@include('includes.components.card', ['title' => 'Depoimentos', 'link' => route('panel.depoiments'), 'class' => 'bg-danger', 'amount' => $depoimentsCount, 'icon' => 'fas fa-smile'])
 			@endif
 
 			@if(can('view.notices'))

@@ -27,14 +27,13 @@
 					'value' => (isset($notice) ? $notice->title : null)
 				])
 
-				<div class="col-md-6">
-					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => 'tags', 
-						'title' => 'Tags', 
-						'value' => (isset($notice) ? $notice->tags : null)
-					])
-				</div>
+				@include('includes.components.form.input', [
+					'type' => 'text', 
+					'name' => 'tags', 
+					'title' => 'Tags', 
+					'value' => (isset($notice) ? $notice->tags : null)
+				])
+
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
 						'name' => 'visible', 
@@ -43,6 +42,17 @@
 						'options' => [
 							0 => 'Invisivel',
 							1 => 'Visível'
+						]
+					])
+				</div>
+				<div class="col-md-6">
+					@include('includes.components.form.select', [
+						'name' => 'comments_active', 
+						'title' => 'Comentários',
+						'value' => (isset($notice) ? $notice->comments_active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
 						]
 					])
 				</div>

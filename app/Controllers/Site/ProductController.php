@@ -5,7 +5,10 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\Product;
+use App\Models\{
+	Product,
+	Category
+};
 
 class ProductController extends Controller{
 	private $product;
@@ -15,6 +18,15 @@ class ProductController extends Controller{
 	}
 
 	public function index(){
-		return view('site.products.index');
+		$categories = Category::all();
+
+		return view('site.products.index', compact('categories'));
+	}
+
+	public function show($slug){
+		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
+		$categories = Category::all();
+
+		return view('site.products.show', compact('product', 'categories'));
 	}
 }

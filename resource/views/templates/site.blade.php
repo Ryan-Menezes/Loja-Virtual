@@ -72,8 +72,8 @@
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
+                    <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
+                    <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
                     <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
                 </ul>
                 <ul class="header-links pull-right">
@@ -93,8 +93,8 @@
                     <!-- LOGO -->
                     <div class="col-md-3">
                         <div class="header-logo">
-                            <a href="#" class="logo">
-                                <img src="{{ public_path('assets/img/logo.png') }}" alt="{{ config('app.name') }}">
+                            <a href="{{ url() }}" class="logo" title="{{ config('app.name') }}">
+                                <img src="{{ public_path('assets/img/logo.png') }}" alt="{{ config('app.name') }}" title="{{ config('app.name') }}">
                             </a>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                     <!-- SEARCH BAR -->
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form>
+                            <form action="" method="POST">
                                 <select class="input-select">
                                     <option value="0">Todos</option>
                                     @foreach($categories as $category)
@@ -256,15 +256,11 @@
 
     <!-- SECTION -->
     <div class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <div class="row">
-                @yield('container')
-            </div>
-            <!-- /row -->
+        <!-- row -->
+        <div class="row">
+            @yield('container')
         </div>
-        <!-- /container -->
+        <!-- /row -->
     </div>
     <!-- /SECTION -->
 
@@ -365,9 +361,9 @@
     <!-- /FOOTER -->
 
     <!-- ##### All Javascript Script ##### -->
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-2.2.4.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/slick.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/nouislider.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.zoom.min.js') }}"></script>

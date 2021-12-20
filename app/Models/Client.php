@@ -106,4 +106,8 @@ class Client extends Model{
 	public function adresses(){
 		return $this->hasMany(ClientAddress::class, 'client_id', 'id');
 	}
+
+	public function ratings(){
+		return $this->hasMany(Rating::class, 'client_id', 'id');
+	}
 }

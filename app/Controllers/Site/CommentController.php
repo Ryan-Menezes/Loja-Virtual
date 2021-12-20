@@ -25,7 +25,11 @@ class CommentController extends Controller{
 	}
 
 	public function store($slug){
-		$notice = $this->notice->where('slug', $slug)->firstOrFail();
+		$notice = $this->notice
+							->where('slug', $slug)
+							->where('visible', true)
+							->where('comments_active', true)
+							->firstOrFail();
 
 		$request = new Request();
 		$data = $request->all();
@@ -49,8 +53,13 @@ class CommentController extends Controller{
 	}
 
 	public function response($slug, $id){
-		$notice = $this->notice->where('slug', $slug)->firstOrFail();
-		$comment = $notice->comments()->findOrFail($id);
+		$notice = $this->notice
+							->where('slug', $slug)
+							->where('visible', true)
+							->where('comments_active', true)
+							->firstOrFail();
+							
+		$comment = $notice->comments()->where('visible', true)->findOrFail($id);
 
 		$request = new Request();
 		$data = $request->all();

@@ -18,8 +18,8 @@
 			<a href="{{ route('panel.products') }}" title="Página de Produtos"><li><i class="fas fa-box"></i> Produtos</li></a>
 		@endif
 
-		@if(can('view.assessments'))
-			<a href="{{ route('panel.assessments') }}" title="Página de Avaliações"><li><i class="fas fa-star"></i> Avaliações</li></a>
+		@if(can('view.ratings'))
+			<a href="{{ route('panel.ratings') }}" title="Página de Avaliações"><li><i class="fas fa-star"></i> Avaliações</li></a>
 		@endif
 
 		@if(can('view.requests'))
@@ -36,6 +36,10 @@
 
 		@if(can('view.banners'))
 			<a href="{{ route('panel.banners') }}" title="Página de Banners"><li><i class="fas fa-images"></i> Banners</li></a>
+		@endif
+
+		@if(can('view.depoiments'))
+			<a href="{{ route('panel.depoiments') }}" title="Página de Depoimentos"><li><i class="fas fa-smile"></i> Depoimentos</li></a>
 		@endif
 
 		@if(can('view.notices'))

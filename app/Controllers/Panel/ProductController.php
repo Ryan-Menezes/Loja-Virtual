@@ -202,13 +202,15 @@ class ProductController extends Controller{
 					$descriptions = $data["description-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
+					$quantity = $data["quantity-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
 						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
 							$size = $color->sizes()->create([
 								'description' 		=> $descriptions[$j],
 								'price' 			=> $prices[$j],
-								'price_previous' 	=> $pricesPrevious[$j]
+								'price_previous' 	=> $pricesPrevious[$j],
+								'quantity'			=> $quantity[$j]
 							]);
 						}
 					}

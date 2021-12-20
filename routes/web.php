@@ -7,9 +7,11 @@ use App\Controllers\Panel\{
 	UserController,
 	ClientController,
 	ProductController,
+	RatingController,
 	CouponController,
 	SlideShowController,
 	BannerController,
+	DepoimentController,
 	NoticeController,
 	CommentController,
 	SubCommentController,
@@ -59,6 +61,14 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::delete('/{id}/deletar', [ProductController::class, 'destroy'])->name('panel.products.destroy');
 	});
 
+	// ROUTE RATINGS
+	Route::group(['prefix' => 'avaliacoes'], function(){
+		Route::any('/', [RatingController::class, 'index'])->name('panel.ratings');
+		Route::get('/{id}/editar', [RatingController::class, 'edit'])->name('panel.ratings.edit');
+		Route::put('/{id}/editar/salvar', [RatingController::class, 'update'])->name('panel.ratings.update');
+		Route::delete('/{id}/deletar', [RatingController::class, 'destroy'])->name('panel.ratings.destroy');
+	});
+
 	// ROUTE COUPONS
 	Route::group(['prefix' => 'cupons'], function(){
 		Route::any('/', [CouponController::class, 'index'])->name('panel.coupons');
@@ -87,6 +97,16 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::get('/{id}/editar', [BannerController::class, 'edit'])->name('panel.banners.edit');
 		Route::put('/{id}/editar/salvar', [BannerController::class, 'update'])->name('panel.banners.update');
 		Route::delete('/{id}', [BannerController::class, 'destroy'])->name('panel.banners.destroy');
+	});
+
+	// ROUTE DEPOIMENTS
+	Route::group(['prefix' => 'depoimentos'], function(){
+		Route::any('/', [DepoimentController::class, 'index'])->name('panel.depoiments');
+		Route::get('/novo', [DepoimentController::class, 'create'])->name('panel.depoiments.create');
+		Route::post('/novo/salvar', [DepoimentController::class, 'store'])->name('panel.depoiments.store');
+		Route::get('/{id}/editar', [DepoimentController::class, 'edit'])->name('panel.depoiments.edit');
+		Route::put('/{id}/editar/salvar', [DepoimentController::class, 'update'])->name('panel.depoiments.update');
+		Route::delete('/{id}', [DepoimentController::class, 'destroy'])->name('panel.depoiments.destroy');
 	});
 
 	// ROUTE NOTICES

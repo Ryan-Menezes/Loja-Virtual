@@ -5,21 +5,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model{
 	public $table = 'products';
-	protected $fillable = ['name', 'slug', 'description', 'promotion_percent', 'promotion_expiration', 'visible'];
+	protected $fillable = ['name', 'slug', 'description', 'details', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){
 		return [
 			'name' 				=> "required|min:1|max:191|unique:{$this->table},name",
 			'description' 		=> 'required|min:1',
+			'details'			=> 'required|min:1',
 			'promotion_percent' => 'numeric'
 		];
 	}
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'name' 			=> "required|min:1|max:191|unique:{$this->table},name,{$this->name}",
-			'description' 	=> 'required|min:1',
+			'name' 				=> "required|min:1|max:191|unique:{$this->table},name,{$this->name}",
+			'description' 		=> 'required|min:1',
+			'details'			=> 'required|min:1',
 			'promotion_percent' => 'numeric'
 		];
 	}
@@ -46,6 +48,8 @@ class Product extends Model{
 			'name.unique' 				=> 'Este nome já está sendo utilizado, Tente outro nome!',
 			'description.required' 		=> 'O preenchimento do campo descrição é obrigatório!',
 			'description.min' 			=> 'O campo descrição deve conter no mínimo %min% caracteres!',
+			'details.required' 			=> 'O preenchimento do campo detalhes é obrigatório!',
+			'details.min' 				=> 'O campo detalhes deve conter no mínimo %min% caracteres!',
 			'promotion_percent.numeric' => 'A porcentagem da promoção deve ser numérico!'
 		];
 	}
@@ -106,4 +110,8 @@ class Product extends Model{
 	public function sizes(){
         return $this->hasManyThrough(ProductSize::class, ProductColor::class);
     }
+
+    public function ratings(){
+		return $this->hasMany(Rating::class, 'product_id', 'id');
+	}
 }

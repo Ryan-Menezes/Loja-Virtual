@@ -38,22 +38,42 @@
 					])
 				</div>
 
-				@include('includes.components.form.select', [
-					'name' => 'visible', 
-					'title' => 'Visibilidade',
-					'value' => (isset($product) ? $product->visible : null),
-					'options' => [
-						0 => 'Invisivel',
-						1 => 'Visível'
-					]
-				])
+				<div class="col-md-6">
+					@include('includes.components.form.select', [
+						'name' => 'visible', 
+						'title' => 'Visibilidade',
+						'value' => (isset($product) ? $product->visible : null),
+						'options' => [
+							1 => 'Visível',
+							0 => 'Invisivel'
+						]
+					])
+				</div>
+				<div class="col-md-6">
+					@include('includes.components.form.select', [
+						'name' => 'ratings_active', 
+						'title' => 'Avaliações',
+						'value' => (isset($product) ? $product->ratings_active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						]
+					])
+				</div>
 
-				<label class="form-label">Descrição:</label>
-				@include('includes.components.form.texteditor', [
+				@include('includes.components.form.textarea', [
 					'name' => 'description',
 					'title' => 'Descrição',
 					'class' => 'required',
-					'value' => (isset($product) ? $product->description : null),
+					'value' => (isset($product) ? $product->description : null)
+				])
+
+				<label class="form-label">Detalhes:</label>
+				@include('includes.components.form.texteditor', [
+					'name' => 'details',
+					'title' => 'Detalhes',
+					'class' => 'required',
+					'value' => (isset($product) ? $product->details : null),
 					'notbtnremove' => true
 				])
 			</div>

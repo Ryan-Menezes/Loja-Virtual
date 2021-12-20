@@ -26,8 +26,9 @@ class NoticeController extends Controller{
 		$pages = ceil($this->notice->count() / $limit);
 
 		$notices = $this->notice->where('visible', true)->orderBy('id', 'DESC')->offset(($page - 1) * $limit)->limit($limit)->get();
+		$categories = Category::all();
 
-		return view('site.notices.index', compact('notices', 'page', 'pages', 'builder'));
+		return view('site.notices.index', compact('notices', 'categories', 'page', 'pages', 'builder'));
 	}
 
 	public function show($slug){

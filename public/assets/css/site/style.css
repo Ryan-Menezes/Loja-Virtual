@@ -2225,7 +2225,7 @@ textarea.input {
   padding: 40px;
   background-size: cover;
   background-blend-mode: darken;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   color: white;
   margin-bottom: 50px;
   min-height: 400px;
@@ -2281,4 +2281,17 @@ textarea.input {
 }
 .card .card-content{
   padding: 20px;
+}
+.comment{
+  margin-bottom: 40px;
+}
+.comment .comment-header{
+  display: flex;
+}
+.comment .comment-header p{
+  margin-right: 20px;
+}
+.form-response{
+  display: none;
+  margin-bottom: 40px;
 }
