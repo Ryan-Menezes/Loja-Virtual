@@ -42,6 +42,11 @@
 			<div class="col-md-5">
 				<div class="product-details">
 					<h1 class="product-name">{{ $product->name }}</h1>
+
+					@if($product->freight_free)
+					<span class="product-available" style="margin-left: 0px;">Frete Grátis</span>
+					@endif
+
 					<div>
 						@if($product->ratings_active)
 							@if($product->ratings->where('visible', true)->count() > 0)
@@ -60,15 +65,17 @@
 					</div>
 					<div>
 						<h2 class="product-price">
-							R$ {{ $product->priceFormat }}
+							<span class="product-current-price">R$ {{ $product->priceFormat }}</span>
 							@if(!empty($product->sizes->first()->price_previous))
 							<del class="product-old-price">R$ {{ $product->pricePreviousFormat }}</del>
+							@else
+							<del class="product-old-price"></del>
 							@endif
 						</h2>
 						@if($product->sizes->first()->quantity > 0)
-						<span class="product-available">Em Estoque</span>
+						<span class="product-available">Produto Disponível</span>
 						@else
-						<span class="product-available">Indisponível</span>
+						<span class="product-available">Produto Indisponível</span>
 						@endif
 					</div>
 					<p>{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
@@ -76,9 +83,9 @@
 					<div class="product-options">
 						<label>
 							Cor
-							<select class="input-select">
+							<select class="input-select" id="colors">
 								@foreach($product->colors as $color)
-								<option value="{{ $color->id }}">{{ $color->description }}</option>
+								<option value="{{ route('site.products.info', ['id' => $color->id]) }}">{{ $color->description }}</option>
 								@endforeach
 							</select>
 						</label>
@@ -468,4 +475,101 @@
 	<!-- /container -->
 </div>
 <!-- /Section -->
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#colors').change(function(){
+			getInfo($(this).val())
+		})
+	})
+
+	function getInfo(url){
+		$.ajax({
+			url: url,
+			method: 'POST',
+			dataType: 'json',
+			beforeSend(){
+
+			}
+		})
+		.done(function(result){
+			if(result.success){
+				$('#product-imgs').empty().removeAttr('class')
+				$('#product-main-img').empty().removeAttr('class')
+
+				$.each(result.images, function(index, image){
+					let html = `<div class="product-preview"><img src="${image}" alt="{{ $product->name }}" title="{{ $product->name }}"/></div>`
+
+					$('#product-imgs').append(html)
+					$('#product-main-img').append(html)
+				})
+
+				renderSize(result.sizes[0])
+				restart()
+			}
+		})
+		.fail(function(){
+			alert('FALHA AO TENTAR CARREGAR AS IMAGENS E TAMANHOS DO PRODUTO!')
+		})
+	}
+
+	function renderSize(size){
+		$('.product-current-price').text(Number(size.price).toFixed(2).toLocaleString('pt-BR', {
+			style: 'currency',
+			currency: 'BRL'
+		}))
+
+		$('.product-old-price').text(Number(size.price_previous).toFixed(2).toLocaleString('pt-BR', {
+			style: 'currency',
+			currency: 'BRL'
+		}))
+
+		if(size.quantity > 0){
+			$('.product-available').text('Produto Disponível')
+			$('.add-to-cart').show()
+		}else{
+			$('.product-available').text('Produto Indisponível')
+			$('.add-to-cart').hide()
+		}
+	}
+
+	function restart(){
+		$('#product-main-img').slick({
+	    	infinite: true,
+	    	speed: 300,
+	    	dots: false,
+	    	arrows: true,
+	    	fade: true,
+	    	asNavFor: '#product-imgs'
+	  	})
+
+		// Product imgs Slick
+		$('#product-imgs').slick({
+		    slidesToShow: 3,
+		    slidesToScroll: 1,
+		    arrows: true,
+		    centerMode: true,
+		    focusOnSelect: true,
+			centerPadding: 0,
+			vertical: true,
+		    asNavFor: '#product-main-img',
+				responsive: [{
+		        breakpoint: 991,
+		        settings: {
+					vertical: false,
+					arrows: false,
+					dots: true,
+		        }
+		    }]
+		})
+
+		// Product img zoom
+		var zoomMainProduct = document.getElementById('product-main-img');
+		if (zoomMainProduct) {
+			$('#product-main-img .product-preview').zoom();
+		}
+	}
+</script>
 @endsection

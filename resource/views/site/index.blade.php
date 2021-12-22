@@ -80,6 +80,9 @@
 											@endif
 										</h4>
 										<div class="product-rating">
+											@if($product->freight_free)
+											<span class="product-available" style="margin-left: 0px;">Frete Grátis</span>
+											@endif
 											@if($product->ratings_active)
 												@if($product->ratings->where('visible', true)->count() > 0)
 													@for($i = 0; $i < $product->ratings->where('visible', true)->avg('stars'); $i++)

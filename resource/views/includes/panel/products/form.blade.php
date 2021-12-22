@@ -16,7 +16,8 @@
 					'name' => 'name', 
 					'title' => 'Nome', 
 					'class' => 'required',
-					'value' => (isset($product) ? $product->name : null)
+					'value' => (isset($product) ? $product->name : null),
+					'required' => true
 				])
 
 				<div class="col-md-6">
@@ -38,26 +39,40 @@
 					])
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-4">
 					@include('includes.components.form.select', [
 						'name' => 'visible', 
 						'title' => 'Visibilidade',
-						'value' => (isset($product) ? $product->visible : null),
+						'value' => (isset($product) ? $product->visible : 1),
 						'options' => [
 							1 => 'Visível',
 							0 => 'Invisivel'
-						]
+						],
+						'required' => true
 					])
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					@include('includes.components.form.select', [
 						'name' => 'ratings_active', 
 						'title' => 'Avaliações',
-						'value' => (isset($product) ? $product->ratings_active : null),
+						'value' => (isset($product) ? $product->ratings_active : 1),
 						'options' => [
 							1 => 'Ativado',
 							0 => 'Desativado'
-						]
+						],
+						'required' => true
+					])
+				</div>
+				<div class="col-md-4">
+					@include('includes.components.form.select', [
+						'name' => 'freight_free', 
+						'title' => 'Frete Grátis',
+						'value' => (isset($product) ? $product->freight_free : 0),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'required' => true
 					])
 				</div>
 
@@ -65,7 +80,8 @@
 					'name' => 'description',
 					'title' => 'Descrição',
 					'class' => 'required',
-					'value' => (isset($product) ? $product->description : null)
+					'value' => (isset($product) ? $product->description : null),
+					'required' => true
 				])
 
 				<label class="form-label">Detalhes:</label>
@@ -74,7 +90,8 @@
 					'title' => 'Detalhes',
 					'class' => 'required',
 					'value' => (isset($product) ? $product->details : null),
-					'notbtnremove' => true
+					'notbtnremove' => true,
+					'required' => true
 				])
 			</div>
 		</div>

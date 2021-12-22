@@ -24,7 +24,8 @@
 					'name' => 'title', 
 					'title' => 'Titulo', 
 					'class' => 'required',
-					'value' => (isset($notice) ? $notice->title : null)
+					'value' => (isset($notice) ? $notice->title : null),
+					'required' => true
 				])
 
 				@include('includes.components.form.input', [
@@ -38,22 +39,24 @@
 					@include('includes.components.form.select', [
 						'name' => 'visible', 
 						'title' => 'Visibilidade',
-						'value' => (isset($notice) ? $notice->visible : null),
+						'value' => (isset($notice) ? $notice->visible : 1),
 						'options' => [
-							0 => 'Invisivel',
-							1 => 'Visível'
-						]
+							1 => 'Visível',
+							0 => 'Invisivel'
+						],
+						'required' => true
 					])
 				</div>
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
 						'name' => 'comments_active', 
 						'title' => 'Comentários',
-						'value' => (isset($notice) ? $notice->comments_active : null),
+						'value' => (isset($notice) ? $notice->comments_active : 1),
 						'options' => [
 							1 => 'Ativado',
 							0 => 'Desativado'
-						]
+						],
+						'required' => true
 					])
 				</div>
 
@@ -61,7 +64,8 @@
 					'name' => 'description',
 					'title' => 'Descrição',
 					'class' => 'required',
-					'value' => (isset($notice) ? $notice->description : null)
+					'value' => (isset($notice) ? $notice->description : null),
+					'required' => true
 				])
 			</div>
 		</div>

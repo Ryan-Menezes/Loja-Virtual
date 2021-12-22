@@ -15,14 +15,16 @@
 		'name' => 'title', 
 		'title' => 'Titulo', 
 		'class' => 'required',
-		'value' => (isset($slideshow) ? $slideshow->title : null)
+		'value' => (isset($slideshow) ? $slideshow->title : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.textarea', [
 		'name' => 'description',
 		'title' => 'Descrição',
 		'class' => 'required',
-		'value' => (isset($slideshow) ? $slideshow->description : null)
+		'value' => (isset($slideshow) ? $slideshow->description : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [
@@ -30,7 +32,8 @@
 		'name' => 'link', 
 		'title' => 'Link', 
 		'class' => 'required',
-		'value' => (isset($slideshow) ? $slideshow->link : null)
+		'value' => (isset($slideshow) ? $slideshow->link : null),
+		'required' => true
 	])
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

@@ -26,5 +26,5 @@
 		<img src="{{ $image ?? public_path('assets/img/panel/upload.png') }}" data-default="{{ $image ?? public_path('assets/img/panel/upload.png') }}" title="Selecione uma Imagem" alt="Selecione uma Imagem" class="img-fluid border">
 	</label>
 
-	<input type="file" name="{{ isset($id) ? "images-{$id}[]" : 'images[]' }}" accept="image/*" id="img{{ $idfile }}" class="image-upload" hidden>
+	<input type="file" name="{{ isset($id) ? "images-{$id}[]" : 'images[]' }}" accept="image/*" id="img{{ $idfile }}" class="image-upload" required hidden>
 </div>

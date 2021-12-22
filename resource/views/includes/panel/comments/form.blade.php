@@ -10,7 +10,8 @@
         'options' => [
             0 => 'Invisivel',
             1 => 'Visível'
-        ]
+        ],
+        'required' => true
     ])
 
     <button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

@@ -15,7 +15,8 @@
 		'name' => 'title', 
 		'title' => 'Titulo', 
 		'class' => 'required',
-		'value' => (isset($banner) ? $banner->title : null)
+		'value' => (isset($banner) ? $banner->title : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [
@@ -23,7 +24,8 @@
 		'name' => 'link', 
 		'title' => 'Link', 
 		'class' => 'required',
-		'value' => (isset($banner) ? $banner->link : null)
+		'value' => (isset($banner) ? $banner->link : null),
+		'required' => true
 	])
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

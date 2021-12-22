@@ -7,7 +7,8 @@
 		'name' => 'name', 
 		'title' => 'Nome', 
 		'value' => (isset($user) ? $user->name : null),
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	<div class="row">
@@ -17,7 +18,8 @@
 				'name' => 'email', 
 				'title' => 'E-Mail',
 				'value' => (isset($user) ? $user->email : null),
-				'class' => 'required'
+				'class' => 'required',
+				'required' => true
 			])
 		</div>
 		<div class="col-md-6">
@@ -25,7 +27,8 @@
 				'type' => 'password', 
 				'name' => 'password', 
 				'title' => 'Senha',
-				'class' => (!isset($user) ? 'required' : null)
+				'class' => (!isset($user) ? 'required' : null),
+				'required' => true
 			])
 		</div>
 	</div>
@@ -35,7 +38,8 @@
 		'title' => 'Função',
 		'value' => (isset($user) && !is_null($user->roles()->first()) ? $user->roles()->first()->id : null),
 		'options' => $roles,
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

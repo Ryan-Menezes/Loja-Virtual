@@ -11,5 +11,5 @@
 			<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento"><i class="fas fa-trash-alt"></i></button>
 		@endif
 	</div>
-	<textarea name="{{ $name }}" placeholder="{{ $title }}" rows="{{ $rows ?? 5 }}" class="form-control required">{{ $value ?? null }}</textarea>
+	<textarea name="{{ $name }}" placeholder="{{ $title }}" rows="{{ $rows ?? 5 }}" required class="form-control required">{{ $value ?? null }}</textarea>
 </div>

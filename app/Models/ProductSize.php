@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductSize extends Model{
 	public $table = 'product_sizes';
-	protected $fillable = ['description', 'price', 'price_previous', 'quantity', 'product_color_id'];
+	protected $fillable = ['description', 'price', 'price_previous', 'quantity', 'width', 'height', 'depth', 'weight', 'product_color_id'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
@@ -13,7 +13,11 @@ class ProductSize extends Model{
 			'description' 		=> 'required|min:1',
 			'price'				=> 'required|numeric',
 			'price_previous' 	=> 'numeric',
-			'quantity'			=> 'required|numeric'
+			'quantity'			=> 'required|numeric',
+			'width'				=> 'required|numeric',
+			'height'			=> 'required|numeric',
+			'depth'				=> 'required|numeric',
+			'weight'			=> 'required|numeric'
 		];
 	}
 
@@ -22,7 +26,11 @@ class ProductSize extends Model{
 			'description' 		=> 'required|min:1',
 			'price'				=> 'required|numeric',
 			'price_previous' 	=> 'numeric',
-			'quantity'			=> 'required|numeric'
+			'quantity'			=> 'required|numeric',
+			'width'				=> 'required|numeric',
+			'height'			=> 'required|numeric',
+			'depth'				=> 'required|numeric',
+			'weight'			=> 'required|numeric'
 		];
 	}
 
@@ -34,7 +42,15 @@ class ProductSize extends Model{
 			'price.numeric'				=> 'O campo preço deve ser numérico!',
 			'price_previous.numeric'	=> 'O campo preço antigo deve ser numérico!',
 			'quantity.required'			=> 'O preenchimento do campo quantidade é obrigatório!',
-			'quantity.numeric'			=> 'O campo quantidade deve ser numérico!'
+			'quantity.numeric'			=> 'O campo quantidade deve ser numérico!',
+			'width.required'			=> 'O preenchimento do campo largura é obrigatório!',
+			'width.numeric'				=> 'O campo largura deve ser numérico!',
+			'height.required'			=> 'O preenchimento do campo altura é obrigatório!',
+			'height.numeric'			=> 'O campo altura deve ser numérico!',
+			'depth.required'			=> 'O preenchimento do campo profundidade é obrigatório!',
+			'depth.numeric'				=> 'O campo profundidade deve ser numérico!',
+			'weight.required'			=> 'O preenchimento do campo peso é obrigatório!',
+			'weight.numeric'			=> 'O campo peso deve ser numérico!'
 		];
 	}
 

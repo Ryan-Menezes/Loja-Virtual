@@ -7,14 +7,16 @@
 		'name' => 'name', 
 		'title' => 'Nome', 
 		'value' => (isset($subcategory) ? $subcategory->name : null),
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	@include('includes.components.form.textarea', [
 		'name' => 'description',
 		'title' => 'Descrição',
 		'class' => 'required',
-		'value' => (isset($subcategory) ? $subcategory->description : null)
+		'value' => (isset($subcategory) ? $subcategory->description : null),
+		'required' => true
 	])
 
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

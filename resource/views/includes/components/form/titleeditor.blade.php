@@ -7,7 +7,8 @@
 				'name' => 'titles[]', 
 				'title' => 'Titulo',
 				'class' => 'required',
-				'value' => $value ?? null
+				'value' => $value ?? null,
+				'required' => true
 			])
 		</div>
 		<div class="col-md-1">
@@ -22,7 +23,8 @@
 					'h5' => 'h5', 
 					'h6' => 'h6'
 				],
-				'class' => 'required'
+				'class' => 'required',
+				'required' => true
 			])
 		</div>
 		<div class="col-md-1">

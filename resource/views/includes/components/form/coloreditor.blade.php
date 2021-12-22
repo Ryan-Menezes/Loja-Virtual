@@ -10,7 +10,9 @@
 				'type' => 'text', 
 				'name' => 'description-colors[]', 
 				'title' => 'Descrição da Cor',
-				'value' => $description ?? null
+				'value' => $description ?? null,
+				'class' => 'required',
+				'required' => true
 			])
 		</div>
 		<div class="col-md-1">
@@ -46,6 +48,10 @@
 						'price' => $size->price,
 						'price_previous' => $size->price_previous,
 						'quantity' => $size->quantity,
+						'width' => $size->width,
+						'height' => $size->height,
+						'depth' => $size->depth,
+						'weight' => $size->weight,
 						'id' => $id
 					])
 				@endforeach

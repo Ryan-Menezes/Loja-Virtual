@@ -207,6 +207,7 @@ Route::group(['prefix' => '/'], function(){
 	Route::group(['prefix' => 'produtos'], function(){
 		Route::get('/', [ProductControllerSite::class, 'index'])->name('site.products');
 		Route::get('/{slug}', [ProductControllerSite::class, 'show'])->name('site.products.show');
+		Route::any('/info/{id}', [ProductControllerSite::class, 'info'])->name('site.products.info');
 	});
 
 	// ROUTE SITEMAP

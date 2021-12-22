@@ -7,22 +7,23 @@
 		'name' => 'name', 
 		'title' => 'Nome', 
 		'value' => (isset($role) ? $role->name : null),
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	@include('includes.components.form.textarea', [
 		'name' => 'description',
 		'title' => 'Descrição',
 		'class' => 'required',
-		'value' => (isset($role) ? $role->description : null)
+		'value' => (isset($role) ? $role->description : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.checkboxes', [
 		'name' => 'permissions[]',
 		'title' => 'Permissões',
 		'values' => $permissions,
-		'checks' => (isset($role) ? $role->permissions->pluck('id')->all() : null),
-		'class' => 'required'
+		'checks' => (isset($role) ? $role->permissions->pluck('id')->all() : null)
 	])
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>

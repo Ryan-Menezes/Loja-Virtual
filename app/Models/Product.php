@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model{
 	public $table = 'products';
-	protected $fillable = ['name', 'slug', 'description', 'details', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active'];
+	protected $fillable = ['name', 'slug', 'description', 'details', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active', 'freight_free'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){

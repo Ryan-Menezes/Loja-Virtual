@@ -87,13 +87,23 @@ class ProductController extends Controller{
 					$descriptions = $data["description-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
+					$quanties = $data["quantity-size-{$id}"];
+					$widths = $data["width-size-{$id}"];
+					$heights = $data["height-size-{$id}"];
+					$depths = $data["depth-size-{$id}"];
+					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
 						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
 							$size = $color->sizes()->create([
 								'description' 		=> $descriptions[$j],
 								'price' 			=> $prices[$j],
-								'price_previous' 	=> $pricesPrevious[$j]
+								'price_previous' 	=> $pricesPrevious[$j],
+								'quantity'			=> $quanties[$j],
+								'width'				=> $widths[$j],
+								'height'			=> $heights[$j],
+								'depth'				=> $depths[$j],
+								'weight'			=> $weights[$j]
 							]);
 						}
 					}
@@ -202,7 +212,11 @@ class ProductController extends Controller{
 					$descriptions = $data["description-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
-					$quantity = $data["quantity-size-{$id}"];
+					$quanties = $data["quantity-size-{$id}"];
+					$widths = $data["width-size-{$id}"];
+					$heights = $data["height-size-{$id}"];
+					$depths = $data["depth-size-{$id}"];
+					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
 						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
@@ -210,7 +224,11 @@ class ProductController extends Controller{
 								'description' 		=> $descriptions[$j],
 								'price' 			=> $prices[$j],
 								'price_previous' 	=> $pricesPrevious[$j],
-								'quantity'			=> $quantity[$j]
+								'quantity'			=> $quanties[$j],
+								'width'				=> $widths[$j],
+								'height'			=> $heights[$j],
+								'depth'				=> $depths[$j],
+								'weight'			=> $weights[$j]
 							]);
 						}
 					}

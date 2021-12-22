@@ -7,7 +7,8 @@
 		'name' => 'code', 
 		'title' => 'Código', 
 		'value' => (isset($coupon) ? $coupon->code : null),
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [
@@ -17,7 +18,8 @@
 		'value' => (isset($coupon) ? $coupon->percent : null),
 		'min' => 1,
 		'max' => 100,
-		'class' => 'required'
+		'class' => 'required',
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [
