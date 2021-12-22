@@ -74,7 +74,7 @@
 									<div class="product-body">
 										<h3 class="product-name"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="{{ $product->name }}">{{ $product->name }}</a></h3>
 										<h4 class="product-price">
-											R${{ $product->priceFormat }}
+											R$ {{ $product->priceFormat }}
 											@if(!empty($product->price_previous))
 											<del class="product-old-price">{{ $product->pricePreviousFormat }}</del>
 											@endif

@@ -90,7 +90,7 @@
 					'title' => 'Detalhes',
 					'class' => 'required',
 					'value' => (isset($product) ? $product->details : null),
-					'notbtnremove' => true,
+					'notoptions' => true,
 					'required' => true
 				])
 			</div>

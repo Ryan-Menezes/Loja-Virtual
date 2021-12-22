@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model{
 	public $table = 'clients';
-	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj'];
+	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj', 'token', 'google_id', 'facebook_id'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){

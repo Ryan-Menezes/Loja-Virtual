@@ -22,6 +22,7 @@ use App\Controllers\Panel\{
 };
 use App\Controllers\Site\{
 	SiteController,
+	AuthController as AuthControllerSite,
 	ProductController as ProductControllerSite,
 	NoticeController as NoticeControllerSite,
 	CommentController as CommentControllerSite,
@@ -182,6 +183,16 @@ Route::group(['prefix' => 'painel'], function(){
 // ROUTE SITE
 Route::group(['prefix' => '/'], function(){
 	Route::get('/', [SiteController::class, 'index'])->name('site');
+
+	// ROUTE LOGIN
+	Route::group(['prefix' => 'login'], function(){
+		Route::get('/', [AuthControllerSite::class, 'index'])->name('site.login');
+	});
+
+	// ROUTE CREATE ACCOUNT
+	Route::group(['prefix' => 'criar-conta'], function(){
+		Route::get('/', [AuthControllerSite::class, 'create'])->name('site.create');
+	});
 
 	// ROUTE NOTICES
 	Route::group(['prefix' => 'blog'], function(){

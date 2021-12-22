@@ -193,18 +193,6 @@
     </header>
     <!-- /HEADER -->
 
-    {{-- <section class="slideshow">
-        @foreach($slideshow as $slide)
-        <div class="carousel-item active" data-bs-interval="10000">
-            <img src="{{ url('storage/app/public/' . $slide->image) }}" class="d-block w-100" alt="{{ $slide->title }}" title="{{ $slide->title }}">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>{{ $slide->title }}</h5>
-                <p>{{ $slide->description }}</p>
-            </div>
-        </div>
-        @endforeach
-    </section> --}}
-
     <!-- NAVIGATION -->
     <nav id="navigation">
         <!-- container -->
@@ -216,7 +204,9 @@
                     <li class="active"><a href="{{ route('site') }}" title="Página Inicial">Início</a></li>
                     <li><a href="{{ route('site.products') }}" title="Página de Produtos">Produtos</a></li>
                     <li><a href="{{ route('site.notices') }}" title="Página do Blog">Blog</a></li>
-                    <li><a href="#" title="Página de Categorias">Categorias</a></li>
+                    <li><a href="{{ route('site.create') }}" title="Página de Login">Login</a></li>
+                    <li><a href="{{ route('site.create') }}" title="Página paraCriar sua Conta">Criar Conta</a></li>
+                    <li><a href="{{ route('site') }}" title="Página da Sua Conta">Minha Conta</a></li>
                 </ul>
                 <!-- /NAV -->
             </div>
@@ -234,6 +224,10 @@
             <div class="row">
                 <div class="col-md-12">
                     <ul class="breadcrumb-tree">
+                        @empty(route())
+                        <li class="active">inicio</li>
+                        @else
+                        <li><a href="{{ url() }}">inicio</a></li>
                         @php $routeComplete = '' @endphp
                         @foreach(explode('/', route()) as $route)
                             @php $routeComplete .= $route . '/' @endphp
@@ -245,6 +239,7 @@
                             @endif
                         @endforeach
                         <li class="active">{{ trim($routeComplete, '/') }}</li>
+                        @endempty
                     </ul>
                 </div>
             </div>

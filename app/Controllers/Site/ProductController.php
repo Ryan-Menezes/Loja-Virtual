@@ -20,8 +20,9 @@ class ProductController extends Controller{
 
 	public function index(){
 		$categories = Category::all();
+		$products = $this->product->all();
 
-		return view('site.products.index', compact('categories'));
+		return view('site.products.index', compact('categories', 'products'));
 	}
 
 	public function info($id){

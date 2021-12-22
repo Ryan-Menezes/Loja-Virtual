@@ -91,9 +91,9 @@
 						</label>
 						<label>
 							Tamanho
-							<select class="input-select">
+							<select class="input-select" id="sizes">
 								@foreach($product->colors->first()->sizes as $size)
-								<option value="{{ $size->id }}">{{ $size->description }}</option>
+								<option value="{{ $size->id }}-{{ $loop->index }}">{{ $size->description }}</option>
 								@endforeach
 							</select>
 						</label>
@@ -479,10 +479,20 @@
 
 @section('scripts')
 <script type="text/javascript">
+	let sizes
+
 	$(document).ready(function(){
 		$('#colors').change(function(){
 			getInfo($(this).val())
 		})
+
+		$('#sizes').change(function(){
+			let value = $(this).val().split('-')
+
+			renderSize(sizes[value[1]])
+		})
+
+		getInfo($('#colors').val())
 	})
 
 	function getInfo(url){
@@ -498,6 +508,7 @@
 			if(result.success){
 				$('#product-imgs').empty().removeAttr('class')
 				$('#product-main-img').empty().removeAttr('class')
+				$('#sizes').empty()
 
 				$.each(result.images, function(index, image){
 					let html = `<div class="product-preview"><img src="${image}" alt="{{ $product->name }}" title="{{ $product->name }}"/></div>`
@@ -506,6 +517,13 @@
 					$('#product-main-img').append(html)
 				})
 
+				$.each(result.sizes, function(index, size){
+					let html = `<option value="${size.id}-${index}">${size.description}</option>`
+
+					$('#sizes').append(html)
+				})
+
+				sizes = result.sizes
 				renderSize(result.sizes[0])
 				restart()
 			}
@@ -516,13 +534,13 @@
 	}
 
 	function renderSize(size){
-		$('.product-current-price').text(Number(size.price).toFixed(2).toLocaleString('pt-BR', {
-			style: 'currency',
+		$('.product-current-price').text(Number(size.price).toLocaleString('pt-BR', {
+			style: 'currency', 
 			currency: 'BRL'
 		}))
 
-		$('.product-old-price').text(Number(size.price_previous).toFixed(2).toLocaleString('pt-BR', {
-			style: 'currency',
+		$('.product-old-price').text(Number(size.price_previous).toLocaleString('pt-BR', {
+			style: 'currency', 
 			currency: 'BRL'
 		}))
 

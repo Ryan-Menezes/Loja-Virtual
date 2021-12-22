@@ -121,6 +121,15 @@ $(document).ready(function(){
         return false
     })
 
+    // Configurações de duplicação de um elemento
+    $('*').delegate('.btn-duplicate-element', 'click', function(){
+        let clone = $(this).parents('.content-group:first').clone()
+
+        $(this).parents('.content-group:first').after(clone)
+
+        return false
+    })
+
     // Configurações para requisição ajax
     $('*').delegate('[data-urlajax]', 'click', function(){
         let data = $(this).data()

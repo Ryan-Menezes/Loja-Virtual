@@ -11,11 +11,15 @@
 			])
 		</div>
 		<div class="col-md-1">
+			@if(!isset($notoptions))
 			<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento" data-remove="{{ $imageRemove ?? null }}"><i class="fas fa-trash-alt"></i></button>
+			@endif
 		</div>
 		@else
 		<div class="col-md-12">
+			@if(!isset($notoptions))
 			<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento" data-remove="{{ $imageRemove ?? null }}"><i class="fas fa-trash-alt"></i></button>
+			@endif
 		</div>
 		@endif
 	</div>
