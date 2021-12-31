@@ -56,4 +56,8 @@ class ClientAddress extends Model{
 			'complement.min' 			=> 'O campo complemento deve conter no mínimo %min% caracteres!'
 		];
 	}
+
+	public function client(){
+		return $this->belongsTo(Client::class, 'client_id', 'id');
+	}
 }

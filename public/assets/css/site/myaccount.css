@@ -1,0 +1,35 @@
+.content{
+	display: grid;
+	grid-template-columns: 200px 1fr;
+}
+.content .menu-content{
+	display: block;
+}
+.content .menu-content li{
+	padding: 20px;
+	border-bottom: 1px solid #cccccc;
+}
+.content .cont-content{
+	padding: 0px 40px;
+}
+.content .cards{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 10px;
+}
+.content .cards .card{
+	padding: 20px;
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.content .cards .card .card-title{
+	font-size: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+.content .cards .card i{
+	font-size: 30px;
+}

@@ -6,8 +6,9 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
+	Product,
 	Notice,
-	Category
+	SubCategory
 };
 
 class SiteMapController extends Controller{
@@ -16,9 +17,29 @@ class SiteMapController extends Controller{
 
 	public function __construct(){
 		$urls = config('sitemap.urls');
-		$pages = ceil(Notice::count() / config('paginate.limit'));
+
+		// Products
+		$pages = ceil(Product::count() / config('paginate.limit'));
+
+		for($i = 1; $i <= $pages; $i++){
+			array_push($urls, [
+				'loc' => route('site.products') . '?' . http_build_query(['page' => $i]),
+				'changefreq' => 'weekly',
+            	'priority' => '0.64'
+			]);
+		}
+		
+		foreach(Product::all() as $product){
+			array_push($urls, [
+				'loc' => route('site.products.show', ['slug' => $product->slug]),
+				'changefreq' => 'weekly',
+            	'priority' => '0.80'
+			]);
+		}
 
 		// Notices
+		$pages = ceil(Notice::count() / config('paginate.limit'));
+
 		for($i = 1; $i <= $pages; $i++){
 			array_push($urls, [
 				'loc' => route('site.notices') . '?' . http_build_query(['page' => $i]),
@@ -36,18 +57,18 @@ class SiteMapController extends Controller{
 		}
 
 		// Categories
-		foreach(Category::all() as $category){
+		foreach(SubCategory::all() as $subcategory){
 			array_push($urls, [
-				'loc' => route('site.categories.show', ['slug' => $category->slug]),
+				'loc' => route('site.categories.subcategories.show', ['slug' => $subcategory->slug]),
 				'changefreq' => 'weekly',
             	'priority' => '0.80'
 			]);
 
-			$pages = ceil($category->notices->count() / config('paginate.limit'));
+			$pages = ceil($subcategory->notices->count() / config('paginate.limit'));
 
 			for($i = 1; $i <= $pages; $i++){
 				array_push($urls, [
-					'loc' => route('site.categories.show', ['slug' => $category->slug]) . '?' . http_build_query(['page' => $i]),
+					'loc' => route('site.categories.subcategories.show', ['slug' => $subcategory->slug]) . '?' . http_build_query(['page' => $i]),
 					'changefreq' => 'weekly',
 	            	'priority' => '0.64'
 				]);

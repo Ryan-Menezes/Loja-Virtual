@@ -93,6 +93,20 @@
 					'notoptions' => true,
 					'required' => true
 				])
+
+				@isset($product)
+					@include('includes.components.form.youtubeeditor', [
+						'name' => 'video',
+						'notoptions' => true,
+						'url' => 'https://www.youtube.com/embed/' . $product->videoFormat,
+						'texturl' => $product->video
+					])
+				@else
+					@include('includes.components.form.youtubeeditor', [
+						'name' => 'video',
+						'notoptions' => true
+					])
+				@endisset
 			</div>
 		</div>
 

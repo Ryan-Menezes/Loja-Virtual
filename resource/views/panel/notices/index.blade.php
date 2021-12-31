@@ -1,6 +1,6 @@
 @extends('templates.panel')
 
-@section('title', 'Blog')
+@section('title', 'Artigos')
 
 @section('container')
 	@if(can('delete.notices'))

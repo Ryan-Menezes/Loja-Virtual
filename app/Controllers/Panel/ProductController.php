@@ -60,6 +60,7 @@ class ProductController extends Controller{
 
 		$this->validator($data, $this->product->rolesCreate, $this->product->messages);
 		$data['slug'] = slugify($data['name']);
+
 		if(empty($data['promotion_percent'])){
 			unset($data['promotion_percent']);
 		}
@@ -152,6 +153,7 @@ class ProductController extends Controller{
 
 		$this->validator($data, $product->rolesUpdate, $product->messages);
 		$data['slug'] = slugify($data['name']);
+
 		if(empty($data['promotion_percent'])){
 			unset($data['promotion_percent']);
 		}

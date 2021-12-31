@@ -93,7 +93,8 @@
 						@elseif($element->type == 'youtube')
 							@include('includes.components.form.youtubeeditor', [
 								'url' => 'https://www.youtube.com/embed/' . $element->videocode,
-								'texturl' => $element->url
+								'texturl' => $element->url,
+								'required' => true
 							])
 						@elseif($element->type == 'image')
 							@include('includes.components.form.imageeditor', [
@@ -133,7 +134,7 @@
 
 					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}">Adicionar imagem <i class="fas fa-image"></i></button>
 
-					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.youtubeeditor']) }}">Adicionar Video do Youtube <i class="fas fa-video"></i></button>
+					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.youtubeeditor']) }}" data-required="true">Adicionar Video do Youtube <i class="fas fa-video"></i></button>
 				</div>
 			</div>
 		</div>

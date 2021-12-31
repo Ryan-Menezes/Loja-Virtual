@@ -77,8 +77,9 @@
                     <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
                 </ul>
                 <ul class="header-links pull-right">
-                    <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-                    <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                    <li><a href="{{ route('site.login') }}" title="Fazer Login em Minha Conta"><i class="fa fa-lock"></i> Login</a></li>
+                    <li><a href="{{ route('site.create') }}" title="Criar Minha Conta"><i class="fa fa-user"></i> Criar Conta</a></li>
+                    <li><a href="{{ route('site.myaccount') }}" title="Minha Conta"><i class="fa fa-user-circle"></i> Minha Conta</a></li>
                 </ul>
             </div>
         </div>
@@ -204,9 +205,6 @@
                     <li class="active"><a href="{{ route('site') }}" title="Página Inicial">Início</a></li>
                     <li><a href="{{ route('site.products') }}" title="Página de Produtos">Produtos</a></li>
                     <li><a href="{{ route('site.notices') }}" title="Página do Blog">Blog</a></li>
-                    <li><a href="{{ route('site.create') }}" title="Página de Login">Login</a></li>
-                    <li><a href="{{ route('site.create') }}" title="Página paraCriar sua Conta">Criar Conta</a></li>
-                    <li><a href="{{ route('site') }}" title="Página da Sua Conta">Minha Conta</a></li>
                 </ul>
                 <!-- /NAV -->
             </div>

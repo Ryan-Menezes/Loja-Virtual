@@ -52,4 +52,8 @@ class ClientCard extends Model{
 			'brand.max' 		=> 'O campo marca do cartão deve conter no máximo %max% caracteres!'
 		];
 	}
+
+	public function client(){
+		return $this->belongsTo(Client::class, 'client_id', 'id');
+	}
 }

@@ -51,10 +51,6 @@ class Category extends Model{
 		}
 	}
 
-	public function notices(){
-		return $this->belongsToMany(Notice::class, 'notices_categories');
-	}
-
 	public function subcategories(){
 		return $this->hasMany(SubCategory::class, 'category_id', 'id');
 	}

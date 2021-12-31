@@ -14,6 +14,10 @@ body{
 .modal-backdrop{
 	z-index: 8;
 }
+#header-panel{
+	background-color: #e6e5e3;
+	border-bottom: 1px solid #c2c2c2;
+}
 .content{
 	display: grid;
 	grid-template-columns: 300px 1fr;
@@ -44,6 +48,7 @@ body{
 }
 .content .menu .menu-header{
 	padding: 15px;
+	border-top: 1px solid #333333;
 	border-bottom: 1px solid #333333;
 }
 .content .menu .menu-header p{
@@ -77,6 +82,13 @@ body{
 	font-size: 20px;
 	margin-right: 20px;
 }
+.content .menu ul .disabled{
+	color: #3d3d3d;
+}
+.content .menu ul .disabled:hover{
+	background-color: transparent;
+	cursor: default;
+}
 .close-menu{
 	grid-template-columns: 55px 1fr;
 }
@@ -87,7 +99,7 @@ body{
 	display: none;
 }
 .open-menu{
-	color: white;
+	color: black;
 	font-weight: bold;
 	cursor: pointer;
 }

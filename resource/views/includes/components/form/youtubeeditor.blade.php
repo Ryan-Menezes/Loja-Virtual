@@ -2,13 +2,24 @@
 	<input type="hidden" name="elements[]" value="YOUTUBEEDITOR">
 	<div class="row mb-2">
 		<div class="col-md-11">
-			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => 'urls-video[]', 
-				'title' => 'Url do Video',
-				'value' => $texturl ?? null,
-				'class' => 'youtube-url-video required'
-			])
+			@isset($required)
+				@include('includes.components.form.input', [
+					'type' => 'text', 
+					'name' => $name ?? 'urls-video[]',
+					'title' => 'Url do Video',
+					'value' => $texturl ?? null,
+					'class' => 'youtube-url-video required',
+					'required' => true
+				])
+			@else
+				@include('includes.components.form.input', [
+					'type' => 'text', 
+					'name' => $name ?? 'urls-video[]',
+					'title' => 'Url do Video',
+					'value' => $texturl ?? null,
+					'class' => 'youtube-url-video'
+				])
+			@endisset
 		</div>
 		<div class="col-md-1">
 			@if(!isset($notoptions))

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model{
 	public $table = 'products';
-	protected $fillable = ['name', 'slug', 'description', 'details', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active', 'freight_free'];
+	protected $fillable = ['name', 'slug', 'description', 'details', 'video', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active', 'freight_free'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){
@@ -73,6 +73,15 @@ class Product extends Model{
 			return null;
 
 		return $this->images()->first()->source;
+	}
+
+	public function getVideoFormatAttribute(){
+		if(empty($this->video))
+			return null;
+
+		$url = preg_split('/[\/=]/i', $this->video);
+
+		return end($url);
 	}
 
 	public function scopeSearch($query, $page = 0, $filter = ''){

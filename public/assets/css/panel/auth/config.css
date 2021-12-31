@@ -19,14 +19,23 @@
 }
 .content form{
 	width: 400px;
-	background-color: white;
-	border: 1px solid #1f1f1f;
+	background-color: #1c1c1c;
+	border: none!important;
+	color: white;
 }
 .content form img{
 	width: 200px;
 }
 .content form .form-control{
 	border-radius: 0px;
+}
+.content form input{
+	color: white!important;
+}
+.content form input[type=email], 
+.content form input[type=password]{
+	background-color: #242424;
+	border: none;
 }
 .content form .btn{
 	border-radius: 0px;

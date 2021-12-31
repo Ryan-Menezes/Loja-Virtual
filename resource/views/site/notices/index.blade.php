@@ -24,6 +24,6 @@
         </div>
         @endforeach
     </section>
-    @include('includes.paginator', ['route' => 'panel.clients'])
+    @include('includes.site.paginator', ['route' => 'site.notices'])
 </section>
 @endsection
