@@ -11,15 +11,7 @@
 @section('container')
 <section class="container">
     <div class="content">
-        <ul class="menu-content">
-            <a href="{{ route('site.myaccount') }}" title="Página Inicial"><li><i class="fa fa-home"></i> Início</li></a>
-            <a href="{{ route('site.cart') }}" title="Carrinho de Compras"><li><i class="fa fa-shopping-cart"></i> Carrinho</li></a>
-            <a href="{{ route('site.myaccount.requests') }}" title="Página de Pedidos"><li><i class="fa fa-list"></i> Pedidos</li></a>
-            <a href="{{ route('site.myaccount.adresses') }}" title="Página de Endereços"><li><i class="fa fa-map-marker"></i> Endereços</li></a>
-            <a href="{{ route('site.myaccount.cards') }}" title="Página dos Cartões"><li><i class="fa fa-credit-card"></i> Cartões</li></a>
-            <a href="{{ route('site.myaccount') }}" title="Página dos Favoritos"><li><i class="fa fa-heart"></i> Favoritos</li></a>
-            <a href="{{ route('site.myaccount.logout') }}" title="Deslogar da Conta"><li><i class="fa fa-sign-out"></i> Sair</li></a>
-        </ul>
+        @include('includes.site.account.menu')
         <div class="cont-content">
             <h2>Seja bem vindo(a) {{ $client->name }}</h2><hr/>
 

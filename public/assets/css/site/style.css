@@ -55,11 +55,13 @@ Table OF Contents
 	Typography
 \*----------------------------*/
 
+*{
+  outline: none!important;
+}
 body {
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
   color: #333;
-  outline: none;
 }
 
 h1, h2, h3, h4, h5, h6 {

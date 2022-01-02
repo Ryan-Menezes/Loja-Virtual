@@ -30,7 +30,9 @@ use App\Controllers\Site\{
 	SiteMapController
 };
 use App\Controllers\Site\MyAccount\{
-	MyAccountController as MyAccountControllerSite
+	MyAccountController,
+	AddressController,
+	CardController
 };
 use App\Middlewares\Authenticate;
 
@@ -217,7 +219,27 @@ Route::group(['prefix' => '/'], function(){
 
 	// ROUTE MY ACCOUNT
 	Route::group(['prefix' => 'minha-conta'], function(){
-		Route::get('/', [MyAccountControllerSite::class, 'index'])->name('site.myaccount');
+		Route::get('/', [MyAccountController::class, 'index'])->name('site.myaccount');
+
+		// ROUTES ADRESSESS
+		Route::group(['prefix' => 'enderecos'], function(){
+			Route::get('/', [AddressController::class, 'index'])->name('site.myaccount.adresses');
+			Route::get('/novo', [AddressController::class, 'create'])->name('site.myaccount.adresses.create');
+			Route::post('/novo/salvar', [AddressController::class, 'store'])->name('site.myaccount.adresses.store');
+			Route::get('/{id}/editar', [AddressController::class, 'edit'])->name('site.myaccount.adresses.edit');
+			Route::put('/{id}/editar/salvar', [AddressController::class, 'update'])->name('site.myaccount.adresses.update');
+			Route::delete('/{id}/deletar', [AddressController::class, 'destroy'])->name('site.myaccount.adresses.destroy');
+		});
+
+		// ROUTE CARDS
+		Route::group(['prefix' => 'cartoes'], function(){
+			Route::get('/', [CardController::class, 'index'])->name('site.myaccount.cards');
+			Route::get('/novo', [CardController::class, 'create'])->name('site.myaccount.cards.create');
+			Route::post('/novo/salvar', [CardController::class, 'store'])->name('site.myaccount.cards.store');
+			Route::get('/{id}/editar', [CardController::class, 'edit'])->name('site.myaccount.cards.edit');
+			Route::put('/{id}/editar/salvar', [CardController::class, 'update'])->name('site.myaccount.cards.update');
+			Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
+		});
 	});
 
 	// ROUTE NOTICES

@@ -6,20 +6,15 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
-	Client,
-	Category
+	Client
 };
 
 class AuthController extends Controller{
 	public function index(){;
-		$categories = Category::all();
-
-		return view('site.auth.index', compact('categories'));
+		return view('site.auth.index');
 	}
 
 	public function create(){;
-		$categories = Category::all();
-
-		return view('site.auth.create', compact('categories'));
+		return view('site.auth.create');
 	}
 }

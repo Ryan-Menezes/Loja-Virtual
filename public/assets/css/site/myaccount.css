@@ -1,3 +1,6 @@
+*{
+  outline: none!important;
+}
 .content{
 	display: grid;
 	grid-template-columns: 200px 1fr;
@@ -32,4 +35,25 @@
 }
 .content .cards .card i{
 	font-size: 30px;
+}
+}
+.table>tbody>tr>td, 
+.table>tbody>tr>th, 
+.table>tfoot>tr>td, 
+.table>tfoot>tr>th, 
+.table>thead>tr>td, 
+.table>thead>tr>th,
+table tr td, 
+table tr{
+	vertical-align: middle!important;
+}
+table tr td img{
+	width: 50px;
+}
+form input.error, form textarea.error{
+	border: 1px solid #fc3826;
+}
+form span.error{
+	font-size: 12px;
+	color: #fc3826;
 }

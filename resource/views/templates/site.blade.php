@@ -1,3 +1,7 @@
+@php
+    $categories = (new \App\Models\Category())->all();
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ config('app.lang') }}">
 <head>
@@ -41,6 +45,11 @@
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
+    <!-- jQuery CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.structure.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.theme.min.css') }}">
+
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/bootstrap.min.css') }}"/>
 
@@ -57,13 +66,6 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ public_path('assets/css/site/style.css') }}">
     @yield('styles')
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
 </head>
 <body>
     <!-- HEADER -->
@@ -355,11 +357,13 @@
 
     <!-- ##### All Javascript Script ##### -->
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/slick.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/nouislider.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.zoom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/site/script.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/site/main.js') }}"></script>
     @yield('scripts')
 </body>

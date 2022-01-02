@@ -1,6 +1,7 @@
 *{
 	margin: 0px;
 	padding: 0px;
+	outline: none!important;
 }
 *::-webkit-scrollbar{
 	width: 5px;

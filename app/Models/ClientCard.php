@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClientCard extends Model{
 	public $table = 'client_cards';
-	protected $fillable = ['name', 'number', 'cvv', 'month', 'year', 'brand', 'client_id'];
+	protected $fillable = ['name', 'number', 'cvv', 'month', 'year', 'brand', 'type', 'client_id'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
@@ -13,9 +13,10 @@ class ClientCard extends Model{
 			'name' 		=> 'required|min:1|max:191',
 			'number' 	=> 'required|min:16|max:16',
 			'cvv' 		=> 'required|min:3|max:3',
-			'month' 	=> 'required|min:2|max:2',
+			'month' 	=> 'required|min:1|max:2',
 			'year' 		=> 'required|min:2|max:2',
-			'brand' 	=> 'required|min:1|max:191'
+			'brand' 	=> 'required|min:1|max:191',
+			'type'		=> 'required|min:1|max:1'
 		];
 	}
 
@@ -24,9 +25,10 @@ class ClientCard extends Model{
 			'name' 		=> 'required|min:1|max:191',
 			'number' 	=> 'required|min:16|max:16',
 			'cvv' 		=> 'required|min:3|max:3',
-			'month' 	=> 'required|min:2|max:2',
-			'year' 		=> 'required|min:2|max:2',
-			'brand' 	=> 'required|min:1|max:191'
+			'month' 	=> 'required|min:1|max:2',
+			'year' 		=> 'required|min:1|max:2',
+			'brand' 	=> 'required|min:1|max:191',
+			'type'		=> 'required|min:1|max:1'
 		];
 	}
 
@@ -49,8 +51,23 @@ class ClientCard extends Model{
 			'year.max' 			=> 'O campo ano de validade deve conter no máximo %max% caracteres!',
 			'brand.required' 	=> 'O preenchimento do campo marca do cartão é obrigatório!',
 			'brand.min' 		=> 'O campo marca do cartão deve conter no mínimo %min% caracteres!',
-			'brand.max' 		=> 'O campo marca do cartão deve conter no máximo %max% caracteres!'
+			'brand.max' 		=> 'O campo marca do cartão deve conter no máximo %max% caracteres!',
+			'type.required' 	=> 'O preenchimento do campo tipo do cartão é obrigatório!',
+			'type.min' 			=> 'O campo tipo do cartão deve conter no mínimo %min% caracteres!',
+			'type.max' 			=> 'O campo tipo do cartão deve conter no máximo %max% caracteres!'
 		];
+	}
+
+	public function getTypeFormatAttribute(){
+		$value = [
+			'C' => 'Crédito',
+			'D' => 'Débito'
+		];
+
+		if(empty($this->type))
+			return null;
+
+		return $value[$this->type];
 	}
 
 	public function client(){

@@ -24,7 +24,6 @@ class ClientAddress extends Model{
 		return [
 			'postal_code' 	=> 'required|min:8|max:8',
 			'street'		=> 'required|min:8|max:191',
-			'street'		=> 'required|min:8|max:191',
 			'number'		=> 'required|min:1|max:10',
 			'district'		=> 'required|min:1|max:191',
 			'city'			=> 'required|min:1|max:191',

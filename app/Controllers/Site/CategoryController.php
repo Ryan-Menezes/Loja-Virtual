@@ -6,8 +6,7 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
-	Notice,
-	Category
+	Notice
 };
 
 class CategoryController extends Controller{
@@ -27,11 +26,10 @@ class CategoryController extends Controller{
 		$page = ($page - 1) * $limit;
 		$pages = ceil($category->notices()->count() / $limit);
 
-		$categories = $this->category->all();
 		$notices = $category->notices()->offset($page)->limit($limit)->get();
 
 		if(count($notices) == 0) abort(404);
 
-		return view('site.notices.index', compact('notices', 'categories', 'category', 'pages'));
+		return view('site.notices.index', compact('notices', 'category', 'pages'));
 	}
 }

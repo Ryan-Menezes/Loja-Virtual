@@ -44,6 +44,7 @@
 							1 => 'Visível',
 							0 => 'Invisivel'
 						],
+						'class' => 'required',
 						'required' => true
 					])
 				</div>
@@ -56,6 +57,7 @@
 							1 => 'Ativado',
 							0 => 'Desativado'
 						],
+						'class' => 'required',
 						'required' => true
 					])
 				</div>

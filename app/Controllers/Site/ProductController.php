@@ -19,10 +19,10 @@ class ProductController extends Controller{
 	}
 
 	public function index(){
-		$categories = Category::all();
 		$products = $this->product->all();
+		$categories = Category::all();
 
-		return view('site.products.index', compact('categories', 'products'));
+		return view('site.products.index', compact('products', 'categories'));
 	}
 
 	public function info($id){
@@ -51,8 +51,7 @@ class ProductController extends Controller{
 
 	public function show($slug){
 		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
-		$categories = Category::all();
 
-		return view('site.products.show', compact('product', 'categories'));
+		return view('site.products.show', compact('product'));
 	}
 }

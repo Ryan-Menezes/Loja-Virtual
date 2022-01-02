@@ -1,171 +1,57 @@
-(function($) {
-	"use strict"
+$(document).ready(function(){
+    $('.btn-delete').click(function(){
+        let route = $(this).data('route')
+        
+        if(route != undefined){
+            $('.modal-form-delete').attr('action', route)
+        }
+    })
 
-	// Mobile Nav toggle
-	$('.menu-toggle > a').on('click', function (e) {
-		e.preventDefault();
-		$('#responsive-nav').toggleClass('active');
-	})
+    // Tooltip
+    $('[title]').tooltip({
+        delay: {
+            show: 100, 
+            hide: 0
+        }
+    })
 
-	// Fix cart dropdown from closing
-	$('.cart-dropdown').on('click', function (e) {
-		e.stopPropagation();
-	});
+    // Configurações do form validade
+    $('*').delegate('.form-validate', 'load focus blur', function(){
+        $(this).validate({
+            errorElement: 'span',
+            messages: {
+                required: 'Este campo é obrigatório',
+                email: 'Por favor entre com um email válido'
+            }
+        })
 
-	/////////////////////////////////////////
+        return false
+    })
 
-	// Products Slick
-	$('.products-slick').each(function() {
-		var $this = $(this),
-				$nav = $this.attr('data-nav');
+    // Configurações para ordenar elementos
+    $('.sortable').sortable()
+    $('*').delegate('.sortable', 'load mousemove', function(){
+        $(this).sortable()
+    })
 
-		$this.slick({
-			slidesToShow: 4,
-			slidesToScroll: 1,
-			autoplay: true,
-			infinite: true,
-			speed: 300,
-			dots: false,
-			arrows: true,
-			appendArrows: $nav ? $nav : false,
-			responsive: [{
-	        breakpoint: 991,
-	        settings: {
-	          slidesToShow: 2,
-	          slidesToScroll: 1,
-	        }
-	      },
-	      {
-	        breakpoint: 480,
-	        settings: {
-	          slidesToShow: 1,
-	          slidesToScroll: 1,
-	        }
-	      },
-	    ]
-		});
-	});
+    // Configuração para o container de checkbox
+    // $('.container-check div').buttonset()
 
-	// Products Widget Slick
-	$('.products-widget-slick').each(function() {
-		var $this = $(this),
-				$nav = $this.attr('data-nav');
+    // Configuração para o container de tabs
+    $('.tabs').tabs()
+    $('*').delegate('.tabs', 'load mousemove', function(){
+        $(this).tabs()
+    })
 
-		$this.slick({
-			infinite: true,
-			autoplay: true,
-			speed: 300,
-			dots: false,
-			arrows: true,
-			appendArrows: $nav ? $nav : false,
-		});
-	});
-
-	/////////////////////////////////////////
-
-	// Product Main img Slick
-	$('#product-main-img').slick({
-    	infinite: true,
-    	speed: 300,
-    	dots: false,
-    	arrows: true,
-    	fade: true,
-    	asNavFor: '#product-imgs'
-  	})
-
-	// Product imgs Slick
-	$('#product-imgs').slick({
-	    slidesToShow: 3,
-	    slidesToScroll: 1,
-	    arrows: true,
-	    centerMode: true,
-	    focusOnSelect: true,
-		centerPadding: 0,
-		vertical: true,
-	    asNavFor: '#product-main-img',
-			responsive: [{
-	        breakpoint: 991,
-	        settings: {
-				vertical: false,
-				arrows: false,
-				dots: true,
-	        }
-	    }]
-	})
-
-	// Product img zoom
-	var zoomMainProduct = document.getElementById('product-main-img');
-	if (zoomMainProduct) {
-		$('#product-main-img .product-preview').zoom();
-	}
-
-	/////////////////////////////////////////
-
-	// Input number
-	$('.input-number').each(function() {
-		var $this = $(this),
-		$input = $this.find('input[type="number"]'),
-		up = $this.find('.qty-up'),
-		down = $this.find('.qty-down');
-
-		down.on('click', function () {
-			var value = parseInt($input.val()) - 1;
-			value = value < 1 ? 1 : value;
-			$input.val(value);
-			$input.change();
-			updatePriceSlider($this , value)
-		})
-
-		up.on('click', function () {
-			var value = parseInt($input.val()) + 1;
-			$input.val(value);
-			$input.change();
-			updatePriceSlider($this , value)
-		})
-	});
-
-	var priceInputMax = document.getElementById('price-max'),
-			priceInputMin = document.getElementById('price-min');
-
-	if(priceInputMax){
-		priceInputMax.addEventListener('change', function(){
-			updatePriceSlider($(this).parent() , this.value)
-		});
-	}
-	
-	if(priceInputMin){
-		priceInputMin.addEventListener('change', function(){
-			updatePriceSlider($(this).parent() , this.value)
-		});
-	}
-
-	function updatePriceSlider(elem , value) {
-		if ( elem.hasClass('price-min') ) {
-			console.log('min')
-			priceSlider.noUiSlider.set([value, null]);
-		} else if ( elem.hasClass('price-max')) {
-			console.log('max')
-			priceSlider.noUiSlider.set([null, value]);
-		}
-	}
-
-	// Price Slider
-	var priceSlider = document.getElementById('price-slider');
-	if (priceSlider) {
-		noUiSlider.create(priceSlider, {
-			start: [1, 99999],
-			connect: true,
-			step: 1,
-			range: {
-				'min': 1,
-				'max': 99999
-			}
-		});
-
-		priceSlider.noUiSlider.on('update', function( values, handle ) {
-			var value = values[handle];
-			handle ? priceInputMax.value = value : priceInputMin.value = value
-		});
-	}
-
-})(jQuery);
+    // Configuração para o container de accordion
+    $('.accordion').accordion({
+        heightStyle: 'content',
+        collapsible: true
+    })
+    $('*').delegate('.accordion', 'load mousemove', function(){
+        $(this).accordion({
+            heightStyle: 'content',
+            collapsible: true
+        })
+    })
+})

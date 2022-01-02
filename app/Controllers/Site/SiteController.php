@@ -8,7 +8,6 @@ use Src\Classes\{
 use App\Models\{
 	Product,
 	Notice,
-	Category,
 	Banner,
 	SlideShow
 };
@@ -17,10 +16,9 @@ class SiteController extends Controller{
 	public function index(){
 		$products = Product::where('visible', true)->orderBy('id', 'DESC')->limit(20)->get();
 		$notices = Notice::orderBy('id', 'DESC')->limit(3)->get();
-		$categories = Category::all();
 		$banners = Banner::all();
 		$slideshow = SlideShow::all();
 
-		return view('site.index', compact('products', 'notices', 'categories', 'banners', 'slideshow'));
+		return view('site.index', compact('products', 'notices', 'banners', 'slideshow'));
 	}
 }
