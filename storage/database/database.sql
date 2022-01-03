@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 02-Jan-2022 às 23:08
+-- Generation Time: 03-Jan-2022 às 22:45
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -125,7 +125,7 @@ CREATE TABLE `client_adresses` (
   `district` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `complement` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `complement` text COLLATE utf8mb4_unicode_ci,
   `client_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -274,62 +274,68 @@ CREATE TABLE `permissions` (
 --
 
 INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
-(1, 'view.users', 'view.users'),
-(2, 'create.users', 'create.users'),
-(3, 'edit.users', 'edit.users'),
-(4, 'delete.users', 'delete.users'),
-(5, 'view.clients', 'view.clients'),
-(6, 'create.clients', 'create.clients'),
-(7, 'edit.clients', 'edit.clients'),
-(8, 'delete.clients', 'delete.clients'),
-(9, 'view.products', 'view.products'),
-(10, 'create.products', 'create.products'),
-(11, 'edit.products', 'edit.products'),
-(12, 'delete.products', 'delete.products'),
-(13, 'view.ratings', 'view.ratings'),
-(14, 'create.ratings', 'create.ratings'),
-(15, 'edit.ratings', 'edit.ratings'),
-(16, 'delete.ratings', 'delete.ratings'),
-(17, 'view.requests', 'view.requests'),
-(18, 'create.requests', 'create.requests'),
-(19, 'edit.requests', 'edit.requests'),
-(20, 'delete.requests', 'delete.requests'),
-(21, 'view.coupons', 'view.coupons'),
-(22, 'create.coupons', 'create.coupons'),
-(23, 'edit.coupons', 'edit.coupons'),
-(24, 'delete.coupons', 'delete.coupons'),
-(25, 'view.slideshow', 'view.slideshow'),
-(26, 'create.slideshow', 'create.slideshow'),
-(27, 'edit.slideshow', 'edit.slideshow'),
-(28, 'delete.slideshow', 'delete.slideshow'),
-(29, 'view.banners', 'view.banners'),
-(30, 'create.banners', 'create.banners'),
-(31, 'edit.banners', 'edit.banners'),
-(32, 'delete.banners', 'delete.banners'),
-(33, 'view.depoiments', 'view.depoiments'),
-(34, 'create.depoiments', 'create.depoiments'),
-(35, 'edit.depoiments', 'edit.depoiments'),
-(36, 'delete.depoiments', 'delete.depoiments'),
-(37, 'view.notices', 'view.notices'),
-(38, 'create.notices', 'create.notices'),
-(39, 'edit.notices', 'edit.notices'),
-(40, 'delete.notices', 'delete.notices'),
-(41, 'view.comments', 'view.comments'),
-(42, 'create.comments', 'create.comments'),
-(43, 'edit.comments', 'edit.comments'),
-(44, 'delete.comments', 'delete.comments'),
-(45, 'view.categories', 'view.categories'),
-(46, 'create.categories', 'create.categories'),
-(47, 'edit.categories', 'edit.categories'),
-(48, 'delete.categories', 'delete.categories'),
-(49, 'view.roles', 'view.roles'),
-(50, 'create.roles', 'create.roles'),
-(51, 'edit.roles', 'edit.roles'),
-(52, 'delete.roles', 'delete.roles'),
-(53, 'view.permissions', 'view.permissions'),
-(54, 'create.permissions', 'create.permissions'),
-(55, 'edit.permissions', 'edit.permissions'),
-(56, 'delete.permissions', 'delete.permissions');
+(1, 'all.system', 'all.system'),
+(2, 'all.system.address', 'all.system.address'),
+(3, 'all.system.contact', 'all.system.contact'),
+(4, 'all.system.social', 'all.system.social'),
+(5, 'all.system.store', 'all.system.store'),
+(6, 'all.system.floater', 'all.system.floater'),
+(7, 'view.users', 'view.users'),
+(8, 'create.users', 'create.users'),
+(9, 'edit.users', 'edit.users'),
+(10, 'delete.users', 'delete.users'),
+(11, 'view.clients', 'view.clients'),
+(12, 'create.clients', 'create.clients'),
+(13, 'edit.clients', 'edit.clients'),
+(14, 'delete.clients', 'delete.clients'),
+(15, 'view.products', 'view.products'),
+(16, 'create.products', 'create.products'),
+(17, 'edit.products', 'edit.products'),
+(18, 'delete.products', 'delete.products'),
+(19, 'view.ratings', 'view.ratings'),
+(20, 'create.ratings', 'create.ratings'),
+(21, 'edit.ratings', 'edit.ratings'),
+(22, 'delete.ratings', 'delete.ratings'),
+(23, 'view.requests', 'view.requests'),
+(24, 'create.requests', 'create.requests'),
+(25, 'edit.requests', 'edit.requests'),
+(26, 'delete.requests', 'delete.requests'),
+(27, 'view.coupons', 'view.coupons'),
+(28, 'create.coupons', 'create.coupons'),
+(29, 'edit.coupons', 'edit.coupons'),
+(30, 'delete.coupons', 'delete.coupons'),
+(31, 'view.slideshow', 'view.slideshow'),
+(32, 'create.slideshow', 'create.slideshow'),
+(33, 'edit.slideshow', 'edit.slideshow'),
+(34, 'delete.slideshow', 'delete.slideshow'),
+(35, 'view.banners', 'view.banners'),
+(36, 'create.banners', 'create.banners'),
+(37, 'edit.banners', 'edit.banners'),
+(38, 'delete.banners', 'delete.banners'),
+(39, 'view.depoiments', 'view.depoiments'),
+(40, 'create.depoiments', 'create.depoiments'),
+(41, 'edit.depoiments', 'edit.depoiments'),
+(42, 'delete.depoiments', 'delete.depoiments'),
+(43, 'view.notices', 'view.notices'),
+(44, 'create.notices', 'create.notices'),
+(45, 'edit.notices', 'edit.notices'),
+(46, 'delete.notices', 'delete.notices'),
+(47, 'view.comments', 'view.comments'),
+(48, 'create.comments', 'create.comments'),
+(49, 'edit.comments', 'edit.comments'),
+(50, 'delete.comments', 'delete.comments'),
+(51, 'view.categories', 'view.categories'),
+(52, 'create.categories', 'create.categories'),
+(53, 'edit.categories', 'edit.categories'),
+(54, 'delete.categories', 'delete.categories'),
+(55, 'view.roles', 'view.roles'),
+(56, 'create.roles', 'create.roles'),
+(57, 'edit.roles', 'edit.roles'),
+(58, 'delete.roles', 'delete.roles'),
+(59, 'view.permissions', 'view.permissions'),
+(60, 'create.permissions', 'create.permissions'),
+(61, 'edit.permissions', 'edit.permissions'),
+(62, 'delete.permissions', 'delete.permissions');
 
 -- --------------------------------------------------------
 
@@ -597,62 +603,68 @@ CREATE TABLE `roles_permissions` (
 --
 
 INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
-(142, 1, 30),
-(143, 1, 46),
-(144, 1, 6),
-(145, 1, 42),
-(146, 1, 22),
-(147, 1, 34),
-(148, 1, 38),
-(149, 1, 54),
-(150, 1, 10),
-(151, 1, 14),
-(152, 1, 18),
-(153, 1, 50),
-(154, 1, 26),
-(155, 1, 2),
-(156, 1, 32),
-(157, 1, 48),
-(158, 1, 8),
-(159, 1, 44),
-(160, 1, 24),
-(161, 1, 36),
-(162, 1, 40),
-(163, 1, 56),
-(164, 1, 12),
-(165, 1, 16),
-(166, 1, 20),
-(167, 1, 52),
-(168, 1, 28),
-(169, 1, 4),
-(170, 1, 31),
-(171, 1, 47),
-(172, 1, 7),
-(173, 1, 43),
-(174, 1, 23),
-(175, 1, 35),
-(176, 1, 39),
-(177, 1, 55),
-(178, 1, 11),
-(179, 1, 15),
-(180, 1, 19),
-(181, 1, 51),
-(182, 1, 27),
-(183, 1, 3),
-(184, 1, 29),
-(185, 1, 45),
-(186, 1, 5),
-(187, 1, 41),
-(188, 1, 21),
-(189, 1, 33),
-(190, 1, 37),
-(191, 1, 53),
-(192, 1, 9),
-(193, 1, 13),
-(194, 1, 17),
-(195, 1, 49),
-(196, 1, 25),
-(197, 1, 1);
+(260, 1, 1),
+(261, 1, 2),
+(262, 1, 3),
+(263, 1, 6),
+(264, 1, 4),
+(265, 1, 5),
+(266, 1, 36),
+(267, 1, 52),
+(268, 1, 12),
+(269, 1, 48),
+(270, 1, 28),
+(271, 1, 40),
+(272, 1, 44),
+(273, 1, 60),
+(274, 1, 16),
+(275, 1, 20),
+(276, 1, 24),
+(277, 1, 56),
+(278, 1, 32),
+(279, 1, 8),
+(280, 1, 38),
+(281, 1, 54),
+(282, 1, 14),
+(283, 1, 50),
+(284, 1, 30),
+(285, 1, 42),
+(286, 1, 46),
+(287, 1, 62),
+(288, 1, 18),
+(289, 1, 22),
+(290, 1, 26),
+(291, 1, 58),
+(292, 1, 34),
+(293, 1, 10),
+(294, 1, 37),
+(295, 1, 53),
+(296, 1, 13),
+(297, 1, 49),
+(298, 1, 29),
+(299, 1, 41),
+(300, 1, 45),
+(301, 1, 61),
+(302, 1, 17),
+(303, 1, 21),
+(304, 1, 25),
+(305, 1, 57),
+(306, 1, 33),
+(307, 1, 9),
+(308, 1, 35),
+(309, 1, 51),
+(310, 1, 11),
+(311, 1, 47),
+(312, 1, 27),
+(313, 1, 39),
+(314, 1, 43),
+(315, 1, 59),
+(316, 1, 15),
+(317, 1, 19),
+(318, 1, 23),
+(319, 1, 55),
+(320, 1, 31),
+(321, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -729,6 +741,121 @@ CREATE TABLE `subcomments` (
 
 INSERT INTO `subcomments` (`id`, `name`, `email`, `content`, `visible`, `comment_id`, `created_at`, `updated_at`) VALUES
 (3, 'Electro', 'menezesryan1010@gmail.com', 'Que ótimo que gostou!!!', 1, 10, '2021-12-20 18:17:58', '2021-12-20 18:18:39');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system`
+--
+
+CREATE TABLE `system` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `keywords` text COLLATE utf8mb4_unicode_ci,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `maintenance` tinyint(1) NOT NULL DEFAULT '0',
+  `system_address_id` int(10) UNSIGNED NOT NULL,
+  `system_contact_id` int(10) UNSIGNED NOT NULL,
+  `system_social_id` int(10) UNSIGNED NOT NULL,
+  `system_floater_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system`
+--
+
+INSERT INTO `system` (`id`, `name`, `keywords`, `description`, `maintenance`, `system_address_id`, `system_contact_id`, `system_social_id`, `system_floater_id`) VALUES
+(1, 'Electro', 'loja virtual, eletrônicos, vestimentas', 'Loja Virtual', 0, 1, 1, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system_address`
+--
+
+CREATE TABLE `system_address` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `postal_code` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `district` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `complement` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_address`
+--
+
+INSERT INTO `system_address` (`id`, `postal_code`, `street`, `number`, `district`, `city`, `state`, `latitude`, `longitude`, `complement`) VALUES
+(1, '12345678', 'Rua Nova', '15', 'Novo Bairro', 'São Paulo', 'SP', '', '', 'Novo');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system_contact`
+--
+
+CREATE TABLE `system_contact` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telephone` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `cell` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_contact`
+--
+
+INSERT INTO `system_contact` (`id`, `email`, `telephone`, `cell`) VALUES
+(1, 'electro@gmail.com', '1199999999', '11999999999');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system_floater`
+--
+
+CREATE TABLE `system_floater` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_floater`
+--
+
+INSERT INTO `system_floater` (`id`, `image`, `link`) VALUES
+(1, '0', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system_social`
+--
+
+CREATE TABLE `system_social` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `facebook` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `instagram` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `twitter` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `linkedin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `youtube` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `twitch` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `discord` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `whatsapp` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_social`
+--
+
+INSERT INTO `system_social` (`id`, `facebook`, `instagram`, `twitter`, `linkedin`, `youtube`, `twitch`, `discord`, `whatsapp`) VALUES
+(1, 'https://facebook.com', '', '', '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -949,6 +1076,40 @@ ALTER TABLE `subcomments`
   ADD KEY `comment_id` (`comment_id`);
 
 --
+-- Indexes for table `system`
+--
+ALTER TABLE `system`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `settings_address_id` (`system_address_id`),
+  ADD KEY `settings_contact_id` (`system_contact_id`),
+  ADD KEY `settings_floater_id` (`system_floater_id`),
+  ADD KEY `settings_social_id` (`system_social_id`);
+
+--
+-- Indexes for table `system_address`
+--
+ALTER TABLE `system_address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `system_contact`
+--
+ALTER TABLE `system_contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `system_floater`
+--
+ALTER TABLE `system_floater`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `system_social`
+--
+ALTER TABLE `system_social`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -1030,7 +1191,7 @@ ALTER TABLE `notices_subcategories`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -1078,7 +1239,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=198;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
 
 --
 -- AUTO_INCREMENT for table `slideshow`
@@ -1097,6 +1258,36 @@ ALTER TABLE `subcategories`
 --
 ALTER TABLE `subcomments`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `system`
+--
+ALTER TABLE `system`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_address`
+--
+ALTER TABLE `system_address`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_contact`
+--
+ALTER TABLE `system_contact`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_floater`
+--
+ALTER TABLE `system_floater`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_social`
+--
+ALTER TABLE `system_social`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -1195,6 +1386,15 @@ ALTER TABLE `subcategories`
 --
 ALTER TABLE `subcomments`
   ADD CONSTRAINT `subcomments_ibfk_1` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `system`
+--
+ALTER TABLE `system`
+  ADD CONSTRAINT `system_ibfk_1` FOREIGN KEY (`system_address_id`) REFERENCES `system_address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `system_ibfk_2` FOREIGN KEY (`system_contact_id`) REFERENCES `system_contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `system_ibfk_3` FOREIGN KEY (`system_floater_id`) REFERENCES `system_floater` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `system_ibfk_4` FOREIGN KEY (`system_social_id`) REFERENCES `system_social` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `users_roles`

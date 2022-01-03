@@ -27,7 +27,8 @@ return [
             'storage/app/public/products',
             'storage/app/public/notices',
             'storage/app/public/slideshow',
-            'storage/app/public/banners'
+            'storage/app/public/banners',
+            'storage/app/public/floaters'
         ]
     ]
 ];

@@ -1,5 +1,8 @@
 @php
+    use Src\Classes\Storage\Storage;
+
     $categories = (new \App\Models\Category())->all();
+    $system = (new \App\Models\System())->first();
 @endphp
 
 <!DOCTYPE html>
@@ -68,6 +71,14 @@
     @yield('styles')
 </head>
 <body>
+    @if($system && !empty($system->floater->image) && Storage::exists($system->floater->image))
+        @include('includes.site.modais.floater', [
+            'title' => 'Aviso',
+            'image' => url('storage/app/public/' . $system->floater->image),
+            'link' => $system->floater->link
+        ])
+    @endif
+
     <!-- HEADER -->
     <header>
         <!-- TOP HEADER -->

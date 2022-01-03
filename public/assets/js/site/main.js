@@ -54,4 +54,7 @@ $(document).ready(function(){
             collapsible: true
         })
     })
+
+    // Inicia floater
+    $('#floater').modal('show')
 })

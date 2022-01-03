@@ -26,6 +26,18 @@ use App\Models\{
 class PanelController extends Controller{
 	public function index(){
 		/*
+		$actions = ['all'];
+		$tables = ['system', 'system.address', 'system.contact', 'system.social', 'system.store', 'system.floater'];
+
+		foreach($tables as $table){
+			foreach($actions as $action){
+				Permission::create([
+					'name' => "{$action}.{$table}",
+					'description' => "{$action}.{$table}"
+				]);
+			}
+		}
+
 		$actions = ['view', 'create', 'edit', 'delete'];
 		$tables = ['users', 'clients', 'products', 'ratings', 'requests', 'coupons', 'slideshow', 'banners', 'depoiments', 'notices', 'comments', 'categories', 'roles', 'permissions'];
 

@@ -42,6 +42,7 @@ class AddressController extends Controller{
 	public function store(){
 		$request = new Request();
 		$data = $request->all();
+		$data['postal_code'] = preg_replace('/[^\d]/i', '', $data['postal_code']);
 
 		$this->validator($data, $this->address->rolesCreate, $this->address->messages);
 
@@ -63,6 +64,7 @@ class AddressController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+		$data['postal_code'] = preg_replace('/[^\d]/i', '', $data['postal_code']);
 
 		$this->validator($data, $address->rolesUpdate, $address->messages);
 

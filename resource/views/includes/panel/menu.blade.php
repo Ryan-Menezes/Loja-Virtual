@@ -92,6 +92,10 @@
 			<p><strong>Configurações</strong></p>
 		</div>
 
+		@if(can('all.system'))
+			<a href="{{ route('panel.system') }}" title="Página de Configurações do Sistema"><li><i class="fas fa-cog"></i> Sistema</li></a>
+		@endif
+
 		@if(can('view.roles'))
 			<a href="{{ route('panel.roles') }}" title="Página de Funções"><li><i class="fas fa-user-tie"></i> Funções</li></a>
 		@endif

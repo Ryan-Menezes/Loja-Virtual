@@ -1,28 +1,38 @@
-<?php 
+<?php
+$system = (new \App\Models\System())->firstOrFail();
+
 return [
-	'name' 			=> 'Electro',
+	'name' 			=> $system->name,
 	'url' 			=> 'http://www.lojavirtual.com/',
 	'domain' 		=> 'www.lojavirtual.com',
 	'timezone' 		=> 'America/Sao_Paulo',
 	'charset'		=> 'utf-8',
 	'lang' 			=> 'pt-br',
 	'debug'			=> true,
-	'description' 	=> 'Os melhores produtos você encontra em nossa loja!' ,
-	'keywords' 		=> 'loja virtual, loja, virtual',
+	'description' 	=> $system->description,
+	'keywords' 		=> $system->keywords,
 	'social'		=> [
-		'facebook' => 'https://www.facebook.com/ryan.menezes.9081323/'
+		'facebook' 	=> $system->social->facebook,
+		'instagram' => $system->social->instagram,
+		'twitter' 	=> $system->social->twitter,
+		'linkedin' 	=> $system->social->linkedin,
+		'youtube' 	=> $system->social->youtube,
+		'twitch' 	=> $system->social->twitch,
+		'discord' 	=> $system->social->discord,
+		'whatsapp' 	=> $system->social->whatsapp
 	],
 	'contact' => [
-		'phone' 	=> '1199999999',
-		'email'		=> 'menezesryan1010@gmail.com'
+		'email'	=> $system->contact->email,
+		'phone' => $system->contact->telephone,
+		'cell' 	=> $system->contact->cell
 	],
 	'address' => [
-		'postalCode'	=> '99999-999',
-		'street' 		=> 'Rua Teste',
-		'number'		=> '999',
-		'district' 		=> 'Vila Teste',
-		'region'		=> 'São Paulo',
-		'state'			=> 'SP',
+		'postal_code'	=> $system->address->postal_code,
+		'street' 		=> $system->address->street,
+		'number'		=> $system->address->number,
+		'district' 		=> $system->address->district,
+		'region'		=> $system->address->region,
+		'state'			=> $system->address->state,
 		'country'		=> 'BRA'
 	]
 ];

@@ -20,7 +20,7 @@
 	])
 
 	@include('includes.components.form.input', [
-		'type' => 'text', 
+		'type' => 'url', 
 		'name' => 'link', 
 		'title' => 'Link', 
 		'class' => 'required',

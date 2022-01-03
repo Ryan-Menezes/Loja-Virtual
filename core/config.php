@@ -1,6 +1,9 @@
 <?php
 use Src\Classes\Database;
 
+// Starts a database connection
+Database::start();
+
 // Start the session 
 if(!isset($_SESSION))
 	session_start();
@@ -11,6 +14,3 @@ if(!config('app.debug'))
 
 // Set the local date
 date_default_timezone_set(config('app.timezone'));
-
-// Starts a database connection
-Database::start();

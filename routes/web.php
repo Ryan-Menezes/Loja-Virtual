@@ -17,6 +17,7 @@ use App\Controllers\Panel\{
 	SubCommentController,
 	CategoryController,
 	SubCategoryController,
+	SystemController,
 	RoleController,
 	PermissionController
 };
@@ -176,6 +177,16 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 
 	// ROUTE SETTINGS
 	Route::group(['prefix' => 'configuracoes'], function(){
+		// ROUTE SYSTEM
+		Route::group(['prefix' => 'sistema'], function(){
+			Route::get('/', [SystemController::class, 'index'])->name('panel.system');
+			Route::post('/salvar', [SystemController::class, 'update'])->name('panel.system.update');
+			Route::post('/endereco/salvar', [SystemController::class, 'updateAddress'])->name('panel.system.address.update');
+			Route::post('/contato/salvar', [SystemController::class, 'updateContact'])->name('panel.system.contact.update');
+			Route::post('/social/salvar', [SystemController::class, 'updateSocial'])->name('panel.system.social.update');
+			Route::post('/floater/salvar', [SystemController::class, 'updateFloater'])->name('panel.system.floater.update');
+		});
+
 		// ROUTE ROLES
 		Route::group(['prefix' => 'funcoes'], function(){
 			Route::any('/', [RoleController::class, 'index'])->name('panel.roles');
