@@ -54,6 +54,24 @@ class ProductSize extends Model{
 		];
 	}
 
+	public function getPriceFormatAttribute(){
+		if(empty($this->price))
+			return null;
+
+		$discount = ((Product::find($this->color->product->id)->promotion_percent ?? 0) / 100) * $this->price;
+
+		return number_format($this->price - $discount, 2, ',', '.');
+	}
+
+	public function getPricePreviousFormatAttribute(){
+		if(empty($this->price_previous))
+			return null;
+
+		$discount = ((Product::find($this->color->product->id)->promotion_percent ?? 0) / 100) * $this->price_previous;
+
+		return number_format($this->price_previous - $discount, 2, ',', '.');
+	}
+
 	public function verifyPermission(string $permission){
 		if(!can($permission)){
 			abort(404);

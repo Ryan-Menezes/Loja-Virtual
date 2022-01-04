@@ -19,7 +19,7 @@ class Product extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'name' 				=> "required|min:1|max:191|unique:{$this->table},name,{$this->name}",
+			'name' 				=> "required|min:1|max:191|unique:{$this->table},name,{$this->id},id",
 			'description' 		=> 'required|min:1',
 			'details'			=> 'required|min:1',
 			'promotion_percent' => 'numeric'
@@ -55,17 +55,25 @@ class Product extends Model{
 	}
 
 	public function getPriceFormatAttribute(){
-		if(empty($this->sizes()->first()->price))
+		$size = $this->sizes()->first();
+
+		if(empty($size->price))
 			return null;
 
-		return number_format($this->sizes()->first()->price, 2, ',', '.');
+		$discount = (($this->promotion_percent ?? 0) / 100) * $size->price;
+
+		return number_format($size->price - $discount, 2, ',', '.');
 	}
 
 	public function getPricePreviousFormatAttribute(){
-		if(empty($this->sizes()->first()->price_previous))
+		$size = $this->sizes()->first();
+
+		if(empty($size->price_previous))
 			return null;
 
-		return number_format($this->sizes()->first()->price_previous, 2, ',', '.');
+		$discount = (($this->promotion_percent ?? 0) / 100) * $size->price_previous;
+
+		return number_format($size->price_previous - $discount, 2, ',', '.');
 	}
 
 	public function getFirstImageAttribute(){

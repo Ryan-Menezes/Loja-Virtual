@@ -217,17 +217,18 @@ class Validator{
 	  * @param string
 	  * @param string
 	  * @param string|null
+	  * @param string|null
 	  *
 	  * @return void
 	  */
-	private static function unique(string $key, $value, string $table, string $column, ?string $ignore = null) : void{
+	private static function unique(string $key, $value, string $table, string $column, ?string $ignore = null, ?string $column_ignore = null) : void{
 		$search  = ['%key%'];
 		$replace = [$key];
 
 		$query = DB::table($table)->where($column, $value);
 
 		if(!is_null($ignore)){
-			$query->where($column, '!=', $ignore);
+			$query->where($column_ignore ?? $column, '!=', $ignore);
 		}
 
 		if($query->exists()){

@@ -87,13 +87,11 @@
 					'required' => true
 				])
 
-				<label class="form-label">Detalhes:</label>
-				@include('includes.components.form.texteditor', [
+				@include('includes.components.form.textarea', [
 					'name' => 'details',
 					'title' => 'Detalhes',
-					'class' => 'required',
+					'class' => 'textarea-editor required',
 					'value' => (isset($product) ? $product->details : null),
-					'notoptions' => true,
 					'required' => true
 				])
 

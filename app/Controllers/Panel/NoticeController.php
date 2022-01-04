@@ -58,40 +58,27 @@ class NoticeController extends Controller{
 		$content = [];
 		$data = $request->all();
 
-		$elements = $data['elements'];
-		$titles = $data['titles'];
-		$paragraphs = $data['paragraphs'];
-		$youtubeUrls = $data['urls-video'];
+		$elements = isset($data['elements']) ? $data['elements'] : [];
+		$texts = isset($data['texts']) ? $data['texts'] : [];
+		$youtubeUrls = isset($data['urls-video']) ? $data['urls-video'] : [];
 		$images = $request->file('images');
-		$titleImages = $data['title-images'];
-		$titlesTag = $data['titles-tag'];
-		$titleIndex = 0;
-		$paragraphIndex = 0;
+		$titleImages = isset($data['title-images']) ? $data['title-images'] : [];
+		$textIndex = 0;
 		$youtubeIndex = 0;
 		$imageIndex = 0;
 
 		$this->validator($data, $this->notice->rolesCreate, $this->notice->messages);
 
 		foreach($elements as $element){
-			if($element == 'TITLEEDITOR'){
-				if(mb_strlen($titles[$titleIndex]) > 0 && mb_strlen($titlesTag[$titleIndex]) > 0){
+			if($element == 'TEXTEDITOR'){
+				if(mb_strlen($texts[$textIndex]) > 0){
 					$content['elements'][] = [
-						'type' 		=> 'title',
-						'content' 	=> $titles[$titleIndex],
-						'tag'		=> $titlesTag[$titleIndex]
+						'type' 		=> 'text',
+						'content' 	=> $texts[$textIndex]
 					];
 				}
 
-				$titleIndex++;
-			}elseif($element == 'TEXTEDITOR'){
-				if(mb_strlen($paragraphs[$paragraphIndex]) > 0){
-					$content['elements'][] = [
-						'type' 		=> 'paragraph',
-						'content' 	=> $paragraphs[$paragraphIndex]
-					];
-				}
-
-				$paragraphIndex++;
+				$textIndex++;
 			}else if($element == 'YOUTUBEEDITOR'){
 				if(mb_strlen($youtubeUrls[$youtubeIndex]) > 0){
 					$url = preg_split('/[\/=]/i', $youtubeUrls[$youtubeIndex]);
@@ -161,21 +148,18 @@ class NoticeController extends Controller{
 		$content = [];
 		$data = $request->all();
 
-		$elements = $data['elements'];
-		$titles = $data['titles'];
-		$paragraphs = $data['paragraphs'];
-		$youtubeUrls = $data['urls-video'];
+		$elements = isset($data['elements']) ? $data['elements'] : [];
+		$texts = isset($data['texts']) ? $data['texts'] : [];
+		$youtubeUrls = isset($data['urls-video']) ? $data['urls-video'] : [];
 		$images = $request->file('images');
 		$poster = $request->file('poster');
-		$titleImages = $data['title-images'];
+		$titleImages = isset($data['title-images']) ? $data['title-images'] : [];
 		$imagesEdit = explode(',', $data['images-notice-edit']);
 		$imagesRemove = explode(',', $data['images-remove']);
-		$titlesTag = $data['titles-tag'];
-		$titleIndex = 0;
-		$paragraphIndex = 0;
+		$textIndex = 0;
 		$youtubeIndex = 0;
 		$imageIndex = 0;
-
+		
 		$this->validator($data, $notice->rolesUpdate, $notice->messages);
 
 		// Remove imagens que foram deletadas
@@ -197,25 +181,15 @@ class NoticeController extends Controller{
 
 		// Formata o conteúdo da notícia
 		foreach($elements as $element){
-			if($element == 'TITLEEDITOR'){
-				if(mb_strlen($titles[$titleIndex]) > 0 && mb_strlen($titlesTag[$titleIndex]) > 0){
+			if($element == 'TEXTEDITOR'){
+				if(mb_strlen($texts[$textIndex]) > 0){
 					$content['elements'][] = [
-						'type' 	    => 'title',
-						'content' 	=> $titles[$titleIndex],
-						'tag'		=> $titlesTag[$titleIndex]
+						'type' 		=> 'text',
+						'content' 	=> $texts[$textIndex]
 					];
 				}
 
-				$titleIndex++;
-			}else if($element == 'TEXTEDITOR'){
-				if(mb_strlen($paragraphs[$paragraphIndex]) > 0){
-					$content['elements'][] = [
-						'type' 		=> 'paragraph',
-						'content' 	=> $paragraphs[$paragraphIndex]
-					];
-				}
-
-				$paragraphIndex++;
+				$textIndex++;
 			}else if($element == 'YOUTUBEEDITOR'){
 				if(mb_strlen($youtubeUrls[$youtubeIndex]) > 0){
 					$url = preg_split('/[\/=]/i', $youtubeUrls[$youtubeIndex]);

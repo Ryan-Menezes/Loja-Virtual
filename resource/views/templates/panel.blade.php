@@ -14,6 +14,9 @@
 	<!-- Bootstrap CSS -->
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/bootstrap/bootstrap.min.css') }}">
 
+	<!-- Plugins CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/plugins/Trumbowyg/ui/trumbowyg.min.css') }}">
+
 	<!-- FontAwesome CSS -->
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/all.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/brands.min.css') }}">
@@ -64,6 +67,7 @@
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/Trumbowyg/trumbowyg.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/panel/main.js') }}"></script>
 </body>
 </html>

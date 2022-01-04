@@ -60,58 +60,7 @@
 						<div id="tab1" class="tab-pane active">
 							<div class="products-slick" data-nav="#slick-nav-1">
 								@foreach($products as $product)
-								<!-- product -->
-								<div class="product">
-									<div class="product-img">
-										<img src="{{ url('storage/app/public/' . $product->firstImage) }}" alt="{{ $product->name }}" title="{{ $product->name }}">
-										<div class="product-label">
-											@if($product->promotion_percent)
-											<span class="sale">-{{ $product->promotion_percent }}%</span>
-											@endif
-											<span class="new">NOVO</span>
-										</div>
-									</div>
-									<div class="product-body">
-										<h3 class="product-name"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="{{ $product->name }}">{{ $product->name }}</a></h3>
-										<h4 class="product-price">
-											R$ {{ $product->priceFormat }}
-											@if(!empty($product->price_previous))
-											<del class="product-old-price">{{ $product->pricePreviousFormat }}</del>
-											@endif
-										</h4>
-										<div class="product-rating">
-											@if($product->freight_free)
-											<span class="product-available" style="margin-left: 0px;">Frete Grátis</span>
-											@endif
-											@if($product->ratings_active)
-												@if($product->ratings->where('visible', true)->count() > 0)
-													@for($i = 0; $i < $product->ratings->where('visible', true)->avg('stars'); $i++)
-													<i class="fa fa-star"></i>
-													@endfor
-
-													@for($i = 0; $i < 5 - $product->ratings->where('visible', true)->avg('stars'); $i++)
-													<i class="fa fa-star-o"></i>
-													@endfor
-												@else
-												<p>Nenhuma Avaliação</p>
-												@endif
-											@endif
-										</div>
-										<div class="product-btns">
-											<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Favoritar</span></button>
-											<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">Comparar</span></button>
-											<button class="quick-view"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="Visualizar"><i class="fa fa-eye"></i><span class="tooltipp">Visualizar</span></a></button>
-										</div>
-									</div>
-									<div class="add-to-cart">
-										@if($product->sizes->first()->quantity > 0)
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
-										@else
-										<p style="color: white;"><strong>Produto Indisponível</strong></p>
-										@endif
-									</div>
-								</div>
-								<!-- /product -->
+								@include('includes.site.products.card', ['new' => true])
 								@endforeach
 							</div>
 							<div id="slick-nav-1" class="products-slick-nav"></div>
@@ -192,16 +141,7 @@
 			<div class="col-md-12">
 				<section class="notices">
 				    @foreach($notices as $notice)
-				    <div class="notice-card">
-				        <div class="notice-image">
-				            <img src="{{ url('storage/app/public/' . $notice->poster) }}" alt="{{ $notice->title }}" title="{{ $notice->title }}">
-				        </div>
-				        <div class="notice-info">
-				            <h2 class="notice-title"><a href="{{ route('site.notices.show', ['slug' => $notice->slug]) }}" title="{{ $notice->title }}">{{ $notice->title }}</a></h2>
-				            <p class="notice-desc">{{ mb_substr($notice->description, 0, 100) }}...</p>
-				            <p class="notice-status"><i class="fa fa-comment"></i> {{ $notice->comments->count() }} <i class="fa fa-eye"></i> {{ $notice->visits }}</p>
-				        </div>
-				    </div>
+				    @include('includes.site.notices.card')
 				    @endforeach
 				</section>
 

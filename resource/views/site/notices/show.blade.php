@@ -22,10 +22,8 @@
     <section class="notice">
         <section class="notice-content">
             @foreach(json_decode($notice->content)->elements as $element)
-                @if($element->type == 'title')
-                    <{{ $element->tag }} class="mb-4">{!! $element->content !!}</{{ $element->tag }}>
-                @elseif($element->type == 'paragraph')
-                    <p class="mb-4">{!! str_ireplace("\n", '<br>', $element->content) !!}</p>
+                @if($element->type == 'text')
+                    {!! str_ireplace("\n", '<br>', $element->content) !!}
                 @elseif($element->type == 'youtube')
                     @include('includes.components.youtube.player', [
                         'url' => 'https://www.youtube.com/embed/' . $element->videocode,

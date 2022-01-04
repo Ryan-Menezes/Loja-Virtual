@@ -28,6 +28,7 @@ use App\Controllers\Site\{
 	NoticeController as NoticeControllerSite,
 	CommentController as CommentControllerSite,
 	CategoryController as CategoryControllerSite,
+	CartController,
 	SiteMapController
 };
 use App\Controllers\Site\MyAccount\{
@@ -251,6 +252,11 @@ Route::group(['prefix' => '/'], function(){
 			Route::put('/{id}/editar/salvar', [CardController::class, 'update'])->name('site.myaccount.cards.update');
 			Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
 		});
+	});
+
+	// ROUTE CART
+	Route::group(['prefix' => 'carrinho'], function(){
+		Route::get('/', [CartController::class, 'index'])->name('site.cart');
 	});
 
 	// ROUTE NOTICES

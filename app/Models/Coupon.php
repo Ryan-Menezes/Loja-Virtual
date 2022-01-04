@@ -17,7 +17,7 @@ class Coupon extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'code' 			=> "required|min:1|max:50|unique:{$this->table},code,{$this->code}",
+			'code' 			=> "required|min:1|max:50|unique:{$this->table},code,{$this->id},id",
 			'percent' 		=> 'required|numeric'
 		];
 	}

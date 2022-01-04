@@ -534,12 +534,16 @@
 	}
 
 	function renderSize(size){
-		$('.product-current-price').text(Number(size.price).toLocaleString('pt-BR', {
+		let discount = Number(size.price) * {{ ($product->promotion_percent ?? 0) / 100 }}
+
+		$('.product-current-price').text((Number(size.price) - discount).toLocaleString('pt-BR', {
 			style: 'currency', 
 			currency: 'BRL'
 		}))
 
-		$('.product-old-price').text(Number(size.price_previous).toLocaleString('pt-BR', {
+		discount = Number(size.price_previous) * {{ ($product->promotion_percent ?? 0) / 100 }}
+
+		$('.product-old-price').text((Number(size.price_previous) - discount).toLocaleString('pt-BR', {
 			style: 'currency', 
 			currency: 'BRL'
 		}))

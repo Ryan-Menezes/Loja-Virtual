@@ -2297,3 +2297,10 @@ textarea.input {
   display: none;
   margin-bottom: 40px;
 }
+table tr td, 
+table tr{
+  vertical-align: middle!important;
+}
+table tr td img{
+  width: 50px;
+}

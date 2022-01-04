@@ -17,7 +17,7 @@ class SubCategory extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'name' 	=> "required|min:1|max:100|unique:{$this->table},name,{$this->name}",
+			'name' 	=> "required|min:1|max:100|unique:{$this->table},name,{$this->id},id",
 			'description' => 'required|min:1'
 		];
 	}

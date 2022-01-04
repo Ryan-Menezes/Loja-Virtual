@@ -39,7 +39,11 @@
 			<tr>
 				<td>{{ $product->id }}</td>
 				<td><img src="{{ url('storage/app/public/' . $product->colors->first()->images->first()->source) }}" title="{{ $product->name }}" alt="{{ $product->name }}"></td>
-				<td style="max-width: 200px;">{{ $product->name }}</td>
+				@if($product->visible)
+				<td style="max-width: 200px;"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="Página do produto: {{ $product->name }}" target="_blank">{{ $product->name }} <i class="fas fa-external-link-alt"></i></a></td>
+				@else
+				<td>{{ $product->name }}</td>
+				@endif
 				<td>
 					@if($product->visible)
 					<i class="fas fa-check-circle text-success"></i>

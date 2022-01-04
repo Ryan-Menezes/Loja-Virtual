@@ -18,7 +18,7 @@ class Notice extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'title' 		=> "required|min:1|max:191|unique:{$this->table},title,{$this->title}",
+			'title' 		=> "required|min:1|max:191|unique:{$this->table},title,{$this->id},id",
 			'description' 	=> 'required|min:1',
 			'content' 		=> 'required|min:1'
 		];

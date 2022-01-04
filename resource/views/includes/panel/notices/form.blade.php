@@ -80,16 +80,11 @@
 				
 				@if(isset($notice))
 					@foreach(json_decode($notice->content)->elements as $element)
-						@if($element->type == 'title')
-							@include('includes.components.form.titleeditor', [
-								'value' => $element->content,
-								'tag' => $element->tag
-							])
-						@elseif($element->type == 'paragraph')
+						@if($element->type == 'text')
 							@include('includes.components.form.texteditor', [
-								'name' => 'paragraphs[]',
-								'class' => 'paragraph draggable required',
-								'title' => 'Digite o texto do parágrafo...',
+								'name' => 'texts[]',
+								'class' => 'text draggable required',
+								'title' => 'Digite o seu texto aqui...',
 								'value' => $element->content
 							])
 						@elseif($element->type == 'youtube')
@@ -111,12 +106,10 @@
 						@endif
 					@endforeach
 				@else
-					@include('includes.components.form.titleeditor')
-
 					@include('includes.components.form.texteditor', [
-						'name' => 'paragraphs[]',
-						'class' => 'paragraph',
-						'title' => 'Digite o texto do parágrafo...'
+						'name' => 'texts[]',
+						'class' => 'text draggable required',
+						'title' => 'Digite o seu texto aqui...'
 					])
 
 					@include('includes.components.form.imageeditor')
@@ -130,9 +123,7 @@
 
 			<div class="row text-center mt-5">
 				<div class="col-md-12">
-					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.titleeditor']) }}">Adicionar um Titulo <i class="fas fa-heading"></i></button>
-
-					<button type="button" class="btn border" data-name="paragraphs[]" data-class="paragraph" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">Adicionar parágrafo <i class="fas fa-paragraph"></i></button>
+					<button type="button" class="btn border" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">Adicionar texto <i class="fas fa-paragraph"></i></button>
 
 					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}">Adicionar imagem <i class="fas fa-image"></i></button>
 

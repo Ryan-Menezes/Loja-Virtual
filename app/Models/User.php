@@ -20,7 +20,7 @@ class User extends Model{
 	public function getRolesUpdateAttribute(){
 		return [
 			'name' 		=> 'required|min:1|max:100',
-			'email' 	=> "required|email|min:1|max:100|unique:{$this->table},email,{$this->email}",
+			'email' 	=> "required|email|min:1|max:100|unique:{$this->table},email,{$this->id},id",
 			'password' 	=> 'min:8|max:100',
 			'role'		=> 'required'
 		];

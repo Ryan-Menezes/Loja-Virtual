@@ -3,6 +3,7 @@
 
     $categories = (new \App\Models\Category())->all();
     $system = (new \App\Models\System())->first();
+    $cart_products = (new \App\Classes\Cart())->all();
 @endphp
 
 <!DOCTYPE html>
@@ -153,34 +154,25 @@
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">
+                                        @foreach($cart_products as $cart_product)
                                         <div class="product-widget">
                                             <div class="product-img">
-                                                <img src="{{ public_path('assets/img/site/product01.png') }}" alt="">
+                                                <img src="{{ url('storage/app/public/' . $cart_product->size->color->images->first()->source) }}" alt="{{ $cart_product->product->name }}" title="{{ $cart_product->product->name }}">
                                             </div>
                                             <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
+                                                <h3 class="product-name"><a href="{{ route('site.products.show', ['slug' => $cart_product->product->slug]) }}" title="{{ $cart_product->product->name }}">{{ $cart_product->product->name }} - {{ $cart_product->size->color->description }} - {{ $cart_product->size->description }}</a></h3>
+                                                <h4 class="product-price"><span class="qty">{{ $cart_product->quantity }}x</span>R${{ $cart_product->size->priceFormat }}</h4>
                                             </div>
                                             <button class="delete"><i class="fa fa-close"></i></button>
                                         </div>
-
-                                        <div class="product-widget">
-                                            <div class="product-img">
-                                                <img src="{{ public_path('assets/img/site/product02.png') }}" alt="">
-                                            </div>
-                                            <div class="product-body">
-                                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                                <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                            </div>
-                                            <button class="delete"><i class="fa fa-close"></i></button>
-                                        </div>
+                                        @endforeach
                                     </div>
                                     <div class="cart-summary">
                                         <small>3 Item(s) selected</small>
                                         <h5>SUBTOTAL: $2940.00</h5>
                                     </div>
                                     <div class="cart-btns">
-                                        <a href="#">View Cart</a>
+                                        <a href="{{ route('site.cart') }}" title="Ver produto adicionados no carrinho">Ver Carrinho</a>
                                         <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>

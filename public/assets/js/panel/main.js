@@ -44,20 +44,37 @@ $(document).ready(function(){
     })
 
     // Configurações do textarea
-    $('*').delegate('.textarea-editor-btn[data-type]', 'click', function(){
-        let data = $(this).data()
-        let element = $(this).parent().siblings('textarea')
-        let types = {
-            bold:           '<strong>Texto Aqui</strong>',
-            italic:         '<em>Texto Aqui</em>',
-            underline:      '<u>Texto Aqui</u>',
-            link:           '<a href="Link de Redirecionamento" target="_blank" title="Titulo do Link" rel="nofollow">Texto Aqui</a>',
-            blockquote:     '<blockquote>Texto Aqui</blockquote>',
-        }
-
-        if(types[data.type] !== undefined){
-            element.val(element.val() + types[data.type])
-        }
+    $('.textarea-editor').trumbowyg({
+        btns: [
+            ['viewHTML'],
+            ['undo', 'redo'],
+            ['formatting'],
+            ['strong', 'em', 'del'],
+            ['superscript', 'subscript'],
+            ['link'],
+            ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+            ['unorderedList', 'orderedList'],
+            ['horizontalRule'],
+            ['removeformat']
+        ],
+        lang: 'pt-br'
+    })
+    $('*').delegate('.textarea-editor', 'load mousemove', function(){
+        $(this).trumbowyg({
+            btns: [
+                ['viewHTML'],
+                ['undo', 'redo'],
+                ['formatting'],
+                ['strong', 'em', 'del'],
+                ['superscript', 'subscript'],
+                ['link'],
+                ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+                ['unorderedList', 'orderedList'],
+                ['horizontalRule'],
+                ['removeformat']
+            ],
+            lang: 'pt-br'
+        })
 
         return false
     })
@@ -154,9 +171,13 @@ $(document).ready(function(){
     })
 
     // Configurações para ordenar elementos
-    $('.sortable').sortable()
+    $('.sortable').sortable({
+        cancel: ".nosortable"
+    })
     $('*').delegate('.sortable', 'load mousemove', function(){
-        $(this).sortable()
+        $(this).sortable({
+            cancel: ".nosortable"
+        })
     })
 
     // Configuração para o container de checkbox
