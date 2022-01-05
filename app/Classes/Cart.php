@@ -20,7 +20,7 @@ class Cart{
 		}
 	}
 
-	public function add(Product $product, ProductSize $size = null) : void{
+	public function add(Product $product, ProductSize $size = null, int $quantity = 1) : void{
 		if($product->visible && $product->sizes->where('quantity', '>', 0)->count()){
 			if(is_null($size)){
 				$size = $product->sizes->where('quantity', '>', 0)->first();
@@ -32,9 +32,13 @@ class Cart{
 
 					$this->cart[$size->id]->product = $product;
 					$this->cart[$size->id]->size = $size;
-					$this->cart[$size->id]->quantity = 1;
+					$this->cart[$size->id]->quantity = $quantity;
 				}else{
-					$this->cart[$size->id]->quantity++;
+					$this->cart[$size->id]->quantity += $quantity;
+				}
+
+				if($this->cart[$size->id]->quantity > $this->cart[$size->id]->size->quantity){
+					$this->cart[$size->id]->quantity = $this->cart[$size->id]->size->quantity;
 				}
 
 				session(self::KEY, $this->cart);
@@ -44,22 +48,51 @@ class Cart{
 
 	public function remove(int $id) : void{
 		if(array_key_exists($id, $this->cart)){
-			array_splice($this->cart, $id, 1);
+			unset($this->cart[$id]);
 		}
 
 		session(self::KEY, $this->cart);
 	}
 
-	public function modify(int $id, int $quantity) : bool{
+	public function modify(int $id, int $quantity) : void{
 		if(array_key_exists($id, $this->cart) && $quantity <= $this->cart[$id]->size->quantity){
 			$this->cart[$id]->quantity = $quantity;
 
-			session(self::KEY, $this->cart);
+			if($this->cart[$id]->quantity > $this->cart[$id]->size->quantity){
+				$this->cart[$id]->quantity = $this->cart[$id]->size->quantity;
+			}
 
-			return true;
+			session(self::KEY, $this->cart);
+		}
+	}
+
+	public function amount() : float{
+		$amount = 0;
+		foreach($this->cart as $cart){
+			$amount += $cart->quantity * $cart->size->price;
 		}
 
-		return false;
+		return $amount;
+	}
+
+	public function quantity() : int{
+		$quantity = 0;
+		foreach($this->cart as $cart){
+			$quantity += $cart->quantity;
+		}
+
+		return $quantity;
+	}
+
+	public function subtotal(int $id) : float{
+		$subtotal = 0;
+		if(array_key_exists($id, $this->cart)){
+			$cart = $this->cart[$id];
+
+			$subtotal = $cart->quantity * $cart->size->price;
+		}
+
+		return $subtotal;
 	}
 
 	public function all() : array{

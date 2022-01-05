@@ -257,6 +257,8 @@ Route::group(['prefix' => '/'], function(){
 	// ROUTE CART
 	Route::group(['prefix' => 'carrinho'], function(){
 		Route::get('/', [CartController::class, 'index'])->name('site.cart');
+		Route::post('/adicionar/{product_id}/{?size_id}', [CartController::class, 'store'])->name('site.cart.store');
+		Route::delete('/{id}/remover', [CartController::class, 'destroy'])->name('site.cart.destroy');
 	});
 
 	// ROUTE NOTICES

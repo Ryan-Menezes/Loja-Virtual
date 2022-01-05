@@ -5,15 +5,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model{
 	public $table = 'products';
-	protected $fillable = ['name', 'slug', 'description', 'details', 'video', 'promotion_percent', 'promotion_expiration', 'visible', 'ratings_active', 'freight_free'];
+	protected $fillable = ['name', 'slug', 'description', 'details', 'video', 'visible', 'ratings_active', 'freight_free'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){
 		return [
 			'name' 				=> "required|min:1|max:191|unique:{$this->table},name",
 			'description' 		=> 'required|min:1',
-			'details'			=> 'required|min:1',
-			'promotion_percent' => 'numeric'
+			'details'			=> 'required|min:1'
 		];
 	}
 
@@ -21,8 +20,7 @@ class Product extends Model{
 		return [
 			'name' 				=> "required|min:1|max:191|unique:{$this->table},name,{$this->id},id",
 			'description' 		=> 'required|min:1',
-			'details'			=> 'required|min:1',
-			'promotion_percent' => 'numeric'
+			'details'			=> 'required|min:1'
 		];
 	}
 
@@ -49,8 +47,7 @@ class Product extends Model{
 			'description.required' 		=> 'O preenchimento do campo descrição é obrigatório!',
 			'description.min' 			=> 'O campo descrição deve conter no mínimo %min% caracteres!',
 			'details.required' 			=> 'O preenchimento do campo detalhes é obrigatório!',
-			'details.min' 				=> 'O campo detalhes deve conter no mínimo %min% caracteres!',
-			'promotion_percent.numeric' => 'A porcentagem da promoção deve ser numérico!'
+			'details.min' 				=> 'O campo detalhes deve conter no mínimo %min% caracteres!'
 		];
 	}
 
@@ -60,20 +57,16 @@ class Product extends Model{
 		if(empty($size->price))
 			return null;
 
-		$discount = (($this->promotion_percent ?? 0) / 100) * $size->price;
-
-		return number_format($size->price - $discount, 2, ',', '.');
+		return number_format($size->price, 2, ',', '.');
 	}
 
 	public function getPricePreviousFormatAttribute(){
 		$size = $this->sizes()->first();
 
 		if(empty($size->price_previous))
-			return null;
+			return null;;
 
-		$discount = (($this->promotion_percent ?? 0) / 100) * $size->price_previous;
-
-		return number_format($size->price_previous - $discount, 2, ',', '.');
+		return number_format($size->price_previous, 2, ',', '.');
 	}
 
 	public function getFirstImageAttribute(){
@@ -112,6 +105,15 @@ class Product extends Model{
 		}
 	}
 
+	public function getDiscount(int $installment){
+		$discount = $this->discounts->where('installment', $installment)->first();
+
+		if(!$discount)
+			return 0;
+
+		return $discount->percent;
+	}
+
 	public function subcategories(){
 		return $this->belongsToMany(SubCategory::class, 'products_subcategories', 'product_id', 'subcategory_id');
 	}
@@ -127,6 +129,10 @@ class Product extends Model{
 	public function sizes(){
         return $this->hasManyThrough(ProductSize::class, ProductColor::class);
     }
+
+    public function discounts(){
+		return $this->hasMany(ProductDiscount::class, 'product_id', 'id');
+	}
 
     public function ratings(){
 		return $this->hasMany(Rating::class, 'product_id', 'id');

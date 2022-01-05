@@ -21,18 +21,37 @@ class CartController extends Controller{
 	}
 
 	public function index(){
-		//$this->cart->clear();
-		//$this->add(34, 101);
 		$products = $this->cart->all();
 
 		return view('site.cart.index', compact('products'));
 	}
 
-	public function create(){
+	public function store($product_id, $size_id = null){
+		$request = new Request();
+		$data = $request->all();
 
+		$quantity = $data['quantity'] ?? 1;
+
+		$result = json_decode($this->add($product_id, $size_id, $quantity));
+
+		if($result->success){
+			redirect(route('site.cart'), ['success' => $result->message]);
+		}
+
+		redirect(route('site.cart'), ['error' => $result->message]);
 	}
 
-	public function add($product_id, $size_id = null){
+	public function destroy($id){
+		$result = json_decode($this->remove($id));
+
+		if($result->success){
+			redirect(route('site.cart'), ['success' => $result->message]);
+		}
+
+		redirect(route('site.cart'), ['error' => $result->message]);
+	}
+
+	public function add($product_id, $size_id = null, $quantity = 1){
 		$product = Product::findOrFail($product_id);
 		$size = null;
 
@@ -40,20 +59,20 @@ class CartController extends Controller{
 			$size = $product->sizes->find($size_id);
 		}
 
-		$this->cart->add($product, $size);
+		$this->cart->add($product, $size, $quantity);
 
-		return [
+		return json_encode([
 			'success' => true,
-			'message' => 'Produto adicionado ao carrinho!'
-		];
+			'message' => 'Produto adicionado ao carrinho com sucesso!'
+		]);
 	}
 
 	public function remove($id){
 		$this->cart->remove($id);
 
-		return [
+		return json_encode([
 			'success' => true,
-			'message' => 'Produto removido ao carrinho!'
-		];
+			'message' => 'Produto removido do carrinho com sucesso!'
+		]);
 	}
 }

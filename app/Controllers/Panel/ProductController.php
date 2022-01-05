@@ -10,6 +10,8 @@ use App\Models\{
 	Product,
 	ProductColor,
 	ProductImage,
+	ProductSize,
+	ProductDiscount,
 	Category
 };
 
@@ -61,23 +63,37 @@ class ProductController extends Controller{
 		$this->validator($data, $this->product->rolesCreate, $this->product->messages);
 		$data['slug'] = slugify($data['name']);
 
-		if(empty($data['promotion_percent'])){
-			unset($data['promotion_percent']);
-		}
-		if(empty($data['promotion_expiration'])){
-			unset($data['promotion_expiration']);
-		}
-
 		$product = $this->product->create($data);
 
 		if($product){
+			// cadastrando descontos
+			for($i = 0; $i < count($data['percents']); $i++){
+				$percent = trim($data['percents'][$i]);
+				$expiration = trim($data['expirations'][$i]);
+
+				if(!empty($percent)){
+					if(!empty($expiration)){
+						$product->discounts()->create([
+							'installment' => $i + 1,
+							'percent' => $percent,
+							'expiration' => $expiration
+						]);
+					}else{
+						$product->discounts()->create([
+							'installment' => $i + 1,
+							'percent' => $percent
+						]);
+					}
+				}
+			}
+
 			// cadastrando subcategorias
 			$product->subcategories()->sync($data['subcategories']);
 
 			// cadastrando cores
 			for($i = 0; $i < count($data['id-colors']); $i++){
-				$id = $data['id-colors'][$i];
-				$description = $data['description-colors'][$i];
+				$id = trim($data['id-colors'][$i]);
+				$description = trim($data['description-colors'][$i]);
 
 				$color = $product->colors()->create([
 					'description' => $description
@@ -95,16 +111,16 @@ class ProductController extends Controller{
 					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
-						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
+						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j]))){
 							$size = $color->sizes()->create([
-								'description' 		=> $descriptions[$j],
-								'price' 			=> $prices[$j],
-								'price_previous' 	=> $pricesPrevious[$j],
-								'quantity'			=> $quanties[$j],
-								'width'				=> $widths[$j],
-								'height'			=> $heights[$j],
-								'depth'				=> $depths[$j],
-								'weight'			=> $weights[$j]
+								'description' 		=> trim($descriptions[$j]),
+								'price' 			=> trim($prices[$j]),
+								'price_previous' 	=> trim($pricesPrevious[$j]),
+								'quantity'			=> trim($quanties[$j]),
+								'width'				=> trim($widths[$j]),
+								'height'			=> trim($heights[$j]),
+								'depth'				=> trim($depths[$j]),
+								'weight'			=> trim($weights[$j])
 							]);
 						}
 					}
@@ -154,14 +170,29 @@ class ProductController extends Controller{
 		$this->validator($data, $product->rolesUpdate, $product->messages);
 		$data['slug'] = slugify($data['name']);
 
-		if(empty($data['promotion_percent'])){
-			unset($data['promotion_percent']);
-		}
-		if(empty($data['promotion_expiration'])){
-			unset($data['promotion_expiration']);
-		}
-
 		if($product->update($data)){
+			// cadastrando descontos
+			$product->discounts()->delete();
+			for($i = 0; $i < count($data['percents']); $i++){
+				$percent = trim($data['percents'][$i]);
+				$expiration = trim($data['expirations'][$i]);
+
+				if(!empty($percent)){
+					if(!empty($expiration)){
+						$product->discounts()->create([
+							'installment' => $i + 1,
+							'percent' => $percent,
+							'expiration' => $expiration
+						]);
+					}else{
+						$product->discounts()->create([
+							'installment' => $i + 1,
+							'percent' => $percent
+						]);
+					}
+				}
+			}
+
 			// cadastrando subcategorias
 			$product->subcategories()->sync($data['subcategories']);
 
@@ -194,8 +225,8 @@ class ProductController extends Controller{
 
 			// cadastrando cores
 			for($i = 0; $i < count($data['id-colors']); $i++){
-				$id = $data['id-colors'][$i];
-				$description = $data['description-colors'][$i];
+				$id = trim($data['id-colors'][$i]);
+				$description = trim($data['description-colors'][$i]);
 
 				$color = $product->colors()->find($id);
 
@@ -221,16 +252,16 @@ class ProductController extends Controller{
 					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
-						if(!empty($descriptions[$j]) && !empty($prices[$j]) && !empty($pricesPrevious[$j])){
+						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j]))){
 							$size = $color->sizes()->create([
-								'description' 		=> $descriptions[$j],
-								'price' 			=> $prices[$j],
-								'price_previous' 	=> $pricesPrevious[$j],
-								'quantity'			=> $quanties[$j],
-								'width'				=> $widths[$j],
-								'height'			=> $heights[$j],
-								'depth'				=> $depths[$j],
-								'weight'			=> $weights[$j]
+								'description' 		=> trim($descriptions[$j]),
+								'price' 			=> trim($prices[$j]),
+								'price_previous' 	=> trim($pricesPrevious[$j]),
+								'quantity'			=> trim($quanties[$j]),
+								'width'				=> trim($widths[$j]),
+								'height'			=> trim($heights[$j]),
+								'depth'				=> trim($depths[$j]),
+								'weight'			=> trim($weights[$j])
 							]);
 						}
 					}

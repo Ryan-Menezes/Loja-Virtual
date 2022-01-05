@@ -35,6 +35,9 @@ class ProductController extends Controller{
 
 		if($color){
 			$data['sizes'] = $color->sizes->all();
+			for($i = 0; $i < count($data['sizes']); $i++){
+				$data['sizes'][$i]->priceDiscount = $data['sizes'][$i]->getPriceDiscount(1);
+			}
 
 			foreach($color->images as $image){
 				$data['images'][] = url('storage/app/public/' . $image->source);

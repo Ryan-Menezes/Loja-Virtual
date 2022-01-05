@@ -26,7 +26,7 @@
 	
 	<div class="accordion">
 		<h3>Imagens</h3>
-		<div id="product-images-{{ $id }}" class="product-images sortable row">
+		<div id="product-images-{{ $id }}" class="product-images row">
 			@if(isset($images) && (is_array($images) || is_object($images)))
 				@foreach($images as $image)
 					@include('includes.components.form.imageeditor', [
@@ -44,7 +44,7 @@
 		</div>
 
 		<h3>Tamanhos</h3>
-		<div id="product-sizes-{{ $id }}" class="product-sizes sortable">
+		<div id="product-sizes-{{ $id }}" class="product-sizes">
 			@if(isset($sizes) && (is_array($sizes) || is_object($sizes)))
 				@foreach($sizes as $size)
 					@include('includes.components.form.sizeeditor', [

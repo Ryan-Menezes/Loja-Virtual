@@ -72,6 +72,11 @@
 							<del class="product-old-price"></del>
 							@endif
 						</h2>
+
+						@if($product->getDiscount(1) > 0)
+						<p><strong class="price-discount">R$ {{ number_format($product->sizes->first()->getPriceDiscount(1), 2, ',', '.') }}</strong> <small>à vista com {{ $product->getDiscount(1) }}% de desconto</small></p>
+						@endif
+
 						@if($product->sizes->first()->quantity > 0)
 						<span class="product-available">Produto Disponível</span>
 						@else
@@ -98,20 +103,18 @@
 							</select>
 						</label>
 					</div>
-
-					@if($product->sizes->first()->quantity > 0)
-					<div class="add-to-cart">
+					
+					<form action="{{ route('site.cart.store', ['product_id' => $product->id, 'size_id' => $product->sizes->first()->id]) }}" method="POST" class="add-to-cart" @if($product->sizes->first()->quantity == 0) style="display: none" @endif>
 						<div class="qty-label">
 							Qtde
 							<div class="input-number">
-								<input type="number" value="1" name="quantity" min="1" max="{{ $product->sizes->first()->quantity }}">
+								<input type="number" value="1" name="quantity" min="1" max="{{ $product->sizes->first()->quantity }}" required>
 								<span class="qty-up">+</span>
 								<span class="qty-down">-</span>
 							</div>
 						</div>
-						<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
-					</div>
-					@endif
+						<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+					</form>
 
 					<ul class="product-btns">
 						<li><a href="#"><i class="fa fa-heart-o"></i> Favoritar</a></li>
@@ -534,16 +537,12 @@
 	}
 
 	function renderSize(size){
-		let discount = Number(size.price) * {{ ($product->promotion_percent ?? 0) / 100 }}
-
-		$('.product-current-price').text((Number(size.price) - discount).toLocaleString('pt-BR', {
+		$('.product-current-price').text((Number(size.price)).toLocaleString('pt-BR', {
 			style: 'currency', 
 			currency: 'BRL'
 		}))
 
-		discount = Number(size.price_previous) * {{ ($product->promotion_percent ?? 0) / 100 }}
-
-		$('.product-old-price').text((Number(size.price_previous) - discount).toLocaleString('pt-BR', {
+		$('.product-old-price').text((Number(size.price_previous)).toLocaleString('pt-BR', {
 			style: 'currency', 
 			currency: 'BRL'
 		}))
@@ -554,6 +553,19 @@
 		}else{
 			$('.product-available').text('Produto Indisponível')
 			$('.add-to-cart').hide()
+		}
+
+		$('.price-discount').text((Number(size.priceDiscount)).toLocaleString('pt-BR', {
+			style: 'currency', 
+			currency: 'BRL'
+		}))
+
+		let form = window.document.querySelector('.add-to-cart')
+
+		if(form){
+			let url = form.action
+			url = url.replace(/^(.*)(\/.*)$/ig, '$1/' + size.id)
+			form.action = url
 		}
 	}
 

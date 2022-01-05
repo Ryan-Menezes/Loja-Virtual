@@ -90,7 +90,7 @@ if(!function_exists('route')){
 
 					for($i = 0; $i < count($parts); $i++){
 						$part = $parts[$i];
-						$key = str_replace(['{', '}'], ['', ''], $part);
+						$key = str_replace(['?', '{', '}'], '', $part);
 
 						if(isset($parameters[$key]) && $part[0] == '{' && $part[mb_strlen($part) - 1] == '}'){
 							$parts[$i] = $parameters[$key];
@@ -98,6 +98,7 @@ if(!function_exists('route')){
 					}
 
 					$parts = str_replace(['{', '}'], ['', ''], implode('/', $parts));
+					$parts = preg_replace('/\?.*\/?/i', '', $parts);
 
 					return url($parts);
 				}

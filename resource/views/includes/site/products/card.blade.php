@@ -4,8 +4,8 @@
 		<div class="product-img">
 			<img src="{{ url('storage/app/public/' . $product->firstImage) }}" alt="{{ $product->name }}" title="{{ $product->name }}">
 			<div class="product-label">
-				@if($product->promotion_percent)
-				<span class="sale">-{{ $product->promotion_percent }}%</span>
+				@if($product->getDiscount(1) > 0)
+				<span class="sale">-{{ $product->getDiscount(1) }}% off</span>
 				@endif
 
 				@if(isset($new))

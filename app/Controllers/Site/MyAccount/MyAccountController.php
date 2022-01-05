@@ -5,6 +5,7 @@ use Src\Classes\{
 	Request,
 	Controller
 };
+use App\Classes\Cart;
 use App\Models\{
 	Client,
 	ClientAddress,
@@ -19,8 +20,9 @@ class MyAccountController extends Controller{
 	}
 
 	public function index(){;
+		$cart = new Cart();
 		$client = $this->client;
 
-		return view('site.myaccount.index', compact('client'));
+		return view('site.myaccount.index', compact('client', 'cart'));
 	}
 }

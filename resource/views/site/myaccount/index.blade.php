@@ -25,7 +25,7 @@
 
                 <a href="{{ route('site.cart') }}" title="Carrinho de Compras">
                     <div class="card">
-                        <h3 class="card-title">50</h3>
+                        <h3 class="card-title">{{ $cart->quantity() }}</h3>
                         <i class="fa fa-shopping-cart"></i>
                     </div>
                 </a>

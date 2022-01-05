@@ -52,13 +52,12 @@
 		            </td>
 		            <td>{{ $product->quantity }}</td>
 		            <td>
-		                <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-delete" data-route="{{ route('site.cart.destroy', ['id' => $product->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Remover do Carrinho"><i class="fa fa-trash"></i></a>
+		                <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-delete" data-route="{{ route('site.cart.destroy', ['id' => $product->size->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Remover do Carrinho"><i class="fa fa-trash"></i></a>
 		            </td>
 		        </tr>
 		    	@endif
 	        @endforeach
 	    </tbody>
 	</table>
-	{{-- @include('includes.site.paginator', ['route' => 'site.myaccount.adresses']) --}}
 </section>
 @endsection

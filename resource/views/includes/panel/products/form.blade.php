@@ -5,6 +5,7 @@
 		<ul>
 			<li><a href="#tab-product">Produto</a></li>
 			<li><a href="#tab-details">Cores, Imagens e Tamanhos</a></li>
+			<li><a href="#tab-discounts">Descontos</a></li>
 			<li><a href="#tab-categories">Categorias</a></li>
 		</ul>
 
@@ -19,25 +20,6 @@
 					'value' => (isset($product) ? $product->name : null),
 					'required' => true
 				])
-
-				<div class="col-md-6">
-					@include('includes.components.form.input', [
-						'type' => 'number', 
-						'name' => 'promotion_percent', 
-						'title' => 'Promoção(%)', 
-						'min' => 0,
-						'max' => 100,
-						'value' => (isset($product) ? $product->promotion_percent : null)
-					])
-				</div>
-				<div class="col-md-6">
-					@include('includes.components.form.input', [
-						'type' => 'date', 
-						'name' => 'promotion_expiration', 
-						'title' => 'Expiração da Promoção', 
-						'value' => (isset($product) ? $product->promotion_expiration : null)
-					])
-				</div>
 
 				<div class="col-md-4">
 					@include('includes.components.form.select', [
@@ -112,7 +94,7 @@
 		</div>
 
 		<div class="details" id="tab-details">
-			<div class="content-elements sortable">
+			<div class="content-elements">
 				@if(isset($product))
 					@foreach($product->colors as $color)
 						@include('includes.components.form.coloreditor', [
@@ -131,6 +113,47 @@
 				<div class="col-md-12">
 					<button type="button" class="btn border" data-urlajax="{{ route('panel.products.component', ['name' => 'form.coloreditor']) }}" data-urlimage="{{ route('panel.products.component', ['name' => 'form.imageeditor']) }}" data-urlsize="{{ route('panel.products.component', ['name' => 'form.sizeeditor']) }}">Adicionar uma Cor <i class="fas fa-fill-drip"></i></button>
 				</div>
+			</div>
+		</div>
+
+		@php
+			$discounts = [];
+			if(isset($product)){
+				foreach($product->discounts as $discount){
+					$discounts[$discount->installment] = $discount;
+				}
+			}
+		@endphp
+
+		<div class="discounts" id="tab-discounts">
+			<div class="accordion">
+				@for($i = 1; $i <= 12; $i++)
+				@if($i == 1)
+				<h3>Pagamento à vista</h3>
+				@else
+				<h3>Parcelado {{ $i }} vezes</h3>
+				@endif
+				<div class="row">
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'type' => 'number',
+							'name' => 'percents[]',
+							'title' => 'Porcentagem do Desconto(%)',
+							'min' => 0,
+							'max' => 100,
+							'value' => (array_key_exists($i, $discounts) ? $discounts[$i]->percent : null)
+						])
+					</div>
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'type' => 'date',
+							'name' => 'expirations[]',
+							'title' => 'Esse desconto vai até:',
+							'value' => (array_key_exists($i, $discounts) ? $discounts[$i]->expiration : null)
+						])
+					</div>
+				</div>
+				@endfor
 			</div>
 		</div>
 

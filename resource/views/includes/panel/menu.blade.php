@@ -73,7 +73,7 @@
 		@endif
 
 		<div class="menu-header">
-			<p><strong>Blog</strong></p>
+			<p><strong>Blog/Notícias</strong></p>
 		</div>
 
 		@if(can('view.notices'))
