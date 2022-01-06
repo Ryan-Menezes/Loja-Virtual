@@ -2304,3 +2304,10 @@ table tr{
 table tr td img{
   width: 50px;
 }
+form input.error, form textarea.error{
+  border: 1px solid #fc3826;
+}
+form span.error{
+  font-size: 12px;
+  color: #fc3826;
+}

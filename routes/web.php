@@ -29,10 +29,12 @@ use App\Controllers\Site\{
 	CommentController as CommentControllerSite,
 	CategoryController as CategoryControllerSite,
 	CartController,
+	LgpdController,
 	SiteMapController
 };
 use App\Controllers\Site\MyAccount\{
 	MyAccountController,
+	CLientController as CLientControllerSite,
 	AddressController,
 	CardController
 };
@@ -43,6 +45,7 @@ use App\Middlewares\Authenticate;
 // ------------------------------------------------------------------------------
 
 Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], function(){
+	// ROUTE HOME
 	Route::get('/', [PanelController::class, 'index'])->name('panel');
 
 	// ROUTE USERS
@@ -185,6 +188,7 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 			Route::post('/endereco/salvar', [SystemController::class, 'updateAddress'])->name('panel.system.address.update');
 			Route::post('/contato/salvar', [SystemController::class, 'updateContact'])->name('panel.system.contact.update');
 			Route::post('/social/salvar', [SystemController::class, 'updateSocial'])->name('panel.system.social.update');
+			Route::post('/lgpd/salvar', [SystemController::class, 'updateLgpd'])->name('panel.system.lgpd.update');
 			Route::post('/floater/salvar', [SystemController::class, 'updateFloater'])->name('panel.system.floater.update');
 		});
 
@@ -217,21 +221,47 @@ Route::group(['prefix' => 'painel'], function(){
 // ------------------------------------------------------------------------------
 
 Route::group(['prefix' => '/'], function(){
+	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
+
+	// ROUTE SITEMAP
+	Route::get('/sitemap', [SiteMapController::class, 'index'])->name('site.sitemap');
+
+	// ROUTE SITEMAP-IMAGES
+	Route::get('/sitemap-images', [SiteMapController::class, 'images'])->name('site.sitemap-images');
+
+	// ROUTE PRIVACY POLICY
+	Route::get('/politica-de-privacidade', [LgpdController::class, 'privacy_policy'])->name('site.privacy_policy');
+
+	// ROUTE TERMS CONDITIONS
+	Route::get('/termos-e-condicoes', [LgpdController::class, 'terms_conditions'])->name('site.terms_conditions');
+
+	// ROUTE VALIDATE ACCOUNT
+	Route::get('/politica-de-privacidade', [LgpdController::class, 'privacy_policy'])->name('site.privacy_policy');
 
 	// ROUTE LOGIN
 	Route::group(['prefix' => 'login'], function(){
 		Route::get('/', [AuthControllerSite::class, 'index'])->name('site.login');
+		Route::post('/', [AuthControllerSite::class, 'loginValidate'])->name('site.login.validate');
 	});
 
 	// ROUTE CREATE ACCOUNT
 	Route::group(['prefix' => 'criar-conta'], function(){
-		Route::get('/', [AuthControllerSite::class, 'create'])->name('site.create');
+		Route::get('/pessoa-fisica', [AuthControllerSite::class, 'createPF'])->name('site.account.pf.create');
+		Route::get('/pessoa-juridica', [AuthControllerSite::class, 'createPJ'])->name('site.account.pj.create');
+		Route::post('/', [AuthControllerSite::class, 'store'])->name('site.account.store');
+		Route::get('/validar/{token}', [AuthControllerSite::class, 'validate'])->name('site.account.validate');
 	});
 
 	// ROUTE MY ACCOUNT
 	Route::group(['prefix' => 'minha-conta'], function(){
 		Route::get('/', [MyAccountController::class, 'index'])->name('site.myaccount');
+
+		// ROUTES CLIENT
+		Route::group(['prefix' => 'dados-pessoais'], function(){
+			Route::get('/', [CLientControllerSite::class, 'index'])->name('site.myaccount.client');
+			Route::put('/salvar', [CLientControllerSite::class, 'update'])->name('site.myaccount.client.update');
+		});
 
 		// ROUTES ADRESSESS
 		Route::group(['prefix' => 'enderecos'], function(){
@@ -252,6 +282,9 @@ Route::group(['prefix' => '/'], function(){
 			Route::put('/{id}/editar/salvar', [CardController::class, 'update'])->name('site.myaccount.cards.update');
 			Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
 		});
+
+		// ROUTE LOGOUT
+		Route::get('/sair', [MyAccountController::class, 'logout'])->name('site.myaccount.logout');
 	});
 
 	// ROUTE CART
@@ -286,15 +319,5 @@ Route::group(['prefix' => '/'], function(){
 		Route::get('/', [ProductControllerSite::class, 'index'])->name('site.products');
 		Route::get('/{slug}', [ProductControllerSite::class, 'show'])->name('site.products.show');
 		Route::any('/info/{id}', [ProductControllerSite::class, 'info'])->name('site.products.info');
-	});
-
-	// ROUTE SITEMAP
-	Route::group(['prefix' => 'sitemap'], function(){
-		Route::get('/', [SiteMapController::class, 'index'])->name('site.sitemap');
-	});
-
-	// ROUTE SITEMAP-IMAGES
-	Route::group(['prefix' => 'sitemap-images'], function(){
-		Route::get('/', [SiteMapController::class, 'images'])->name('site.sitemap-images');
 	});
 });

@@ -27,7 +27,7 @@ class PanelController extends Controller{
 	public function index(){
 		/*
 		$actions = ['all'];
-		$tables = ['system', 'system.address', 'system.contact', 'system.social', 'system.store', 'system.floater'];
+		$tables = ['system', 'system.address', 'system.contact', 'system.social', 'system.store', 'system.lgpd', 'system.floater'];
 
 		foreach($tables as $table){
 			foreach($actions as $action){

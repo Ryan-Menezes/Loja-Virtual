@@ -16,7 +16,10 @@ class MyAccountController extends Controller{
 	private $client;
 
 	public function __construct(){
-		$this->client = Client::get()->firstOrFail();
+		$this->client = auth('site');
+
+		if(!$this->client)
+			abort(404);
 	}
 
 	public function index(){;
@@ -24,5 +27,10 @@ class MyAccountController extends Controller{
 		$client = $this->client;
 
 		return view('site.myaccount.index', compact('client', 'cart'));
+	}
+
+	public function logout(){
+		session()->remove(config('app.url'));
+		redirect(route('site.login'));
 	}
 }

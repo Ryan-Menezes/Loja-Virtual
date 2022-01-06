@@ -98,6 +98,59 @@ class SystemController extends Controller{
 		redirect(route('panel.system'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!']);
 	}
 
+	public function updateLgpd(){
+		$this->system->verifyPermission('all.system.lgpd');
+
+		$lgpd = $this->system->lgpd->firstOrFail();
+
+		$request = new Request();
+		$data = $request->all();
+		$privacy = $request->file('privacy_policy');
+		$terms = $request->file('terms_conditions');
+		$removes = [];
+
+		// Privacy File
+		if($privacy->error == 0){
+			if(!empty($lgpd->privacy_policy)){
+				$removes[] = $lgpd->privacy_policy;
+			}
+
+			$data['privacy_policy'] = $privacy->store('privacy_policy');
+		}else{
+			unset($data['privacy_policy']);
+		}
+
+		// Terms File
+		if($terms->error == 0){
+			if(!empty($lgpd->terms_conditions)){
+				$removes[] = $lgpd->terms_conditions;
+			}
+
+			$data['terms_conditions'] = $terms->store('terms_conditions');
+		}else{
+			unset($data['terms_conditions']);
+		}
+		
+		if($lgpd->update($data)){
+			foreach($removes as $remove){
+				Storage::delete($remove);
+			}
+
+			redirect(route('panel.system'), ['success' => 'LGPD editado com sucesso']);
+		}
+
+		// Detando arquivos no caso de erro
+		if($privacy && isset($data['privacy_policy'])){
+			Storage::delete($data['privacy_policy']);
+		}
+
+		if($terms && isset($data['terms_conditions'])){
+			Storage::delete($data['terms_conditions']);
+		}
+		
+		redirect(route('panel.system'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!']);
+	}
+
 	public function updateFloater(){
 		$this->system->verifyPermission('all.system.floater');
 
@@ -110,12 +163,12 @@ class SystemController extends Controller{
 
 		$this->validator($data, $floater->rolesUpdate, $floater->messages);
 
-		if($image){
-			if(!empty($floater->image)){
-				$imagePrev = $floater->image;
-			}
+		if(!empty($floater->image)){
+			$imagePrev = $floater->image;
+		}
 
-			$data['image'] = $image->store('floaters');
+		if($image->error == 0){
+			$data['image'] = $image->store('floater');
 		}else{
 			$data['image'] = null;
 		}

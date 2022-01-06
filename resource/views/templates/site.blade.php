@@ -92,9 +92,12 @@
                     <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
                 </ul>
                 <ul class="header-links pull-right">
+                    @if(!auth('site'))
                     <li><a href="{{ route('site.login') }}" title="Fazer Login em Minha Conta"><i class="fa fa-lock"></i> Login</a></li>
-                    <li><a href="{{ route('site.create') }}" title="Criar Minha Conta"><i class="fa fa-user"></i> Criar Conta</a></li>
+                    <li><a href="{{ route('site.account.pf.create') }}" title="Criar Minha Conta"><i class="fa fa-user"></i> Criar Conta</a></li>
+                    @else
                     <li><a href="{{ route('site.myaccount') }}" title="Minha Conta"><i class="fa fa-user-circle"></i> Minha Conta</a></li>
+                    @endif
                 </ul>
             </div>
         </div>
@@ -151,7 +154,9 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-shopping-cart"></i>
                                     <span>Carrinho</span>
+                                    @if($cart->quantity() > 0)
                                     <div class="qty">{{ $cart->quantity() }}</div>
+                                    @endif
                                 </a>
                                 <div class="cart-dropdown">
                                     <div class="cart-list">

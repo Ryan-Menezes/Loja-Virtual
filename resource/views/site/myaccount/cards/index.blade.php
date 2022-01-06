@@ -1,7 +1,7 @@
 @extends('templates.site')
 
 @section('title', 'Meus Cartões')
-@section('url', route('site.myaccount'))
+@section('url', route('site.myaccount.cards'))
 @section('keywords', config('app.keywords'))
 @section('description', config('app.description'))
 @section('image', public_path('assets/img/site/core-img/favicon.ico'))

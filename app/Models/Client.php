@@ -13,7 +13,7 @@ class Client extends Model{
 			'name' 		=> 'required|min:1|max:100',
 			'email' 	=> "required|email|min:1|max:100|unique:{$this->table},email",
 			'password' 	=> 'required|min:8|max:100',
-			'telephone' => 'required|numeric|min:10|max:10',
+			'telephone' => 'numeric|min:10|max:10',
 			'cell' 		=> 'required|numeric|min:11|max:11',
 			'cpf' 		=> 'numeric|min:11|max:11',
 			'cnpj' 		=> 'numeric|min:14|max:14'
@@ -25,7 +25,7 @@ class Client extends Model{
 			'name' 		=> 'required|min:1|max:100',
 			'email' 	=> "required|email|min:1|max:100|unique:{$this->table},email,{$this->id},id",
 			'password' 	=> 'min:8|max:100',
-			'telephone' => 'required|numeric|min:10|max:10',
+			'telephone' => 'numeric|min:10|max:10',
 			'cell' 		=> 'required|numeric|min:11|max:11',
 			'cpf' 		=> 'numeric|min:11|max:11',
 			'cnpj' 		=> 'numeric|min:14|max:14'
@@ -45,7 +45,6 @@ class Client extends Model{
 			'password.required' 	=> 'O preenchimento do campo nome é obrigatório!',
 			'password.min' 			=> 'O campo senha deve conter no mínimo %min% caracteres!',
 			'password.max' 			=> 'O campo senha deve conter no máximo %max% caracteres!',
-			'telephone.required' 	=> 'O preenchimento do campo telefone é obrigatório!',
 			'telephone.numeric' 	=> 'O telefone deve ser composto somente por números!',
 			'telephone.min' 		=> 'O campo telefone deve conter no mínimo %min% caracteres!',
 			'telephone.max' 		=> 'O campo telefone deve conter no máximo %max% caracteres!',

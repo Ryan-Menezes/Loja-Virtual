@@ -5,7 +5,8 @@
 	@include('includes.components.form.file', [
 		'type' => 'file', 
 		'name' => 'image', 
-		'title' => 'Imagem', 
+		'title' => 'Imagem',
+		'value' => (isset($banner) && $banner->image ? url('storage/app/public/' . $banner->image) : null), 
 		'accept' => 'image/*',
 		'class' => (!isset($banner) ? 'required' : null)
 	])

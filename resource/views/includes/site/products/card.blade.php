@@ -41,12 +41,11 @@
 			</div>
 			<div class="product-btns">
 				<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Favoritar</span></button>
-				<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">Comparar</span></button>
 				<button class="quick-view"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="Visualizar"><i class="fa fa-eye"></i><span class="tooltipp">Visualizar</span></a></button>
 			</div>
 		</div>
 		<div class="add-to-cart">
-			@if($product->sizes->first()->quantity > 0)
+			@if($product->sizes->where('quantity', '>', 0)->count())
 			<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
 			@else
 			<p style="color: white;"><strong>Produto Indisponível</strong></p>

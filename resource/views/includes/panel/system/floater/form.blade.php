@@ -4,7 +4,8 @@
 	@include('includes.components.form.file', [
 		'type' => 'file', 
 		'name' => 'image', 
-		'title' => 'Imagem', 
+		'title' => 'Imagem',
+		'value' => (isset($system) && $system->floater && $system->floater->image ? url('storage/app/public/' . $system->floater->image) : null), 
 		'accept' => 'image/*'
 	])
 

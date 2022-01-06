@@ -141,7 +141,10 @@ if(!function_exists('validator')){
 }
 
 if(!function_exists('auth')){
-	function auth() : Auth{
+	function auth($type = 'panel'){
+		if($type == 'site')
+			return session(config('app.url')) ? session(config('app.url'))['client'] : null;
+
 		return new Auth();
 	}
 }

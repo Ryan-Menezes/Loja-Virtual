@@ -16,7 +16,11 @@ class CardController extends Controller{
 	private $card;
 
 	public function __construct(){
-		$this->client = Client::get()->firstOrFail();
+		$this->client = auth('site');
+
+		if(!$this->client)
+			abort(404);
+		
 		$this->card = new ClientCard();
 	}
 
@@ -42,6 +46,7 @@ class CardController extends Controller{
 	public function store(){
 		$request = new Request();
 		$data = $request->all();
+		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
 
 		$this->validator($data, $this->card->rolesCreate, $this->card->messages);
 
@@ -63,6 +68,7 @@ class CardController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
 
 		$this->validator($data, $card->rolesUpdate, $card->messages);
 

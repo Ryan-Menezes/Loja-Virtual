@@ -18,10 +18,7 @@ class Auth{
 	public static function check(string $email, string $password) : bool{
 		$user = User::where('email', $email)->first();
 
-		if(is_null($user)) 
-			return false;
-
-		if(!password_verify($password, $user->password))
+		if(is_null($user) || !password_verify($password, $user->password)) 
 			return false;
 
 		if(password_needs_rehash($user->password, PASSWORD_DEFAULT)){

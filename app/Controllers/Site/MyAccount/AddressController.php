@@ -16,7 +16,11 @@ class AddressController extends Controller{
 	private $address;
 
 	public function __construct(){
-		$this->client = Client::get()->firstOrFail();
+		$this->client = auth('site');
+
+		if(!$this->client)
+			abort(404);
+		
 		$this->address = new ClientAddress();
 	}
 

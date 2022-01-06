@@ -15,6 +15,7 @@
 					'type' => 'file', 
 					'name' => 'poster', 
 					'title' => 'Capa', 
+					'value' => (isset($notice) && $notice->poster ? url('storage/app/public/' . $notice->poster) : null), 
 					'accept' => 'image/*',
 					'class' => (!isset($notice) ? 'required' : null)
 				])

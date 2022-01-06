@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05-Jan-2022 às 21:01
+-- Generation Time: 06-Jan-2022 às 20:56
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -93,13 +93,14 @@ CREATE TABLE `clients` (
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `telephone` char(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telephone` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cell` char(11) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cpf` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cnpj` char(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `google_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `facebook_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `validated` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -108,8 +109,8 @@ CREATE TABLE `clients` (
 -- Extraindo dados da tabela `clients`
 --
 
-INSERT INTO `clients` (`id`, `name`, `email`, `password`, `telephone`, `cell`, `cpf`, `cnpj`, `token`, `google_id`, `facebook_id`, `created_at`, `updated_at`) VALUES
-(2, 'José Augusto', 'jose@gmail.com', '123', '1198765430', '11987654300', '32165498700', NULL, NULL, NULL, NULL, '2021-12-20 18:52:24', '2021-12-20 18:52:24');
+INSERT INTO `clients` (`id`, `name`, `email`, `password`, `telephone`, `cell`, `cpf`, `cnpj`, `token`, `google_id`, `facebook_id`, `validated`, `created_at`, `updated_at`) VALUES
+(6, 'Ryan Menezes', 'menezesryan1010@gmail.com', '$2y$10$D5XbqygOrkqfp58hD6IGQexwzLpQ8rp2CmXy6I8O.PAiaCx2.CPky', '1199999998', '11999999999', '53881489800', '78945612345678', NULL, NULL, NULL, 1, '2022-01-06 18:01:18', '2022-01-06 18:03:51');
 
 -- --------------------------------------------------------
 
@@ -134,7 +135,7 @@ CREATE TABLE `client_adresses` (
 --
 
 INSERT INTO `client_adresses` (`id`, `postal_code`, `street`, `number`, `district`, `city`, `state`, `complement`, `client_id`) VALUES
-(4, '12345678', 'Rua Nova', '15', 'Novo Bairro', 'São Paulo', 'SP', '', 2);
+(7, '12345678', 'Rua Nova', '15', 'Novo Bairro', 'São Paulo', 'SP', '', 6);
 
 -- --------------------------------------------------------
 
@@ -190,6 +191,7 @@ CREATE TABLE `coupons` (
   `percent` tinyint(100) UNSIGNED NOT NULL,
   `expiration` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- Error reading data for table lojavirtual.coupons: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`coupons`' na linha 1
 
 -- --------------------------------------------------------
 
@@ -268,74 +270,7 @@ CREATE TABLE `permissions` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `permissions`
---
-
-INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
-(1, 'all.system', 'all.system'),
-(2, 'all.system.address', 'all.system.address'),
-(3, 'all.system.contact', 'all.system.contact'),
-(4, 'all.system.social', 'all.system.social'),
-(5, 'all.system.store', 'all.system.store'),
-(6, 'all.system.floater', 'all.system.floater'),
-(7, 'view.users', 'view.users'),
-(8, 'create.users', 'create.users'),
-(9, 'edit.users', 'edit.users'),
-(10, 'delete.users', 'delete.users'),
-(11, 'view.clients', 'view.clients'),
-(12, 'create.clients', 'create.clients'),
-(13, 'edit.clients', 'edit.clients'),
-(14, 'delete.clients', 'delete.clients'),
-(15, 'view.products', 'view.products'),
-(16, 'create.products', 'create.products'),
-(17, 'edit.products', 'edit.products'),
-(18, 'delete.products', 'delete.products'),
-(19, 'view.ratings', 'view.ratings'),
-(20, 'create.ratings', 'create.ratings'),
-(21, 'edit.ratings', 'edit.ratings'),
-(22, 'delete.ratings', 'delete.ratings'),
-(23, 'view.requests', 'view.requests'),
-(24, 'create.requests', 'create.requests'),
-(25, 'edit.requests', 'edit.requests'),
-(26, 'delete.requests', 'delete.requests'),
-(27, 'view.coupons', 'view.coupons'),
-(28, 'create.coupons', 'create.coupons'),
-(29, 'edit.coupons', 'edit.coupons'),
-(30, 'delete.coupons', 'delete.coupons'),
-(31, 'view.slideshow', 'view.slideshow'),
-(32, 'create.slideshow', 'create.slideshow'),
-(33, 'edit.slideshow', 'edit.slideshow'),
-(34, 'delete.slideshow', 'delete.slideshow'),
-(35, 'view.banners', 'view.banners'),
-(36, 'create.banners', 'create.banners'),
-(37, 'edit.banners', 'edit.banners'),
-(38, 'delete.banners', 'delete.banners'),
-(39, 'view.depoiments', 'view.depoiments'),
-(40, 'create.depoiments', 'create.depoiments'),
-(41, 'edit.depoiments', 'edit.depoiments'),
-(42, 'delete.depoiments', 'delete.depoiments'),
-(43, 'view.notices', 'view.notices'),
-(44, 'create.notices', 'create.notices'),
-(45, 'edit.notices', 'edit.notices'),
-(46, 'delete.notices', 'delete.notices'),
-(47, 'view.comments', 'view.comments'),
-(48, 'create.comments', 'create.comments'),
-(49, 'edit.comments', 'edit.comments'),
-(50, 'delete.comments', 'delete.comments'),
-(51, 'view.categories', 'view.categories'),
-(52, 'create.categories', 'create.categories'),
-(53, 'edit.categories', 'edit.categories'),
-(54, 'delete.categories', 'delete.categories'),
-(55, 'view.roles', 'view.roles'),
-(56, 'create.roles', 'create.roles'),
-(57, 'edit.roles', 'edit.roles'),
-(58, 'delete.roles', 'delete.roles'),
-(59, 'view.permissions', 'view.permissions'),
-(60, 'create.permissions', 'create.permissions'),
-(61, 'edit.permissions', 'edit.permissions'),
-(62, 'delete.permissions', 'delete.permissions');
+-- Error reading data for table lojavirtual.permissions: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`permissions`' na linha 1
 
 -- --------------------------------------------------------
 
@@ -618,7 +553,75 @@ CREATE TABLE `roles_permissions` (
   `role_id` int(11) UNSIGNED NOT NULL,
   `permission_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
--- Error reading data for table lojavirtual.roles_permissions: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`roles_permissions`' na linha 1
+
+--
+-- Extraindo dados da tabela `roles_permissions`
+--
+
+INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
+(322, 1, 1),
+(323, 1, 2),
+(324, 1, 3),
+(325, 1, 7),
+(326, 1, 6),
+(327, 1, 4),
+(328, 1, 5),
+(329, 1, 37),
+(330, 1, 53),
+(331, 1, 13),
+(332, 1, 49),
+(333, 1, 29),
+(334, 1, 41),
+(335, 1, 45),
+(336, 1, 61),
+(337, 1, 17),
+(338, 1, 21),
+(339, 1, 25),
+(340, 1, 57),
+(341, 1, 33),
+(342, 1, 9),
+(343, 1, 39),
+(344, 1, 55),
+(345, 1, 15),
+(346, 1, 51),
+(347, 1, 31),
+(348, 1, 43),
+(349, 1, 47),
+(350, 1, 63),
+(351, 1, 19),
+(352, 1, 23),
+(353, 1, 27),
+(354, 1, 59),
+(355, 1, 35),
+(356, 1, 11),
+(357, 1, 38),
+(358, 1, 54),
+(359, 1, 14),
+(360, 1, 50),
+(361, 1, 30),
+(362, 1, 42),
+(363, 1, 46),
+(364, 1, 62),
+(365, 1, 18),
+(366, 1, 22),
+(367, 1, 26),
+(368, 1, 58),
+(369, 1, 34),
+(370, 1, 10),
+(371, 1, 36),
+(372, 1, 52),
+(373, 1, 12),
+(374, 1, 48),
+(375, 1, 28),
+(376, 1, 40),
+(377, 1, 44),
+(378, 1, 60),
+(379, 1, 16),
+(380, 1, 20),
+(381, 1, 24),
+(382, 1, 56),
+(383, 1, 32),
+(384, 1, 8);
 
 -- --------------------------------------------------------
 
@@ -711,6 +714,7 @@ CREATE TABLE `system` (
   `system_address_id` int(10) UNSIGNED NOT NULL,
   `system_contact_id` int(10) UNSIGNED NOT NULL,
   `system_social_id` int(10) UNSIGNED NOT NULL,
+  `system_lgpd_id` int(10) UNSIGNED NOT NULL,
   `system_floater_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -718,8 +722,8 @@ CREATE TABLE `system` (
 -- Extraindo dados da tabela `system`
 --
 
-INSERT INTO `system` (`id`, `name`, `keywords`, `description`, `maintenance`, `system_address_id`, `system_contact_id`, `system_social_id`, `system_floater_id`) VALUES
-(1, 'Electro', 'loja virtual, eletrônicos, vestimentas', 'Loja Virtual', 0, 1, 1, 1, 1);
+INSERT INTO `system` (`id`, `name`, `keywords`, `description`, `maintenance`, `system_address_id`, `system_contact_id`, `system_social_id`, `system_lgpd_id`, `system_floater_id`) VALUES
+(1, 'Electro', 'loja virtual, eletrônicos, vestimentas', 'Loja Virtual', 0, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -784,7 +788,27 @@ CREATE TABLE `system_floater` (
 --
 
 INSERT INTO `system_floater` (`id`, `image`, `link`) VALUES
-(1, '0', '');
+(1, NULL, '');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `system_lgpd`
+--
+
+CREATE TABLE `system_lgpd` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `privacy_policy` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `terms_conditions` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_lgpd`
+--
+
+INSERT INTO `system_lgpd` (`id`, `active`, `privacy_policy`, `terms_conditions`) VALUES
+(1, 1, 'privacy_policy/3d61171f4f54c377291b90c2f99d7cb8.pdf', 'terms_conditions/c4d2f9b886665667f91d38c1e51aaab7.pdf');
 
 -- --------------------------------------------------------
 
@@ -1044,7 +1068,8 @@ ALTER TABLE `system`
   ADD KEY `settings_address_id` (`system_address_id`),
   ADD KEY `settings_contact_id` (`system_contact_id`),
   ADD KEY `settings_floater_id` (`system_floater_id`),
-  ADD KEY `settings_social_id` (`system_social_id`);
+  ADD KEY `settings_social_id` (`system_social_id`),
+  ADD KEY `system_lgpd_id` (`system_lgpd_id`);
 
 --
 -- Indexes for table `system_address`
@@ -1062,6 +1087,12 @@ ALTER TABLE `system_contact`
 -- Indexes for table `system_floater`
 --
 ALTER TABLE `system_floater`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `system_lgpd`
+--
+ALTER TABLE `system_lgpd`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1104,13 +1135,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `client_adresses`
 --
 ALTER TABLE `client_adresses`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `client_cards`
@@ -1152,7 +1183,7 @@ ALTER TABLE `notices_subcategories`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -1206,7 +1237,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=322;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=385;
 
 --
 -- AUTO_INCREMENT for table `slideshow`
@@ -1248,6 +1279,12 @@ ALTER TABLE `system_contact`
 -- AUTO_INCREMENT for table `system_floater`
 --
 ALTER TABLE `system_floater`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_lgpd`
+--
+ALTER TABLE `system_lgpd`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -1367,7 +1404,8 @@ ALTER TABLE `system`
   ADD CONSTRAINT `system_ibfk_1` FOREIGN KEY (`system_address_id`) REFERENCES `system_address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `system_ibfk_2` FOREIGN KEY (`system_contact_id`) REFERENCES `system_contact` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `system_ibfk_3` FOREIGN KEY (`system_floater_id`) REFERENCES `system_floater` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `system_ibfk_4` FOREIGN KEY (`system_social_id`) REFERENCES `system_social` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `system_ibfk_4` FOREIGN KEY (`system_social_id`) REFERENCES `system_social` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `system_ibfk_5` FOREIGN KEY (`system_lgpd_id`) REFERENCES `system_lgpd` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `users_roles`

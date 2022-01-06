@@ -11,7 +11,9 @@
 <section class="container">
 	<div class="row">
 		<div class="col-md-6">
-			<form action="" method="POST" class="form">
+			<form action="{{ route('site.login.validate') }}" method="POST" class="form">
+				@include('includes.messages')
+
 				<h2>Faça seu login:</h2><hr />
 
 				@include('includes.components.form.input', [
@@ -38,8 +40,8 @@
 		<div class="col-md-6">
 			<h2>Crie sua conta:</h2><hr>
 
-			<a href="{{ route('site.create') }}" title="Criar conta como pessoa física" class="btn btn-primary">Criar conta como pessoa física</a>
-			<a href="{{ route('site.create') }}" title="Criar conta como pessoa juridica" class="btn btn-danger">Criar conta como pessoa juridica</a>
+			<a href="{{ route('site.account.pf.create') }}" title="Criar conta como pessoa física" class="btn btn-primary">Criar conta como pessoa física</a>
+			<a href="{{ route('site.account.pj.create') }}" title="Criar conta como pessoa juridica" class="btn btn-danger">Criar conta como pessoa juridica</a>
 		</div>
 	</div>
 </section>

@@ -1,5 +1,5 @@
 <div class="form-group mb-2">
-	<label class="form-label">{{ $title }}:</label>
+	<label class="form-label"><strong>{{ $title }}:</strong></label>
 	<div class="container-check">
 		@foreach($values as $key => $value)
 			<div>
