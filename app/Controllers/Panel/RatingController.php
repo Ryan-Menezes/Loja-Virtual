@@ -49,7 +49,7 @@ class RatingController extends Controller{
 			redirect(route('panel.ratings.edit', ['id' => $rating->id]), ['success' => 'Avaliação editada com sucesso']);
 		}
 
-		redirect(route('panel.ratings.edit'), ['error' => 'Avaliação NÃO editada, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.ratings.edit'), ['error' => 'Avaliação NÃO editada, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

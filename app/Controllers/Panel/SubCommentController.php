@@ -59,7 +59,7 @@ class SubCommentController extends Controller{
 			redirect(route('panel.comments.subcomments.edit', ['comment' => $comment->id, 'id' => $subcomment->id]), ['success' => 'Resposta editada com sucesso']);
 		}
 
-		redirect(route('panel.comments.subcomments.edit', ['comment' => $comment->id, 'id' => $subcomment->id]), ['error' => 'Resposta NÃO editada, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.comments.subcomments.edit', ['comment' => $comment->id, 'id' => $subcomment->id]), ['error' => 'Resposta NÃO editada, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($comment, $id){

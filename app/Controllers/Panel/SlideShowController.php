@@ -56,7 +56,7 @@ class SlideShowController extends Controller{
 		}
 
 		Storage::delete($data['image']);
-		redirect(route('panel.slideshow.create'), ['error' => 'Slide NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.slideshow.create'), ['error' => 'Slide NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -99,7 +99,7 @@ class SlideShowController extends Controller{
 			Storage::delete($data['image']);
 		}
 
-		redirect(route('panel.slideshow.edit'), ['error' => 'Slide NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.slideshow.edit'), ['error' => 'Slide NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

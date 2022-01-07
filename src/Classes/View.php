@@ -44,11 +44,15 @@ class View{
 	  *
 	  * @return void
 	  */
-	public function redirect(string $url, array $parameters = []) : void{
+	public function redirect(string $url, array $parameters = [], bool $old = false) : void{
 		session()->set('redirect', [
 			'url' => $url,
 			'parameters' => $parameters
 		]);
+
+		if($old){
+			session()->flash('old', (new Request())->all());
+		}
 
 		header("location: {$url}");
 		die();

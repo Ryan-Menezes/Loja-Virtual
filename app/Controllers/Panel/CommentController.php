@@ -49,7 +49,7 @@ class CommentController extends Controller{
 			redirect(route('panel.comments.edit', ['id' => $comment->id]), ['success' => 'Comentário editado com sucesso']);
 		}
 
-		redirect(route('panel.comments.edit'), ['error' => 'Comentário NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.comments.edit'), ['error' => 'Comentário NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

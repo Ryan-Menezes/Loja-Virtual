@@ -38,7 +38,7 @@ class CartController extends Controller{
 			redirect(route('site.cart'), ['success' => $result->message]);
 		}
 
-		redirect(route('site.cart'), ['error' => $result->message]);
+		redirect(route('site.cart'), ['error' => $result->message], true);
 	}
 
 	public function destroy($id){
@@ -48,7 +48,7 @@ class CartController extends Controller{
 			redirect(route('site.cart'), ['success' => $result->message]);
 		}
 
-		redirect(route('site.cart'), ['error' => $result->message]);
+		redirect(route('site.cart'), ['error' => $result->message], true);
 	}
 
 	public function add($product_id, $size_id = null, $quantity = 1){

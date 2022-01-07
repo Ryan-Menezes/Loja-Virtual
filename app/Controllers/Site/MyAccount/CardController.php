@@ -54,7 +54,7 @@ class CardController extends Controller{
 			redirect(route('site.myaccount.cards.create'), ['success' => 'Cartão cadastrado com sucesso']);
 		}
 
-		redirect(route('site.myaccount.cards.create'), ['error' => 'Cartão NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('site.myaccount.cards.create'), ['error' => 'Cartão NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -76,7 +76,7 @@ class CardController extends Controller{
 			redirect(route('site.myaccount.cards.edit', ['id' => $card->id]), ['success' => 'Cartão editado com sucesso']);
 		}
 
-		redirect(route('site.myaccount.cards.edit', ['id' => $card->id]), ['error' => 'Cartão NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('site.myaccount.cards.edit', ['id' => $card->id]), ['error' => 'Cartão NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

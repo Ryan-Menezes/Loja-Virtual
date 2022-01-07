@@ -56,7 +56,7 @@ class RoleController extends Controller{
 			redirect(route('panel.roles.create'), ['success' => 'Função cadastrada com sucesso']);
 		}
 
-		redirect(route('panel.roles.create'), ['error' => 'Função NÃO cadastrada, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.roles.create'), ['error' => 'Função NÃO cadastrada, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -87,7 +87,7 @@ class RoleController extends Controller{
 			redirect(route('panel.roles.edit', ['id' => $role->id]), ['success' => 'Função editada com sucesso']);
 		}
 
-		redirect(route('panel.roles.edit', ['id' => $role->id]), ['error' => 'Função NÃO editada, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.roles.edit', ['id' => $role->id]), ['error' => 'Função NÃO editada, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

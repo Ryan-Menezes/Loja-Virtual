@@ -7,7 +7,8 @@ use Src\Classes\{
 	Mail
 };
 use App\Models\{
-	Client
+	Client,
+	ClientAddress
 };
 
 class AuthController extends Controller{
@@ -27,8 +28,8 @@ class AuthController extends Controller{
 
 		$client = $this->client->where('email', $data['email'])->first();
 
-		if(is_null($client) || !password_verify($data['password'], $client->password)) 
-			redirect(route('site.login'), ['error' => 'Não foi possível autenticar, E-Mail ou senha inválidos!']);
+		if(is_null($client) || !password_verify($data['password'], $client->password))
+			redirect(route('site.login'), ['error' => 'Não foi possível autenticar, E-Mail ou senha inválidos!'], true);
 
 		if(password_needs_rehash($client->password, PASSWORD_DEFAULT)){
 			$client = password_hash($data['password'], PASSWORD_DEFAULT);
@@ -53,13 +54,18 @@ class AuthController extends Controller{
 		$data['cell'] = preg_replace('/[^\d]/i', '', $data['cell']);
 		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
 		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
-		$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
+
+		if(isset($data['cnpj']))
+			$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
+
 		$data['postal_code'] = preg_replace('/[^\d]/i', '', $data['postal_code']);
+		$redirect = $data['redirect'] ?? 'pf';
 
 		$this->validator($data, $this->client->rolesCreate, $this->client->messages);
+		$this->validator($data, ClientAddress::$rolesCreate, ClientAddress::$messages);
 
 		if(!isset($data['terms_conditions']) && !$data['terms_conditions']){
-			redirect(route('site.create'), ['error' => 'É necessário aceitar os termos e condições para criar sua conta em nosso site!']);
+			redirect(route('site.account.' . $redirect . '.create'), ['error' => 'É necessário aceitar os termos e condições para criar sua conta em nosso site!'], true);
 			return;
 		}
 
@@ -68,7 +74,11 @@ class AuthController extends Controller{
 		$client = $this->client->create($data);
 
 		if($client){
-			$client->adresses()->create($data);
+			$address = $client->adresses()->create($data);
+
+			$client->shipping_address_id = $address->id;
+			$client->billing_address_id = $address->id;
+			$client->save();
 
 			Mail::isHtml(true)
 					->charset(config('mail.charset'))
@@ -77,10 +87,10 @@ class AuthController extends Controller{
 					->message(view('mail.account.validate', compact('client')))
 					->send($data['email'], $data['name']);
 
-			redirect(route('site.account.create'), ['success' => 'Sua conta foi criada com sucesso, enviamos um link de validação para seu e-mail, Verifique seu e-mail e sua caixa de spam!']);
+			redirect(route('site.account.' . $redirect . '.create'), ['success' => 'Sua conta foi criada com sucesso, enviamos um link de validação para seu e-mail, Verifique seu e-mail e sua caixa de spam!']);
 		}
 
-		redirect(route('site.account.create'), ['error' => 'Não foi possível criar sua conta em nosso site, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('site.account.' . $redirect . '.create'), ['error' => 'Não foi possível criar sua conta em nosso site, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function validate($token){

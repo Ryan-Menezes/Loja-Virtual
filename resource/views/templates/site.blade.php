@@ -126,7 +126,13 @@
                                 <select class="input-select">
                                     <option value="0">Todos</option>
                                     @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @if($category->subcategories->count())
+                                        <optgroup label="{{ $category->name }}">
+                                            @foreach($category->subcategories as $subcategory)
+                                            <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        @endif
                                     @endforeach
                                 </select>
                                 <input type="text" class="input" placeholder="Buscar" name="search">

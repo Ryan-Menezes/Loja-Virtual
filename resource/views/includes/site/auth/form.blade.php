@@ -1,4 +1,4 @@
-<form action="{{ route('site.account.create') }}" method="POST" class="form form-validate">
+<form action="{{ route('site.account.store') }}" method="POST" class="form form-validate">
 	@include('includes.messages')
 
 	@if($type == 1)
@@ -57,6 +57,7 @@
 	</div>
 
 	@if($type == 1)
+		<input type="hidden" name="redirect" value="pf">
 		@include('includes.components.form.input', [
 			'title' => 'CPF',
 			'name' => 'cpf',
@@ -65,6 +66,7 @@
 			'required' => true
 		])
 	@else
+		<input type="hidden" name="redirect" value="pj">
 		@include('includes.components.form.input', [
 			'title' => 'CNPJ',
 			'name' => 'cnpj',

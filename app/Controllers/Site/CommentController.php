@@ -49,7 +49,7 @@ class CommentController extends Controller{
 			redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['success' => 'Comentário enviado com sucesso']);
 		}
 
-		redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['error' => 'Comentário NÃO enviado, Ocorreu um erro no processo de envio!']);
+		redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['error' => 'Comentário NÃO enviado, Ocorreu um erro no processo de envio!'], true);
 	}
 
 	public function response($slug, $id){
@@ -94,6 +94,6 @@ class CommentController extends Controller{
 			redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['success' => 'Resposta enviada com sucesso']);
 		}
 
-		redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['error' => 'Resposta NÃO enviada, Ocorreu um erro no processo de envio!']);
+		redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['error' => 'Resposta NÃO enviada, Ocorreu um erro no processo de envio!'], true);
 	}
 }

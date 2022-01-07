@@ -99,6 +99,7 @@
 					@foreach($product->colors as $color)
 						@include('includes.components.form.coloreditor', [
 							'description' => $color->description,
+							'hex' => $color->hex,
 							'images' => $color->images,
 							'sizes' => $color->sizes,
 							'urlimage' => route('panel.products.component', ['name' => 'form.imageeditor']),

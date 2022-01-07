@@ -40,7 +40,7 @@ class SystemController extends Controller{
 			redirect(route('panel.system'), ['success' => 'Dados editados com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'dados NÃO editados, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'dados NÃO editados, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function updateAddress(){
@@ -58,7 +58,7 @@ class SystemController extends Controller{
 			redirect(route('panel.system'), ['success' => 'Endereço editado com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function updateContact(){
@@ -77,7 +77,7 @@ class SystemController extends Controller{
 			redirect(route('panel.system'), ['success' => 'Contato editado com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Contato NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'Contato NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function updateSocial(){
@@ -95,7 +95,7 @@ class SystemController extends Controller{
 			redirect(route('panel.system'), ['success' => 'Redes Socias editadas com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function updateLgpd(){
@@ -148,7 +148,7 @@ class SystemController extends Controller{
 			Storage::delete($data['terms_conditions']);
 		}
 		
-		redirect(route('panel.system'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function updateFloater(){
@@ -185,6 +185,6 @@ class SystemController extends Controller{
 			Storage::delete($data['image']);
 		}
 		
-		redirect(route('panel.system'), ['error' => 'Floater NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.system'), ['error' => 'Floater NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 }

@@ -2297,6 +2297,8 @@ textarea.input {
   display: none;
   margin-bottom: 40px;
 }
+
+/*--------------------------------------------------------------------*/
 table tr td, 
 table tr{
   vertical-align: middle!important;
@@ -2310,4 +2312,49 @@ form input.error, form textarea.error{
 form span.error{
   font-size: 12px;
   color: #fc3826;
+}
+.bg-whatsapp{
+  background-color: #57BA63;
+  color: white;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: 12px;
+}
+.bg-twitter{
+  background-color: #2AA9E0;
+  color: white;
+  padding: 4px 8px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.bg-whatsapp:hover,
+.bg-whatsapp:focus,
+.bg-twitter:hover,
+.bg-twitter:focus{
+  transform: none!important;
+  width: auto!important;
+  height: auto!important;
+  color: white!important;
+  padding: 4px 8px!important;
+  font-size: 12px!important;
+  font-weight: bold!important;
+}
+.post-details-content .bold{
+  font-weight: bold!important;
+}
+.post-details-content.italic{
+  font-style: italic!important;
+}
+.post-details-content .underline{
+  text-decoration: underline!important;
+}
+.post-details-content a:hover{
+  text-decoration: underline;
+}
+
+blockquote{
+  font-size: 18px;
+  padding-left: 30px;
+  border-left: 4px solid #eb4034;
 }

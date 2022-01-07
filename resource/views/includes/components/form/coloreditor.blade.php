@@ -5,15 +5,27 @@
 	<input type="hidden" name="elements[]" value="COLOREDITOR">
 	<input type="hidden" name="id-colors[]" value="{{ $id }}">
 	<div class="row mb-2">
-		<div class="col-md-11">
-			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => 'description-colors[]', 
-				'title' => 'Descrição da Cor',
-				'value' => $description ?? null,
-				'class' => 'required',
-				'required' => true
-			])
+		<div class="col-md-11 row">
+			<div class="col-md-1">
+				@include('includes.components.form.input', [
+					'type' => 'color', 
+					'name' => 'hex-colors[]', 
+					'title' => 'Cor',
+					'value' => $hex ?? null,
+					'class' => 'required',
+					'required' => true
+				])
+			</div>
+			<div class="col-md-11">
+				@include('includes.components.form.input', [
+					'type' => 'text', 
+					'name' => 'description-colors[]', 
+					'title' => 'Descrição da Cor',
+					'value' => $description ?? null,
+					'class' => 'required',
+					'required' => true
+				])
+			</div>
 		</div>
 		<div class="col-md-1">
 			@if(!isset($notoptions))

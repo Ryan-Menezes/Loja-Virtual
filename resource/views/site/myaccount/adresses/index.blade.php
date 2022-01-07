@@ -19,6 +19,8 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
+            <h1>Endereços</h1><hr />
+
             <div class="text-right" style="margin-bottom: 20px;">
                 <a href="{{ route('site.myaccount.adresses.create') }}" class="btn btn-danger" title="Novo Endereço">Novo <i class="fa fa-plus-circle"></i></a>
             </div>

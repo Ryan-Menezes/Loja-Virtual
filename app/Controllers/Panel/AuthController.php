@@ -24,7 +24,7 @@ class AuthController extends Controller{
 			redirect(route('panel'));
 		}
 
-		redirect(route('panel.login'), ['error' => 'E-Mail ou Senha Incorretos!']);
+		redirect(route('panel.login'), ['error' => 'E-Mail ou Senha Incorretos!'], true);
 	}
 
 	public function logout(){

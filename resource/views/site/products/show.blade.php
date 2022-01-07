@@ -1,7 +1,7 @@
 @extends('templates.site')
 
 @section('title', $product->name)
-@section('url', route('site.notices.show', ['slug' => $product->slug]))
+@section('url', route('site.products.show', ['slug' => $product->slug]))
 @section('description', $product->description)
 @section('image', url('storage/app/public/' . $product->firstImage))
 @section('image_width', 100)
@@ -127,13 +127,15 @@
 						<li><a href="#">Accessories</a></li>
 					</ul>
 
-					<ul class="product-links">
-						<li><strong>Compartilhar:</strong></li>
-						<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-						<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-						<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-						<li><a href="#"><i class="fa fa-envelope"></i></a></li>
-					</ul>
+					<section style="margin-top: 40px;">
+				        <!-- Your share button code -->
+				        <div class="fb-share-button mt-1" data-href="{{ urlencode(route('site.products.show', ['slug' => $product->slug])) }}" data-layout="button" data-size="large" title="Compartilhe no Facebook"></div>
+				        <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('site.products.show', ['slug' => $product->slug])) }}&text={{ $product->name }}" class="btn btn-sm bg-twitter mt-0 mb-2 share-btn" target="_blank" title="Compartilhe no Twitter"><i class="fa fa-twitter"></i> Share</a>
+				        <a href="https://api.whatsapp.com/send?text={{ urlencode($product->name . ': ' . route('site.products.show', ['slug' => $product->slug])) }}" target="_blank" class="btn btn-sm bg-whatsapp mt-0 mb-2 share-btn" title="Compartilhe no WhatsApp"><i class="fa fa-whatsapp"></i> Share</a>
+
+				        <!-- Load Facebook SDK for JavaScript -->
+				        <div id="fb-root"></div>
+				    </section>
 
 				</div>
 			</div>
@@ -605,5 +607,41 @@
 			$('#product-main-img .product-preview').zoom();
 		}
 	}
+</script>
+<script type="text/javascript">
+    // Facebook
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Outros compartilhamentos
+    window.document.addEventListener("DOMContentLoaded", function() {
+        $('.share-btn').click(function(){
+            event.preventDefault()
+
+            window.open(this.href, '_blank', 'width=700,height=350')
+        })
+    }, false);
+
+    // Script para responder um comentário
+    $('[data-startresponse]').click(function(){
+        $('.form-response').hide()
+
+        let data = $(this).data()
+
+        $(`#${data.startresponse}`).show()
+    })
+
+    $('[data-cancelresponse]').click(function(){
+        $('.form-response').hide()
+        
+        let data = $(this).data()
+
+        $(`#${data.cancelresponse}`).hide()
+    })
 </script>
 @endsection

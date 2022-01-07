@@ -48,7 +48,7 @@ class DepoimentController extends Controller{
 			redirect(route('panel.depoiments.create'), ['success' => 'Depoimento cadastrado com sucesso']);
 		}
 
-		redirect(route('panel.depoiments.create'), ['error' => 'Depoimento NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.depoiments.create'), ['error' => 'Depoimento NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
     public function edit($id){
@@ -71,7 +71,7 @@ class DepoimentController extends Controller{
 			redirect(route('panel.depoiments.edit', ['id' => $depoiment->id]), ['success' => 'Depoimento editado com sucesso']);
 		}
 
-		redirect(route('panel.depoiments.edit'), ['error' => 'Depoimento NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.depoiments.edit'), ['error' => 'Depoimento NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

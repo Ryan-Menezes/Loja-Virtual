@@ -13,7 +13,7 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
-            <h2>Seja bem vindo(a) {{ $client->name }}</h2><hr/>
+            <h1>Seja bem vindo(a) {{ $client->name }}</h1><hr/>
 
             <div class="cards">
                 <a href="{{ route('site.myaccount.requests') }}" title="Pedidos">

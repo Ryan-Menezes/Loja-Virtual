@@ -13,7 +13,113 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
-            <h1>{{ $client->name }}</h1>
+            <form action="{{ route('site.myaccount.client.update') }}" method="POST" class="form form-validate">
+				@include('includes.messages')
+
+				<input type="hidden" name="_method" value="PUT">
+
+				<h1>Dados Pessoais</h1><hr />
+
+				@include('includes.components.form.input', [
+					'title' => 'Nome',
+					'name' => 'name',
+					'type' => 'text',
+					'value' => $client->name,
+					'class' => 'required',
+					'required' => true
+				])
+
+				<div class="row">
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'E-Mail',
+							'name' => 'email',
+							'type' => 'email',
+							'value' => $client->email,
+							'class' => 'required email',
+							'required' => true,
+							'disabled' => true
+						])
+					</div>
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'Senha',
+							'name' => 'password',
+							'type' => 'password'
+						])
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'Telefone',
+							'name' => 'telephone',
+							'value' => $client->telephone,
+							'type' => 'text'
+						])
+					</div>
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'Celular',
+							'name' => 'cell',
+							'type' => 'text',
+							'value' => $client->cell,
+							'class' => 'required',
+							'required' => true
+						])
+					</div>
+				</div>
+
+				@include('includes.components.form.input', [
+					'title' => 'CPF',
+					'name' => 'cpf',
+					'type' => 'text',
+					'value' => $client->cpf,
+					'class' => 'required',
+					'required' => true
+				])
+				@include('includes.components.form.input', [
+					'title' => 'CNPJ',
+					'name' => 'cnpj',
+					'type' => 'text',
+					'value' => $client->cnpj,
+					'class' => 'required',
+					'required' => true
+				])
+
+				<br /><h2>Endereços Principais</h2><hr />
+
+				<div class="row">
+					<div class="col-md-6">
+						@include('includes.components.form.select', [
+							'title' => 'Entrega',
+							'name' => 'shipping_address_id',
+							'options' => $adresses,
+							'value' => $client->shipping_address_id,
+							'class' => 'required',
+							'required' => true
+						])
+
+						<a href="{{ route('site.myaccount.adresses.create') }}" title="Adicionar Novo Endareço">Adicionar novo endereço</a>
+					</div>
+					<div class="col-md-6">
+						@include('includes.components.form.select', [
+							'title' => 'Cobrança',
+							'name' => 'billing_address_id',
+							'options' => $adresses,
+							'value' => $client->billing_address_id,
+							'class' => 'required',
+							'required' => true
+						])
+
+						<a href="{{ route('site.myaccount.adresses.create') }}" title="Adicionar Novo Endareço">Adicionar novo endereço</a>
+					</div>
+				</div>
+
+				<br />
+				<input type="submit" class="btn btn-danger" value="Salvar">
+			</form>
         </div>
     </div>
 </section>

@@ -54,7 +54,7 @@ class AddressController extends Controller{
 			redirect(route('site.myaccount.adresses.create'), ['success' => 'Endereço cadastrado com sucesso']);
 		}
 
-		redirect(route('site.myaccount.adresses.create'), ['error' => 'Endereço NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('site.myaccount.adresses.create'), ['error' => 'Endereço NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -76,7 +76,7 @@ class AddressController extends Controller{
 			redirect(route('site.myaccount.adresses.edit', ['id' => $address->id]), ['success' => 'Endereço editado com sucesso']);
 		}
 
-		redirect(route('site.myaccount.adresses.edit', ['id' => $address->id]), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('site.myaccount.adresses.edit', ['id' => $address->id]), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

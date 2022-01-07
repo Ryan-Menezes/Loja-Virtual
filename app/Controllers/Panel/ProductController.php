@@ -61,6 +61,38 @@ class ProductController extends Controller{
 		$data = $request->all();
 
 		$this->validator($data, $this->product->rolesCreate, $this->product->messages);
+
+		// Validando cores e imagens
+		if(empty($data['id-colors'])){
+			redirect(route('panel.products.create'), ['error' => 'O produto precisa que pelo menos possua uma cor!'], true);
+		}
+
+		for($i = 0; $i < count($data['id-colors']); $i++){
+			$id = trim($data['id-colors'][$i]);
+			$description = trim($data['description-colors'][$i]);
+			$hex = trim($data['hex-colors'][$i]);
+
+			// Descrição da cor
+			if(empty($description) || empty($hex)){
+				redirect(route('panel.products.create'), ['error' => 'Todos os campos das cores devem ser preenchidos!(Descrição, Cor, Imagens e Tamanhos)'], true);
+			}
+
+			// Imagens da cor
+			$images = $request->file("images-{$id}");
+
+			if(empty($images)){
+				redirect(route('panel.products.create'), ['error' => 'Todos os campos das cores devem ser preenchidos!(Descrição, Cor, Imagens e Tamanhos)'], true);
+			}
+
+			for($j = 0; $j < count($images); $j++){
+				if($images[$j]->error != 0){
+					redirect(route('panel.products.create'), ['error' => 'Algumas imagens não são válidas!'], true);
+					return;
+				}
+			}
+		}
+
+		// Cadastrando produto
 		$data['slug'] = slugify($data['name']);
 
 		$product = $this->product->create($data);
@@ -94,9 +126,11 @@ class ProductController extends Controller{
 			for($i = 0; $i < count($data['id-colors']); $i++){
 				$id = trim($data['id-colors'][$i]);
 				$description = trim($data['description-colors'][$i]);
+				$hex = trim($data['hex-colors'][$i]);
 
 				$color = $product->colors()->create([
-					'description' => $description
+					'description' => $description,
+					'hex' => $hex
 				]);
 
 				if($color){
@@ -111,7 +145,7 @@ class ProductController extends Controller{
 					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
-						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j]))){
+						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
 							$size = $color->sizes()->create([
 								'description' 		=> trim($descriptions[$j]),
 								'price' 			=> trim($prices[$j]),
@@ -149,7 +183,7 @@ class ProductController extends Controller{
 			redirect(route('panel.products.create'), ['success' => 'Produto cadastrado com sucesso']);
 		}
 
-		redirect(route('panel.products.create'), ['error' => 'Produto NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.products.create'), ['error' => 'Produto NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -168,6 +202,31 @@ class ProductController extends Controller{
 		$data = $request->all();
 
 		$this->validator($data, $product->rolesUpdate, $product->messages);
+
+		// Validando cores e imagens
+		if(empty($data['id-colors'])){
+			redirect(route('panel.products.edit', ['id' => $id]), ['error' => 'O produto precisa que pelo menos possua uma cor!'], true);
+		}
+
+		for($i = 0; $i < count($data['id-colors']); $i++){
+			$id_cor = trim($data['id-colors'][$i]);
+			$description = trim($data['description-colors'][$i]);
+			$hex = trim($data['hex-colors'][$i]);
+
+			// Descrição da cor
+			if(empty($description) || empty($hex)){
+				redirect(route('panel.products.edit', ['id' => $id]), ['error' => 'Todos os campos das cores devem ser preenchidos!(Descrição, Cor, Imagens e Tamanhos)'], true);
+			}
+
+			// Imagens da cor
+			$images = $request->file("images-{$id_cor}");
+
+			if(empty($images)){
+				redirect(route('panel.products.edit', ['id' => $id]), ['error' => 'Todos os campos das cores devem ser preenchidos!(Descrição, Cor, Imagens e Tamanhos)'], true);
+			}
+		}
+
+		// Atualizando produto
 		$data['slug'] = slugify($data['name']);
 
 		if($product->update($data)){
@@ -227,16 +286,19 @@ class ProductController extends Controller{
 			for($i = 0; $i < count($data['id-colors']); $i++){
 				$id = trim($data['id-colors'][$i]);
 				$description = trim($data['description-colors'][$i]);
+				$hex = trim($data['hex-colors'][$i]);
 
 				$color = $product->colors()->find($id);
 
 				if($color){
 					$color->update([
-						'description' => $description
+						'description' => $description,
+						'hex' => $hex
 					]);
 				}else{
 					$color = $product->colors()->create([
-						'description' => $description
+						'description' => $description,
+						'hex' => $hex
 					]);
 				}
 
@@ -252,7 +314,7 @@ class ProductController extends Controller{
 					$weights = $data["weight-size-{$id}"];
 
 					for($j = 0; $j < count($descriptions); $j++){
-						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j]))){
+						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
 							$size = $color->sizes()->create([
 								'description' 		=> trim($descriptions[$j]),
 								'price' 			=> trim($prices[$j]),
@@ -290,7 +352,7 @@ class ProductController extends Controller{
 			redirect(route('panel.products.edit', ['id' => $product->id]), ['success' => 'Produto editado com sucesso']);
 		}
 
-		redirect(route('panel.products.edit', ['id' => $product->id]), ['error' => 'Produto NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.products.edit', ['id' => $product->id]), ['error' => 'Produto NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

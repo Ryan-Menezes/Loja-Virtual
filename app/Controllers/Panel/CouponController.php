@@ -56,7 +56,7 @@ class CouponController extends Controller{
 			redirect(route('panel.coupons.create'), ['success' => 'Cupom cadastrado com sucesso']);
 		}
 
-		redirect(route('panel.coupons.create'), ['error' => 'Cupom NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.coupons.create'), ['error' => 'Cupom NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -85,7 +85,7 @@ class CouponController extends Controller{
 			redirect(route('panel.coupons.edit', ['id' => $coupon->id]), ['success' => 'Cupom editado com sucesso']);
 		}
 
-		redirect(route('panel.coupons.edit'), ['error' => 'Cupom NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.coupons.edit'), ['error' => 'Cupom NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

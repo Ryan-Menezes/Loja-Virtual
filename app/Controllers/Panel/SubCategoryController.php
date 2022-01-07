@@ -61,7 +61,7 @@ class SubCategoryController extends Controller{
 			redirect(route('panel.categories.subcategories.create', ['category' => $category->id]), ['success' => 'Sub Categoria cadastrada com sucesso']);
 		}
 
-		redirect(route('panel.categories.subcategories.create', ['category' => $category->id]), ['error' => 'Sub Categoria NÃO cadastrada, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.categories.subcategories.create', ['category' => $category->id]), ['error' => 'Sub Categoria NÃO cadastrada, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
     public function edit($category, $id){
@@ -89,7 +89,7 @@ class SubCategoryController extends Controller{
 			redirect(route('panel.categories.subcategories.edit', ['category' => $category->id, 'id' => $subcategory->id]), ['success' => 'Sub Categoria editada com sucesso']);
 		}
 
-		redirect(route('panel.categories.subcategories.edit', ['category' => $category->id, 'id' => $subcategory->id]), ['error' => 'Sub Categoria NÃO editada, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.categories.subcategories.edit', ['category' => $category->id, 'id' => $subcategory->id]), ['error' => 'Sub Categoria NÃO editada, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($category, $id){

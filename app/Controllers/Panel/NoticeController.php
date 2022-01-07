@@ -69,6 +69,11 @@ class NoticeController extends Controller{
 
 		$this->validator($data, $this->notice->rolesCreate, $this->notice->messages);
 
+		// Validando conteúdo
+		if(empty($elements)){
+			redirect(route('panel.notices.create'), ['error' => 'O preenchimento do conteúdo é obrigatório!'], true);
+		}
+
 		foreach($elements as $element){
 			if($element == 'TEXTEDITOR'){
 				if(mb_strlen($texts[$textIndex]) > 0){
@@ -115,6 +120,11 @@ class NoticeController extends Controller{
 			}
 		}
 
+		// Validando conteúdo
+		if(empty($content)){
+			redirect(route('panel.notices.create'), ['error' => 'O preenchimento do conteúdo é obrigatório!'], true);
+		}
+
 		$data['poster'] = $request->file('poster')->store('notices');
 		$data['slug'] = slugify($data['title']);
 		$data['content'] = json_encode($content);
@@ -128,7 +138,7 @@ class NoticeController extends Controller{
 		}
 
 		Storage::delete($data['poster']);
-		redirect(route('panel.notices.create'), ['error' => 'Artigo NÃO cadastrado, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.notices.create'), ['error' => 'Artigo NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -162,21 +172,9 @@ class NoticeController extends Controller{
 		
 		$this->validator($data, $notice->rolesUpdate, $notice->messages);
 
-		// Remove imagens que foram deletadas
-		if(!empty($imagesRemove)){
-			foreach($imagesRemove as $image){
-				if(!empty($image)){
-					$image = trim($image);
-
-					Storage::delete($image);
-
-					if(!empty($imagesEdit) && in_array($image, $imagesEdit)){
-						$key = array_search($image, $imagesEdit);
-
-						array_splice($imagesEdit, $key, 1);
-					}
-				}
-			}
+		// Validando conteúdo
+		if(empty($elements)){
+			redirect(route('panel.notices.edit', ['id' => $id]), ['error' => 'O preenchimento do conteúdo é obrigatório!'], true);
 		}
 
 		// Formata o conteúdo da notícia
@@ -242,6 +240,30 @@ class NoticeController extends Controller{
 			}
 		}
 
+		// Validando conteúdo
+		if(empty($elements)){
+			redirect(route('panel.notices.edit', ['id' => $id]), ['error' => 'O preenchimento do conteúdo é obrigatório!'], true);
+		}
+
+		// Remove imagens que foram deletadas
+		if(!empty($imagesRemove)){
+			foreach($imagesRemove as $image){
+				if(!empty($image)){
+					$image = trim($image);
+
+					Storage::delete($image);
+
+					if(!empty($imagesEdit) && in_array($image, $imagesEdit)){
+						$key = array_search($image, $imagesEdit);
+
+						array_splice($imagesEdit, $key, 1);
+					}
+				}
+			}
+		}
+
+		// Editando artigo
+
 		$posterPrev = $notice->poster;
 
 		if(!is_null($poster) && mb_strlen($poster->type) > 0){
@@ -269,7 +291,7 @@ class NoticeController extends Controller{
 			Storage::delete($data['poster']);
 		}
 	
-		redirect(route('panel.notices.edit', ['id' => $notice->id]), ['error' => 'Artigo NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.notices.edit', ['id' => $notice->id]), ['error' => 'Artigo NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

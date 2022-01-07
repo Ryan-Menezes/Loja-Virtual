@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model{
 	public $table = 'clients';
-	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj', 'token', 'google_id', 'facebook_id'];
+	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj', 'token', 'google_id', 'facebook_id', 'shipping_address_id', 'billing_address_id'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){
@@ -104,6 +104,14 @@ class Client extends Model{
 
 	public function adresses(){
 		return $this->hasMany(ClientAddress::class, 'client_id', 'id');
+	}
+
+	public function shipping_address(){
+		return $this->belongsTo(ClientAddress::class, 'shipping_address_id', 'id');
+	}
+
+	public function billing_address(){
+		return $this->belongsTo(ClientAddress::class, 'billing_address_id', 'id');
 	}
 
 	public function ratings(){

@@ -54,7 +54,7 @@
 			])
 
 			<h3 class="mt-4">Informações da embalagem para cálculo do frete:</h3>
-			<p><small>Este informação não será apresentada para os clientes, somente será usado para calcular o frete de entrega</small></p><hr>
+			<p><small>Esta informação não será apresentada para os clientes, somente será usado para calcular o frete de entrega</small></p><hr>
 			<div class="row">
 				<div class="col-md-4">
 					@include('includes.components.form.input', [

@@ -1,3 +1,7 @@
+@php
+	$value = old($name) ?? ($value ?? null);
+@endphp
+
 <div class="form-group mb-2">
 	<label class="form-label"><strong>{{ $title }}:</strong></label>
 	<select name="{{ $name }}" @if(isset($required)) required @endif class="form-control {{ $class ?? null }}">

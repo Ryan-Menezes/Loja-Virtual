@@ -23,8 +23,12 @@ class ClientController extends Controller{
 
 	public function index(){;
 		$client = $this->client;
+		$adresses = [];
+		foreach($client->adresses()->get() as $address){
+			$adresses[$address->id] = mask($address->postal_code, '#####-###') . ', ' . $address->street . ' - ' . $address->number . ', ' . $address->district . ', ' . $address->city . ' - ' . $address->state;
+		}
 
-		return view('site.myaccount.client.index', compact('client'));
+		return view('site.myaccount.client.index', compact('client', 'adresses'));
 	}
 
 	public function update(){
@@ -34,13 +38,17 @@ class ClientController extends Controller{
 		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
 		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
 		$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
+		unset($data['email']);
+		if(empty($data['password'])){
+			unset($data['password']);
+		}
 
-		$this->validator($data, $client->rolesUpdate, $client->messages);
+		$this->validator($data, $this->client->rolesUpdate, $this->client->messages);
 
-		if($client->update($data)){
+		if($this->client->update($data)){
 			redirect(route('site.myaccount.client'), ['success' => 'Dados pessoais editados com sucesso']);
 		}
 
-		redirect(route('site.myaccount.client'), ['error' => 'Dados pessoais NÃO editado, Ocorreu um erro no processo de edição!']);
+		redirect(route('site.myaccount.client'), ['error' => 'Dados pessoais NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 }

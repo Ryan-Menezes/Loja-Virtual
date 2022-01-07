@@ -48,7 +48,7 @@ class CategoryController extends Controller{
 			redirect(route('panel.categories.create'), ['success' => 'Categoria cadastrada com sucesso']);
 		}
 
-		redirect(route('panel.categories.create'), ['error' => 'Categoria NÃO cadastrada, Ocorreu um erro no processo de cadastro!']);
+		redirect(route('panel.categories.create'), ['error' => 'Categoria NÃO cadastrada, Ocorreu um erro no processo de cadastro!'], true);
 	}
 
 	public function edit($id){
@@ -72,7 +72,7 @@ class CategoryController extends Controller{
 			redirect(route('panel.categories.edit', ['id' => $category->id]), ['success' => 'Categoria editada com sucesso']);
 		}
 
-		redirect(route('panel.categories.edit', ['id' => $category->id]), ['error' => 'Categoria NÃO editada, Ocorreu um erro no processo de edição!']);
+		redirect(route('panel.categories.edit', ['id' => $category->id]), ['error' => 'Categoria NÃO editada, Ocorreu um erro no processo de edição!'], true);
 	}
 
 	public function destroy($id){

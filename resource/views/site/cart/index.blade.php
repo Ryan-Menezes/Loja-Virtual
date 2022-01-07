@@ -15,6 +15,8 @@
 ])
 
 <section class="container">
+	<h1>Carrinho</h1><hr />
+
 	@include('includes.messages')
 
 	<table class="table table-hover">

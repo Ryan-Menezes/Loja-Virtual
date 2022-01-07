@@ -19,6 +19,17 @@
             <p><i class="fa fa-eye"></i> {{ number_format($notice->visits, 0, '', '.') }}</p>
         </div>
     </section>
+
+    <section style="margin-bottom: 40px;">
+        <!-- Your share button code -->
+        <div class="fb-share-button mt-1" data-href="{{ urlencode(route('site.notices.show', ['slug' => $notice->slug])) }}" data-layout="button" data-size="large" title="Compartilhe no Facebook"></div>
+        <a href="https://twitter.com/intent/tweet?url={{ urlencode(route('site.notices.show', ['slug' => $notice->slug])) }}&text={{ $notice->title }}" class="btn btn-sm bg-twitter mt-0 mb-2 share-btn" target="_blank" title="Compartilhe no Twitter"><i class="fa fa-twitter"></i> Share</a>
+        <a href="https://api.whatsapp.com/send?text={{ urlencode($notice->title . ': ' . route('site.notices.show', ['slug' => $notice->slug])) }}" target="_blank" class="btn btn-sm bg-whatsapp mt-0 mb-2 share-btn" title="Compartilhe no WhatsApp"><i class="fa fa-whatsapp"></i> Share</a>
+
+        <!-- Load Facebook SDK for JavaScript -->
+        <div id="fb-root"></div>
+    </section>
+
     <section class="notice">
         <section class="notice-content">
             @foreach(json_decode($notice->content)->elements as $element)

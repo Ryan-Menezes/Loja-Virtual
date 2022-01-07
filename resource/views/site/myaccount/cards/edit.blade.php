@@ -13,6 +13,8 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
+        	<h1>Editar Cartão</h1><hr />
+
             @include('includes.site.cards.form', ['action' => route('site.myaccount.cards.update', ['id' => $card->id]), 'method' => 'PUT'])
         </div>
     </div>

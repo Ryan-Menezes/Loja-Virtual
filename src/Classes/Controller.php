@@ -21,8 +21,8 @@ abstract class Controller{
 				$url = url($historic[count($historic) - 2]);
 			else
 				$url = url($historic[count($historic) - 1]);
-			
-			redirect($url, ['errors' => $errors]);
+
+			redirect($url, ['errors' => $errors], true);
 		}
 	}
 }

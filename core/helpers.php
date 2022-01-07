@@ -51,13 +51,13 @@ if(!function_exists('view')){
 }
 
 if(!function_exists('redirect')){
-	function redirect(string $url, array $parameters = []) : void{
+	function redirect(string $url, array $parameters = [], bool $old = false) : void{
 		$v = __DIR__ . '/../' . trim(config('view.dir'), '/');
 		$c = __DIR__ . '/../' . trim(config('view.cache'), '/');
 
 		$view = new View($v, $c);
 
-		$view->redirect($url, $parameters);
+		$view->redirect($url, $parameters, $old);
 	}
 }
 
@@ -244,6 +244,20 @@ if(!function_exists('mask')){
 		}
 
 		return $mask;
+	}
+}
+
+if(!function_exists('old')){
+	function old(string $key){
+		if(session()->has('old')){
+			$old = session('old');
+
+			if(is_array($old) && array_key_exists($key, $old)){
+				return $old[$key];
+			}
+		}
+
+		return null;
 	}
 }
 

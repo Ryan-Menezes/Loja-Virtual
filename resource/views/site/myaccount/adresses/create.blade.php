@@ -13,6 +13,8 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
+        	<h1>Novo Endereço</h1><hr />
+
             @include('includes.site.adresses.form', ['action' => route('site.myaccount.adresses.store'), 'method' => 'POST'])
         </div>
     </div>
