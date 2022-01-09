@@ -25,9 +25,9 @@ class CouponController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->coupon->count() / config('paginate.limit'));
+		$pages = ceil($this->coupon->search(1, $search, $this->coupon->count())->count() / config('paginate.limit'));
 
-		$coupons = $this->coupon->search($page, $search);
+		$coupons = $this->coupon->search($page, $search)->get();
 
 		return view('panel.coupons.index', compact('coupons', 'pages', 'builder'));
 	}

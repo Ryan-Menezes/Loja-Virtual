@@ -22,9 +22,9 @@ class CategoryController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->category->count() / config('paginate.limit'));
+		$pages = ceil($this->category->search(1, $search, $this->category->count())->count() / config('paginate.limit'));
 
-		$categories = $this->category->search($page, $search);
+		$categories = $this->category->search($page, $search)->get();
 
 		return view('panel.categories.index', compact('categories', 'pages', 'builder'));
 	}

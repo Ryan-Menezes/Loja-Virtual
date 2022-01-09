@@ -1,7 +1,7 @@
 @extends('templates.site')
 
 @section('title', 'Produtos')
-@section('url', route('site.notices'))
+@section('url', route('site.products'))
 @section('description', 'Busque por um produto expecífico')
 @section('image', public_path('assets/img/site/core-img/favicon.ico'))
 @section('image_width', 200)
@@ -21,30 +21,23 @@
 					<h3 class="aside-title">Categorias</h3>
 					<ul class="checkbox-filter">
 						@foreach($categories as $category)
-						<li class="input-checkbox">
-							<input type="checkbox" id="category-{{ $category->id }}">
-							<label for="category-{{ $category->id }}">
-								<span></span>
-								{{ $category->name }}
-							</label>
+							@if($category->products()->count())
+							<li>
+								<a href="{{ route('site.products.category', ['category' => $category->slug]) }}" title="Produtos da Categoria: {{ $category->name }}"><strong>{{ $category->name }} ({{ $category->products()->count() }})</strong></a>
 
-							@if($category->subcategories->count() > 0)
-							<ul style="margin-left: 40px;">
-								@foreach($category->subcategories as $subcategory)
-									@if($subcategory->products->count() > 0)
-									<li class="input-checkbox">
-										<input type="checkbox" id="subcategory-{{ $subcategory->id }}">
-										<label for="subcategory-{{ $subcategory->id }}">
-											<span></span>
-											{{ $subcategory->name }}
-											<small>({{ $subcategory->products->count() }})</small>
-										</label>
-									</li>
-									@endif
-								@endforeach
-							</ul>
+								@if($category->subcategories->count())
+								<ul style="margin-left: 40px;">
+									@foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
+										@if($subcategory->products->count())
+										<li>
+											<a href="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}" title="Produtos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->products->count() }})</a>
+										</li>
+										@endif
+									@endforeach
+								</ul>
+								@endif
+							</li>
 							@endif
-						</li>
 						@endforeach
 					</ul>
 				</div>
@@ -92,7 +85,7 @@
 				</div>
 
 				<!-- store bottom filter -->
-				{{-- @include('includes.site.paginator', ['route' => 'site.products']) --}}
+				@include('includes.site.paginator', ['route' => 'site.products'])
 				<!-- /store bottom filter -->
 			</div>
 			<!-- /STORE -->

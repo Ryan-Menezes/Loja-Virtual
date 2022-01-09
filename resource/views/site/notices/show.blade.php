@@ -41,12 +41,12 @@
                         'class' => 'mb-4'
                     ])
                 @elseif($element->type == 'image')
-                    <img src="{{ url('storage/app/public/' . $element->src) }}" class="img-fluid mb-4" alt="{{ $element->title }}" title="{{ $element->title }}">
+                    <img src="{{ url('storage/app/public/' . $element->src) }}" class="img-fluid" alt="{{ $element->title }}" title="{{ $element->title }}" style="margin: 20px 0px;">
                 @endif
             @endforeach
 
             @if($notice->comments_active)
-            <section class="comments" id="commentsarea">
+            <section class="comments" id="commentsarea" style="margin-top: 20px;">
                 <h2>Deixe seu comentário</h2><hr/>
 
                 @include('includes.messages')
@@ -150,14 +150,21 @@
                 </div>
                 <ul class="card-content">
                     @foreach($categories as $category)
-                    <li>
-                        <a href="" title="{{ $category->name }}"><strong>{{ $category->name }}</strong></a>
-                        <ul style="margin-left: 30px;">
-                            @foreach($category->subcategories as $subcategory)
-                            <li><a href="" title="{{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->notices->count() }})</a></li>
-                            @endforeach
-                        </ul>
-                    </li>
+                        @if($category->notices()->count())
+                        <li>
+                            <a href="" title="Artigos da Categoria: {{ $category->name }}"><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></a>
+                            
+                            @if($category->subcategories->count())
+                            <ul style="margin-left: 30px;">
+                                @foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
+                                    @if($subcategory->notices()->count())
+                                    <li><a href="" title="Artigos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->notices->count() }})</a></li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                            @endif
+                        </li>
+                        @endif
                     @endforeach
                 </ul>
             </div>

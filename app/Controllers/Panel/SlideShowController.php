@@ -26,9 +26,9 @@ class SlideShowController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->slideshow->count() / config('paginate.limit'));
+		$pages = ceil($this->slideshow->search(1, $search, $this->slideshow->count())->count() / config('paginate.limit'));
 
-		$slideshow = $this->slideshow->search($page, $search);
+		$slideshow = $this->slideshow->search($page, $search)->get();
 
 		return view('panel.slideshow.index', compact('slideshow', 'pages', 'builder'));
 	}

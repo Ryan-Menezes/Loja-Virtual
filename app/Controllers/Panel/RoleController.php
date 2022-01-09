@@ -25,9 +25,9 @@ class RoleController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->role->count() / config('paginate.limit'));
+		$pages = ceil($this->role->search(1, $search, $this->role->count())->count() / config('paginate.limit'));
 
-		$roles = $this->role->search($page, $search);
+		$roles = $this->role->search($page, $search)->get();
 
 		return view('panel.roles.index', compact('roles', 'pages', 'builder'));
 	}

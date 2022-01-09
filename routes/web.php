@@ -309,15 +309,16 @@ Route::group(['prefix' => '/'], function(){
 		});
 	});
 
-	// ROUTE CATEGORIES
-	Route::group(['prefix' => 'categorias'], function(){
-		Route::get('/{slug}', [CategoryControllerSite::class, 'show'])->name('site.categories.show');
-	});
-
 	// ROUTE PRODUCTS
 	Route::group(['prefix' => 'produtos'], function(){
-		Route::get('/', [ProductControllerSite::class, 'index'])->name('site.products');
+		Route::any('/', [ProductControllerSite::class, 'index'])->name('site.products');
 		Route::get('/{slug}', [ProductControllerSite::class, 'show'])->name('site.products.show');
 		Route::any('/info/{id}', [ProductControllerSite::class, 'info'])->name('site.products.info');
+
+		// ROUTE CATEGORIES PRODUCTS
+		Route::group(['prefix' => '/{category}'], function(){
+			Route::any('/', [CategoryControllerSite::class, 'productCategory'])->name('site.products.category');
+			Route::any('/{subcategory}', [CategoryControllerSite::class, 'productSubCategory'])->name('site.products.category.subcategory');
+		});
 	});
 });

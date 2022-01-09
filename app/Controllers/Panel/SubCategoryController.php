@@ -30,9 +30,9 @@ class SubCategoryController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($category->subcategories->count() / config('paginate.limit'));
+		$pages = ceil($this->subcategory->search($category->id, 1, $search, $category->subcategories->count())->count() / config('paginate.limit'));
 
-		$subcategories = $this->subcategory->search($category->id, $page, $search);
+		$subcategories = $this->subcategory->search($category->id, $page, $search)->get();
 
 		return view('panel.categories.subcategories.index', compact('category', 'subcategories', 'pages', 'builder'));
 	}

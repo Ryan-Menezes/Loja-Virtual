@@ -6,7 +6,7 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
-	Notice
+	Category
 };
 
 class CategoryController extends Controller{
@@ -16,20 +16,49 @@ class CategoryController extends Controller{
 		$this->category = new Category();
 	}
 
-	public function show($slug){
-		$category = $this->category->where('slug', $slug)->firstOrFail();
+	private function search($query, $page = 1, $filter = '', $limit = null){
+		$limit = $limit ?? config('paginate.limit');
+		$page = ($page - 1) * $limit;
+
+		return $query
+					->where('name', 'LIKE', "%{$filter}%")
+					->where('slug', 'LIKE', "%{$filter}%")
+					->where('description', 'LIKE', "%{$filter}%")
+					->orderBy('id', 'DESC')
+					->offset($page)
+					->limit($limit);
+	}
+
+	public function productCategory($category){
+		$category = $this->category->where('slug', $category)->firstOrFail();
+		$products = $category->products();
 		
 		$request = new Request();
 
-		$limit = config('paginate.limit');
+		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
-		$page = ($page - 1) * $limit;
-		$pages = ceil($category->notices()->count() / $limit);
+		$search = $request->input('search');
+		$pages = ceil($products->count() / config('paginate.limit'));
 
-		$notices = $category->notices()->offset($page)->limit($limit)->get();
+		$categories = $this->category->orderBy('name')->get();
 
-		if(count($notices) == 0) abort(404);
+		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
+	}
 
-		return view('site.notices.index', compact('notices', 'category', 'pages'));
+	public function productSubCategory($category, $subcategory){
+		$category = $this->category->where('slug', $category)->firstOrFail();
+		$subcategory = $category->subcategories->where('slug', $subcategory)->firstOrFail();
+		
+		$request = new Request();
+
+		$builder = $request->except('page');
+		$page = $request->input('page') ?? 1;
+		$search = $request->input('search');
+		$pages = ceil($this->search($subcategory->products(), $page, $search, $subcategory->products->count())->count() / config('paginate.limit'));
+		
+		$products = $this->search($subcategory->products(), $page, $search)->get();
+		$categories = $this->category->orderBy('name')->get();
+
+		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
 	}
 }

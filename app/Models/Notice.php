@@ -49,8 +49,8 @@ class Notice extends Model{
 		];
 	}
 
-	public function scopeSearch($query, $page = 0, $filter = ''){
-		$limit = config('paginate.limit');
+	public function scopeSearch($query, $page = 1, $filter = '', $limit = null){
+		$limit = $limit ?? config('paginate.limit');
 		$page = ($page - 1) * $limit;
 
 		return $query
@@ -61,8 +61,7 @@ class Notice extends Model{
 					->orWhere('content', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
-					->limit($limit)
-					->get();
+					->limit($limit);
 	}
 
 	public function verifyPermission(string $permission){

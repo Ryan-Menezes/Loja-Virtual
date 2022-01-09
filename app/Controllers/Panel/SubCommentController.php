@@ -31,8 +31,9 @@ class SubCommentController extends Controller{
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
 		$pages = ceil($comment->subcomments->count() / config('paginate.limit'));
+		$pages = ceil($this->subcomment->search($comment->id, 1, $search, $comment->subcomments->count())->count() / config('paginate.limit'));
 
-		$subcomments = $this->subcomment->search($comment->id, $page, $search);
+		$subcomments = $this->subcomment->search($comment->id, $page, $search)->get();
 
 		return view('panel.comments.subcomments.index', compact('comment', 'subcomments', 'pages', 'builder'));
 	}

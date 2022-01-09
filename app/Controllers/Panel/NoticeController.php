@@ -26,9 +26,9 @@ class NoticeController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->notice->count() / config('paginate.limit'));
+		$pages = ceil($this->notice->search(1, $search, $this->notice->count())->count() / config('paginate.limit'));
 
-		$notices = $this->notice->search($page, $search);
+		$notices = $this->notice->search($page, $search)->get();
 
 		return view('panel.notices.index', compact('notices', 'pages', 'builder'));
 	}

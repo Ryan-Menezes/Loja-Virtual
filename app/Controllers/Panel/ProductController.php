@@ -30,9 +30,9 @@ class ProductController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->product->count() / config('paginate.limit'));
+		$pages = ceil($this->product->search(1, $search, $this->product->count())->count() / config('paginate.limit'));
 
-		$products = $this->product->search($page, $search);
+		$products = $this->product->search($page, $search)->get();
 
 		return view('panel.products.index', compact('products', 'pages', 'builder'));
 	}

@@ -22,9 +22,9 @@ class RatingController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->rating->count() / config('paginate.limit'));
+		$pages = ceil($this->rating->search(1, $search, $this->rating->count())->count() / config('paginate.limit'));
 
-		$ratings = $this->rating->search($page, $search);
+		$ratings = $this->rating->search($page, $search)->get();
 
 		return view('panel.ratings.index', compact('ratings', 'pages', 'builder'));
 	}

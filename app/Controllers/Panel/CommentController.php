@@ -22,9 +22,9 @@ class CommentController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->comment->count() / config('paginate.limit'));
+		$pages = ceil($this->comment->search(1, $search, $this->comment->count())->count() / config('paginate.limit'));
 
-		$comments = $this->comment->search($page, $search);
+		$comments = $this->comment->search($page, $search)->get();
 
 		return view('panel.comments.index', compact('comments', 'pages', 'builder'));
 	}

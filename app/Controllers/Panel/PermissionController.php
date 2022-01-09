@@ -22,9 +22,9 @@ class PermissionController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->permission->count() / config('paginate.limit'));
+		$pages = ceil($this->permission->search(1, $search, $this->permission->count())->count() / config('paginate.limit'));
 
-		$permissions = $this->permission->search($page, $search);
+		$permissions = $this->permission->search($page, $search)->get();
 
 		return view('panel.permissions.index', compact('permissions', 'pages', 'builder'));
 	}

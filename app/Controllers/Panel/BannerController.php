@@ -26,9 +26,9 @@ class BannerController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->banner->count() / config('paginate.limit'));
+		$pages = ceil($this->banner->search(1, $search, $this->banner->count())->count() / config('paginate.limit'));
 
-		$banners = $this->banner->search($page, $search);
+		$banners = $this->banner->search($page, $search)->get();
 
 		return view('panel.banners.index', compact('banners', 'pages', 'builder'));
 	}

@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Category extends Model{
 	public $table = 'categories';
@@ -33,16 +34,15 @@ class Category extends Model{
 		];
 	}
 
-	public function scopeSearch($query, $page = 0, $filter = ''){
-		$limit = config('paginate.limit');
+	public function scopeSearch($query, $page = 1, $filter = '', $limit = null){
+		$limit = $limit ?? config('paginate.limit');
 		$page = ($page - 1) * $limit;
 
 		return $query
 					->orWhere('name', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
-					->limit($limit)
-					->get();
+					->limit($limit);
 	}
 
 	public function verifyPermission(string $permission){
@@ -53,5 +53,27 @@ class Category extends Model{
 
 	public function subcategories(){
 		return $this->hasMany(SubCategory::class, 'category_id', 'id');
+	}
+
+	public function notices(){
+		$subcategories = $this->subcategories;
+		$notices = new Collection();
+
+		foreach($subcategories as $subcategory) {
+			$notices = $notices->merge($subcategory->notices);
+		}
+
+		return $notices;
+	}
+
+	public function products(){
+		$subcategories = $this->subcategories;
+		$products = new Collection();
+
+		foreach($subcategories as $subcategory) {
+			$products = $products->merge($subcategory->products);
+		}
+
+		return $products;
 	}
 }

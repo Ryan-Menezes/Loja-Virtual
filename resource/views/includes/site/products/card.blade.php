@@ -1,5 +1,5 @@
 <!-- product -->
-<div class="col-md-4 col-xs-6">
+<div class="col-md-4 col-xs-6" style="min-height: 500px;">
 	<div class="product">
 		<div class="product-img">
 			<img src="{{ url('storage/app/public/' . $product->firstImage) }}" alt="{{ $product->name }}" title="{{ $product->name }}">

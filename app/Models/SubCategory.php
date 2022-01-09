@@ -33,8 +33,8 @@ class SubCategory extends Model{
 		];
 	}
 
-	public function scopeSearch($query, $id, $page = 0, $filter = ''){
-		$limit = config('paginate.limit');
+	public function scopeSearch($query, $id, $page = 1, $filter = '', $limit = null){
+		$limit = $limit ?? config('paginate.limit');
 		$page = ($page - 1) * $limit;
 
 		return $query
@@ -42,8 +42,7 @@ class SubCategory extends Model{
 					->where('name', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
-					->limit($limit)
-					->get();
+					->limit($limit);
 	}
 
 	public function verifyPermission(string $permission){
@@ -57,10 +56,10 @@ class SubCategory extends Model{
 	}
 
 	public function notices(){
-		return $this->belongsToMany(Notice::class, 'notices_subcategories', 'notice_id', 'subcategory_id');
+		return $this->belongsToMany(Notice::class, 'notices_subcategories', 'subcategory_id', 'notice_id');
 	}
 
 	public function products(){
-		return $this->belongsToMany(Product::class, 'products_subcategories', 'product_id', 'subcategory_id');
+		return $this->belongsToMany(Product::class, 'products_subcategories', 'subcategory_id', 'product_id');
 	}
 }

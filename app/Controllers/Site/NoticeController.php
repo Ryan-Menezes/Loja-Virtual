@@ -36,7 +36,7 @@ class NoticeController extends Controller{
 		$notice->visits++;
 		$notice->save();
 
-		$categories = Category::all();
+		$categories = Category::orderBy('name')->get();
 
 		return view('site.notices.show', compact('notice', 'categories'));
 	}

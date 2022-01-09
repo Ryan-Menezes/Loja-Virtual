@@ -25,9 +25,9 @@ class UserController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->user->count() / config('paginate.limit'));
+		$pages = ceil($this->user->search($page, $search, $this->user->count())->count() / config('paginate.limit'));
 
-		$users = $this->user->search($page, $search);
+		$users = $this->user->search($page, $search)->get();
 
 		return view('panel.users.index', compact('users', 'pages', 'builder'));
 	}

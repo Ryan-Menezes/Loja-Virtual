@@ -8,7 +8,8 @@ use Src\Classes\{
 use App\Models\{
 	Product,
 	ProductColor,
-	Category
+	Category,
+	SubCategory
 };
 
 class ProductController extends Controller{
@@ -19,10 +20,17 @@ class ProductController extends Controller{
 	}
 
 	public function index(){
-		$products = $this->product->all();
-		$categories = Category::all();
+		$request = new Request();
 
-		return view('site.products.index', compact('products', 'categories'));
+		$builder = $request->except('page');
+		$page = $request->input('page') ?? 1;
+		$search = $request->input('search');
+		$pages = ceil($this->product->search(1, $search, $this->product->count())->count() / config('paginate.limit'));
+		
+		$products = $this->product->search($page, $search)->get();
+		$categories = Category::orderBy('name')->get();
+
+		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
 	}
 
 	public function info($id){

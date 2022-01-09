@@ -122,7 +122,7 @@
                     <!-- SEARCH BAR -->
                     <div class="col-md-6">
                         <div class="header-search">
-                            <form action="" method="POST">
+                            <form action="{{ route('site.products') }}" method="POST">
                                 <select class="input-select">
                                     <option value="0">Todos</option>
                                     @foreach($categories as $category)
@@ -135,7 +135,7 @@
                                         @endif
                                     @endforeach
                                 </select>
-                                <input type="text" class="input" placeholder="Buscar" name="search">
+                                <input type="text" class="input" placeholder="Buscar" name="search" value="{{ $search ?? null }}">
                                 <button class="search-btn">Buscar</button>
                             </form>
                         </div>

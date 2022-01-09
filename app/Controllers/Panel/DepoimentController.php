@@ -22,9 +22,9 @@ class DepoimentController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->depoiment->count() / config('paginate.limit'));
+		$pages = ceil($this->depoiment->search(1, $search, $this->depoiment->count())->count() / config('paginate.limit'));
 
-		$depoiments = $this->depoiment->search($page, $search);
+		$depoiments = $this->depoiment->search($page, $search)->get();
 
 		return view('panel.depoiments.index', compact('depoiments', 'pages', 'builder'));
 	}
