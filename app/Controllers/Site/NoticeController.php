@@ -23,7 +23,7 @@ class NoticeController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$limit = config('paginate.limit');
-		$pages = ceil($this->notice->count() / $limit);
+		$pages = ceil($this->notice->where('visible', true)->count() / $limit);
 
 		$notices = $this->notice->where('visible', true)->orderBy('id', 'DESC')->offset(($page - 1) * $limit)->limit($limit)->get();
 

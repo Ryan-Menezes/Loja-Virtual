@@ -6,10 +6,12 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
+	Client,
 	Product,
 	ProductColor,
 	Category,
-	SubCategory
+	SubCategory,
+	Rating
 };
 
 class ProductController extends Controller{
@@ -25,9 +27,9 @@ class ProductController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->product->search(1, $search, $this->product->count())->count() / config('paginate.limit'));
+		$pages = ceil($this->product->where('visible', true)->search(1, $search, $this->product->where('visible', true)->count())->count() / config('paginate.limit'));
 		
-		$products = $this->product->search($page, $search)->get();
+		$products = $this->product->where('visible', true)->search($page, $search)->get();
 		$categories = Category::orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
@@ -62,7 +64,46 @@ class ProductController extends Controller{
 
 	public function show($slug){
 		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
+		$client = auth('site');
 
-		return view('site.products.show', compact('product'));
+		if($client)
+			$client = Client::find($client->id);
+
+		$request = new Request();
+
+		$builder = $request->except('page');
+		$page = $request->input('page') ?? 1;
+		$limit = config('paginate.limit');
+		$pages = ceil($product->ratings->where('visible', true)->count() / $limit);
+		$ratings = $product->ratings()->where('visible', true)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+		return view('site.products.show', compact('product', 'ratings', 'client', 'pages', 'builder'));
+	}
+
+	public function storeRating($slug){
+		$product = $this->product->where('visible', true)->where('ratings_active', true)->where('slug', $slug)->firstOrFail();
+		$client = auth('site');
+		$rating = new Rating();
+
+		if(!$client)
+			abort(404);
+
+		if($client->ratings->where('product_id', $product->id)->count()){
+			redirect(route('site.products.show', ['slug' => $product->slug]), ['error' => 'Não foi possível enviar a sua avaliação, Só é permitido avaliar o mesmo produto uma única vez!']);
+		}
+
+		$request = new Request();
+		$data = $request->all();
+
+		$this->validator($data, $rating->rolesCreate, $rating->messages);
+
+		$data['product_id'] = $product->id;
+		$data['client_id'] = $client->id;
+
+		if($rating->create($data)){
+			redirect(route('site.products.show', ['slug' => $product->slug]), ['success' => 'Avaliação enviada com sucesso, Em breve estará no site!']);
+		}
+
+		redirect(route('site.products.show', ['slug' => $product->slug]), ['error' => 'Não foi possível enviar a sua avaliação, Ocorreu um erro no processo!'], true);
 	}
 }

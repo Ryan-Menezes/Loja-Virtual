@@ -58,6 +58,7 @@ blockquote{
   border-left: 4px solid #eb4034;
 }
 .load{
+  border-radius: 50%!important;
   width: 25px!important;
   height: 25px!important;
   border: 4px solid #dedede!important;
@@ -90,5 +91,45 @@ blockquote{
   100%{
     opacity: 1;
     bottom: 20px;
+  }
+}
+.lgpd-container{
+  box-sizing: border-box;
+  padding: 20px;
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  background-color: #D21737;
+  color: white;
+  z-index: 99999999999;
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  grid-column-gap: 10px;
+  align-items: center;
+  font-size: 15px;
+}
+.lgpd-container p{
+  padding: 0px;
+  margin: 0px;
+}
+.lgpd-container a{
+  color: white;
+  text-decoration: underline;
+}
+.lgpd-container button{
+  padding: 8px 15px;
+  border: none;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px){
+  .lgpd-container{
+    grid-template-columns: 1fr 220px;
+    font-size: 12px;
   }
 }

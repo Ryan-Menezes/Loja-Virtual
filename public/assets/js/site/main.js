@@ -58,8 +58,26 @@ $(document).ready(function(){
     // Inicia floater
     $('#floater').modal('show')
 
+    // LGPD
+    $('.lgpd-close').click(function(){
+        event.preventDefault()
+
+        $('.lgpd-container').remove()
+    })
+
+    $('.lgpd-accept').click(function(){
+        event.preventDefault()
+
+        $('.lgpd-container').remove()
+
+        let date = new Date()
+
+        // Cria o cookie
+        window.document.cookie = 'cookieaccept=1; expires=' + (new Date(date.getFullYear() + 1, date.getMonth(), date.getDate())).toGMTString() + '; path=/';
+    })
+
     // Adicionar ao carrinho
-    $('.add-to-cart-btn-ajax').click(function(){
+    $('.add-to-cart-btn-ajax[data-url]').click(function(){
         event.preventDefault()
 
         let element = this
@@ -85,6 +103,42 @@ $(document).ready(function(){
                 $(element).removeClass('load')
             }
         })
+    })
+
+    // Adicionar aos favoritos
+    $('.add-favorite-btn-ajax[data-url]').click(function(){
+        event.preventDefault()
+
+        let element = this
+        let data = $(this).data()
+        let html = $(this).html()
+
+        $.ajax({
+            method: 'POST',
+            url: data.url,
+            dataType: 'json',
+            beforeSend: function(){
+                $(element).empty()
+                $(element).addClass('load')
+            },
+            success: function(respose){
+                createMessage(respose.message)
+            },
+            error: function(respose){
+                createMessage('Produto não adicionado aos favoritos, Ocorreu um erro no processo!')
+            },
+            complete: function(){
+                $(element).html(html)
+                $(element).removeClass('load')
+            }
+        })
+    })
+
+    // Formulário de busca
+    $('.select-url').change(function(){
+        let data = $(this).find(':selected').data()
+
+        $(this).parents('form').attr('action', data.url)
     })
 })
 

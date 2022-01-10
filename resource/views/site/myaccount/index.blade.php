@@ -44,9 +44,9 @@
                     </div>
                 </a>
 
-                <a href="{{ route('site.myaccount.cards') }}" title="Favoritos">
+                <a href="{{ route('site.myaccount.favorites') }}" title="Favoritos">
                     <div class="card">
-                        <h3 class="card-title">50</h3>
+                        <h3 class="card-title">{{ $client->favorites->count() }}</h3>
                         <i class="fa fa-heart"></i>
                     </div>
                 </a>

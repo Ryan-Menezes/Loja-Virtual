@@ -40,7 +40,7 @@
 				@endif
 			</div>
 			<div class="product-btns">
-				<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">Favoritar</span></button>
+				<button class="add-to-wishlist add-favorite-btn-ajax" data-url="{{ route('site.myaccount.favorites.add', ['id' => $product->id]) }}"><i class="fa fa-heart-o"></i><span class="tooltipp">Favoritar</span></button>
 				<button class="quick-view"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="Visualizar"><i class="fa fa-eye"></i><span class="tooltipp">Visualizar</span></a></button>
 			</div>
 		</div>

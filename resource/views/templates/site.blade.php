@@ -5,6 +5,9 @@
     $system = (new \App\Models\System())->first();
     $cart = new \App\Classes\Cart();
     $cart_products = $cart->all();
+    $client = auth('site');
+    if($client)
+        $client = \App\Models\Client::find($client->id);
 @endphp
 
 <!DOCTYPE html>
@@ -124,13 +127,13 @@
                     <div class="col-md-6">
                         <div class="header-search">
                             <form action="{{ route('site.products') }}" method="POST">
-                                <select class="input-select">
-                                    <option value="0">Todos</option>
+                                <select class="input-select select-url">
+                                    <option value="0" data-url="{{ route('site.products') }}">Todos</option>
                                     @foreach($categories as $category)
                                         @if($category->subcategories->count())
                                         <optgroup label="{{ $category->name }}">
                                             @foreach($category->subcategories as $subcategory)
-                                            <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                                            <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}</option>
                                             @endforeach
                                         </optgroup>
                                         @endif
@@ -146,15 +149,19 @@
                     <!-- ACCOUNT -->
                     <div class="col-md-3 clearfix">
                         <div class="header-ctn">
+                            @if($client)
                             <!-- Wishlist -->
                             <div>
-                                <a href="#">
+                                <a href="{{ route('site.myaccount.favorites') }}">
                                     <i class="fa fa-heart-o"></i>
                                     <span>Favoritos</span>
-                                    <div class="qty">2</div>
+                                    @if($client->favorites->count())
+                                    <div class="qty">{{ $client->favorites->count() }}</div>
+                                    @endif
                                 </a>
                             </div>
                             <!-- /Wishlist -->
+                            @endif
 
                             <!-- Cart -->
                             <div class="dropdown">
@@ -369,6 +376,10 @@
         <!-- /bottom footer -->
     </footer>
     <!-- /FOOTER -->
+
+    @if($system->lgpd->active && (!isset($_COOKIE['cookieaccept']) || !$_COOKIE['cookieaccept']))
+    @include('includes.site.lgpd')
+    @endif
 
     <!-- ##### All Javascript Script ##### -->
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery.min.js') }}"></script>

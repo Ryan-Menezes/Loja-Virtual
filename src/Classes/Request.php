@@ -61,6 +61,15 @@ class Request{
 	}
 
 	/**
+	  * Method returns server
+	  *
+	  * @return array
+	  */
+	public function server() : array{
+		return $this->server;
+	}
+
+	/**
 	  * Method that checks whether a given value exists
 	  * 
 	  * @param string

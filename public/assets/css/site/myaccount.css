@@ -57,3 +57,37 @@ form span.error{
 	font-size: 12px;
 	color: #fc3826;
 }
+.products_cards{
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-gap: 10px;
+}
+.products_cards .product_card{
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #dedede;
+	justify-content: space-between;
+}
+.products_cards .product_card .product_image{
+	overflow: hidden;
+	max-height: 300px;
+}
+.products_cards .product_card .product_image img{
+	width: 100%;
+}
+.products_cards .product_card .product_content{
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+.products_cards .product_card .product_content .product_title, 
+.products_cards .product_card .product_content .product_title a{
+	font-size: 16px;
+	color: #1a1a1a;
+	text-decoration: none;
+	margin-bottom: 20px;
+}
+.products_cards .product_card .product_content .product_title a:hover{
+	text-decoration: underline;
+}

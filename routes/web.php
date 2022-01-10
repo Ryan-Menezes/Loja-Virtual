@@ -36,11 +36,13 @@ use App\Controllers\Site\MyAccount\{
 	MyAccountController,
 	CLientController as CLientControllerSite,
 	AddressController,
-	CardController
+	CardController,
+	FavoriteController
 };
 use App\Middlewares\{
 	Authenticate,
-	Maintenance
+	Maintenance,
+	Lgpd
 };
 
 // ------------------------------------------------------------------------------
@@ -224,7 +226,7 @@ Route::group(['prefix' => 'painel'], function(){
 // ROUTE SITE
 // ------------------------------------------------------------------------------
 
-Route::group(['prefix' => '/', 'middleware' => [Maintenance::class]], function(){
+Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]], function(){
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
@@ -287,6 +289,13 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class]], function()
 			Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
 		});
 
+		// ROUTE FAVORITES
+		Route::group(['prefix' => 'favoritos'], function(){
+			Route::get('/', [FavoriteController::class, 'index'])->name('site.myaccount.favorites');
+			Route::post('/adicionar/{id}', [FavoriteController::class, 'add'])->name('site.myaccount.favorites.add');
+			Route::delete('/remover/{id}', [FavoriteController::class, 'remove'])->name('site.myaccount.favorites.remove');
+		});
+
 		// ROUTE LOGOUT
 		Route::get('/sair', [MyAccountController::class, 'logout'])->name('site.myaccount.logout');
 	});
@@ -323,7 +332,17 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class]], function()
 	// ROUTE PRODUCTS
 	Route::group(['prefix' => 'produtos'], function(){
 		Route::any('/', [ProductControllerSite::class, 'index'])->name('site.products');
-		Route::get('/{slug}', [ProductControllerSite::class, 'show'])->name('site.products.show');
+
+		// ROUTE PRODUCT
+		Route::group(['prefix' => '/{slug}'], function(){
+			Route::get('/', [ProductControllerSite::class, 'show'])->name('site.products.show');
+
+			// ROUTE RATINGS
+			Route::group(['prefix' => '/avaliacoes'], function(){
+				Route::post('/enviar', [ProductControllerSite::class, 'storeRating'])->name('site.products.ratings.send');
+			});
+		});
+
 		Route::any('/info/{id}', [ProductControllerSite::class, 'info'])->name('site.products.info');
 
 		// ROUTE CATEGORIES PRODUCTS

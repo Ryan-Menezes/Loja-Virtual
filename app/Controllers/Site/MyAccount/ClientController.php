@@ -17,6 +17,9 @@ class ClientController extends Controller{
 	public function __construct(){
 		$this->client = auth('site');
 
+		if($this->client)
+			$this->client = Client::find($this->client->id);
+
 		if(!$this->client)
 			abort(404);
 	}

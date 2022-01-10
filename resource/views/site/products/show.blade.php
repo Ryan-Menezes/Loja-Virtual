@@ -117,14 +117,7 @@
 					</form>
 
 					<ul class="product-btns">
-						<li><a href="#"><i class="fa fa-heart-o"></i> Favoritar</a></li>
-						<li><a href="#"><i class="fa fa-exchange"></i> Comparar</a></li>
-					</ul>
-
-					<ul class="product-links">
-						<li><strong>Categorias:</strong></li>
-						<li><a href="#">Headphones</a></li>
-						<li><a href="#">Accessories</a></li>
+						<li><a href="{{ route('site.myaccount.favorites.add', ['id' => $product->id]) }}" title="Adicionar aos Favoritos" class="add-favorite-btn-ajax" data-url="{{ route('site.myaccount.favorites.add', ['id' => $product->id]) }}"><i class="fa fa-heart-o"></i> Favoritar</a></li>
 					</ul>
 
 					<section style="margin-top: 40px;">
@@ -189,7 +182,10 @@
 								<!-- Review Form -->
 								<div class="col-md-12" style="margin-bottom: 50px;">
 									<div id="review-form">
-										<form action="" method="POST" class="review-form">
+										@if($client && $client->ratings->where('product_id', $product->id)->count() == 0)
+										@include('includes.messages')
+
+										<form action="{{ route('site.products.ratings.send', ['slug' => $product->slug]) }}" method="POST" class="review-form">
 											<div class="input-rating">
 												<span>Avaliação: </span>
 												<div class="stars">
@@ -204,6 +200,9 @@
 
 											<button class="primary-btn">Enviar</button>
 										</form>
+										@else
+										<p>Para avaliar este produto, você precisa estar logado, ter no minímo efetuado um pedido envolvendo este produto e só é possível avaliar uma única vez por produto!</p>
+										@endif
 									</div>
 								</div>
 								<!-- /Review Form -->
@@ -299,7 +298,7 @@
 								<div class="col-md-8">
 									<div id="reviews">
 										<ul class="reviews">
-											@foreach($product->ratings as $rating)
+											@foreach($ratings as $rating)
 											<li>
 												<div class="review-heading">
 													<h5 class="name">{{ $rating->client->name }}</h5>
@@ -320,13 +319,7 @@
 											</li>
 											@endforeach
 										</ul>
-										<ul class="reviews-pagination">
-											<li class="active">1</li>
-											<li><a href="#">2</a></li>
-											<li><a href="#">3</a></li>
-											<li><a href="#">4</a></li>
-											<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-										</ul>
+										@include('includes.site.paginator', ['route' => 'site.products.show', 'params' => ['slug' => $product->slug]])
 									</div>
 								</div>
 								<!-- /Reviews -->

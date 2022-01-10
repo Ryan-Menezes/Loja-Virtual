@@ -52,18 +52,25 @@ class CartController extends Controller{
 	}
 
 	public function add($product_id, $size_id = null, $quantity = 1){
-		$product = Product::findOrFail($product_id);
-		$size = null;
+		$product = Product::find($product_id);
+		if($product){
+			$size = null;
 
-		if($size_id){
-			$size = $product->sizes->find($size_id);
+			if($size_id){
+				$size = $product->sizes->find($size_id);
+			}
+
+			$this->cart->add($product, $size, $quantity);
+
+			return json_encode([
+				'success' => true,
+				'message' => 'Produto adicionado ao carrinho com sucesso!'
+			]);
 		}
-
-		$this->cart->add($product, $size, $quantity);
-
+		
 		return json_encode([
-			'success' => true,
-			'message' => 'Produto adicionado ao carrinho com sucesso!'
+			'success' => false,
+			'message' => 'O produto que ia ser adicionado ao carrinho não existe!'
 		]);
 	}
 
