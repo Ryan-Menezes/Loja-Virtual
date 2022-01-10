@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class System extends Model{
 	public $table = 'system';
-	protected $fillable = ['name', 'keywords', 'description', 'maintenance', 'system_address_id', 'system_contact_id', 'system_social_id', 'system_lgpd_id', 'system_floater_id'];
+	protected $fillable = ['name', 'keywords', 'description', 'maintenance', 'system_address_id', 'system_contact_id', 'system_social_id', 'system_store_id', 'system_lgpd_id', 'system_floater_id'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
@@ -50,6 +50,10 @@ class System extends Model{
 
 	public function social(){
 		return $this->belongsTo(SystemSocial::class, 'system_social_id', 'id');
+	}
+
+	public function store(){
+		return $this->belongsTo(SystemStore::class, 'system_store_id', 'id');
 	}
 
 	public function floater(){

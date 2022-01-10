@@ -67,7 +67,7 @@ class CartController extends Controller{
 		]);
 	}
 
-	public function remove($id){
+	private function remove($id){
 		$this->cart->remove($id);
 
 		return json_encode([

@@ -32,9 +32,15 @@ class CommentController extends Controller{
 							->firstOrFail();
 
 		$request = new Request();
+		$client = auth('site');
 		$data = $request->all();
 
 		$this->validator($data, $this->comment->rolesCreate, $this->comment->messages);
+
+		if($client){
+			$data['name'] = $client->name;
+			$data['email'] = $client->email;
+		}
 
 		$comment = $notice->comments()->create($data);
 
@@ -62,9 +68,15 @@ class CommentController extends Controller{
 		$comment = $notice->comments()->where('visible', true)->findOrFail($id);
 
 		$request = new Request();
+		$client = auth('site');
 		$data = $request->all();
 
 		$this->validator($data, $this->subcomment->rolesCreate, $this->subcomment->messages);
+
+		if($client){
+			$data['name'] = $client->name;
+			$data['email'] = $client->email;
+		}
 
 		$subcomment = $comment->subcomments()->create($data);
 

@@ -57,4 +57,50 @@ $(document).ready(function(){
 
     // Inicia floater
     $('#floater').modal('show')
+
+    // Adicionar ao carrinho
+    $('.add-to-cart-btn-ajax').click(function(){
+        event.preventDefault()
+
+        let element = this
+        let data = $(this).data()
+        let html = $(this).html()
+
+        $.ajax({
+            method: 'POST',
+            url: data.url,
+            dataType: 'json',
+            beforeSend: function(){
+                $(element).empty()
+                $(element).addClass('load')
+            },
+            success: function(respose){
+                createMessage(respose.message)
+            },
+            error: function(respose){
+                createMessage('Produto não adicionado ao carrinho, Ocorreu um erro no processo!')
+            },
+            complete: function(){
+                $(element).html(html)
+                $(element).removeClass('load')
+            }
+        })
+    })
 })
+
+// Função que cria uma mensage
+function createMessage(text){
+    $('.warning-message').remove()
+
+    let message = $('<div />').addClass('warning-message').text(text)
+
+    message.click(function(){
+        $(this).remove()
+    })
+
+    setTimeout(function(){
+        message.remove()
+    }, 4000)
+
+    $('body').append(message)
+}

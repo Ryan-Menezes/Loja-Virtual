@@ -37,7 +37,7 @@
 	@if(can('all.system.store'))
 	<div class="accordion mt-2">
 		<h2>Loja</h2>
-		<div></div>
+		@include('includes.panel.system.store.form', ['action' => route('panel.system.store.update'), 'method' => 'PUT'])
 	</div>
 	@endif
 

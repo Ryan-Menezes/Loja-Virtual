@@ -18,8 +18,8 @@
 				'title' => 'Manutenção',
 				'value' => (isset($system) ? $system->maintenance : 0),
 				'options' => [
-					1 => 'Sim',
-					0 => 'Não'
+					1 => 'Ativado',
+					0 => 'Desativado'
 				],
 				'class' => 'required',
 				'required' => true

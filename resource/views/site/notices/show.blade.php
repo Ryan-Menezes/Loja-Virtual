@@ -51,20 +51,22 @@
 
                 @include('includes.messages')
 
-                <form action="{{ route('site.notices.comments.store', ['slug' => $notice->slug]) }}" method="POST" class="form">
-                    @include('includes.components.form.input', [
-                        'type' => 'text',
-                        'title' => 'Nome',
-                        'name' => 'name',
-                        'class' => 'required'
-                    ])
+                <form action="{{ route('site.notices.comments.store', ['slug' => $notice->slug]) }}" method="POST" class="form form-validate">
+                    @if(!auth('site'))
+                        @include('includes.components.form.input', [
+                            'type' => 'text',
+                            'title' => 'Nome',
+                            'name' => 'name',
+                            'class' => 'required'
+                        ])
 
-                    @include('includes.components.form.input', [
-                        'type' => 'email',
-                        'title' => 'E-Mail',
-                        'name' => 'email',
-                        'class' => 'required'
-                    ])
+                        @include('includes.components.form.input', [
+                            'type' => 'email',
+                            'title' => 'E-Mail',
+                            'name' => 'email',
+                            'class' => 'required'
+                        ])
+                    @endif
 
                     @include('includes.components.form.textarea', [
                         'title' => 'Mensagem',
@@ -110,20 +112,22 @@
                             @endforeach
                        </ul>
                        @endif
-                       <form action="{{ route('site.notices.comments.response', ['slug' => $notice->slug, 'id' => $comment->id]) }}" method="POST" class="form form-response" id="form-response-{{ $comment->id }}">
-                            @include('includes.components.form.input', [
-                                'type' => 'text',
-                                'title' => 'Nome',
-                                'name' => 'name',
-                                'class' => 'required'
-                            ])
+                       <form action="{{ route('site.notices.comments.response', ['slug' => $notice->slug, 'id' => $comment->id]) }}" method="POST" class="form form-response form-validate" id="form-response-{{ $comment->id }}">
+                            @if(!auth('site'))
+                                @include('includes.components.form.input', [
+                                    'type' => 'text',
+                                    'title' => 'Nome',
+                                    'name' => 'name',
+                                    'class' => 'required'
+                                ])
 
-                            @include('includes.components.form.input', [
-                                'type' => 'email',
-                                'title' => 'E-Mail',
-                                'name' => 'email',
-                                'class' => 'required'
-                            ])
+                                @include('includes.components.form.input', [
+                                    'type' => 'email',
+                                    'title' => 'E-Mail',
+                                    'name' => 'email',
+                                    'class' => 'required'
+                                ])
+                            @endif
 
                             @include('includes.components.form.textarea', [
                                 'title' => 'Mensagem',
@@ -152,13 +156,13 @@
                     @foreach($categories as $category)
                         @if($category->notices()->count())
                         <li>
-                            <a href="" title="Artigos da Categoria: {{ $category->name }}"><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></a>
+                            <a href="{{ route('site.notices.category', ['category' => $category->slug]) }}" title="Artigos da Categoria: {{ $category->name }}"><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></a>
                             
                             @if($category->subcategories->count())
                             <ul style="margin-left: 30px;">
                                 @foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
                                     @if($subcategory->notices()->count())
-                                    <li><a href="" title="Artigos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->notices->count() }})</a></li>
+                                    <li><a href="{{ route('site.notices.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}" title="Artigos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->notices->count() }})</a></li>
                                     @endif
                                 @endforeach
                             </ul>

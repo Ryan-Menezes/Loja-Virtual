@@ -227,7 +227,7 @@ class Route{
 		if(array_key_exists('middleware', $options)){
 			if(is_string($options['middleware'])){
 				self::$middlewares[] = $options['middleware'];
-			}else if(is_array($value)){
+			}else if(is_array($options['middleware'])){
 				foreach($options['middleware'] as $md){
 					if(is_string($md)){
 						self::$middlewares[] = $md;

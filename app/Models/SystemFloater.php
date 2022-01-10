@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemFloater extends Model{
 	public $table = 'system_floater';
-	protected $fillable = ['image', 'link'];
+	protected $fillable = ['active', 'image', 'link'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){

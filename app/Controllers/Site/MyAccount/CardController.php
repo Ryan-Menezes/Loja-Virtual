@@ -47,6 +47,8 @@ class CardController extends Controller{
 		$request = new Request();
 		$data = $request->all();
 		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
+		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
+		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
 
 		$this->validator($data, $this->card->rolesCreate, $this->card->messages);
 
@@ -69,6 +71,8 @@ class CardController extends Controller{
 		$request = new Request();
 		$data = $request->all();
 		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
+		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
+		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
 
 		$this->validator($data, $card->rolesUpdate, $card->messages);
 

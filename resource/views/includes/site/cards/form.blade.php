@@ -67,6 +67,39 @@
 		'class' => 'required',
 		'required' => true
 	])
+
+	<div class="row">
+		<div class="col-md-4">
+			@include('includes.components.form.input', [
+				'type' => 'text', 
+				'name' => 'cpf', 
+				'title' => 'CPF do Dono do Cartão', 
+				'value' => (isset($card) ? $card->cpf : null),
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-4">
+			@include('includes.components.form.input', [
+				'type' => 'date', 
+				'name' => 'birth', 
+				'title' => 'Nascimento do Dono do Cartão', 
+				'value' => (isset($card) ? $card->birth : null),
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-4">
+			@include('includes.components.form.input', [
+				'type' => 'text', 
+				'name' => 'telephone', 
+				'title' => 'Telefone do Dono do Cartão', 
+				'value' => (isset($card) ? $card->telephone : null),
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+	</div>
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fa fa-save"></i></button>
 </form>

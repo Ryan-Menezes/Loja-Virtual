@@ -170,7 +170,13 @@
 						<div id="tab2" class="tab-pane fade in">
 							<div class="row">
 								<div class="col-md-12">
-									<p>{!! str_ireplace("\n", '<br/>', $product->details) !!}</p>
+									{!! str_ireplace("\n", '<br/>', $product->details) !!}
+									<br /><br />
+									@if($product->video)
+										@include('includes.components.youtube.player', [
+											'url' => 'https://www.youtube.com/embed/' . $product->videoFormat
+										])
+									@endif
 								</div>
 							</div>
 						</div>

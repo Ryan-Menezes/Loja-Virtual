@@ -1,3 +1,7 @@
+@php
+	$installments_amount = config('store.installments_amount');
+@endphp
+
 <form action="{{ $action }}" method="{{ ($method != 'GET' && $method != 'POST') ? 'POST' : $method }}" class="form-validate" enctype="multipart/form-data">
 	@include('includes.messages')
 	
@@ -60,6 +64,15 @@
 						'required' => true
 					])
 				</div>
+
+				@include('includes.components.form.select', [
+					'name' => 'installment_no_interest', 
+					'title' => 'Quantidade de Parcelas sem Juros',
+					'value' => (isset($product) ? $product->installment_no_interest : 1),
+					'options' => array_combine(range(1, $installments_amount), range(1, $installments_amount)),
+					'class' => 'required',
+					'required' => true
+				])
 
 				@include('includes.components.form.textarea', [
 					'name' => 'description',
@@ -128,7 +141,7 @@
 
 		<div class="discounts" id="tab-discounts">
 			<div class="accordion">
-				@for($i = 1; $i <= 12; $i++)
+				@for($i = 1; $i <= $installments_amount; $i++)
 				@if($i == 1)
 				<h3>Pagamento à vista</h3>
 				@else

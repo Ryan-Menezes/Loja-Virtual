@@ -70,10 +70,11 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ public_path('assets/css/site/style.css') }}">
+    <link rel="stylesheet" href="{{ public_path('assets/css/site/site.css') }}">
     @yield('styles')
 </head>
 <body>
-    @if($system && !empty($system->floater->image) && Storage::exists($system->floater->image))
+    @if($system && !empty($system->floater->image) && Storage::exists($system->floater->image) && $system->floater->active)
         @include('includes.site.modais.floater', [
             'title' => 'Aviso',
             'image' => url('storage/app/public/' . $system->floater->image),
@@ -358,11 +359,7 @@
                             <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
                             <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
                         </ul>
-                        <span class="copyright">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </span>
+                        <span class="copyright">{{ config('app.name') }} &copy; {{ date('Y') }} Todos os direitos reservados | Site desenvolvido por <a href="https://ryan-menezes.github.io/" target="_blank" title="Portfólio do Desenvolvedor">Ryan Menezes</a></span>
                     </div>
                 </div>
                     <!-- /row -->

@@ -46,7 +46,7 @@
 		</div>
 		<div class="add-to-cart">
 			@if($product->sizes->where('quantity', '>', 0)->count())
-			<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
+			<button class="add-to-cart-btn add-to-cart-btn-ajax" data-url="{{ route('site.cart.add', ['product_id' => $product->id]) }}"><i class="fa fa-shopping-cart"></i> Adicionar ao Carrinho</button>
 			@else
 			<p style="color: white;"><strong>Produto Indisponível</strong></p>
 			@endif

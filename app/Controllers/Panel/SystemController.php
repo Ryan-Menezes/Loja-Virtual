@@ -98,6 +98,23 @@ class SystemController extends Controller{
 		redirect(route('panel.system'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!'], true);
 	}
 
+	public function updateStore(){
+		$this->system->verifyPermission('all.system.store');
+
+		$store = $this->system->store->firstOrFail();
+
+		$request = new Request();
+		$data = $request->all();
+
+		$this->validator($data, $store->rolesUpdate, $store->messages);
+
+		if($store->update($data)){
+			redirect(route('panel.system'), ['success' => 'Loja virtual editada com sucesso']);
+		}
+
+		redirect(route('panel.system'), ['error' => 'Loja virtual NÃO editada, Ocorreu um erro no processo de edição!'], true);
+	}
+
 	public function updateLgpd(){
 		$this->system->verifyPermission('all.system.lgpd');
 
@@ -110,7 +127,7 @@ class SystemController extends Controller{
 		$removes = [];
 
 		// Privacy File
-		if($privacy->error == 0){
+		if($privacy && $privacy->error == 0){
 			if(!empty($lgpd->privacy_policy)){
 				$removes[] = $lgpd->privacy_policy;
 			}
@@ -121,7 +138,7 @@ class SystemController extends Controller{
 		}
 
 		// Terms File
-		if($terms->error == 0){
+		if($terms && $terms->error == 0){
 			if(!empty($lgpd->terms_conditions)){
 				$removes[] = $lgpd->terms_conditions;
 			}
@@ -163,14 +180,11 @@ class SystemController extends Controller{
 
 		$this->validator($data, $floater->rolesUpdate, $floater->messages);
 
-		if(!empty($floater->image)){
-			$imagePrev = $floater->image;
-		}
-
-		if($image->error == 0){
+		if($image && $image->error == 0){
 			$data['image'] = $image->store('floater');
+			$imagePrev = $floater->image;
 		}else{
-			$data['image'] = null;
+			unset($data['image']);
 		}
 
 		if($floater->update($data)){

@@ -38,7 +38,10 @@ use App\Controllers\Site\MyAccount\{
 	AddressController,
 	CardController
 };
-use App\Middlewares\Authenticate;
+use App\Middlewares\{
+	Authenticate,
+	Maintenance
+};
 
 // ------------------------------------------------------------------------------
 // ROUTE PANEL
@@ -188,6 +191,7 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 			Route::post('/endereco/salvar', [SystemController::class, 'updateAddress'])->name('panel.system.address.update');
 			Route::post('/contato/salvar', [SystemController::class, 'updateContact'])->name('panel.system.contact.update');
 			Route::post('/social/salvar', [SystemController::class, 'updateSocial'])->name('panel.system.social.update');
+			Route::post('/loja/salvar', [SystemController::class, 'updateStore'])->name('panel.system.store.update');
 			Route::post('/lgpd/salvar', [SystemController::class, 'updateLgpd'])->name('panel.system.lgpd.update');
 			Route::post('/floater/salvar', [SystemController::class, 'updateFloater'])->name('panel.system.floater.update');
 		});
@@ -220,7 +224,7 @@ Route::group(['prefix' => 'painel'], function(){
 // ROUTE SITE
 // ------------------------------------------------------------------------------
 
-Route::group(['prefix' => '/'], function(){
+Route::group(['prefix' => '/', 'middleware' => [Maintenance::class]], function(){
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
@@ -290,6 +294,7 @@ Route::group(['prefix' => '/'], function(){
 	// ROUTE CART
 	Route::group(['prefix' => 'carrinho'], function(){
 		Route::get('/', [CartController::class, 'index'])->name('site.cart');
+		Route::post('/adicionar/{product_id}', [CartController::class, 'add'])->name('site.cart.add');
 		Route::post('/adicionar/{product_id}/{?size_id}', [CartController::class, 'store'])->name('site.cart.store');
 		Route::delete('/{id}/remover', [CartController::class, 'destroy'])->name('site.cart.destroy');
 	});
@@ -297,6 +302,12 @@ Route::group(['prefix' => '/'], function(){
 	// ROUTE NOTICES
 	Route::group(['prefix' => 'blog'], function(){
 		Route::get('/', [NoticeControllerSite::class, 'index'])->name('site.notices');
+
+		// ROUTE CATEGORIES PRODUCTS
+		Route::group(['prefix' => '/{category}'], function(){
+			Route::any('/', [CategoryControllerSite::class, 'noticeCategory'])->name('site.notices.category');
+			Route::any('/{subcategory}', [CategoryControllerSite::class, 'noticeSubCategory'])->name('site.notices.category.subcategory');
+		});
 
 		Route::group(['prefix' => '/{slug}'], function(){
 			Route::get('/', [NoticeControllerSite::class, 'show'])->name('site.notices.show');
