@@ -303,6 +303,8 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 	// ROUTE CART
 	Route::group(['prefix' => 'carrinho'], function(){
 		Route::get('/', [CartController::class, 'index'])->name('site.cart');
+		Route::put('/', [CartController::class, 'update'])->name('site.cart.update');
+		Route::get('/limpar', [CartController::class, 'clear'])->name('site.cart.clear');
 		Route::post('/adicionar/{product_id}', [CartController::class, 'add'])->name('site.cart.add');
 		Route::post('/adicionar/{product_id}/{?size_id}', [CartController::class, 'store'])->name('site.cart.store');
 		Route::delete('/{id}/remover', [CartController::class, 'destroy'])->name('site.cart.destroy');
@@ -314,7 +316,6 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 
 		// ROUTE CATEGORIES PRODUCTS
 		Route::group(['prefix' => '/{category}'], function(){
-			Route::any('/', [CategoryControllerSite::class, 'noticeCategory'])->name('site.notices.category');
 			Route::any('/{subcategory}', [CategoryControllerSite::class, 'noticeSubCategory'])->name('site.notices.category.subcategory');
 		});
 
@@ -347,7 +348,6 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 
 		// ROUTE CATEGORIES PRODUCTS
 		Route::group(['prefix' => '/{category}'], function(){
-			Route::any('/', [CategoryControllerSite::class, 'productCategory'])->name('site.products.category');
 			Route::any('/{subcategory}', [CategoryControllerSite::class, 'productSubCategory'])->name('site.products.category.subcategory');
 		});
 	});

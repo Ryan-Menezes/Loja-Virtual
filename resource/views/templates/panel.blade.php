@@ -66,6 +66,7 @@
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/Trumbowyg/trumbowyg.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/panel/main.js') }}"></script>

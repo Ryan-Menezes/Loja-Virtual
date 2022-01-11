@@ -148,13 +148,13 @@ class ProductController extends Controller{
 						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
 							$size = $color->sizes()->create([
 								'description' 		=> trim($descriptions[$j]),
-								'price' 			=> trim($prices[$j]),
-								'price_previous' 	=> trim($pricesPrevious[$j]),
-								'quantity'			=> trim($quanties[$j]),
-								'width'				=> trim($widths[$j]),
-								'height'			=> trim($heights[$j]),
-								'depth'				=> trim($depths[$j]),
-								'weight'			=> trim($weights[$j])
+								'price' 			=> number($prices[$j]),
+								'price_previous' 	=> number($pricesPrevious[$j]),
+								'quantity'			=> number($quanties[$j]),
+								'width'				=> number($widths[$j]),
+								'height'			=> number($heights[$j]),
+								'depth'				=> number($depths[$j]),
+								'weight'			=> number($weights[$j])
 							]);
 						}
 					}
@@ -317,13 +317,13 @@ class ProductController extends Controller{
 						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
 							$size = $color->sizes()->create([
 								'description' 		=> trim($descriptions[$j]),
-								'price' 			=> trim($prices[$j]),
-								'price_previous' 	=> trim($pricesPrevious[$j]),
-								'quantity'			=> trim($quanties[$j]),
-								'width'				=> trim($widths[$j]),
-								'height'			=> trim($heights[$j]),
-								'depth'				=> trim($depths[$j]),
-								'weight'			=> trim($weights[$j])
+								'price' 			=> number($prices[$j]),
+								'price_previous' 	=> number($pricesPrevious[$j]),
+								'quantity'			=> number($quanties[$j]),
+								'width'				=> number($widths[$j]),
+								'height'			=> number($heights[$j]),
+								'depth'				=> number($depths[$j]),
+								'weight'			=> number($weights[$j])
 							]);
 						}
 					}

@@ -11,16 +11,33 @@
 		'required' => true
 	])
 
-	@include('includes.components.form.input', [
-		'type' => 'number', 
-		'name' => 'percent',
-		'title' => 'Porcentagem',
-		'value' => (isset($coupon) ? $coupon->percent : null),
-		'min' => 1,
-		'max' => 100,
-		'class' => 'required',
-		'required' => true
-	])
+	<div class="row">
+		<div class="col-md-6">
+			@include('includes.components.form.input', [
+				'type' => 'number', 
+				'name' => 'percent',
+				'title' => 'Porcentagem',
+				'value' => (isset($coupon) ? $coupon->percent : null),
+				'min' => 1,
+				'max' => 100,
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-6">
+			@include('includes.components.form.select', [
+				'name' => 'only_one_time', 
+				'title' => 'Usar somente uma vez',
+				'value' => (isset($coupon) ? $coupon->only_one_time : 1),
+				'options' => [
+					1 => 'Ativado',
+					0 => 'Desativado'
+				],
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+	</div>
 
 	@include('includes.components.form.input', [
 		'type' => 'date', 

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemStore extends Model{
 	public $table = 'system_store';
-	protected $fillable = ['payment_type', 'payment_credit_card', 'payment_debit_card', 'payment_bolet', 'payment_debit_online', 'payment_pix', 'payment_paypal'];
+	protected $fillable = ['payment_type', 'payment_production', 'payment_credit_card', 'payment_debit_card', 'payment_bolet', 'payment_debit_online', 'payment_pix', 'payment_paypal'];
 
 	public $timestamps = false;
 

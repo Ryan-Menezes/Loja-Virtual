@@ -156,7 +156,7 @@
                     @foreach($categories as $category)
                         @if($category->notices()->count())
                         <li>
-                            <a href="{{ route('site.notices.category', ['category' => $category->slug]) }}" title="Artigos da Categoria: {{ $category->name }}"><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></a>
+                            <p><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></p>
                             
                             @if($category->subcategories->count())
                             <ul style="margin-left: 30px;">

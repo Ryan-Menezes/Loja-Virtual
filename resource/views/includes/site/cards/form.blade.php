@@ -31,7 +31,7 @@
 				'name' => 'number', 
 				'title' => 'Número', 
 				'value' => (isset($card) ? $card->number : null),
-				'class' => 'required',
+				'class' => 'required credit-number-mask',
 				'required' => true
 			])
 		</div>
@@ -64,7 +64,7 @@
 		'name' => 'cvv', 
 		'title' => 'CVV', 
 		'value' => (isset($card) ? $card->cvv : null),
-		'class' => 'required',
+		'class' => 'required cvv-mask',
 		'required' => true
 	])
 
@@ -75,7 +75,7 @@
 				'name' => 'cpf', 
 				'title' => 'CPF do Dono do Cartão', 
 				'value' => (isset($card) ? $card->cpf : null),
-				'class' => 'required',
+				'class' => 'required cpf-mask',
 				'required' => true
 			])
 		</div>
@@ -95,7 +95,7 @@
 				'name' => 'telephone', 
 				'title' => 'Telefone do Dono do Cartão', 
 				'value' => (isset($card) ? $card->telephone : null),
-				'class' => 'required',
+				'class' => 'required phone-mask',
 				'required' => true
 			])
 		</div>

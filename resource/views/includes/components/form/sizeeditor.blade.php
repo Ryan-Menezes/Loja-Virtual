@@ -19,6 +19,8 @@
 				'required' => true
 			])
 
+			<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script> 
+
 			<div class="row">
 				<div class="col-md-6">
 					@include('includes.components.form.input', [
@@ -26,7 +28,7 @@
 						'name' => isset($id) ? "price-size-{$id}[]" : 'price-size[]', 
 						'title' => 'Preço',
 						'value' => $price ?? null,
-						'class' => 'required',
+						'class' => 'required float-mask',
 						'required' => true
 					])
 				</div>
@@ -34,9 +36,9 @@
 					@include('includes.components.form.input', [
 						'type' => 'text', 
 						'name' => isset($id) ? "price-previous-size-{$id}[]" : 'price-previous-size[]', 
-						'title' => 'Preço Antigo',
+						'title' => 'Preço Anterior',
 						'value' => $price_previous ?? null,
-						'class' => 'required',
+						'class' => 'required float-mask',
 						'required' => true
 					])
 				</div>
@@ -58,50 +60,50 @@
 			<div class="row">
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'number', 
+						'type' => 'text', 
 						'name' => isset($id) ? "width-size-{$id}[]" : 'width-size[]', 
 						'title' => 'Largura(centímetros)',
 						'value' => $width ?? null,
 						'min' => 1,
 						'max' => 999999,
-						'class' => 'required',
+						'class' => 'required float-mask',
 						'required' => true
 					])
 				</div>
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'number', 
+						'type' => 'text', 
 						'name' => isset($id) ? "height-size-{$id}[]" : 'height-size[]', 
 						'title' => 'Altura(centímetros)',
 						'value' => $height ?? null,
 						'min' => 1,
 						'max' => 999999,
-						'class' => 'required',
+						'class' => 'required float-mask',
 						'required' => true
 					])
 				</div>
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'number', 
+						'type' => 'text', 
 						'name' => isset($id) ? "depth-size-{$id}[]" : 'depth-size[]', 
 						'title' => 'Profundidade(centímetros)',
 						'value' => $depth ?? null,
 						'min' => 1,
 						'max' => 999999,
-						'class' => 'required',
+						'class' => 'required float-mask',
 						'required' => true
 					])
 				</div>
 			</div>
 
 			@include('includes.components.form.input', [
-				'type' => 'number', 
+				'type' => 'text', 
 				'name' => isset($id) ? "weight-size-{$id}[]" : 'weight-size[]', 
-				'title' => 'Peso(gramas)',
+				'title' => 'Peso(quilogramas)',
 				'value' => $weight ?? null,
 				'min' => 1,
 				'max' => 999999,
-				'class' => 'required',
+				'class' => 'required float-mask',
 				'required' => true
 			])
 		</div>

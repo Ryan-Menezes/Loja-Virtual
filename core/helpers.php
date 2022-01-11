@@ -336,6 +336,19 @@ if(!function_exists('browser')){
 	}
 }
 
+if(!function_exists('number')){
+	function number($number) : string{
+	   	$number = str_ireplace('.', ',', trim($number));
+
+	   	$index = strrpos($number, ',');
+	   	if($index){
+	   		$number[$index] = '.';
+	   	}
+
+	   	return str_ireplace(',', '', trim($number));
+	}
+}
+
 if(!function_exists('slugify')){
 	function slugify(string $string, string $separator = '-') : string{
 		$string = preg_replace('/[\t\n]/', ' ', $string);

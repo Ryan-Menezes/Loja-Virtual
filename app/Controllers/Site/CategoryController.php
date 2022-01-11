@@ -22,8 +22,7 @@ class CategoryController extends Controller{
 
 		return $query
 					->where('name', 'LIKE', "%{$filter}%")
-					->where('slug', 'LIKE', "%{$filter}%")
-					->where('description', 'LIKE', "%{$filter}%")
+					->where('visible', true)
 					->orderBy('id', 'DESC')
 					->offset($page)
 					->limit($limit);
@@ -35,27 +34,10 @@ class CategoryController extends Controller{
 
 		return $query
 					->where('title', 'LIKE', "%{$filter}%")
-					->where('slug', 'LIKE', "%{$filter}%")
-					->where('description', 'LIKE', "%{$filter}%")
+					->where('visible', true)
 					->orderBy('id', 'DESC')
 					->offset($page)
 					->limit($limit);
-	}
-
-	public function productCategory($category){
-		$category = $this->category->where('slug', $category)->firstOrFail();
-		$products = $category->products();
-		
-		$request = new Request();
-
-		$builder = $request->except('page');
-		$page = $request->input('page') ?? 1;
-		$search = $request->input('search');
-		$pages = ceil($products->count() / config('paginate.limit'));
-
-		$categories = $this->category->orderBy('name')->get();
-
-		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
 	}
 
 	public function productSubCategory($category, $subcategory){
@@ -67,28 +49,12 @@ class CategoryController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->searchProduct($subcategory->products(), $page, $search, $subcategory->products->count())->count() / config('paginate.limit'));
+		$pages = ceil($this->searchProduct($subcategory->products(), 1, $search, $subcategory->products->where('visible', true)->count())->count() / config('paginate.limit'));
 		
 		$products = $this->searchProduct($subcategory->products(), $page, $search)->get();
 		$categories = $this->category->orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
-	}
-
-	public function noticeCategory($category){
-		$category = $this->category->where('slug', $category)->firstOrFail();
-		$notices = $category->notices();
-		
-		$request = new Request();
-
-		$builder = $request->except('page');
-		$page = $request->input('page') ?? 1;
-		$search = $request->input('search');
-		$pages = ceil($notices->count() / config('paginate.limit'));
-
-		$categories = $this->category->orderBy('name')->get();
-
-		return view('site.notices.index', compact('notices', 'categories', 'search', 'pages', 'builder'));
 	}
 
 	public function noticeSubCategory($category, $subcategory){
@@ -100,7 +66,7 @@ class CategoryController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->searchNotice($subcategory->notices(), $page, $search, $subcategory->notices->count())->count() / config('paginate.limit'));
+		$pages = ceil($this->searchNotice($subcategory->notices(), 1, $search, $subcategory->notices->where('visible', true)->count())->count() / config('paginate.limit'));
 		
 		$notices = $this->searchNotice($subcategory->notices(), $page, $search)->get();
 		$categories = $this->category->orderBy('name')->get();

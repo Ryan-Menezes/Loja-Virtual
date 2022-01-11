@@ -593,7 +593,7 @@ textarea.input {
 
 .cart-dropdown .cart-btns>a {
   display: inline-block;
-  width: calc(50% - 0px);
+  width: 100%;
   padding: 12px;
   background-color: #D10024;
   color: #FFF;

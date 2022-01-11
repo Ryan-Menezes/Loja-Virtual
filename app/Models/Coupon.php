@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Coupon extends Model{
 	public $table = 'coupons';
-	protected $fillable = ['code', 'percent', 'expiration'];
+	protected $fillable = ['code', 'percent', 'only_one_time', 'expiration'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){

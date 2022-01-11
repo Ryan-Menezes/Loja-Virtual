@@ -195,7 +195,6 @@
                                     @if(!empty($cart_products))
                                     <div class="cart-btns">
                                         <a href="{{ route('site.cart') }}" title="Ver mais detalhes do carrinho">Ver Carrinho</a>
-                                        <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                     @endif
                                 </div>
@@ -389,6 +388,7 @@
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/slick.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/nouislider.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.zoom.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/site/script.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/site/main.js') }}"></script>
     @yield('scripts')

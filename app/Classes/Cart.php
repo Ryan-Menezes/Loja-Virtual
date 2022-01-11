@@ -26,7 +26,7 @@ class Cart{
 				$size = $product->sizes->where('quantity', '>', 0)->first();
 			}
 
-			if($size->quantity > 0){
+			if($size && $size->quantity > 0){
 				if(!array_key_exists($size->id, $this->cart)){
 					$this->cart[$size->id] = new \stdClass();
 
@@ -54,18 +54,6 @@ class Cart{
 		session(self::KEY, $this->cart);
 	}
 
-	public function modify(int $id, int $quantity) : void{
-		if(array_key_exists($id, $this->cart) && $quantity <= $this->cart[$id]->size->quantity){
-			$this->cart[$id]->quantity = $quantity;
-
-			if($this->cart[$id]->quantity > $this->cart[$id]->size->quantity){
-				$this->cart[$id]->quantity = $this->cart[$id]->size->quantity;
-			}
-
-			session(self::KEY, $this->cart);
-		}
-	}
-
 	public function amount() : float{
 		$amount = 0;
 		foreach($this->cart as $cart){
@@ -82,17 +70,6 @@ class Cart{
 		}
 
 		return $quantity;
-	}
-
-	public function subtotal(int $id) : float{
-		$subtotal = 0;
-		if(array_key_exists($id, $this->cart)){
-			$cart = $this->cart[$id];
-
-			$subtotal = $cart->quantity * $cart->size->price;
-		}
-
-		return $subtotal;
 	}
 
 	public function all() : array{

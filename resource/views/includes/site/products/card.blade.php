@@ -21,22 +21,20 @@
 				<del class="product-old-price">{{ $product->pricePreviousFormat }}</del>
 				@endif
 			</h4>
-			<div class="product-rating">
+			<div>
 				@if($product->freight_free)
 				<span class="product-available" style="margin-left: 0px;">Frete Grátis</span>
 				@endif
+			</div>
+			<div class="product-rating">
 				@if($product->ratings_active)
-					@if($product->ratings->where('visible', true)->count() > 0)
-						@for($i = 0; $i < $product->ratings->where('visible', true)->avg('stars'); $i++)
-						<i class="fa fa-star"></i>
-						@endfor
+					@for($i = 0; $i < $product->ratings->where('visible', true)->avg('stars'); $i++)
+					<i class="fa fa-star"></i>
+					@endfor
 
-						@for($i = 0; $i < 5 - $product->ratings->where('visible', true)->avg('stars'); $i++)
-						<i class="fa fa-star-o"></i>
-						@endfor
-					@else
-					<p>Nenhuma Avaliação</p>
-					@endif
+					@for($i = 0; $i < 5 - $product->ratings->where('visible', true)->avg('stars'); $i++)
+					<i class="fa fa-star-o"></i>
+					@endfor
 				@endif
 			</div>
 			<div class="product-btns">

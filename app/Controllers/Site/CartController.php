@@ -21,9 +21,10 @@ class CartController extends Controller{
 	}
 
 	public function index(){
+		$cart = $this->cart;
 		$products = $this->cart->all();
 
-		return view('site.cart.index', compact('products'));
+		return view('site.cart.index', compact('products', 'cart'));
 	}
 
 	public function store($product_id, $size_id = null){
@@ -39,6 +40,30 @@ class CartController extends Controller{
 		}
 
 		redirect(route('site.cart'), ['error' => $result->message], true);
+	}
+
+	public function update(){
+		$request = new Request();
+		$data = $request->all();
+
+		if(isset($data['id']) && isset($data['size']) && isset($data['quantity'])){
+			$id = $data['id'];
+			$size = ProductSize::find($data['size']);
+			$quantity = $data['quantity'] ?? 1;
+
+			if($size){
+				$this->cart->remove($id);
+				$this->cart->add($size->color->product, $size, $quantity);
+			}
+		}	
+
+		redirect(route('site.cart'), ['success' => 'Carrinho atualizado com sucesso!']);
+	}
+
+	public function clear(){
+		$this->cart->clear();
+
+		redirect(route('site.cart'), ['success' => 'Carrinho limpo com sucesso!']);
 	}
 
 	public function destroy($id){

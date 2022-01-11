@@ -7,7 +7,7 @@
 		'name' => 'postal_code', 
 		'title' => 'CEP', 
 		'value' => (isset($address) ? $address->postal_code : null),
-		'class' => 'required',
+		'class' => 'required cep-mask',
 		'required' => true
 	])
 

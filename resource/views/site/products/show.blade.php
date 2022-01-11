@@ -201,7 +201,7 @@
 											<button class="primary-btn">Enviar</button>
 										</form>
 										@else
-										<p>Para avaliar este produto, você precisa estar logado, ter no minímo efetuado um pedido envolvendo este produto e só é possível avaliar uma única vez por produto!</p>
+										<p>Para avaliar este produto, você precisa estar logado, ter no minímo feita a compra de uma ou mais unidades desse produto e só é possível avaliar uma única vez por produto!</p>
 										@endif
 									</div>
 								</div>

@@ -53,10 +53,11 @@
 				<div class="row">
 					<div class="col-md-6">
 						@include('includes.components.form.input', [
+							'type' => 'text',
 							'title' => 'Telefone',
 							'name' => 'telephone',
 							'value' => $client->telephone,
-							'type' => 'text'
+							'class' => 'phone-mask'
 						])
 					</div>
 					<div class="col-md-6">
@@ -65,7 +66,7 @@
 							'name' => 'cell',
 							'type' => 'text',
 							'value' => $client->cell,
-							'class' => 'required',
+							'class' => 'required cell-mask',
 							'required' => true
 						])
 					</div>
@@ -76,7 +77,7 @@
 					'name' => 'cpf',
 					'type' => 'text',
 					'value' => $client->cpf,
-					'class' => 'required',
+					'class' => 'required cpf-mask',
 					'required' => true
 				])
 				@include('includes.components.form.input', [
@@ -84,7 +85,7 @@
 					'name' => 'cnpj',
 					'type' => 'text',
 					'value' => $client->cnpj,
-					'class' => 'required',
+					'class' => 'required cnpj-mask',
 					'required' => true
 				])
 

@@ -23,7 +23,7 @@
 						@foreach($categories as $category)
 							@if($category->products()->count())
 							<li>
-								<a href="{{ route('site.products.category', ['category' => $category->slug]) }}" title="Produtos da Categoria: {{ $category->name }}"><strong>{{ $category->name }} ({{ $category->products()->count() }})</strong></a>
+								<p><strong>{{ $category->name }} ({{ $category->products()->count() }})</strong></p>
 
 								@if($category->subcategories->count())
 								<ul style="margin-left: 40px;">

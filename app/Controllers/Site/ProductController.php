@@ -27,9 +27,9 @@ class ProductController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->product->where('visible', true)->search(1, $search, $this->product->where('visible', true)->count())->count() / config('paginate.limit'));
+		$pages = ceil($this->product->search(1, $search, $this->product->where('visible', true)->count())->where('visible', true)->count() / config('paginate.limit'));
 		
-		$products = $this->product->where('visible', true)->search($page, $search)->get();
+		$products = $this->product->search($page, $search)->where('visible', true)->get();
 		$categories = Category::orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));

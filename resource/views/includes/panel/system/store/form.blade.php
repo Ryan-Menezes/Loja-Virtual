@@ -2,17 +2,29 @@
 	<input type="hidden" name="_method" value="{{ $method }}">
 
 	@include('includes.components.form.select', [
-				'name' => 'active', 
-				'title' => 'Tipo de Pagamento',
-				'value' => (isset($system) && $system->store ? $system->store->payment_debit_card : 1),
-				'options' => [
-					'PS' => 'PagSeguro',
-					'MP' => 'Mercado Pago',
-					'PP' => 'PayPal'
-				],
-				'class' => 'required',
-				'required' => true
-			])
+		'name' => 'active', 
+		'title' => 'Tipo de Pagamento',
+		'value' => (isset($system) && $system->store ? $system->store->payment_debit_card : 1),
+		'options' => [
+			'PS' => 'PagSeguro',
+			'MP' => 'Mercado Pago',
+			'PP' => 'PayPal'
+		],
+		'class' => 'required',
+		'required' => true
+	])
+
+	@include('includes.components.form.select', [
+		'name' => 'payment_production', 
+		'title' => 'Modo de Produção',
+		'value' => (isset($system) && $system->store ? $system->store->payment_production : 0),
+		'options' => [
+			1 => 'Ativado',
+			0 => 'Desativado'
+		],
+		'class' => 'required',
+		'required' => true
+	])
 
 	<div class="row">
 		<div class="col-md-6">

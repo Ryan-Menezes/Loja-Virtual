@@ -40,9 +40,10 @@
 	<div class="row">
 		<div class="col-md-6">
 			@include('includes.components.form.input', [
+				'type' => 'text',
 				'title' => 'Telefone',
 				'name' => 'telephone',
-				'type' => 'text'
+				'class' => 'phone-mask'
 			])
 		</div>
 		<div class="col-md-6">
@@ -50,7 +51,7 @@
 				'title' => 'Celular',
 				'name' => 'cell',
 				'type' => 'text',
-				'class' => 'required',
+				'class' => 'required cell-mask',
 				'required' => true
 			])
 		</div>
@@ -62,7 +63,7 @@
 			'title' => 'CPF',
 			'name' => 'cpf',
 			'type' => 'text',
-			'class' => 'required',
+			'class' => 'required cpf-mask',
 			'required' => true
 		])
 	@else
@@ -71,7 +72,7 @@
 			'title' => 'CNPJ',
 			'name' => 'cnpj',
 			'type' => 'text',
-			'class' => 'required',
+			'class' => 'required cnpj-mask',
 			'required' => true
 		])
 	@endif
@@ -82,7 +83,7 @@
 		'title' => 'CEP',
 		'name' => 'postal_code',
 		'type' => 'text',
-		'class' => 'required',
+		'class' => 'required cep-mask',
 		'required' => true
 	])
 
