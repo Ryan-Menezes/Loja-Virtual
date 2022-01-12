@@ -112,6 +112,21 @@
 			])
 		</div>
 	</div>
+
+	<br /><h3>Credenciais PagSeguro</h3><hr />
+	@include('includes.components.form.input', [
+		'type' => 'email', 
+		'name' => 'email', 
+		'title' => 'E-Mail', 
+		'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->email : null)
+	])
+
+	@include('includes.components.form.input', [
+		'type' => 'text', 
+		'name' => 'token', 
+		'title' => 'Token', 
+		'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->token : null)
+	])
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>
 </form>

@@ -1,0 +1,126 @@
+@extends('templates.panel')
+
+@section('title', 'Editar Pedido')
+
+@section('container')
+<div class="container-main">
+	<h1>Pedido #{{ $requestmodel->id }}</h1><hr />
+	<div class="border mb-4 p-4 text-end">
+		<p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format($requestmodel->payment->disount_coupon, 2, ',', '.') }}</strong></p>
+		@if($requestmodel->payment->installments == 1)
+		<p class="p-0 m-0">}(Desconto Pagamento à Vista) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+			@else
+		<p class="p-0 m-0">(Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+		@endif
+		<p class="p-0 m-0">(Desconto Extra) <strong>-R$ {{ number_format($requestmodel->payment->discount_store, 2, ',', '.') }}</strong></p>
+		<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_store - $requestmodel->payment->discount_installment - $requestmodel->payment->disount_coupon, 2, ',', '.') }}</h2>
+	</div>
+
+	@include('includes.panel.requests.form', ['action' => route('panel.requests.update', ['id' => $requestmodel->id]), 'method' => 'PUT'])
+
+	<div class="border mb-4 p-4">
+		<h2>Cliente</h2><hr />
+
+		<p><a href="{{ route('panel.clients.show', ['id' => $requestmodel->client->id]) }}" title="Saber mais sobre o cliente: {{ $requestmodel->client->name }}" target="_blank"><strong>{{ $requestmodel->client->name }} <i class="fas fa-external-link-alt"></i></strong></a></p>
+
+		<p class="p-0 m-0"><strong>CPF: </strong>{{ mask($requestmodel->client->cpf, '###.###.###-##') }}</p>
+		<p class="p-0 m-0"><strong>CNPJ: </strong>{{ mask($requestmodel->client->cnpj, '##.###.###/####-##') }}</p>
+		<p class="p-0 m-0"><strong>E-Mail: </strong>{{ $requestmodel->client->email }}</p>
+		<p class="p-0 m-0"><strong>Celular: </strong>{{ mask($requestmodel->client->cell, '(##)#####-####') }}</p>
+		<p class="p-0 m-0"><strong>Telefone: </strong>{{ mask($requestmodel->client->telephone, '(##)####-####') }}</p>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Endereço</h2><hr />
+
+		<p class="p-0 m-0"><strong>CEP: </strong>{{ mask($requestmodel->address->postal_code, '#####-###') }}</p>
+		<p class="p-0 m-0"><strong>Rua: </strong>{{ $requestmodel->address->street }}</p>
+		<p class="p-0 m-0"><strong>Número: </strong>{{ $requestmodel->address->number }}</p>
+		<p class="p-0 m-0"><strong>Bairro: </strong>{{ $requestmodel->address->district }}</p>
+		<p class="p-0 m-0"><strong>Cidade: </strong>{{ $requestmodel->address->city }}</p>
+		<p class="p-0 m-0"><strong>Estado: </strong>{{ $requestmodel->address->state }}</p>
+		<p class="p-0 m-0"><strong>Complemento: </strong>{{ $requestmodel->address->complement }}</p>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Produtos</h2><hr />
+
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Imagem</th>
+					<th>Nome</th>
+					<th>Tamanho e Cor</th>
+					<th>Preço(R$)</th>
+					<th>Quantidade</th>
+					<th>Subtotal(R$)</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach($requestmodel->products as $product)
+				<tr>
+					<td><img src="{{ url('storage/app/public/' . $product->size->color->images->first()->source) }}" title="{{ $product->size->color->product->name }}" alt="{{ $product->size->color->product->name }}"></td>
+					@if($product->size->color->product->visible)
+					<td style="max-width: 200px;"><a href="{{ route('site.products.show', ['slug' => $product->size->color->product->slug]) }}" title="Página do produto: {{ $product->size->color->product->name }}" target="_blank">{{ $product->size->color->product->name }} <i class="fas fa-external-link-alt"></i></a></td>
+					@else
+					<td>{{ $product->size->color->product->name }}</td>
+					@endif
+					<td>Tamanho: {{ $product->size->description }} | Cor: {{ $product->size->color->description }}</td>
+					<td>{{ number_format($product->price, 2, ',', '.') }}</td>
+					<td>{{ $product->quantity }}</td>
+					<td>{{ number_format($product->price * $product->quantity, 2, ',', '.') }}</td>
+				</tr>
+				@endforeach
+			</tbody>
+		</table>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Pagamento</h2><hr />
+
+		@if($requestmodel->payment->status_type == 'AP' || $requestmodel->payment->status_type == 'EA')
+		<span class="alert alert-info p-2 m-0"><small>{{ $requestmodel->payment->statusTypeFormat }}</small></span>
+		@elseif($requestmodel->payment->status_type == 'ED')
+		<span class="alert alert-warning p-2 m-0"><small>{{ $requestmodel->payment->statusTypeFormat }}</small></span>
+		@elseif($requestmodel->payment->status_type == 'PA' || $requestmodel->payment->status_type == 'DI')
+		<span class="alert alert-success p-2 m-0"><small>{{ $requestmodel->payment->statusTypeFormat }}</small></span>
+		@else
+		<span class="alert alert-danger p-2 m-0"><small>{{ $requestmodel->payment->statusTypeFormat }}</small></span>
+		@endif
+
+		<p class="p-0 m-0 mt-4"><strong>Código da Transação: </strong>{{ $requestmodel->payment->code }}</p>
+		<p class="p-0 m-0"><strong>Transação efetuada pelo: </strong>{{ $requestmodel->payment->typeFormat }}</p>
+		<p class="p-0 m-0"><strong>Método de Pagamento: </strong>{{ $requestmodel->payment->methodFormat }}</p>
+		<p class="p-0 m-0"><strong>Status do Pagamento: </strong>{{ $requestmodel->payment->statusTypeFormat }}</p>
+	</div>
+
+	@if($requestmodel->payment->method == 'CC' ||  $requestmodel->payment->method == 'CD')
+	<div class="border mb-4 p-4">	
+		<h2>Parcelas e Juros</h2><hr />
+
+		<p class="p-0 m-0"><strong>Número de Parcelas: </strong>{{ $requestmodel->payment->installments }}</p>
+		<p class="p-0 m-0"><strong>Número de Parcelas sem Juros: </strong>{{ $requestmodel->payment->installment_no_interest }}</p>
+	</div>
+	@endif
+
+	<div class="border mb-4 p-4">
+		<h2>Descontos Aplicados</h2><hr />
+
+		<p class="p-0 m-0 mt-4"><strong>Desconto por Cupom: </strong>-R$ {{ number_format($requestmodel->payment->disount_coupon, 2, ',', '.') }}</p>
+		@if($requestmodel->payment->installments == 1)
+		<p class="p-0 m-0"><strong>Desconto por pagamento à vista: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+		@else
+		<p class="p-0 m-0"><strong>Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+		@endif
+		<p class="p-0 m-0"><strong>Desconto Extra: </strong>-R$ {{ number_format($requestmodel->payment->discount_store, 2, ',', '.') }}</p>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Frete</h2><hr />
+
+		<p class="p-0 m-0"><strong>Tipo: </strong>{{ $requestmodel->payment->shippingTypeFormat }}</p>
+		<p class="p-0 m-0"><strong>Valor: </strong>R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</p>
+		<p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>{{ $requestmodel->payment->shipping_days }} dia(s)</p>
+	</div>
+</div>
+@endsection

@@ -8,6 +8,7 @@ use App\Controllers\Panel\{
 	ClientController,
 	ProductController,
 	RatingController,
+	RequestController,
 	CouponController,
 	SlideShowController,
 	BannerController,
@@ -142,6 +143,14 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 			Route::get('/{id}/editar', [RatingController::class, 'edit'])->name('panel.ratings.edit');
 			Route::put('/{id}/editar/salvar', [RatingController::class, 'update'])->name('panel.ratings.update');
 			Route::delete('/{id}/deletar', [RatingController::class, 'destroy'])->name('panel.ratings.destroy');
+		});
+
+		// ROUTE REQUESTS
+		Route::group(['prefix' => 'pedidos'], function(){
+			Route::any('/', [RequestController::class, 'index'])->name('panel.requests');
+			Route::get('/{id}/editar', [RequestController::class, 'edit'])->name('panel.requests.edit');
+			Route::put('/{id}/editar/salvar', [RequestController::class, 'update'])->name('panel.requests.update');
+			Route::delete('/{id}', [RequestController::class, 'destroy'])->name('panel.requests.destroy');
 		});
 
 		// ROUTE COUPONS

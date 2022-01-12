@@ -107,6 +107,9 @@ class SystemController extends Controller{
 		$data = $request->all();
 
 		$this->validator($data, $store->rolesUpdate, $store->messages);
+		$this->validator($data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
+
+		$store->pagseguro->update($data);
 
 		if($store->update($data)){
 			redirect(route('panel.system'), ['success' => 'Loja virtual editada com sucesso']);

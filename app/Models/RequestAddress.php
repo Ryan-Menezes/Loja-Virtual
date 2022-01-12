@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientAddress extends Model{
-	public $table = 'client_adresses';
-	protected $fillable = ['postal_code', 'street', 'number', 'district', 'city', 'state', 'complement', 'client_id'];
+class RequestAddress extends Model{
+	public $table = 'request_address';
+	protected $fillable = ['postal_code', 'street', 'number', 'district', 'city', 'state', 'complement'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
@@ -56,7 +56,7 @@ class ClientAddress extends Model{
 		];
 	}
 
-	public function client(){
-		return $this->belongsTo(Client::class, 'client_id', 'id');
+	public function request(){
+		return $this->hasOne(Request::class, 'request_address_id', 'id');
 	}
 }

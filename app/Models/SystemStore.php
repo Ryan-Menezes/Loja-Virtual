@@ -38,4 +38,8 @@ class SystemStore extends Model{
 	public function system(){
 		return $this->hasOne(System::class, 'system_store_id', 'id');
 	}
+
+	public function pagseguro(){
+		return $this->belongsTo(SystemPagseguro::class, 'system_pagseguro_id', 'id');
+	}
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 11-Jan-2022 às 21:07
+-- Generation Time: 12-Jan-2022 às 21:05
 -- Versão do servidor: 10.1.38-MariaDB
 -- versão do PHP: 7.3.2
 
@@ -425,7 +425,20 @@ CREATE TABLE `products` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
--- Error reading data for table lojavirtual.products: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`products`' na linha 1
+
+--
+-- Extraindo dados da tabela `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `slug`, `description`, `details`, `video`, `visible`, `ratings_active`, `freight_free`, `installment_no_interest`, `created_at`, `updated_at`) VALUES
+(34, 'Camisa Formal', 'camisa-formal', 'Camisa formal', 'Camisa Formal', '', 1, 1, 0, 1, '2021-12-18 22:21:42', '2022-01-11 18:56:25'),
+(35, 'XBox Series X', 'xbox-series-x', 'Novo videogame da microsoft', '', NULL, 1, 1, 0, 1, '2021-12-18 22:29:43', '2021-12-19 15:19:01'),
+(36, 'Playstation 5', 'playstation-5', 'Novo videogame da sony', '<p>Playstation 5</p>', '', 1, 1, 0, 1, '2021-12-18 22:35:10', '2022-01-11 20:56:02'),
+(37, 'PC Gamer Completo', 'pc-gamer-completo', 'PC de última geração', '<p>PC de última geração</p>', 'https://www.youtube.com/watch?v=iutQJzAXiWo', 1, 1, 0, 1, '2021-12-18 22:39:26', '2022-01-05 18:22:18'),
+(38, 'Notebook Casual', 'notebook-casual', 'Notebook para trabalho', '<strong>Ano: </strong>2020\r\n<strong>SO: </strong>Windows\r\n<strong>Bits: </strong>64 Bits', NULL, 1, 1, 0, 1, '2021-12-18 22:42:36', '2021-12-20 21:48:01'),
+(39, 'Celular LG K4', 'celular-lg-k4', 'Celular bom para nada', '<strong>PROCESSAMENTO: </strong>Ruim\r\n<strong>MEMÓRIA: </strong>8gb', 'https://www.youtube.com/watch?v=iutQJzAXiWo', 1, 0, 1, 1, '2021-12-18 22:46:39', '2021-12-31 19:08:39'),
+(40, 'Headset', 'headset', 'Um belo headset para jogadores de todas as idades', '<p><strong>Ano: </strong>2020&nbsp;</p><p><strong>Hz: </strong>60</p>', '', 1, 1, 0, 1, '2021-12-20 21:44:23', '2022-01-07 19:51:16'),
+(41, 'Tablet', 'tablet', 'Um belo tablet para você dar de presente de natal!', '<p><strong>Armazenamento: </strong>32gb&nbsp;</p><p><strong style=\"background-color: initial; font-size: 1em; text-align: var(--bs-body-text-align);\">RAM: </strong>8gb</p>', '', 1, 1, 0, 4, '2021-12-20 21:51:12', '2022-01-10 02:23:39');
 
 -- --------------------------------------------------------
 
@@ -584,13 +597,13 @@ INSERT INTO `product_images` (`id`, `source`, `product_color_id`) VALUES
 CREATE TABLE `product_sizes` (
   `id` int(10) UNSIGNED NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `price` decimal(8,2) UNSIGNED NOT NULL,
-  `price_previous` decimal(8,2) UNSIGNED DEFAULT NULL,
+  `price` decimal(10,2) UNSIGNED NOT NULL,
+  `price_previous` decimal(10,2) UNSIGNED DEFAULT NULL,
   `quantity` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
-  `width` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `height` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `depth` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `weight` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `width` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `height` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `depth` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `weight` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
   `product_color_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -650,6 +663,95 @@ INSERT INTO `ratings` (`id`, `stars`, `content`, `visible`, `product_id`, `clien
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `requests`
+--
+
+CREATE TABLE `requests` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `status` enum('AP','PA','AE','EN','CO','CA') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AP' COMMENT 'AP - Aguardando Pagamento | PA - Pago | AE - Aguardando Envio | EN - Enviado para a entrega | CO - Concluído | CA - Cancelado',
+  `client_id` int(10) UNSIGNED NOT NULL,
+  `request_address_id` int(10) UNSIGNED NOT NULL,
+  `request_payment_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `requests_products`
+--
+
+CREATE TABLE `requests_products` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `price` decimal(10,2) UNSIGNED NOT NULL,
+  `quantity` smallint(5) UNSIGNED NOT NULL,
+  `request_id` int(10) UNSIGNED NOT NULL,
+  `product_size_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `request_address`
+--
+
+CREATE TABLE `request_address` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `postal_code` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `district` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `complement` text COLLATE utf8mb4_unicode_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `request_address`
+--
+
+INSERT INTO `request_address` (`id`, `postal_code`, `street`, `number`, `district`, `city`, `state`, `complement`) VALUES
+(1, '12345678', 'Rua Teste', '14', 'Bairro Teste', 'São Paulo', 'SP', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `request_payment`
+--
+
+CREATE TABLE `request_payment` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `code` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` enum('PS','MP','PP') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PS - PagSeguro | MP - Mercado Pago | PP - PayPal',
+  `method` enum('CC','CD','BO','DO','PX','PP') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'CC - Cartão de Crédito | CD - Cartão de Débito | BO - Boleto | DO - Débito Online | PX - PIX | PP - PayPal',
+  `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status_type` enum('AP','EA','PA','DI','ED','DE','CA') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'AP - Aguardando Pagamento | EA - Em Análise | PA - Paga | DI - Disponível | ED - Em Disputa | DE - Devolvida | CA - Cancelada',
+  `installments` tinyint(3) UNSIGNED NOT NULL,
+  `installment_no_interest` tinyint(3) UNSIGNED NOT NULL,
+  `amount` decimal(10,2) UNSIGNED NOT NULL,
+  `disount_coupon` decimal(10,2) UNSIGNED NOT NULL,
+  `discount_installment` decimal(10,2) UNSIGNED NOT NULL,
+  `discount_store` decimal(10,2) UNSIGNED NOT NULL,
+  `shipping_type` enum('PC','SX','PE') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PC - PAC | SX - SEDEX | PE - Personalizado',
+  `shipping_value` decimal(10,2) UNSIGNED NOT NULL,
+  `shipping_days` tinyint(3) UNSIGNED NOT NULL,
+  `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `details` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `request_payment`
+--
+
+INSERT INTO `request_payment` (`id`, `code`, `type`, `method`, `status`, `status_type`, `installments`, `installment_no_interest`, `amount`, `disount_coupon`, `discount_installment`, `discount_store`, `shipping_type`, `shipping_value`, `shipping_days`, `link`, `details`, `created_at`, `updated_at`) VALUES
+(1, '123456', 'PS', 'CC', '1', 'AP', 10, 5, '450.00', '10.00', '10.00', '10.00', 'PC', '10.00', 10, 'http://www.lojaonline.com.br', 'detalhes', '2022-01-12 16:05:06', '2022-01-12 19:56:51');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `roles`
 --
 
@@ -678,75 +780,7 @@ CREATE TABLE `roles_permissions` (
   `role_id` int(11) UNSIGNED NOT NULL,
   `permission_id` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `roles_permissions`
---
-
-INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
-(322, 1, 1),
-(323, 1, 2),
-(324, 1, 3),
-(325, 1, 7),
-(326, 1, 6),
-(327, 1, 4),
-(328, 1, 5),
-(329, 1, 37),
-(330, 1, 53),
-(331, 1, 13),
-(332, 1, 49),
-(333, 1, 29),
-(334, 1, 41),
-(335, 1, 45),
-(336, 1, 61),
-(337, 1, 17),
-(338, 1, 21),
-(339, 1, 25),
-(340, 1, 57),
-(341, 1, 33),
-(342, 1, 9),
-(343, 1, 39),
-(344, 1, 55),
-(345, 1, 15),
-(346, 1, 51),
-(347, 1, 31),
-(348, 1, 43),
-(349, 1, 47),
-(350, 1, 63),
-(351, 1, 19),
-(352, 1, 23),
-(353, 1, 27),
-(354, 1, 59),
-(355, 1, 35),
-(356, 1, 11),
-(357, 1, 38),
-(358, 1, 54),
-(359, 1, 14),
-(360, 1, 50),
-(361, 1, 30),
-(362, 1, 42),
-(363, 1, 46),
-(364, 1, 62),
-(365, 1, 18),
-(366, 1, 22),
-(367, 1, 26),
-(368, 1, 58),
-(369, 1, 34),
-(370, 1, 10),
-(371, 1, 36),
-(372, 1, 52),
-(373, 1, 12),
-(374, 1, 48),
-(375, 1, 28),
-(376, 1, 40),
-(377, 1, 44),
-(378, 1, 60),
-(379, 1, 16),
-(380, 1, 20),
-(381, 1, 24),
-(382, 1, 56),
-(383, 1, 32),
-(384, 1, 8);
+-- Error reading data for table lojavirtual.roles_permissions: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`roles_permissions`' na linha 1
 
 -- --------------------------------------------------------
 
@@ -869,13 +903,7 @@ CREATE TABLE `system_address` (
   `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `complement` text COLLATE utf8mb4_unicode_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `system_address`
---
-
-INSERT INTO `system_address` (`id`, `postal_code`, `street`, `number`, `district`, `city`, `state`, `latitude`, `longitude`, `complement`) VALUES
-(1, '12345678', 'Rua Nova', '15', 'Novo Bairro', 'São Paulo', 'SP', '', '', 'Novo');
+-- Error reading data for table lojavirtual.system_address: #1064 - Você tem um erro de sintaxe no seu SQL próximo a 'FROM `lojavirtual`.`system_address`' na linha 1
 
 -- --------------------------------------------------------
 
@@ -940,6 +968,25 @@ INSERT INTO `system_lgpd` (`id`, `active`, `privacy_policy`, `terms_conditions`)
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `system_pagseguro`
+--
+
+CREATE TABLE `system_pagseguro` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Extraindo dados da tabela `system_pagseguro`
+--
+
+INSERT INTO `system_pagseguro` (`id`, `email`, `token`) VALUES
+(1, 'menezesryan1010@gmail.com', '73e1ff090a4248aab007cb016ce5e3db');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `system_social`
 --
 
@@ -977,16 +1024,16 @@ CREATE TABLE `system_store` (
   `payment_bolet` tinyint(1) NOT NULL DEFAULT '1',
   `payment_debit_online` tinyint(1) NOT NULL DEFAULT '1',
   `payment_pix` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_paypal` tinyint(1) NOT NULL DEFAULT '1'
+  `payment_paypal` tinyint(1) NOT NULL DEFAULT '1',
+  `system_pagseguro_id` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_store`
 --
 
-INSERT INTO `system_store` (`id`, `payment_type`, `payment_production`, `payment_credit_card`, `payment_debit_card`, `payment_bolet`, `payment_debit_online`, `payment_pix`, `payment_paypal`) VALUES
-(1, 'PS', 0, 1, 1, 1, 1, 1, 1),
-(2, 'PS', 0, 1, 1, 1, 1, 1, 1);
+INSERT INTO `system_store` (`id`, `payment_type`, `payment_production`, `payment_credit_card`, `payment_debit_card`, `payment_bolet`, `payment_debit_online`, `payment_pix`, `payment_paypal`, `system_pagseguro_id`) VALUES
+(1, 'PS', 0, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1193,6 +1240,35 @@ ALTER TABLE `ratings`
   ADD KEY `client_id` (`client_id`);
 
 --
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `request_address_id` (`request_address_id`),
+  ADD KEY `request_payment_id` (`request_payment_id`);
+
+--
+-- Indexes for table `requests_products`
+--
+ALTER TABLE `requests_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_id` (`request_id`),
+  ADD KEY `product_size_id` (`product_size_id`);
+
+--
+-- Indexes for table `request_address`
+--
+ALTER TABLE `request_address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `request_payment`
+--
+ALTER TABLE `request_payment`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `roles`
 --
 ALTER TABLE `roles`
@@ -1266,6 +1342,12 @@ ALTER TABLE `system_lgpd`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `system_pagseguro`
+--
+ALTER TABLE `system_pagseguro`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `system_social`
 --
 ALTER TABLE `system_social`
@@ -1275,7 +1357,8 @@ ALTER TABLE `system_social`
 -- Indexes for table `system_store`
 --
 ALTER TABLE `system_store`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `system_pagseguro_id` (`system_pagseguro_id`);
 
 --
 -- Indexes for table `users`
@@ -1353,7 +1436,7 @@ ALTER TABLE `favorites`
 -- AUTO_INCREMENT for table `lgpd`
 --
 ALTER TABLE `lgpd`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=414;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=417;
 
 --
 -- AUTO_INCREMENT for table `notices`
@@ -1416,6 +1499,30 @@ ALTER TABLE `ratings`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `requests_products`
+--
+ALTER TABLE `requests_products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `request_address`
+--
+ALTER TABLE `request_address`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `request_payment`
+--
+ALTER TABLE `request_payment`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
@@ -1473,6 +1580,12 @@ ALTER TABLE `system_floater`
 -- AUTO_INCREMENT for table `system_lgpd`
 --
 ALTER TABLE `system_lgpd`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `system_pagseguro`
+--
+ALTER TABLE `system_pagseguro`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
@@ -1587,6 +1700,21 @@ ALTER TABLE `ratings`
   ADD CONSTRAINT `ratings_ibfk_2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Limitadores para a tabela `requests`
+--
+ALTER TABLE `requests`
+  ADD CONSTRAINT `requests_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `requests_ibfk_2` FOREIGN KEY (`request_address_id`) REFERENCES `request_address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `requests_ibfk_3` FOREIGN KEY (`request_payment_id`) REFERENCES `request_payment` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `requests_products`
+--
+ALTER TABLE `requests_products`
+  ADD CONSTRAINT `requests_products_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `requests` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `requests_products_ibfk_2` FOREIGN KEY (`product_size_id`) REFERENCES `product_sizes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Limitadores para a tabela `roles_permissions`
 --
 ALTER TABLE `roles_permissions`
@@ -1615,6 +1743,12 @@ ALTER TABLE `system`
   ADD CONSTRAINT `system_ibfk_4` FOREIGN KEY (`system_social_id`) REFERENCES `system_social` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `system_ibfk_5` FOREIGN KEY (`system_lgpd_id`) REFERENCES `system_lgpd` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `system_ibfk_6` FOREIGN KEY (`system_store_id`) REFERENCES `system_store` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limitadores para a tabela `system_store`
+--
+ALTER TABLE `system_store`
+  ADD CONSTRAINT `system_store_ibfk_1` FOREIGN KEY (`system_pagseguro_id`) REFERENCES `system_pagseguro` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `users_roles`
