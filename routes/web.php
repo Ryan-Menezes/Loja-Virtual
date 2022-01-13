@@ -317,6 +317,7 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 		Route::post('/adicionar/{product_id}', [CartController::class, 'add'])->name('site.cart.add');
 		Route::post('/adicionar/{product_id}/{?size_id}', [CartController::class, 'store'])->name('site.cart.store');
 		Route::delete('/{id}/remover', [CartController::class, 'destroy'])->name('site.cart.destroy');
+		Route::post('/frete', [CartController::class, 'freight'])->name('site.cart.freight');
 	});
 
 	// ROUTE NOTICES
@@ -349,8 +350,11 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 
 			// ROUTE RATINGS
 			Route::group(['prefix' => '/avaliacoes'], function(){
-				Route::post('/enviar', [ProductControllerSite::class, 'storeRating'])->name('site.products.ratings.send');
+				Route::post('/enviar', [ProductControllerSite::class, 'storeRating'])->name('site.products.show.ratings.send');
 			});
+
+			// ROUTE FREIGHT
+			Route::post('/frete', [ProductControllerSite::class, 'freight'])->name('site.products.show.freight');
 		});
 
 		Route::any('/info/{id}', [ProductControllerSite::class, 'info'])->name('site.products.info');

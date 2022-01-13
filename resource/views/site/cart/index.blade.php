@@ -75,31 +75,29 @@
     </div>
     <div class="row" style="margin-top: 40px;">
     	<div class="col-md-4">
-    		<form action="" method="POST" class="row">
-	    		<div class="col-md-8">
-	    			<input type="text" name="coupon" class="form-control" placeholder="Cupom de desconto">
-	    		</div>
-	    		<div class="col-md-4">
-	    			<button type="submit" class="btn btn-primary">VALIDAR</button>
-	    		</div>
-	    	</form>
+    		<div class="input-container">
+    			<form action="{{ route('site.cart.freight') }}" method="POST" data-container=".result-frete">
+		    		<input type="text" name="postal_code" placeholder="CEP para calcular o frete" class="cep-mask">
+		    		<button type="submit">CALCULAR</button>
+		    	</form>
+		    	<div class="result-frete"></div>
+    		</div>
+    	</div>
 
-	    	<br />
-
-    		<form action="" method="POST" class="row">
-	    		<div class="col-md-8">
-	    			<input type="text" name="postal_code" class="form-control" placeholder="CEP para calcular o frete">
-	    		</div>
-	    		<div class="col-md-4">
-	    			<button type="submit" class="btn btn-warning">CALCULAR</button>
-	    		</div>
-	    	</form>
+    	<div class="col-md-4">
+    		<div class="input-container">
+	    		<form action="" method="POST">
+	    			<input type="text" name="coupon" placeholder="Cupom de desconto">
+	    			<button type="submit">VALIDAR</button>
+		    	</form>
+		    	<div class="result-coupon"></div>
+		    </div>
     	</div>
     	
-    	<div class="col-md-8 text-right text-end">
-    		<a href="{{ route('site.cart.clear') }}" class="btn btn-primary" title="Limpar carrinho de compras">LIMPAR CARRINHO</a>
+    	<div class="col-md-4 text-right text-end">
+    		<a href="{{ route('site.cart.clear') }}" class="primary-btn cta-btn" title="Limpar carrinho de compras">LIMPAR CARRINHO</a>
 
-    		<button type="submit" class="btn btn-danger" title="Finalizar carrinho e efetuar o pedido">FINALIZAR COMPRA</button>
+    		<button type="submit" class="primary-btn cta-btn" title="Finalizar carrinho e efetuar o pedido">FINALIZAR COMPRA</button>
     	</div>
     </div>
     @else

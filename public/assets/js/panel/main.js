@@ -205,48 +205,48 @@ $(document).ready(function(){
     $('.phone-mask').mask('(99)9999-9999')
     $('*').delegate('.phone-mask', 'focus load', function(){
         $(this).mask('(99)9999-9999')
-        return
+        return false
     })
 
     $('.cell-mask').mask('(99)99999-9999')
     $('*').delegate('.cell-mask', 'focus load', function(){
         $(this).mask('(99)99999-9999')
-        return
+        return false
     })
 
     $('.cpf-mask').mask('999.999.999-99')
     $('*').delegate('.cpf-mask', 'focus load', function(){
         $(this).mask('999.999.999-99')
-        return
+        return false
     })
 
     $('.cnpj-mask').mask('99.999.999/9999-99')
     $('*').delegate('.cnpj-mask', 'focus load', function(){
         $(this).mask('99.999.999/9999-99')
-        return
+        return false
     })
 
     $('.cep-mask').mask('99999-999')
     $('*').delegate('.cep-mask', 'focus load', function(){
         $(this).mask('99999-999')
-        return
+        return false
     })
 
     $('.credit-number-mask').mask('9999 9999 9999 9999')
     $('*').delegate('.credit-number-mask', 'focus load', function(){
         $(this).mask('9999 9999 9999 9999')
-        return
+        return false
     })
 
     $('.cvv-mask').mask('999')
     $('*').delegate('.cvv-mask', 'focus load', function(){
         $(this).mask('999')
-        return
+        return false
     })
 
     $('.float-mask').mask('###.##0,00', {reverse: true})
     $('*').delegate('.float-mask', 'focus load', function(){
         $(this).mask('###.##0,00', {reverse: true})
-        return
+        return false
     })
 })

@@ -105,6 +105,7 @@ class SystemController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+		$data['cart_amount_promotion'] = number($data['cart_amount_promotion']);
 
 		$this->validator($data, $store->rolesUpdate, $store->messages);
 		$this->validator($data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);

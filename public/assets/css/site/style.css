@@ -295,7 +295,6 @@ textarea.input {
 \*----------------------------*/
 
 .section {
-  padding-top: 30px;
   padding-bottom: 30px;
 }
 
@@ -1527,6 +1526,29 @@ textarea.input {
 
 .product-details .product-options .input-select {
   width: 90px;
+}
+
+.product-details .product-options .product-color{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: 1px solid #dedddc;
+  display: inline-block;
+  cursor: pointer;
+}
+.product-details .product-options .product-size{
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #dedddc;
+  background-color: #e6e6e6;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 30px;
+  min-width: 30px;
+  text-align: center;
+  line-height: 19px;
+  font-weight: bold;
 }
 
 .product-details .add-to-cart {

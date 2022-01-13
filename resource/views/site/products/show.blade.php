@@ -23,6 +23,15 @@
 					</div>
 					@endforeach
 				</div>
+
+				<div class="input-container" style="margin-top: 40px;">
+	    			<form action="{{ route('site.products.show.freight', ['slug' => $product->slug]) }}" method="POST" data-container=".result-frete">
+	    				<input type="hidden" name="size_id" value="{{ $product->sizes->first()->id }}">
+			    		<input type="text" name="postal_code" placeholder="CEP para calcular o frete" class="cep-mask">
+			    		<button type="submit">CALCULAR</button>
+			    	</form>
+			    	<div class="result-frete"></div>
+	    		</div>
 			</div>
 			<!-- /Product main img -->
 
@@ -73,35 +82,31 @@
 							@endif
 						</h2>
 
-						@if($product->getDiscount(1) > 0)
-						<p><strong class="price-discount">R$ {{ number_format($product->sizes->first()->getPriceDiscount(1), 2, ',', '.') }}</strong> <small>à vista com {{ $product->getDiscount(1) }}% de desconto</small></p>
-						@endif
-
 						@if($product->sizes->first()->quantity > 0)
 						<span class="product-available">Produto Disponível</span>
 						@else
 						<span class="product-available">Produto Indisponível</span>
 						@endif
+
+						@if($product->getDiscount(1) > 0)
+						<p><strong class="price-discount">R$ {{ number_format($product->sizes->first()->getPriceDiscount(1), 2, ',', '.') }}</strong> <small>à vista com {{ $product->getDiscount(1) }}% de desconto</small></p>
+						@endif
 					</div>
 					<p>{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
 
 					<div class="product-options">
-						<label>
-							Cor
-							<select class="input-select" id="colors">
-								@foreach($product->colors as $color)
-								<option value="{{ route('site.products.info', ['id' => $color->id]) }}">{{ $color->description }}</option>
-								@endforeach
-							</select>
-						</label>
-						<label>
-							Tamanho
-							<select class="input-select" id="sizes">
-								@foreach($product->colors->first()->sizes as $size)
-								<option value="{{ $size->id }}-{{ $loop->index }}">{{ $size->description }}</option>
-								@endforeach
-							</select>
-						</label>
+						<div>
+							@foreach($product->colors as $color)
+								@if($color->sizes->count())
+								<div class="product-color" title="{{ $color->description }}" style="background-color: {{ $color->hex }}" data-colorurl="{{ route('site.products.info', ['id' => $color->id]) }}"></div>
+								@endif
+							@endforeach
+						</div>
+						<div id="sizes" style="margin-top: 20px;">
+							@foreach($product->colors->first()->sizes as $size)
+							<div class="product-size" data-size="{{ $size->id }}-{{ $loop->index }}">{{ $size->description }}</div>
+							@endforeach
+						</div>
 					</div>
 					
 					<form action="{{ route('site.cart.store', ['product_id' => $product->id, 'size_id' => $product->sizes->first()->id]) }}" method="POST" class="add-to-cart" @if($product->sizes->first()->quantity == 0) style="display: none" @endif>
@@ -185,7 +190,7 @@
 										@if($client && $client->ratings->where('product_id', $product->id)->count() == 0)
 										@include('includes.messages')
 
-										<form action="{{ route('site.products.ratings.send', ['slug' => $product->slug]) }}" method="POST" class="review-form">
+										<form action="{{ route('site.products.show.ratings.send', ['slug' => $product->slug]) }}" method="POST" class="review-form">
 											<div class="input-rating">
 												<span>Avaliação: </span>
 												<div class="stars">
@@ -486,17 +491,18 @@
 	let sizes
 
 	$(document).ready(function(){
-		$('#colors').change(function(){
-			getInfo($(this).val())
+		$('[data-colorurl]').click(function(){
+			getInfo($(this).data().colorurl)
 		})
 
-		$('#sizes').change(function(){
-			let value = $(this).val().split('-')
+		$('*').delegate('[data-size]', 'click', function(){
+			let value = $(this).data().size.split('-')
 
 			renderSize(sizes[value[1]])
+			return false
 		})
 
-		getInfo($('#colors').val())
+		getInfo($('[data-colorurl]:first').data().colorurl)
 	})
 
 	function getInfo(url){
@@ -505,7 +511,10 @@
 			method: 'POST',
 			dataType: 'json',
 			beforeSend(){
-
+				showLoad()
+			},
+			complete: function(){
+				hideLoad()
 			}
 		})
 		.done(function(result){
@@ -522,7 +531,7 @@
 				})
 
 				$.each(result.sizes, function(index, size){
-					let html = `<option value="${size.id}-${index}">${size.description}</option>`
+					let html = `<div class="product-size" data-size="${size.id}-${index}">${size.description}</div>`
 
 					$('#sizes').append(html)
 				})
@@ -538,35 +547,39 @@
 	}
 
 	function renderSize(size){
-		$('.product-current-price').text((Number(size.price)).toLocaleString('pt-BR', {
-			style: 'currency', 
-			currency: 'BRL'
-		}))
+		if(size != undefined){
+			$('input[name=size_id]').val(size.id)
 
-		$('.product-old-price').text((Number(size.price_previous)).toLocaleString('pt-BR', {
-			style: 'currency', 
-			currency: 'BRL'
-		}))
+			$('.product-current-price').text((Number(size.price)).toLocaleString('pt-BR', {
+				style: 'currency', 
+				currency: 'BRL'
+			}))
 
-		if(size.quantity > 0){
-			$('.product-available').text('Produto Disponível')
-			$('.add-to-cart').show()
-		}else{
-			$('.product-available').text('Produto Indisponível')
-			$('.add-to-cart').hide()
-		}
+			$('.product-old-price').text((Number(size.price_previous)).toLocaleString('pt-BR', {
+				style: 'currency', 
+				currency: 'BRL'
+			}))
 
-		$('.price-discount').text((Number(size.priceDiscount)).toLocaleString('pt-BR', {
-			style: 'currency', 
-			currency: 'BRL'
-		}))
+			if(size.quantity > 0){
+				$('.product-available').text('Produto Disponível')
+				$('.add-to-cart').show()
+			}else{
+				$('.product-available').text('Produto Indisponível')
+				$('.add-to-cart').hide()
+			}
 
-		let form = window.document.querySelector('.add-to-cart')
+			$('.price-discount').text((Number(size.priceDiscount)).toLocaleString('pt-BR', {
+				style: 'currency', 
+				currency: 'BRL'
+			}))
 
-		if(form){
-			let url = form.action
-			url = url.replace(/^(.*)(\/.*)$/ig, '$1/' + size.id)
-			form.action = url
+			let form = window.document.querySelector('.add-to-cart')
+
+			if(form){
+				let url = form.action
+				url = url.replace(/^(.*)(\/.*)$/ig, '$1/' + size.id)
+				form.action = url
+			}
 		}
 	}
 

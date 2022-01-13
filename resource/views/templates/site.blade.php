@@ -2,7 +2,6 @@
     use Src\Classes\Storage\Storage;
 
     $categories = (new \App\Models\Category())->all();
-    $system = (new \App\Models\System())->first();
     $cart = new \App\Classes\Cart();
     $cart_products = $cart->all();
     $client = auth('site');
@@ -77,11 +76,18 @@
     @yield('styles')
 </head>
 <body>
-    @if($system && !empty($system->floater->image) && Storage::exists($system->floater->image) && $system->floater->active)
+    <section class="modal-load">
+        <main>
+            <div class="load"></div>
+            <p><strong class="message">Aguarde, Carregando...</strong></p>
+        </main>
+    </section>
+
+    @if(!empty(config('floater.image')) && Storage::exists(config('floater.image')) && config('floater.active'))
         @include('includes.site.modais.floater', [
             'title' => 'Aviso',
-            'image' => url('storage/app/public/' . $system->floater->image),
-            'link' => $system->floater->link
+            'image' => url('storage/app/public/' . config('floater.image')),
+            'link' => config('floater.link')
         ])
     @endif
 
@@ -376,7 +382,7 @@
     </footer>
     <!-- /FOOTER -->
 
-    @if($system->lgpd->active && (!isset($_COOKIE['cookieaccept']) || !$_COOKIE['cookieaccept']))
+    @if(config('lgpd.active') && (!isset($_COOKIE['cookieaccept']) || !$_COOKIE['cookieaccept']))
     @include('includes.site.lgpd')
     @endif
 

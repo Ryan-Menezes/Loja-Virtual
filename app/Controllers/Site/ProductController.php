@@ -106,4 +106,18 @@ class ProductController extends Controller{
 
 		redirect(route('site.products.show', ['slug' => $product->slug]), ['error' => 'Não foi possível enviar a sua avaliação, Ocorreu um erro no processo!'], true);
 	}
+
+	public function freight($slug){
+		$request = new Request();
+		$data = $request->all();
+
+		if(!isset($data['size_id']) && !isset($data['postal_code'])){
+			abort(404);
+		}
+
+		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
+		$size = $product->sizes->where('id', $data['size_id'])->firstOrFail();
+
+		return freight($data['postal_code'], $size->weight, $size->width, $size->height, $size->depth, $product->freight_free, false);
+	}
 }

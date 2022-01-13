@@ -133,3 +133,52 @@ blockquote{
     font-size: 12px;
   }
 }
+
+.modal-load{
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 99999999999999999999999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  flex-direction: column;
+  color: white;
+}
+.modal-load main{
+  align-items: center;
+  justify-content: center;
+}
+.modal-load p{
+  margin-top: 20px;
+}
+
+.input-container{
+  display: flex;
+  flex-direction: column;
+}
+.input-container form{
+  display: grid;
+  grid-template-columns: 1fr 100px;
+}
+.input-container form input,
+.input-container form button{
+  padding: 10px;
+  border: 1px solid #cfcfcf;
+}
+.input-container form button{
+  background-color: #005bdb;
+  border: 1px solid #005bdb;
+  color: white;
+}
+
+.frete-info{
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #cfcfcf;
+}
+.result-frete,
+.result-coupon{
+  margin-top: 10px;
+}

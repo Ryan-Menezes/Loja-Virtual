@@ -107,4 +107,16 @@ class CartController extends Controller{
 			'message' => 'Produto removido do carrinho com sucesso!'
 		]);
 	}
+
+	public function freight(){
+		$request = new Request();
+		$data = $request->all();
+		$freight_free = (config('store.cart.promotion') && config('store.cart.freight_free_promotion'));
+
+		if(!isset($data['postal_code'])){
+			abort(404)
+		}
+
+		return freight($data['postal_code'], 1, 20, 20, 20, $freight_free);
+	}
 }
