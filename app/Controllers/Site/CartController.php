@@ -7,24 +7,32 @@ use Src\Classes\{
 };
 use App\Classes\Cart;
 use App\Models\{
+	Request as RequestModel,
+	RequestPayment,
+	RequestAddress,
+	RequestProduct,
 	Product,
 	ProductColor,
 	ProductImage,
-	ProductSize
+	ProductSize,
+	Coupon
 };
 
 class CartController extends Controller{
 	private $cart;
+	private $client;
 
 	public function __construct(){
 		$this->cart = new Cart();
+		$this->client = auth('site');
 	}
 
 	public function index(){
 		$cart = $this->cart;
 		$products = $this->cart->all();
+		$client = $this->client;
 
-		return view('site.cart.index', compact('products', 'cart'));
+		return view('site.cart.index', compact('products', 'cart', 'client'));
 	}
 
 	public function store($product_id, $size_id = null){
@@ -114,9 +122,47 @@ class CartController extends Controller{
 		$freight_free = (config('store.cart.promotion') && config('store.cart.freight_free_promotion'));
 
 		if(!isset($data['postal_code'])){
-			abort(404)
+			abort(404);
 		}
 
 		return freight($data['postal_code'], 1, 20, 20, 20, $freight_free);
+	}
+
+	public function couponValidate(){
+		$request = new Request();
+		$data = $request->all();
+
+		if(isset($data['code'])){
+			$coupon = Coupon::where('code', mb_strtoupper($data['code']))->first();
+
+			if($coupon){
+				return "PARABÉNS O VOCÊ RECEBEU {$coupon->percent}% DE DESCONTO EM SUA COMPRA, PARA QUE O DESCONTO SEJA APLICADO, BASTA FINALIZAR O PEDIDO!";
+			}			
+		}
+		
+		return 'O CUPOM INFORMADO É INVÁLIDO!';
+	}
+
+	public function storeRequest(){
+		$request = new Request();
+		$data = $request->all();
+
+		if(!$this->client){
+			redirect(route('site.login'), ['success' => 'Para finalizar o seu pedido, Primeiro você deve estar logado em sua conta ou criar uma nova!']);
+		}
+
+		$cart = new Cart();
+		$freight = explode($data['freight'], '-');
+		$freight_type = $freight[0];
+		$freight_free = (isset($freight[1]) && $freight[1] == 'FG');
+
+		$payment = RequestPayment::create([
+			'amount' 			=> number_format($cart->amount(), 2, '.', ''),
+			'shipping_type'		=> $freight_type,
+			'shipping_value'	=> 0,
+			'shipping_days'		=> 1
+		]);
+
+
 	}
 }

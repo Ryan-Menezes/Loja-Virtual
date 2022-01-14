@@ -201,6 +201,21 @@ $(document).ready(function(){
         })
     })
 
+    // Modal Help
+    $('.modal-form-multiple[data-container]').submit(function(){
+        let container = $(this).data().container
+        let data = new FormData(this)
+        let values = []
+
+        for(let value of data.values()){
+            values.push(value)
+        }
+
+        $(container).text($(container).text() + values.join(';') + '\n')
+        $('.modal').hide()
+        $(this).trigger('reset')
+    })
+
     // Masked input
     $('.phone-mask').mask('(99)9999-9999')
     $('*').delegate('.phone-mask', 'focus load', function(){

@@ -157,15 +157,21 @@ blockquote{
 .input-container{
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
 }
 .input-container form{
   display: grid;
   grid-template-columns: 1fr 100px;
 }
 .input-container form input,
+.input-container form select,
 .input-container form button{
   padding: 10px;
   border: 1px solid #cfcfcf;
+}
+.input-container form input,
+.input-container form select{
+  max-width: 270px;
 }
 .input-container form button{
   background-color: #005bdb;

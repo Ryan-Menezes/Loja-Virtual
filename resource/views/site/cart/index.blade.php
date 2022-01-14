@@ -73,33 +73,44 @@
     <div class="text-right text-end">
     	<p style="font-size: 20px;"><strong>TOTAL: </strong> R$ {{ number_format($cart->amount(), 2, ',', '.') }}</p>
     </div>
-    <div class="row" style="margin-top: 40px;">
-    	<div class="col-md-4">
+	<div class="row" style="margin-top: 40px;">
+		<div class="col-md-4">
     		<div class="input-container">
-    			<form action="{{ route('site.cart.freight') }}" method="POST" data-container=".result-frete">
-		    		<input type="text" name="postal_code" placeholder="CEP para calcular o frete" class="cep-mask">
-		    		<button type="submit">CALCULAR</button>
+    			<form action="{{ route('site.cart.freight') }}" method="POST" id="form-freight" data-container=".result-frete">
+    				@if($client)
+    				<select name="postal_code">
+    					@foreach($client->adresses as $address)
+    					<option value="{{ $address->postal_code }}">{{ mask($address->postal_code, '#####-###') }}, {{ $address->street }} - {{ $address->number }}, {{ $address->district }}, {{ $address->city }} - {{ $address->state }}</option>
+    					@endforeach
+    				</select>
+    				@else
+		    		<input type="text" name="postal_code" placeholder="CEP para calcular o frete" class="cep-mask" id="postal_code">
+		    		@endif
+		    		<button type="submit" form="form-freight">CALCULAR</button>
 		    	</form>
 		    	<div class="result-frete"></div>
     		</div>
     	</div>
 
-    	<div class="col-md-4">
+    	<div class="col-md-3">
     		<div class="input-container">
-	    		<form action="" method="POST">
-	    			<input type="text" name="coupon" placeholder="Cupom de desconto">
-	    			<button type="submit">VALIDAR</button>
+	    		<form action="{{ route('site.cart.coupon.validate') }}" method="POST" id="form-coupon" data-container=".result-coupon">
+	    			<input type="text" name="code" placeholder="Cupom de desconto" id="code">
+	    			<button type="submit" form="form-coupon">VALIDAR</button>
 		    	</form>
 		    	<div class="result-coupon"></div>
 		    </div>
     	</div>
     	
-    	<div class="col-md-4 text-right text-end">
-    		<a href="{{ route('site.cart.clear') }}" class="primary-btn cta-btn" title="Limpar carrinho de compras">LIMPAR CARRINHO</a>
+    	<form action="{{ route('site.cart.store.request') }}" method="POST" id="form-request" class="col-md-5 text-right text-end">
+    		<input type="hidden" name="postal_code">
+    		<input type="hidden" name="freight">
+    		<input type="hidden" name="code">
 
-    		<button type="submit" class="primary-btn cta-btn" title="Finalizar carrinho e efetuar o pedido">FINALIZAR COMPRA</button>
-    	</div>
-    </div>
+    		<a href="{{ route('site.cart.clear') }}" class="primary-btn cta-btn" title="Limpar carrinho de compras">LIMPAR CARRINHO</a>
+    		<button type="submit" class="primary-btn cta-btn" title="Finalizar carrinho e efetuar o pedido" form="form-request">FINALIZAR COMPRA</button>
+    	</form>
+	</div>
     @else
     <p>SEU CARRINHO ESTÁ VÁZIO</p>
     @endif

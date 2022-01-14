@@ -106,11 +106,33 @@ class SystemController extends Controller{
 		$request = new Request();
 		$data = $request->all();
 		$data['cart_amount_promotion'] = number($data['cart_amount_promotion']);
+		$data['postal_code_origin'] = preg_replace('/[^\d]/i', '', $data['postal_code_origin']);
 
 		$this->validator($data, $store->rolesUpdate, $store->messages);
+		$this->validator($data, $store->freight->rolesUpdate, $store->freight->messages);
 		$this->validator($data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
 
+		$store->freight->update($data);
 		$store->pagseguro->update($data);
+
+		// Atualizando as faixas de cep
+		$store->freight->freight_customized()->delete();
+		foreach(explode("\n", $data['freight_range']) as $freight_range){
+			$freight_range = explode(';', $freight_range);
+
+			if(count($freight_range) > 3){
+				$postal_code_min 	= preg_replace('/[^\d]/i', '', $freight_range[0]);
+				$postal_code_max 	= preg_replace('/[^\d]/i', '', $freight_range[1]);
+				$value 				= number(trim($freight_range[2]));
+				$days 				= number(trim($freight_range[3]));
+
+				if(mb_strlen($postal_code_min) == 8 && mb_strlen($postal_code_max) == 8 && is_numeric($value) && is_numeric($days)){
+					$dt = compact('postal_code_min', 'postal_code_max', 'value', 'days');
+
+					$store->freight->freight_customized()->create($dt);
+				}
+			}		
+		}
 
 		if($store->update($data)){
 			redirect(route('panel.system'), ['success' => 'Loja virtual editada com sucesso']);

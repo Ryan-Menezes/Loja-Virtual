@@ -171,6 +171,13 @@ $(document).ready(function(){
         $(this).parents('form').attr('action', data.url)
     })
 
+    // Formulário para finalizar um pedido
+    $('#form-request').submit(function(){
+        $(this).find('input[name=postal_code]').val($('#postal_code').val())
+        $(this).find('input[name=freight]').val($('input[type=radio][name=freight]:checked').val())
+        $(this).find('input[name=code]').val($('#code').val())
+    })
+
     // Masked input
     $('.phone-mask').mask('(99)9999-9999')
     $('*').delegate('.phone-mask', 'focus load', function(){

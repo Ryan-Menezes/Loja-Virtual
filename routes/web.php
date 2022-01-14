@@ -318,6 +318,8 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 		Route::post('/adicionar/{product_id}/{?size_id}', [CartController::class, 'store'])->name('site.cart.store');
 		Route::delete('/{id}/remover', [CartController::class, 'destroy'])->name('site.cart.destroy');
 		Route::post('/frete', [CartController::class, 'freight'])->name('site.cart.freight');
+		Route::post('/cupom/validar', [CartController::class, 'couponValidate'])->name('site.cart.coupon.validate');
+		Route::post('/finalizar-pedido', [CartController::class, 'storeRequest'])->name('site.cart.store.request');
 	});
 
 	// ROUTE NOTICES

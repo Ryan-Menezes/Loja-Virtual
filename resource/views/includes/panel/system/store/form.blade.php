@@ -52,20 +52,82 @@
 		</div>
 	</div>
 
-	<br /><h3>Configurações de Pagamentos</h3><hr />
+	<br /><h3>Configurações do Frete</h3><hr />
 
 	@include('includes.components.form.select', [
-		'name' => 'active', 
+		'name' => 'type', 
 		'title' => 'Tipo de Pagamento',
-		'value' => (isset($system) && $system->store ? $system->store->payment_debit_card : 'PS'),
+		'value' => (isset($system) && $system->store && $system->store->freight ? $system->store->freight->type : 'C'),
 		'options' => [
-			'PS' => 'PagSeguro',
-			'MP' => 'Mercado Pago',
-			'PP' => 'PayPal'
+			'C' => 'Correios',
+			'P' => 'Personalizado'
 		],
 		'class' => 'required',
 		'required' => true
 	])
+
+	@include('includes.components.form.input', [
+		'type' => 'text', 
+		'name' => 'postal_code_origin', 
+		'title' => 'CEP de Origem(Para o frete dos correios)', 
+		'value' => (isset($system) && $system->store && $system->store->freight ? $system->store->freight->postal_code_origin : null),
+		'class' => 'required cep-mask',
+		'required' => true
+	])
+
+	@php
+		$freight_range = '';
+
+		if(isset($system) && $system->store && $system->store->freight){
+			foreach($system->store->freight->freight_customized as $freight){
+				$freight_range .= "{$freight->postal_code_min};{$freight->postal_code_max};{$freight->value};{$freight->days}\n";
+			}
+		}
+	@endphp
+
+	@include('includes.components.form.textarea', [
+		'name' => 'freight_range',
+		'title' => 'Faixa de Cep(Para o frete personalizado)',
+		'value' => $freight_range,
+		'class' => 'required freight_range',
+		'required' => true
+	])
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFreightRange">Adicionar Faixa <i class="fas fa-plus-circle"></i></button>
+
+	<br /><br /><span><small>OBS: cep minímo;cep máximo;valor(R$);dias para à entega</small></span>
+
+	<br /><br /><h3>Configurações de Pagamentos</h3><hr />
+
+	<div class="row">
+		<div class="col-md-6">
+			@include('includes.components.form.select', [
+				'name' => 'payment_type', 
+				'title' => 'Tipo de Pagamento',
+				'value' => (isset($system) && $system->store ? $system->store->payment_type : 'PS'),
+				'options' => [
+					'PS' => 'PagSeguro',
+					'MP' => 'Mercado Pago',
+					'PP' => 'PayPal'
+				],
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-6">
+			@include('includes.components.form.select', [
+				'name' => 'payment_type_checkout', 
+				'title' => 'Tipo de Checkout',
+				'value' => (isset($system) && $system->store ? $system->store->payment_type_checkout : 'CT'),
+				'options' => [
+					'CT' => 'Checkout Transparente',
+					'LR' => 'Link de Redirecionamento',
+					'LB' => 'LightBox'
+				],
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+	</div>
 
 	@include('includes.components.form.select', [
 		'name' => 'payment_production', 
@@ -167,6 +229,7 @@
 	</div>
 
 	<br /><h3>Credenciais PagSeguro</h3><hr />
+
 	@include('includes.components.form.input', [
 		'type' => 'email', 
 		'name' => 'email', 
@@ -180,6 +243,6 @@
 		'title' => 'Token', 
 		'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->token : null)
 	])
-	<br>
+	<br />
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>
 </form>

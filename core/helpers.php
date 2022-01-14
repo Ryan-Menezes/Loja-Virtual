@@ -352,57 +352,119 @@ if(!function_exists('number')){
 
 if(!function_exists('freight')){
 	function freight($postal_code, $weight, $width, $height, $depth, $freight_free, $select = true) : string{
-		if(mb_strlen($postal_code) != 8){
+		$postal_code = preg_replace('/[^\d]/i', '', $postal_code);
+
+		if(mb_strlen($postal_code) == 8){
 			try{
-				$types = [
-					FreteCorreios::PAC 		=> 'PAC',
-					FreteCorreios::SEDEX 	=> 'SEDEX'
-				];
 				$html = '';
 
-				$freight = new FreteCorreios(config('freight.origin'), $postal_code, $weight, $width, $height, $depth);
+				if(config('store.freight.type') == 'C'){
+					$types = [
+						FreteCorreios::PAC 		=> 'PAC',
+						FreteCorreios::SEDEX 	=> 'SEDEX'
+					];
 
-				if($freight_free && config('store.cart.promotion') && config('store.cart.freight_free_promotion')){
+					$freight = new FreteCorreios(config('store.freight.origin'), $postal_code, $weight, $width, $height, $depth);
+
+					if($freight_free){
+						foreach($types as $key => $value){
+							$result = $freight->calculate($key);
+
+							if($select){
+								$html .= view('includes.freight', [
+									'title'		=> 'Frete Grátis - ' . $value,
+									'value'		=> $value . '-FG',
+									'price' 	=> '0,00',
+									'days' 		=> $result['PrazoEntrega'],
+								]);
+							}else{
+								$html .= view('includes.freight', [
+									'title'		=> 'Frete Grátis - ' . $value,
+									'value'		=> $value . '-FG',
+									'price' 	=> '0,00',
+									'days' 		=> $result['PrazoEntrega'],
+									'select'	=> false
+								]);
+							}
+						}
+					}
+
 					foreach($types as $key => $value){
 						$result = $freight->calculate($key);
 
 						if($select){
 							$html .= view('includes.freight', [
-								'title'		=> 'Frete Grátis - ' . $value,
-								'value'		=> 'FG-' . $value,
-								'price' 	=> '0,00',
-								'days' 		=> $result['PrazoEntrega'],
+								'title' 	=> $value,
+								'value' 	=> $value,
+								'price' 	=> $result['Valor'],
+								'days' 		=> $result['PrazoEntrega']
 							]);
 						}else{
 							$html .= view('includes.freight', [
-								'title'		=> 'Frete Grátis - ' . $value,
-								'value'		=> 'FG-' . $value,
-								'price' 	=> '0,00',
+								'title' 	=> $value,
+								'value' 	=> $value,
+								'price' 	=> $result['Valor'],
 								'days' 		=> $result['PrazoEntrega'],
 								'select'	=> false
 							]);
 						}
 					}
-				}
+				}else{
+					$customized = config('store.freight.customized');
+					$postal_code = (int)$postal_code;
 
-				foreach($types as $key => $value){
-					$result = $freight->calculate($key);
+					if($freight_free){
+						foreach($customized as $custom){
+							$min = (int)$custom->postal_code_min;
+							$max = (int)$custom->postal_code_max;
 
-					if($select){
-						$html .= view('includes.freight', [
-							'title' 	=> $value,
-							'value' 	=> $value,
-							'price' 	=> $result['Valor'],
-							'days' 		=> $result['PrazoEntrega']
-						]);
-					}else{
-						$html .= view('includes.freight', [
-							'title' 	=> $value,
-							'value' 	=> $value,
-							'price' 	=> $result['Valor'],
-							'days' 		=> $result['PrazoEntrega'],
-							'select'	=> false
-						]);
+							if($postal_code >= $min && $postal_code <= $max){
+								if($select){
+									$html .= view('includes.freight', [
+										'title'		=> 'Frete Grátis - Personalizado',
+										'value'		=> 'CUSTOM-FG',
+										'price' 	=> '0,00',
+										'days' 		=> $custom->days,
+									]);
+								}else{
+									$html .= view('includes.freight', [
+										'title'		=> 'Frete Grátis - Personalizado',
+										'value'		=> 'CUSTOM-FG',
+										'price' 	=> '0,00',
+										'days' 		=> $custom->days,
+										'select'	=> false
+									]);
+								}
+							}
+						}
+					}
+
+					foreach($customized as $custom){
+						$min = (int)$custom->postal_code_min;
+						$max = (int)$custom->postal_code_max;
+
+						if($postal_code >= $min && $postal_code <= $max){
+							if($select){
+								$html .= view('includes.freight', [
+									'title'		=> 'Personalizado',
+									'value'		=> 'CUSTOM',
+									'price' 	=> number_format($custom->value, 2, ',', '.'),
+									'days' 		=> $custom->days
+								]);
+							}else{
+								$html .= view('includes.freight', [
+									'title'		=> 'Personalizado',
+									'value'		=> 'CUSTOM',
+									'price' 	=> number_format($custom->value, 2, ',', '.'),
+									'days' 		=> $custom->days,
+									'select'	=> false
+								]);
+							}
+						}
+					}
+
+					if(empty($html)){
+						$html = 'NÃO FAZEMOS ENTREGA PARA O CEP INFORMADO!';
 					}
 				}
 
@@ -412,7 +474,7 @@ if(!function_exists('freight')){
 			}
 		}
 
-		return 'NÃO FOI POSSÍVEL CALCULAR O FRETE!';
+		return 'O CEP INFORMADO É INVÁLIDO PARA CALCULAR O FRETE!';
 	}
 }
 

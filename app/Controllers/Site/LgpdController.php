@@ -8,7 +8,7 @@ use Src\Classes\{
 
 class LgpdController extends Controller{
 	public function privacy_policy(){
-		if(config('lgpd.privacy_policy')){
+		if(!config('lgpd.privacy_policy')){
 			abort(404);
 		}
 
@@ -18,7 +18,7 @@ class LgpdController extends Controller{
 	}
 
 	public function terms_conditions(){
-		if(config('lgpd.terms_conditions')){
+		if(!config('lgpd.terms_conditions')){
 			abort(404);
 		}
 

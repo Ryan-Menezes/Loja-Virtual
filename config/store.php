@@ -9,12 +9,22 @@ return [
 		'discount_percent_promotion'	=> $system->store->cart_discount_percent_promotion,
 		'freight_free_promotion'		=> $system->store->cart_freight_free_promotion
 	],
+	'freight' => [
+		'type'							=> $system->store->freight->type,
+		'origin' 						=> $system->store->freight->postal_code_origin,
+		'customized'					=> $system->store->freight->freight_customized
+	],
 	'payment' => [
 		'production' 					=> (bool)$system->store->payment_production,
 		'types' => [
 			'pagseguro'					=> (bool)($system->store->payment_type == 'PS'),
 			'mercadopago'				=> (bool)($system->store->payment_type == 'MP'),
 			'palypal'					=> (bool)($system->store->payment_type == 'PP')
+		],
+		'checkouts' => [
+			'transparent'				=> (bool)($system->store->payment_type_checkout == 'CT'),
+			'redirect'					=> (bool)($system->store->payment_type_checkout == 'LR'),
+			'lightbox'					=> (bool)($system->store->payment_type_checkout == 'LB')
 		],
 		'methods' => [
 			'credit_card' 				=> (bool)$system->store->payment_credit_card,

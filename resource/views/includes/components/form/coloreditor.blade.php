@@ -1,7 +1,7 @@
 @php
 	$id = $id ?? md5(uniqid() . time());
 @endphp
-<div class="form-group content-group mb-2 border p-2 bg-light {{ $class ?? null }}">
+<div class="form-group content-group mb-3 border p-2 bg-light {{ $class ?? null }}">
 	<input type="hidden" name="elements[]" value="COLOREDITOR">
 	<input type="hidden" name="id-colors[]" value="{{ $id }}">
 	<div class="row mb-2">

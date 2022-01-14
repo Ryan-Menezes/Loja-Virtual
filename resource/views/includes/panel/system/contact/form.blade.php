@@ -14,7 +14,8 @@
 				'type' => 'text', 
 				'name' => 'telephone', 
 				'title' => 'Telefone', 
-				'value' => (isset($system) && $system->contact ? $system->contact->telephone : null)
+				'value' => (isset($system) && $system->contact ? $system->contact->telephone : null),
+				'class' => 'phone-mask'
 			])
 		</div>
 		<div class="col-md-6">
@@ -22,7 +23,8 @@
 				'type' => 'text', 
 				'name' => 'cell', 
 				'title' => 'Celular', 
-				'value' => (isset($system) && $system->contact ? $system->contact->cell : null)
+				'value' => (isset($system) && $system->contact ? $system->contact->cell : null),
+				'class' => 'cell-mask'
 			])
 		</div>
 	</div>

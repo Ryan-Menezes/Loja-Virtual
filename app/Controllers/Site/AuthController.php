@@ -28,12 +28,24 @@ class AuthController extends Controller{
 
 		$client = $this->client->where('email', $data['email'])->first();
 
-		if(is_null($client) || !password_verify($data['password'], $client->password))
+		if(is_null($client) || !password_verify($data['password'], $client->password)){
 			redirect(route('site.login'), ['error' => 'Não foi possível autenticar, E-Mail ou senha inválidos!'], true);
+		}
 
 		if(password_needs_rehash($client->password, PASSWORD_DEFAULT)){
 			$client = password_hash($data['password'], PASSWORD_DEFAULT);
 			$client->save();
+		}
+
+		if(!$client->validated){
+			Mail::isHtml(true)
+					->charset(config('mail.charset'))
+					->addFrom(config('app.contact.email'), config('app.name'))
+					->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
+					->message(view('mail.account.validate', compact('client')))
+					->send($client->email, $client->name);
+
+			redirect(route('site.login'), ['error' => 'Esta conta não está validada, Verique seu e-mail e veja se tem um link de validação!'], true);
 		}
 
 		session(config('app.url'), ['client' => $client]);
@@ -49,6 +61,8 @@ class AuthController extends Controller{
 	}
 
 	public function store(){
+		$address = new ClientAddress();
+
 		$request = new Request();
 		$data = $request->all();
 		$data['cell'] = preg_replace('/[^\d]/i', '', $data['cell']);
@@ -62,7 +76,7 @@ class AuthController extends Controller{
 		$redirect = $data['redirect'] ?? 'pf';
 
 		$this->validator($data, $this->client->rolesCreate, $this->client->messages);
-		$this->validator($data, ClientAddress::$rolesCreate, ClientAddress::$messages);
+		$this->validator($data, $address->rolesCreate, $address->messages);
 
 		if(!isset($data['terms_conditions']) && !$data['terms_conditions']){
 			redirect(route('site.account.' . $redirect . '.create'), ['error' => 'É necessário aceitar os termos e condições para criar sua conta em nosso site!'], true);

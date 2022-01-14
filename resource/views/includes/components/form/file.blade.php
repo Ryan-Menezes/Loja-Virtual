@@ -1,4 +1,4 @@
-<div class="form-group mb-2">
+<div class="form-group mb-3">
 	<label class="form-label"><strong>{{ $title }}:</strong></label>
 
 	@if(isset($value) && $value)
