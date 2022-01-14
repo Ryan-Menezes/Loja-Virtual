@@ -3,8 +3,8 @@ $system = (new \App\Models\System())->firstOrFail();
 
 return [
 	'name' 			=> $system->name,
-	'url' 			=> 'http://www.lojavirtual.com/',
-	'domain' 		=> 'www.lojavirtual.com',
+	'url' 			=> 'http://www.lojavirtual.com.br/',
+	'domain' 		=> 'www.lojavirtual.com.br',
 	'timezone' 		=> 'America/Sao_Paulo',
 	'charset'		=> 'utf-8',
 	'lang' 			=> 'pt-br',

@@ -235,16 +235,20 @@ if(!function_exists('sitemapImages')){
 }
 
 if(!function_exists('mask')){
-	function mask(string $value, string $mask) : string{
-		$j = 0;
+	function mask(?string $value, ?string $mask) : ?string{
+		if(!empty($value)){
+			$j = 0;
 
-		for($i = 0; $i < mb_strlen($mask); $i++){
-			if($mask[$i] == '#' && $j < mb_strlen($value)){
-				$mask[$i] = $value[$j++];
+			for($i = 0; $i < mb_strlen($mask); $i++){
+				if($mask[$i] == '#' && $j < mb_strlen($value)){
+					$mask[$i] = $value[$j++];
+				}
 			}
-		}
 
-		return $mask;
+			return $mask;
+		}
+		
+		return null;
 	}
 }
 

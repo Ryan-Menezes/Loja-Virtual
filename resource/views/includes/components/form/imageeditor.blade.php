@@ -7,7 +7,8 @@
 				'type' => 'text', 
 				'name' => isset($id) ? "title-images-{$id}[]" : 'title-images[]', 
 				'title' => 'Titulo da Imagem',
-				'value' => $title ?? null
+				'value' => $title ?? null,
+				'class' => 'nosortable'
 			])
 		</div>
 		<div class="col-md-1">

@@ -192,8 +192,7 @@
 
 										<form action="{{ route('site.products.show.ratings.send', ['slug' => $product->slug]) }}" method="POST" class="review-form">
 											<div class="input-rating">
-												<span>Avaliação: </span>
-												<div class="stars">
+												<div class="stars" style="font-size: 30px;">
 													<input id="star5" name="stars" value="5" type="radio"><label for="star5"></label>
 													<input id="star4" name="stars" value="4" type="radio"><label for="star4"></label>
 													<input id="star3" name="stars" value="3" type="radio"><label for="star3"></label>
@@ -203,7 +202,7 @@
 											</div>
 											<textarea class="input" name="content" placeholder="Sua Avaliação"></textarea>
 
-											<button class="primary-btn">Enviar</button>
+											<button type="submit" class="primary-btn">Enviar</button>
 										</form>
 										@else
 										<p>Para avaliar este produto, você precisa estar logado, ter no minímo feita a compra de uma ou mais unidades desse produto e só é possível avaliar uma única vez por produto!</p>

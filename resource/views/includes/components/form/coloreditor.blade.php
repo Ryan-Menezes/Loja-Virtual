@@ -56,7 +56,7 @@
 		</div>
 
 		<h3>Tamanhos</h3>
-		<div id="product-sizes-{{ $id }}" class="product-sizes">
+		<div id="product-sizes-{{ $id }}" class="product-sizes row">
 			@if(isset($sizes) && (is_array($sizes) || is_object($sizes)))
 				@foreach($sizes as $size)
 					@include('includes.components.form.sizeeditor', [
@@ -68,7 +68,8 @@
 						'height' => $size->height,
 						'depth' => $size->depth,
 						'weight' => $size->weight,
-						'id' => $id
+						'id' => $id,
+						'class' => 'col-md-6'
 					])
 				@endforeach
 			@endif
@@ -79,7 +80,7 @@
 		<div class="col-md-12">
 			<button type="button" class="btn border" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar imagem <i class="fas fa-image"></i></button>
 
-			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}">Adicionar tamanho <i class="fas fa-size"></i></button>
+			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar tamanho <i class="fas fa-size"></i></button>
 		</div>
 	</div>
 </div>
