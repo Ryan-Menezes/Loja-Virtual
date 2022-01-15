@@ -37,6 +37,8 @@
 				@include('includes.components.card', ['title' => 'Depoimentos', 'link' => route('panel.depoiments'), 'class' => 'bg-danger', 'amount' => $depoimentsCount, 'icon' => 'fas fa-smile'])
 			@endif
 		</div>
+	
+		<div id="pages_access" class="mt-4"></div>
 	</div>
 	@endif
 
@@ -61,6 +63,24 @@
 				@include('includes.components.card', ['title' => 'Cupons', 'link' => route('panel.coupons'), 'class' => 'bg-dark', 'amount' => $couponsCount, 'icon' => 'fas fa-percent'])
 			@endif
 		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div id="products_store" class="mt-4"></div>
+			</div>
+			<div class="col-md-6">
+				<div id="products_access" class="mt-4"></div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div id="products_rating" class="mt-4"></div>
+			</div>
+			<div class="col-md-6">
+				<div id="request_amount" class="mt-4"></div>
+			</div>
+		</div>
 	</div>
 	@endif
 
@@ -77,6 +97,8 @@
 				@include('includes.components.card', ['title' => 'Comentários', 'link' => route('panel.comments'), 'class' => 'bg-info', 'amount' => $commentsCount, 'icon' => 'fas fa-comments'])
 			@endif
 		</div>
+
+		<div id="notices_access" class="mt-4"></div>
 	</div>
 	@endif
 
@@ -96,4 +118,15 @@
 	</div>
 	@endif
 </div>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+	createChart('bar', 'Páginas mais acessadas', '#pages_access', 'Número de Acessos', [{{ implode(', ', $pages_access) }}], '#f56342', ['{!! implode('\', \'', array_keys($pages_access)) !!}'])
+	createChart('bar', 'Produtos mais vendidos', '#products_store', 'Total de Vendas', [31, 40, 28, 51, 42], '#007d21', ['PC Gamer', 'Celular', 'Creme Pra Cabelo', 'Mouse', 'Teclado'])
+	createChart('bar', 'Produtos mais acessados', '#products_access', 'Número de Acessos', [{{ implode(', ', $products_access) }}], '#f5ce42', ['{!! implode('\', \'', array_keys($products_access)) !!}'])
+	createChart('bar', 'Produtos mais bem avaliados', '#products_rating', 'Média de Avaliações', [{{ implode(', ', $products_rating) }}], '#ed186a', ['{!! implode('\', \'', array_keys($products_rating)) !!}'])
+	createChart('area', 'Pedidos feitos nos últimos meses', '#request_amount', 'Total de Pedidos', [31, 40, 28, 51, 42, 109, 100, 40, 28, 51, 42, 100], '#1858ed', ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'])
+	createChart('bar', 'Artigos mais acessados', '#notices_access', 'Número de Acessos', [{{ implode(', ', $notices_access) }}], '#f56342', ['{!! implode('\', \'', array_keys($notices_access)) !!}'])
+</script>
 @endsection

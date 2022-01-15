@@ -12,6 +12,7 @@ use Src\Classes\SiteMap\{
 	SiteMapImage
 };
 use App\Classes\FreteCorreios;
+use App\Models\Permission;
 
 if(!function_exists('config')){
 	function config(string $config){
@@ -351,6 +352,19 @@ if(!function_exists('number')){
 	   	}
 
 	   	return str_ireplace(',', '', trim($number));
+	}
+}
+
+if(!function_exists('generatePermissions')){
+	function generatePermissions($actions, $tables){
+		foreach($tables as $table){
+			foreach($actions as $action){
+				Permission::create([
+					'name' => "{$action}.{$table}",
+					'description' => "{$action}.{$table}"
+				]);
+			}
+		}
 	}
 }
 

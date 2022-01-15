@@ -8,7 +8,7 @@ class Lgpd{
 	public function redirectTo(){
 		$request = new Request();
 		$server = $request->server();
-		$url = trim($server['SERVER_NAME'] . $server['REQUEST_URI'], '/');
+		$url = trim(trim(url(), '/') . $server['REQUEST_URI'], '/');
 		$ip = $server['REMOTE_ADDR'];
 		$user_agent = $server['HTTP_USER_AGENT'];
 

@@ -18,13 +18,13 @@
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/plugins/Trumbowyg/ui/trumbowyg.min.css') }}">
 
 	<!-- FontAwesome CSS -->
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/all.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/brands.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/fontawesome.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/regular.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/solid.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/svg-with-js.min.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/v4-shims.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/all.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/brands.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/fontawesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/regular.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/solid.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/svg-with-js.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/v4-shims.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/panel/config.css') }}">
 
 	<!-- Favicon -->
@@ -69,6 +69,8 @@
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/Trumbowyg/trumbowyg.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/apexcharts.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/panel/main.js') }}"></script>
+	@yield('scripts')
 </body>
 </html>

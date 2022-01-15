@@ -265,3 +265,35 @@ $(document).ready(function(){
         return false
     })
 })
+
+// Criar Gráfico
+function createChart(type, title, container, name, data, color, categories){
+    let options = {
+        series: [{
+            name: name,
+            data: data
+        }],
+        title: {
+            text: title,
+            align: 'left'
+        },
+        chart: {
+            height: 400,
+            type: type
+        },
+        colors: [color],
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'string',
+            categories: categories
+        }
+    }
+
+    let chart = new ApexCharts(window.document.querySelector(container), options);
+    chart.render();
+}
