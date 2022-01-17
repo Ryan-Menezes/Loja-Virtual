@@ -10,7 +10,6 @@ class Request extends Model{
 	public $_status = [
 		'AP' => 'Aguardando Pagamento',
 		'PA' => 'Pago', 
-		'AE' => 'Aguardando Envio', 
 		'EN' => 'Enviado para a entrega', 
 		'CO' => 'Concluído',
 		'CA' => 'Cancelado'

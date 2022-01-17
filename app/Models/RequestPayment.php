@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestPayment extends Model{
 	public $table = 'request_payment';
-	protected $fillable = ['code', 'type', 'method', 'status', 'status_type', 'installments', 'installment_no_interest', 'amount', 'disount_coupon', 'discount_installment', 'discount_store', 'shipping_type', 'shipping_value', 'shipping_days', 'link', 'details'];
+	protected $fillable = ['code', 'type', 'method', 'status', 'status_type', 'installments', 'installment_no_interest', 'amount', 'discount_coupon', 'discount_installment', 'discount_cart', 'shipping_type', 'shipping_value', 'shipping_days', 'shipping_message', 'link', 'details'];
 	public $timestamps = true;
 	private $types = [
 		'PS' => 'PagSeguro',

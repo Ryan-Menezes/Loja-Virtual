@@ -178,6 +178,15 @@ $(document).ready(function(){
         $(this).find('input[name=code]').val($('#code').val())
     })
 
+    // Select de endereços
+    $('#select-address').change(function(){
+        let data = $(this).find(':selected').data() 
+        
+        if(data.addressid != undefined){
+            $('#form-request').find('input[name=address_id]').val(data.addressid)
+        }
+    })
+
     // Masked input
     $('.phone-mask').mask('(99)9999-9999')
     $('*').delegate('.phone-mask', 'focus load', function(){

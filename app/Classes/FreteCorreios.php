@@ -24,6 +24,8 @@ class FreteCorreios{
 	public const SEDEX_10 = '04790';
 	public const SEDEX_TODAY = '04804';
 
+	public const ERROR_CODE = '-888';
+
 	private $services = [
 		'04014' => 'SEDEX à vista',
 		'04510' => 'PAC à vista',

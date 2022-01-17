@@ -36,7 +36,6 @@
 .content .cards .card i{
 	font-size: 30px;
 }
-}
 .table>tbody>tr>td, 
 .table>tbody>tr>th, 
 .table>tfoot>tr>td, 
@@ -90,4 +89,45 @@ form span.error{
 }
 .products_cards .product_card .product_content .product_title a:hover{
 	text-decoration: underline;
+}
+.card-simple{
+	border: 1px solid #d4d2d2;
+	border-radius: 5px;
+}
+.card-simple .card-header{
+	background-color: #d4d2d2;
+	padding: 15px;
+}
+.card-simple .card-body{
+	background-color: white;
+	padding: 20px;
+}
+.status-request{
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 10px;
+	margin-bottom: 40px;
+}
+.status-request .status-body{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+}
+.status-request .status-body .status-circle{
+	width: 50px;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 1px solid #d4d2d2;
+	margin-bottom: 20px;
+	color: #1c1c1c;
+	background-color: #f2f2f2;
+}
+.status-request .status-body .checked{
+	border-color: #007024;
+	background-color: #00912e;
+	color: white;
 }

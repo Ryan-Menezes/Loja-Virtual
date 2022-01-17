@@ -19,7 +19,7 @@ return [
 		'types' => [
 			'pagseguro'					=> (bool)($system->store->payment_type == 'PS'),
 			'mercadopago'				=> (bool)($system->store->payment_type == 'MP'),
-			'palypal'					=> (bool)($system->store->payment_type == 'PP')
+			'paypal'					=> (bool)($system->store->payment_type == 'PP')
 		],
 		'checkouts' => [
 			'transparent'				=> (bool)($system->store->payment_type_checkout == 'CT'),

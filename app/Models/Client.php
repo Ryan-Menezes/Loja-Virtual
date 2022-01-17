@@ -120,4 +120,8 @@ class Client extends Model{
 	public function favorites(){
 		return $this->belongsToMany(Product::class, 'favorites', 'client_id', 'product_id');
 	}
+
+	public function requests(){
+		return $this->hasMany(Request::class, 'client_id', 'id');
+	}
 }

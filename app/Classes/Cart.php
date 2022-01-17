@@ -80,4 +80,44 @@ class Cart{
 		$this->cart = [];
 		session(self::KEY, $this->cart);
 	}
+
+	public function weight(){
+		$weight = 0;
+
+		foreach($this->cart as $cart){
+			$weight += $cart->quantity * $cart->size->weight;
+		}
+		
+		return $weight;
+	}
+	
+	public function width(){
+		$width = 0;
+
+		foreach($this->cart as $cart){
+			$width += $cart->quantity * $cart->size->width;
+		}
+
+		return $width;
+	}
+
+	public function height(){
+		$height = 0;
+
+		foreach($this->cart as $cart){
+			$height += $cart->quantity * $cart->size->height;
+		}
+
+		return $height;
+	}
+
+	public function depth(){
+		$depth = 0;
+
+		foreach($this->cart as $cart){
+			$depth += $cart->quantity * $cart->size->depth;
+		}
+
+		return $depth;
+	}
 }

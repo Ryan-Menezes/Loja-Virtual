@@ -1,8 +1,6 @@
 <a href="{{ $link }}" title="{{ $title }}">
-	<div class="card text-white mb-2 {{ $class }}">
-		<div class="card-body">
-			<h5 class="card-title">{{ $amount }}</h5>
-			<i class="{{ $icon }}"></i>
-		</div>
+	<div class="card">
+		<h3 class="card-title">{{ $amount }}</h3>
+		<i class="{{ $icon }} {{ $class }}"></i>
 	</div>
 </a>

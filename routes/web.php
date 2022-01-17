@@ -36,6 +36,7 @@ use App\Controllers\Site\{
 use App\Controllers\Site\MyAccount\{
 	MyAccountController,
 	CLientController as CLientControllerSite,
+	RequestController as RequestControllerSite,
 	AddressController,
 	CardController,
 	FavoriteController
@@ -276,6 +277,12 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 		Route::group(['prefix' => 'dados-pessoais'], function(){
 			Route::get('/', [CLientControllerSite::class, 'index'])->name('site.myaccount.client');
 			Route::put('/salvar', [CLientControllerSite::class, 'update'])->name('site.myaccount.client.update');
+		});
+
+		// ROUTE REQUESTS
+		Route::group(['prefix' => 'pedidos'], function(){
+			Route::get('/', [RequestControllerSite::class, 'index'])->name('site.myaccount.requests');
+			Route::get('/{id}', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
 		});
 
 		// ROUTES ADRESSESS

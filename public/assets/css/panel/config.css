@@ -117,27 +117,33 @@ body{
 .container-main{
 	padding: 20px;
 }
-.container-main .card{
-	padding: 10px;
-}
-.container-main .card .card-body{
-	display: flex;
-	justify-content: space-between;
-}
-.container-main .card .card-body h5{
-	font-size: 30px;
-}
-.container-main .card .card-body i{
-	font-size: 40px;
-}
 .container-main .cards-container{
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	grid-column-gap: 10px;
+	grid-template-columns: repeat(5, 1fr);
+	grid-gap: 10px;
+}
+.container-main .cards-container .card{
+	padding: 30px;
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: row;
+}
+.container-main .cards-container .card .card-title{
+	font-size: 20px;
+	margin: 0px;
+	padding: 0px;
+}
+.container-main .cards-container .card {
+	font-size: 30px;
 }
 .container-main .cards-container a{
 	text-decoration: none;
+	color: black;
 }
+	
 table tr{
 	vertical-align: middle;
 }

@@ -118,6 +118,6 @@ class ProductController extends Controller{
 		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
 		$size = $product->sizes->where('id', $data['size_id'])->firstOrFail();
 
-		return freight($data['postal_code'], $size->weight, $size->width, $size->height, $size->depth, $product->freight_free, false);
+		return freight_format($data['postal_code'], $size->weight, $size->width, $size->height, $size->depth, $product->freight_free, false);
 	}
 }

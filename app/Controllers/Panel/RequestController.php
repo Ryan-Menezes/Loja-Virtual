@@ -51,7 +51,7 @@ class RequestController extends Controller{
 		$this->validator($data, $requestmodel->rolesUpdate, $requestmodel->messages);
 
 		if($requestmodel->update($data)){
-			redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['success' => '`Pedido editado com sucesso']);
+			redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['success' => 'Pedido editado com sucesso']);
 		}
 
 		redirect(route('panel.requests.edit'), ['error' => 'Pedido NÃO editado, Ocorreu um erro no processo de edição!'], true);
@@ -61,7 +61,13 @@ class RequestController extends Controller{
 		$this->requestmodel->verifyPermission('delete.requests');
 		$requestmodel = $this->requestmodel->findOrFail($id);
 
+		$payment = $requestmodel->payment;
+		$address = $requestmodel->address;
+
 		if($requestmodel->delete()){
+			$payment->delete();
+			$address->delete();
+
 			redirect(route('panel.requests'), ['success' => 'Pedido deletado com sucesso']);
 		}
 

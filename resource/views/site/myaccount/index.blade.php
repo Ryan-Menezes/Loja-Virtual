@@ -16,40 +16,11 @@
             <h1>Seja bem vindo(a) {{ $client->name }}</h1><hr/>
 
             <div class="cards">
-                <a href="{{ route('site.myaccount.requests') }}" title="Pedidos">
-                    <div class="card">
-                        <h3 class="card-title">50</h3>
-                        <i class="fa fa-list"></i>
-                    </div>
-                </a>
-
-                <a href="{{ route('site.cart') }}" title="Carrinho de Compras">
-                    <div class="card">
-                        <h3 class="card-title">{{ $cart->quantity() }}</h3>
-                        <i class="fa fa-shopping-cart"></i>
-                    </div>
-                </a>
-
-                <a href="{{ route('site.myaccount.adresses') }}" title="Endereços">
-                    <div class="card">
-                        <h3 class="card-title">{{ $client->adresses->count() }}</h3>
-                        <i class="fa fa-map-marker"></i>
-                    </div>
-                </a>
-
-                <a href="{{ route('site.myaccount.cards') }}" title="Cartões">
-                    <div class="card">
-                        <h3 class="card-title">{{ $client->cards->count() }}</h3>
-                        <i class="fa fa-credit-card"></i>
-                    </div>
-                </a>
-
-                <a href="{{ route('site.myaccount.favorites') }}" title="Favoritos">
-                    <div class="card">
-                        <h3 class="card-title">{{ $client->favorites->count() }}</h3>
-                        <i class="fa fa-heart"></i>
-                    </div>
-                </a>
+                @include('includes.components.card', ['title' => 'Pedidos', 'link' => route('site.myaccount.requests'), 'class' => 'text-primary', 'amount' => $client->requests->count(), 'icon' => 'fa fa-list'])
+                @include('includes.components.card', ['title' => 'Carrinho de Compras', 'link' => route('site.cart'), 'class' => 'text-warning', 'amount' => $cart->quantity(), 'icon' => 'fa fa-shopping-cart'])
+                @include('includes.components.card', ['title' => 'Endereços', 'link' => route('site.myaccount.adresses'), 'class' => 'text-info', 'amount' => $client->adresses->count(), 'icon' => 'fa fa-map-marker'])
+                @include('includes.components.card', ['title' => 'Cartões', 'link' => route('site.myaccount.cards'), 'class' => 'text-info', 'amount' => $client->cards->count(), 'icon' => 'fa fa-credit-card'])
+                @include('includes.components.card', ['title' => 'Favoritos', 'link' => route('site.myaccount.favorites'), 'class' => 'text-danger', 'amount' => $client->favorites->count(), 'icon' => 'fa fa-heart'])
             </div>
         </div>
     </div>

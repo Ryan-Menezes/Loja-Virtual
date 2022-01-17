@@ -5,7 +5,10 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Classes\Cart;
+use App\Classes\{
+	Cart,
+	FreteCorreios
+};
 use App\Models\{
 	Request as RequestModel,
 	RequestPayment,
@@ -15,7 +18,8 @@ use App\Models\{
 	ProductColor,
 	ProductImage,
 	ProductSize,
-	Coupon
+	Coupon,
+	Client
 };
 
 class CartController extends Controller{
@@ -25,6 +29,9 @@ class CartController extends Controller{
 	public function __construct(){
 		$this->cart = new Cart();
 		$this->client = auth('site');
+
+		if($this->client)
+			$this->client = Client::find($this->client->id);
 	}
 
 	public function index(){
@@ -119,13 +126,24 @@ class CartController extends Controller{
 	public function freight(){
 		$request = new Request();
 		$data = $request->all();
-		$freight_free = (config('store.cart.promotion') && config('store.cart.freight_free_promotion'));
+
+		$cart_products = $this->cart->all();
+
+		$freight_free = false;
+		if(count($cart_products)){
+			$freight_free = (config('store.cart.promotion') && $this->cart->amount() > config('store.cart.amount_promotion') && config('store.cart.freight_free_promotion'));
+
+			if(count($cart_products) == 1){
+				$product = $cart_products[array_keys($cart_products)[0]];
+				$freight_free = $product->product->freight_free;
+			}
+		}
 
 		if(!isset($data['postal_code'])){
 			abort(404);
 		}
 
-		return freight($data['postal_code'], 1, 20, 20, 20, $freight_free);
+		return freight_format($data['postal_code'], $this->cart->weight(), $this->cart->width(), $this->cart->height(), $this->cart->depth(), $freight_free);
 	}
 
 	public function couponValidate(){
@@ -146,23 +164,132 @@ class CartController extends Controller{
 	public function storeRequest(){
 		$request = new Request();
 		$data = $request->all();
-
-		if(!$this->client){
-			redirect(route('site.login'), ['success' => 'Para finalizar o seu pedido, Primeiro você deve estar logado em sua conta ou criar uma nova!']);
-		}
+		
+		$freight_types = [
+			'PAC' 		=> 'PC',
+			'SEDEX'		=> 'SX',
+			'CUSTOM'	=> 'PE'
+		];
 
 		$cart = new Cart();
-		$freight = explode($data['freight'], '-');
-		$freight_type = $freight[0];
-		$freight_free = (isset($freight[1]) && $freight[1] == 'FG');
+		$amount = $cart->amount();
+		$cart_products = $this->cart->all();
 
+		$freight_free_cart = false;
+		if(count($cart_products)){
+			$freight_free_cart = (config('store.cart.promotion') && $amount > config('store.cart.amount_promotion') && config('store.cart.freight_free_promotion'));
+
+			if(count($cart_products) == 1){
+				$product = $cart_products[array_keys($cart_products)[0]];
+				$freight_free_cart = $product->product->freight_free;
+			}
+		}
+
+		// Verificando se há algum usuário logado
+		if(!$this->client){
+			redirect(route('site.login'), ['error' => 'Para finalizar o seu pedido, Primeiro você deve estar logado em sua conta ou criar uma nova!']);
+		}
+
+		// Verificando se o cliente utilizou um cupom de desconto
+		$discount_coupon = 0;
+		if(isset($data['code']) && !empty($data['code'])){
+			$coupon = Coupon::where('code', mb_strtoupper($data['code']))->first();
+
+			if($coupon){
+				$discount_coupon = $amount * ($coupon->percent / 100);
+			}
+		}
+
+		// Verificando se o cliente teve um desconto no carrinho
+		$discount_cart = 0;
+		if(config('store.cart.promotion') && $amount > config('store.cart.amount_promotion')){
+			$discount_cart = $amount * (config('store.cart.discount_percent_promotion') / 100);
+		}
+
+		// Verificando endereço
+		$address = null;
+		if(!isset($data['address_id'])){
+			$address = $this->client->adresses->first();
+		}else{
+			$address = $this->client->adresses->find($data['address_id']);
+		}
+
+		if(!$address){
+			redirect(route('site.cart'), ['error' => 'O endereço passado é inválido!']);
+		}
+
+		// Validando o frete
+		$freights = freight($address->postal_code, $cart->weight(), $cart->width(), $cart->height(), $cart->depth());
+
+		if(!isset($data['freight']) || empty($data['freight'])){
+			redirect(route('site.cart'), ['error' => 'Por favor selecione o tipo de frete que deseja!']);
+		}
+		
+		if(strpos($data['freight'], '-')){
+			$freight = explode('-', $data['freight']);
+			$freight_type = $freight[0];
+			$freight_free = (isset($freight[1]) && $freight[1] == 'FG' && $freight_free_cart);
+		}else{
+			$freight_type = $data['freight'];
+			$freight_free = false;
+		}
+		
+		if(!array_key_exists($freight_type, $freights) || $freights[$freight_type]['error']['code'] == FreteCorreios::ERROR_CODE){
+			redirect(route('site.cart'), ['error' => 'Por favor selecione o tipo de frete que deseja!']);
+		}
+
+		// Obtendo o frete
+		$freight = $freights[$freight_type];
+	
+		// Cadastrando o pagamento(inicialmente não tem nenhum)
 		$payment = RequestPayment::create([
-			'amount' 			=> number_format($cart->amount(), 2, '.', ''),
-			'shipping_type'		=> $freight_type,
-			'shipping_value'	=> 0,
-			'shipping_days'		=> 1
+			'amount' 			=> number_format($amount, 2, '.', ''),
+			'discount_coupon'	=> $discount_coupon,
+			'discount_cart'		=> $discount_cart,
+			'shipping_type'		=> $freight_types[$freight_type],
+			'shipping_value'	=> $freight_free ? 0 : number_format(number($freight['price']), 2, '.', ''),
+			'shipping_days'		=> $freight['days'],
+			'shipping_message'	=> $freight['message'] ?? null
 		]);
 
+		if($payment){
+			// Cadastrando o endereço do pedido
+			$address = RequestAddress::create([
+				'postal_code'	=> $address->postal_code,
+				'street'		=> $address->street,
+				'number'		=> $address->number,
+				'district'		=> $address->district,
+				'city'			=> $address->city,
+				'state'			=> $address->state,
+				'complement'	=> $address->complement
+			]);
 
+			if($address){
+				// Cadastrando o pedido
+				$requestmodel = $this->client->requests()->create([
+					'request_address_id' => $address->id,	
+					'request_payment_id' => $payment->id
+				]);
+
+				if($requestmodel){
+					// Cadastrando produtos do pedido
+					foreach($cart_products as $cart_product){
+						$requestmodel->products()->create([
+							'price' 			=> $cart_product->size->price, 
+							'quantity'			=> $cart_product->quantity, 
+							'product_size_id'	=> $cart_product->size->id
+						]);
+					}
+
+					$cart->clear();
+					redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+				}else{
+					$payment->delete();
+					$address->delete();
+				}
+			}else{
+				$payment->delete();
+			}
+		}
 	}
 }

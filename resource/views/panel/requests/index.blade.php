@@ -37,7 +37,7 @@
 				<td>#{{ $request->id }}</td>
 				<td><a href="{{ route('site.clients.show', ['id' => $request->client->id]) }}" title="Saber mais sobre o cliente: {{ $request->client->name }}" target="_blank">{{ $request->client->name }} <i class="fas fa-external-link-alt"></i></a></td>
 				<td>
-					@if($request->status == 'AP' || $request->status == 'AE' || $request->status == 'EN')
+					@if($request->status == 'AP' || $request->status == 'EN')
 					<span class="alert alert-info p-1 m-0"><small>{{ $request->statusFormat }}</small></span>
 					@elseif($request->status == 'PA' || $request->status == 'CO')
 					<span class="alert alert-success p-1 m-0"><small>{{ $request->statusFormat }}</small></span>

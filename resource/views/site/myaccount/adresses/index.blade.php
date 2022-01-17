@@ -11,7 +11,7 @@
 @section('container')
 @include('includes.site.modais.delete', [
     'title' => 'Deletar Endereço',
-    'message' => 'Deseja realmente deletar este endreço?',
+    'message' => 'Deseja realmente deletar este endereço?',
     'btnmsg' => 'Deletar'
 ])
 

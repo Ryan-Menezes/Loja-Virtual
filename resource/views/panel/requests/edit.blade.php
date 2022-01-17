@@ -5,44 +5,10 @@
 @section('container')
 <div class="container-main">
 	<h1>Pedido #{{ $requestmodel->id }}</h1><hr />
-	<div class="border mb-4 p-4 text-end">
-		<p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format($requestmodel->payment->disount_coupon, 2, ',', '.') }}</strong></p>
-		@if($requestmodel->payment->installments == 1)
-		<p class="p-0 m-0">}(Desconto Pagamento à Vista) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
-			@else
-		<p class="p-0 m-0">(Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
-		@endif
-		<p class="p-0 m-0">(Desconto Extra) <strong>-R$ {{ number_format($requestmodel->payment->discount_store, 2, ',', '.') }}</strong></p>
-		<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_store - $requestmodel->payment->discount_installment - $requestmodel->payment->disount_coupon, 2, ',', '.') }}</h2>
-	</div>
 
 	@include('includes.panel.requests.form', ['action' => route('panel.requests.update', ['id' => $requestmodel->id]), 'method' => 'PUT'])
 
-	<div class="border mb-4 p-4">
-		<h2>Cliente</h2><hr />
-
-		<p><a href="{{ route('panel.clients.show', ['id' => $requestmodel->client->id]) }}" title="Saber mais sobre o cliente: {{ $requestmodel->client->name }}" target="_blank"><strong>{{ $requestmodel->client->name }} <i class="fas fa-external-link-alt"></i></strong></a></p>
-
-		<p class="p-0 m-0"><strong>CPF: </strong>{{ mask($requestmodel->client->cpf, '###.###.###-##') }}</p>
-		<p class="p-0 m-0"><strong>CNPJ: </strong>{{ mask($requestmodel->client->cnpj, '##.###.###/####-##') }}</p>
-		<p class="p-0 m-0"><strong>E-Mail: </strong>{{ $requestmodel->client->email }}</p>
-		<p class="p-0 m-0"><strong>Celular: </strong>{{ mask($requestmodel->client->cell, '(##)#####-####') }}</p>
-		<p class="p-0 m-0"><strong>Telefone: </strong>{{ mask($requestmodel->client->telephone, '(##)####-####') }}</p>
-	</div>
-
-	<div class="border mb-4 p-4">
-		<h2>Endereço</h2><hr />
-
-		<p class="p-0 m-0"><strong>CEP: </strong>{{ mask($requestmodel->address->postal_code, '#####-###') }}</p>
-		<p class="p-0 m-0"><strong>Rua: </strong>{{ $requestmodel->address->street }}</p>
-		<p class="p-0 m-0"><strong>Número: </strong>{{ $requestmodel->address->number }}</p>
-		<p class="p-0 m-0"><strong>Bairro: </strong>{{ $requestmodel->address->district }}</p>
-		<p class="p-0 m-0"><strong>Cidade: </strong>{{ $requestmodel->address->city }}</p>
-		<p class="p-0 m-0"><strong>Estado: </strong>{{ $requestmodel->address->state }}</p>
-		<p class="p-0 m-0"><strong>Complemento: </strong>{{ $requestmodel->address->complement }}</p>
-	</div>
-
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 mt-4 p-4">
 		<h2>Produtos</h2><hr />
 
 		<table class="table table-hover">
@@ -73,6 +39,44 @@
 				@endforeach
 			</tbody>
 		</table>
+
+		<div class="mb-4 text-end">
+			<p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</strong></p>
+			@if($requestmodel->payment->status_type != 'AP')
+				@if($requestmodel->payment->installments == 1)
+				<p class="p-0 m-0">(Desconto Pagamento à Vista) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+				@else
+				<p class="p-0 m-0">(Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+				@endif
+			@endif
+			<p class="p-0 m-0">(Desconto do Carrinho) <strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</strong></p>
+			<p class="p-0 m-0">(Valor do Frete) <strong>+R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</strong></p>
+			<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_cart - $requestmodel->payment->discount_installment - $requestmodel->payment->discount_coupon + $requestmodel->payment->shipping_value, 2, ',', '.') }}</h2>
+		</div>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Cliente</h2><hr />
+
+		<p><a href="{{ route('panel.clients.show', ['id' => $requestmodel->client->id]) }}" title="Saber mais sobre o cliente: {{ $requestmodel->client->name }}" target="_blank"><strong>{{ $requestmodel->client->name }} <i class="fas fa-external-link-alt"></i></strong></a></p>
+
+		<p class="p-0 m-0"><strong>CPF: </strong>{{ mask($requestmodel->client->cpf, '###.###.###-##') }}</p>
+		<p class="p-0 m-0"><strong>CNPJ: </strong>{{ mask($requestmodel->client->cnpj, '##.###.###/####-##') }}</p>
+		<p class="p-0 m-0"><strong>E-Mail: </strong>{{ $requestmodel->client->email }}</p>
+		<p class="p-0 m-0"><strong>Celular: </strong>{{ mask($requestmodel->client->cell, '(##)#####-####') }}</p>
+		<p class="p-0 m-0"><strong>Telefone: </strong>{{ mask($requestmodel->client->telephone, '(##)####-####') }}</p>
+	</div>
+
+	<div class="border mb-4 p-4">
+		<h2>Endereço de Entrega</h2><hr />
+
+		<p class="p-0 m-0"><strong>CEP: </strong>{{ mask($requestmodel->address->postal_code, '#####-###') }}</p>
+		<p class="p-0 m-0"><strong>Rua: </strong>{{ $requestmodel->address->street }}</p>
+		<p class="p-0 m-0"><strong>Número: </strong>{{ $requestmodel->address->number }}</p>
+		<p class="p-0 m-0"><strong>Bairro: </strong>{{ $requestmodel->address->district }}</p>
+		<p class="p-0 m-0"><strong>Cidade: </strong>{{ $requestmodel->address->city }}</p>
+		<p class="p-0 m-0"><strong>Estado: </strong>{{ $requestmodel->address->state }}</p>
+		<p class="p-0 m-0"><strong>Complemento: </strong>{{ $requestmodel->address->complement }}</p>
 	</div>
 
 	<div class="border mb-4 p-4">
@@ -106,13 +110,15 @@
 	<div class="border mb-4 p-4">
 		<h2>Descontos Aplicados</h2><hr />
 
-		<p class="p-0 m-0 mt-4"><strong>Desconto por Cupom: </strong>-R$ {{ number_format($requestmodel->payment->disount_coupon, 2, ',', '.') }}</p>
-		@if($requestmodel->payment->installments == 1)
-		<p class="p-0 m-0"><strong>Desconto por pagamento à vista: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
-		@else
-		<p class="p-0 m-0"><strong>Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+		<p class="p-0 m-0 mt-4"><strong>Desconto por Cupom: </strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</p>
+		@if($requestmodel->payment->status_type != 'AP')
+			@if($requestmodel->payment->installments == 1)
+			<p class="p-0 m-0"><strong>Desconto por pagamento à vista: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+			@else
+			<p class="p-0 m-0"><strong>Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+			@endif
 		@endif
-		<p class="p-0 m-0"><strong>Desconto Extra: </strong>-R$ {{ number_format($requestmodel->payment->discount_store, 2, ',', '.') }}</p>
+		<p class="p-0 m-0"><strong>Desconto do Carrinho: </strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</p>
 	</div>
 
 	<div class="border mb-4 p-4">
@@ -120,7 +126,7 @@
 
 		<p class="p-0 m-0"><strong>Tipo: </strong>{{ $requestmodel->payment->shippingTypeFormat }}</p>
 		<p class="p-0 m-0"><strong>Valor: </strong>R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</p>
-		<p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>{{ $requestmodel->payment->shipping_days }} dia(s)</p>
+		<p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>Dentro de {{ $requestmodel->payment->shipping_days }} dia(s)</p>
 	</div>
 </div>
 @endsection

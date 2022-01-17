@@ -57,7 +57,17 @@
 			            		@endforeach
 			            	</select>
 			            </td>
-			            <td><input type="number" name="quantity" class="form-control" value="{{ $product->quantity }}" min="1" max="{{ $product->size->quantity }}"></td>
+			            <td>
+							<select name="quantity" class="form-control">
+								@for($i = 1; $i <= $product->size->quantity; $i++)
+									@if($i == $product->quantity)
+									<option value="{{ $i }}" selected>{{ $i }}</option>
+									@else
+									<option value="{{ $i }}">{{ $i }}</option>
+									@endif
+								@endfor
+							</select>
+						</td>
 			            <td>R$ {{ number_format($product->quantity * $product->size->price, 2, ',', '.') }}</td>
 			            <td>
 			            	<button type="submit" class="btn btn-sm btn-primary" title="Atualizar Produto do Carrinho"><i class="fa fa-repeat"></i></button>
@@ -78,9 +88,9 @@
     		<div class="input-container">
     			<form action="{{ route('site.cart.freight') }}" method="POST" id="form-freight" data-container=".result-frete">
     				@if($client)
-    				<select name="postal_code">
+    				<select name="postal_code" id="select-address">
     					@foreach($client->adresses as $address)
-    					<option value="{{ $address->postal_code }}">{{ mask($address->postal_code, '#####-###') }}, {{ $address->street }} - {{ $address->number }}, {{ $address->district }}, {{ $address->city }} - {{ $address->state }}</option>
+    					<option value="{{ $address->postal_code }}" data-addressid="{{ $address->id }}">{{ mask($address->postal_code, '#####-###') }}, {{ $address->street }} - {{ $address->number }}, {{ $address->district }}, {{ $address->city }} - {{ $address->state }}</option>
     					@endforeach
     				</select>
     				@else
@@ -103,12 +113,12 @@
     	</div>
     	
     	<form action="{{ route('site.cart.store.request') }}" method="POST" id="form-request" class="col-md-5 text-right text-end">
-    		<input type="hidden" name="postal_code">
+    		<input type="hidden" name="address_id" value="{{ $client->adresses->first()->id }}">
     		<input type="hidden" name="freight">
     		<input type="hidden" name="code">
 
     		<a href="{{ route('site.cart.clear') }}" class="primary-btn cta-btn" title="Limpar carrinho de compras">LIMPAR CARRINHO</a>
-    		<button type="submit" class="primary-btn cta-btn" title="Finalizar carrinho e efetuar o pedido" form="form-request">FINALIZAR COMPRA</button>
+    		<button type="submit" class="primary-btn cta-btn" title="Finalizar carrinho e efetuar o pedido" form="form-request">FINALIZAR PEDIDO</button>
     	</form>
 	</div>
     @else
