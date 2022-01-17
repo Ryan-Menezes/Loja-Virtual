@@ -53,6 +53,7 @@ class PanelController extends Controller{
 			$products_rating[$product->name] = $products_rating[$product->id];
 			unset($products_rating[$product->id]);
 		}
+		arsort($products_rating);
 
 		// Produtos mais bem avaliados
 		$notices_access = Notice::select('title', 'visits')->orderBy('visits', 'DESC')->limit(5)->pluck('visits', 'title')->toArray();
