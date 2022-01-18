@@ -173,9 +173,38 @@
 	<div class="row">
 		<div class="col-md-6">
 			@include('includes.components.form.select', [
+				'name' => 'payment_balance', 
+				'title' => 'Saldo',
+				'value' => (isset($system) && $system->store ? $system->store->payment_balance : 1),
+				'options' => [
+					1 => 'Ativado',
+					0 => 'Desativado'
+				],
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-6">
+			@include('includes.components.form.select', [
 				'name' => 'payment_bolet', 
 				'title' => 'Boleto',
 				'value' => (isset($system) && $system->store ? $system->store->payment_bolet : 1),
+				'options' => [
+					1 => 'Ativado',
+					0 => 'Desativado'
+				],
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			@include('includes.components.form.select', [
+				'name' => 'payment_deposit', 
+				'title' => 'Depósito',
+				'value' => (isset($system) && $system->store ? $system->store->payment_deposit : 1),
 				'options' => [
 					1 => 'Ativado',
 					0 => 'Desativado'

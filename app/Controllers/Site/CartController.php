@@ -275,9 +275,11 @@ class CartController extends Controller{
 					// Cadastrando produtos do pedido
 					foreach($cart_products as $cart_product){
 						$requestmodel->products()->create([
+							'color'				=> $cart_product->size->color->description,
+							'size'				=> $cart_product->size->description,
 							'price' 			=> $cart_product->size->price, 
 							'quantity'			=> $cart_product->quantity, 
-							'product_size_id'	=> $cart_product->size->id
+							'product_id'		=> $cart_product->product->id
 						]);
 					}
 

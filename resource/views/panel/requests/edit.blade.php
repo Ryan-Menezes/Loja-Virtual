@@ -25,13 +25,13 @@
 			<tbody>
 				@foreach($requestmodel->products as $product)
 				<tr>
-					<td><img src="{{ url('storage/app/public/' . $product->size->color->images->first()->source) }}" title="{{ $product->size->color->product->name }}" alt="{{ $product->size->color->product->name }}"></td>
-					@if($product->size->color->product->visible)
-					<td style="max-width: 200px;"><a href="{{ route('site.products.show', ['slug' => $product->size->color->product->slug]) }}" title="Página do produto: {{ $product->size->color->product->name }}" target="_blank">{{ $product->size->color->product->name }} <i class="fas fa-external-link-alt"></i></a></td>
+					<td><img src="{{ url('storage/app/public/' . $product->product->colors->first()->images->first()->source) }}" title="{{ $product->product->name }}" alt="{{ $product->product->name }}"></td>
+					@if($product->product->visible)
+					<td style="max-width: 200px;"><a href="{{ route('site.products.show', ['slug' => $product->product->slug]) }}" title="Página do produto: {{ $product->product->name }}" target="_blank">{{ $product->product->name }} <i class="fas fa-external-link-alt"></i></a></td>
 					@else
-					<td>{{ $product->size->color->product->name }}</td>
+					<td>{{ $product->product->name }}</td>
 					@endif
-					<td>Tamanho: {{ $product->size->description }} | Cor: {{ $product->size->color->description }}</td>
+					<td>COR: {{ $product->color }} | TAMANHO: {{ $product->size }}</td>
 					<td>{{ number_format($product->price, 2, ',', '.') }}</td>
 					<td>{{ $product->quantity }}</td>
 					<td>{{ number_format($product->price * $product->quantity, 2, ',', '.') }}</td>

@@ -282,7 +282,11 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 		// ROUTE REQUESTS
 		Route::group(['prefix' => 'pedidos'], function(){
 			Route::get('/', [RequestControllerSite::class, 'index'])->name('site.myaccount.requests');
-			Route::get('/{id}', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
+			
+			Route::group(['prefix' => '{id}'], function(){
+				Route::get('/', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
+				Route::get('/pagar', [RequestControllerSite::class, 'checkout'])->name('site.myaccount.requests.show.checkout');
+			});
 		});
 
 		// ROUTES ADRESSESS

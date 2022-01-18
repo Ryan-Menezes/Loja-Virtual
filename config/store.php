@@ -29,7 +29,9 @@ return [
 		'methods' => [
 			'credit_card' 				=> (bool)$system->store->payment_credit_card,
 			'debit_card' 				=> (bool)$system->store->payment_debit_card,
+			'balance'					=> (bool)$system->store->payment_balance,
 			'bolet' 					=> (bool)$system->store->payment_bolet,
+			'deposit'					=> (bool)$system->store->payment_deposit,
 			'debit_online' 				=> (bool)$system->store->payment_debit_online,
 			'pix'						=> (bool)$system->store->payment_pix,
 			'paypal'					=> (bool)$system->store->payment_paypal

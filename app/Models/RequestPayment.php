@@ -15,7 +15,9 @@ class RequestPayment extends Model{
 	private $methods = [
 		'CC' => 'Cartão de Crédito',
 		'CD' => 'Cartão de Débito',
+		'BA' => 'Saldo',
 		'BO' => 'Boleto',
+		'DE' => 'Depósito',
 		'DO' => 'Débito Online',
 		'PX' => 'PIX',
 		'PP' => 'PayPal'
