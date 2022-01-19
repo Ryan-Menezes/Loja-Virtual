@@ -71,6 +71,7 @@
     <link rel="stylesheet" href="{{ public_path('assets/css/libs/font-awesome.min.css') }}">
 
     <!-- Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/all.css') }}">
     <link rel="stylesheet" href="{{ public_path('assets/css/site/style.css') }}">
     <link rel="stylesheet" href="{{ public_path('assets/css/site/site.css') }}">
     @yield('styles')
@@ -396,6 +397,7 @@
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.zoom.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/site/script.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/all.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/site/main.js') }}"></script>
     @yield('scripts')
 </body>

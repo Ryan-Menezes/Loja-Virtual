@@ -15,6 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/solid.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/svg-with-js.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/v4-shims.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/all.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/panel/auth/config.css') }}">
 
 	<!-- Favicon -->
@@ -23,10 +24,24 @@
 	<title>{{ config('app.name') }} | @yield('title')</title>
 </head>
 <body>
+	<section class="modal-load">
+        <main>
+            <div class="load"></div>
+            <p><strong class="message">Aguarde, Carregando...</strong></p>
+        </main>
+    </section>
+
 	<section class="content">
 		@yield('container')
 	</section>
 
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/Trumbowyg/trumbowyg.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/apexcharts.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/all.js') }}"></script>
 </body>
 </html>

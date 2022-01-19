@@ -1,0 +1,56 @@
+.load{
+    border-radius: 50%!important;
+    width: 25px!important;
+    height: 25px!important;
+    border: 4px solid #dedede!important;
+    border-left-color: #D21737!important;
+    padding: 0px!important;
+    margin: auto!important;
+    background-color: transparent!important;
+    animation: load 1s linear infinite;
+}
+@keyframes load{
+    to{transform: rotate(360deg);}
+}
+.warning-message{
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 3px;
+    color: white;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    animation: anim 1s linear;
+    z-index: 999999999999;
+    cursor: pointer;
+}
+@keyframes anim{
+    0%{
+      opacity: 0;
+      bottom: 100px;
+    }
+    100%{
+      opacity: 1;
+      bottom: 20px;
+    }
+}
+
+.modal-load{
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	z-index: 99999999999999999999999999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.9);
+	flex-direction: column;
+	color: white;
+}
+.modal-load main{
+	align-items: center;
+	justify-content: center;
+}
+.modal-load p{
+	margin-top: 20px;
+}

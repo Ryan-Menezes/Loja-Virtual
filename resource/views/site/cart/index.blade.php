@@ -113,7 +113,7 @@
     	</div>
     	
     	<form action="{{ route('site.cart.store.request') }}" method="POST" id="form-request" class="col-md-5 text-right text-end">
-    		<input type="hidden" name="address_id" value="{{ $client->adresses->first()->id }}">
+    		<input type="hidden" name="address_id" value="{{ ($client ? $client->adresses->first()->id : null) }}">
     		<input type="hidden" name="freight">
     		<input type="hidden" name="code">
 
