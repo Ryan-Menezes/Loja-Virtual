@@ -39,7 +39,9 @@ return [
 		'credentials' => [
 			'pagseguro' => [
 				'email' 				=> $system->store->pagseguro->email,
-				'token' 				=> $system->store->pagseguro->token
+				'token' 				=> $system->store->pagseguro->token,
+				'app_id'				=> $system->store->pagseguro->app_id,
+				'app_key'				=> $system->store->pagseguro->app_key
 			]
 		]
 	]

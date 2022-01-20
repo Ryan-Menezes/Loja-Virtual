@@ -258,7 +258,7 @@
 	</div>
 
 	<br /><h3>Credenciais PagSeguro</h3><hr />
-
+	
 	@include('includes.components.form.input', [
 		'type' => 'email', 
 		'name' => 'email', 
@@ -272,6 +272,25 @@
 		'title' => 'Token', 
 		'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->token : null)
 	])
+
+	<div class="row">
+		<div class="col-md-6">
+			@include('includes.components.form.input', [
+				'type' => 'text', 
+				'name' => 'app_id', 
+				'title' => 'Id da Aplicação', 
+				'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->app_id : null)
+			])
+		</div>
+		<div class="col-md-6">
+			@include('includes.components.form.input', [
+				'type' => 'text', 
+				'name' => 'app_key', 
+				'title' => 'Chave da Aplicação', 
+				'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->app_key : null)
+			])
+		</div>
+	</div>
 	<br />
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>
 </form>

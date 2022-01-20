@@ -74,7 +74,7 @@
 		</div>
 
 		<div class="content" id="tab-content">
-			<div class="content-elements sortable">
+			<div class="content-elements sortable bg-white">
 				@php
 					$images = [];
 				@endphp
@@ -122,7 +122,7 @@
 				<input type="hidden" name="images-remove">
 			</div>
 
-			<div class="row text-center mt-5">
+			<div class="row text-center mt-5 bg-white">
 				<div class="col-md-12">
 					<button type="button" class="btn border" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">Adicionar texto <i class="fas fa-paragraph"></i></button>
 

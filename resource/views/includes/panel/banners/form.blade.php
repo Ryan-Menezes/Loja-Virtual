@@ -20,6 +20,14 @@
 		'required' => true
 	])
 
+	@include('includes.components.form.textarea', [
+		'name' => 'description',
+		'title' => 'Descrição',
+		'class' => 'required',
+		'value' => (isset($banner) ? $banner->description : null),
+		'required' => true
+	])
+
 	@include('includes.components.form.input', [
 		'type' => 'url', 
 		'name' => 'link', 

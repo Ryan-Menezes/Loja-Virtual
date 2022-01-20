@@ -40,7 +40,7 @@ class AuthController extends Controller{
 		if(!$client->validated){
 			Mail::isHtml(true)
 					->charset(config('mail.charset'))
-					->addFrom(config('app.contact.email'), config('app.name'))
+					->addFrom(config('mail.to'), config('app.name'))
 					->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
 					->message(view('mail.account.validate', compact('client')))
 					->send($client->email, $client->name);

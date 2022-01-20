@@ -50,8 +50,10 @@
                         <td>{{ $address->state }}</td>
                         <td>
                             <a href="{{ route('site.myaccount.adresses.edit', ['id' => $address->id]) }}" class="btn btn-sm btn-primary" title="Editar Endereço"><i class="fa fa-pencil"></i></a>
-
+                            
+                            @if($client->shipping_address_id != $address->id && $client->billing_address_id != $address->id)
                             <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-delete" data-route="{{ route('site.myaccount.adresses.destroy', ['id' => $address->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Deletar Endereço"><i class="fa fa-trash"></i></a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

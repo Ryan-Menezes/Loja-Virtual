@@ -43,6 +43,13 @@ class SystemController extends Controller{
 		redirect(route('panel.system'), ['error' => 'dados NÃO editados, Ocorreu um erro no processo de edição!'], true);
 	}
 
+	public function address(){
+		$this->system->verifyPermission('all.system.address');
+		$system = $this->system;
+
+		return view('panel.system.address.index', compact('system'));
+	}
+
 	public function updateAddress(){
 		$this->system->verifyPermission('all.system.address');
 
@@ -55,10 +62,17 @@ class SystemController extends Controller{
 		$this->validator($data, $address->rolesUpdate, $address->messages);
 
 		if($address->update($data)){
-			redirect(route('panel.system'), ['success' => 'Endereço editado com sucesso']);
+			redirect(route('panel.system.address'), ['success' => 'Endereço editado com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.address'), ['error' => 'Endereço NÃO editado, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function contact(){
+		$this->system->verifyPermission('all.system.contact');
+		$system = $this->system;
+
+		return view('panel.system.contact.index', compact('system'));
 	}
 
 	public function updateContact(){
@@ -74,10 +88,17 @@ class SystemController extends Controller{
 		$this->validator($data, $contact->rolesUpdate, $contact->messages);
 
 		if($contact->update($data)){
-			redirect(route('panel.system'), ['success' => 'Contato editado com sucesso']);
+			redirect(route('panel.system.contact'), ['success' => 'Contato editado com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Contato NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.contact'), ['error' => 'Contato NÃO editado, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function social(){
+		$this->system->verifyPermission('all.system.social');
+		$system = $this->system;
+
+		return view('panel.system.social.index', compact('system'));
 	}
 
 	public function updateSocial(){
@@ -92,10 +113,17 @@ class SystemController extends Controller{
 		$this->validator($data, $social->rolesUpdate, $social->messages);
 
 		if($social->update($data)){
-			redirect(route('panel.system'), ['success' => 'Redes Socias editadas com sucesso']);
+			redirect(route('panel.system.social'), ['success' => 'Redes Socias editadas com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.social'), ['error' => 'Redes Socias NÃO editadas, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function store(){
+		$this->system->verifyPermission('all.system.store');
+		$system = $this->system;
+
+		return view('panel.system.store.index', compact('system'));
 	}
 
 	public function updateStore(){
@@ -135,10 +163,17 @@ class SystemController extends Controller{
 		}
 
 		if($store->update($data)){
-			redirect(route('panel.system'), ['success' => 'Loja virtual editada com sucesso']);
+			redirect(route('panel.system.store'), ['success' => 'Loja virtual editada com sucesso']);
 		}
 
-		redirect(route('panel.system'), ['error' => 'Loja virtual NÃO editada, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.store'), ['error' => 'Loja virtual NÃO editada, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function lgpd(){
+		$this->system->verifyPermission('all.system.lgpd');
+		$system = $this->system;
+
+		return view('panel.system.lgpd.index', compact('system'));
 	}
 
 	public function updateLgpd(){
@@ -179,7 +214,7 @@ class SystemController extends Controller{
 				Storage::delete($remove);
 			}
 
-			redirect(route('panel.system'), ['success' => 'LGPD editado com sucesso']);
+			redirect(route('panel.system.lgpd'), ['success' => 'LGPD editado com sucesso']);
 		}
 
 		// Detando arquivos no caso de erro
@@ -191,7 +226,14 @@ class SystemController extends Controller{
 			Storage::delete($data['terms_conditions']);
 		}
 		
-		redirect(route('panel.system'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.lgpd'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function floater(){
+		$this->system->verifyPermission('all.system.floater');
+		$system = $this->system;
+
+		return view('panel.system.floater.index', compact('system'));
 	}
 
 	public function updateFloater(){
@@ -218,13 +260,13 @@ class SystemController extends Controller{
 				Storage::delete($imagePrev);
 			}
 
-			redirect(route('panel.system'), ['success' => 'Floater editado com sucesso']);
+			redirect(route('panel.system.floater'), ['success' => 'Floater editado com sucesso']);
 		}
 
 		if($image && isset($data['image'])){
 			Storage::delete($data['image']);
 		}
 		
-		redirect(route('panel.system'), ['error' => 'Floater NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.system.floater'), ['error' => 'Floater NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
 }

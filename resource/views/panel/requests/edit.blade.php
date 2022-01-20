@@ -8,7 +8,7 @@
 
 	@include('includes.panel.requests.form', ['action' => route('panel.requests.update', ['id' => $requestmodel->id]), 'method' => 'PUT'])
 
-	<div class="border mb-4 mt-4 p-4">
+	<div class="border mb-4 mt-4 p-4 bg-white">
 		<h2>Produtos</h2><hr />
 
 		<table class="table table-hover">
@@ -55,7 +55,7 @@
 		</div>
 	</div>
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Cliente</h2><hr />
 
 		<p><a href="{{ route('panel.clients.show', ['id' => $requestmodel->client->id]) }}" title="Saber mais sobre o cliente: {{ $requestmodel->client->name }}" target="_blank"><strong>{{ $requestmodel->client->name }} <i class="fas fa-external-link-alt"></i></strong></a></p>
@@ -67,7 +67,7 @@
 		<p class="p-0 m-0"><strong>Telefone: </strong>{{ mask($requestmodel->client->telephone, '(##)####-####') }}</p>
 	</div>
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Endereço de Entrega</h2><hr />
 
 		<p class="p-0 m-0"><strong>CEP: </strong>{{ mask($requestmodel->address->postal_code, '#####-###') }}</p>
@@ -79,7 +79,7 @@
 		<p class="p-0 m-0"><strong>Complemento: </strong>{{ $requestmodel->address->complement }}</p>
 	</div>
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Pagamento</h2><hr />
 
 		@if($requestmodel->payment->status_type == 'AP' || $requestmodel->payment->status_type == 'EA')
@@ -99,7 +99,7 @@
 	</div>
 
 	@if($requestmodel->payment->method == 'CC' ||  $requestmodel->payment->method == 'CD')
-	<div class="border mb-4 p-4">	
+	<div class="border mb-4 p-4 bg-white">	
 		<h2>Parcelas e Juros</h2><hr />
 
 		<p class="p-0 m-0"><strong>Número de Parcelas: </strong>{{ $requestmodel->payment->installments }}</p>
@@ -107,7 +107,7 @@
 	</div>
 	@endif
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Descontos Aplicados</h2><hr />
 
 		<p class="p-0 m-0 mt-4"><strong>Desconto por Cupom: </strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</p>
@@ -121,7 +121,7 @@
 		<p class="p-0 m-0"><strong>Desconto do Carrinho: </strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</p>
 	</div>
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Frete</h2><hr />
 
 		<p class="p-0 m-0"><strong>Tipo: </strong>{{ $requestmodel->payment->shippingTypeFormat }}</p>

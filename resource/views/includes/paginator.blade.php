@@ -1,6 +1,6 @@
 @if($pages > 0)
-<nav aria-label="Page navigation example">
-	<ul class="pagination">
+<nav class="m-0">
+	<ul class="pagination m-0">
 		@if(empty($builder))
 			@for($i = 1; $i <= $pages; $i++)
 			 	<li class="page-item"><a class="page-link" href="{{ route($route, $params ?? []) }}?page={{ $i }}" title="Página {{ $i }}">{{ $i }}</a></li>

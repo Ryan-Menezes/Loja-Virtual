@@ -17,7 +17,7 @@
 
             @include('includes.site.requests.body')
 
-            @if($requestmodel->status == 'AP' && empty($requestmodel->payment->method))
+            @if($requestmodel->status == 'AP' && empty($requestmodel->payment->code))
             <h2 style="margin-top: 20px;">Pagamento</h2><hr />
 
             <div class="cards">
@@ -49,6 +49,20 @@
                     @include('includes.components.card', ['title' => 'PayPal', 'link' => route('site.requests.show.paypal', ['id' => $requestmodel->id]), 'class' => 'text-primary', 'amount' => 'PayPal', 'icon' => 'fa fa-paypal'])
                 @endif
             </div>
+            @elseif($requestmodel->payment->status_type != 'PA' && $requestmodel->payment->status_type != 'CA')
+                <h2 style="margin-top: 20px;">Pagamento</h2><hr />
+
+                @if($requestmodel->payment->status_type == 'AP' && !empty($requestmodel->payment->link))
+                    @if($requestmodel->payment->method == 'BO')
+                    <p>Você selecionou o pagamento por boleto, para que seu pedido seja confirmado para entrega, efetue o pagamento por meio do boleto neste link: <a href="{{ $requestmodel->payment->link }}" target="_blank">{{ $requestmodel->payment->link }}</a></p>
+                    <p style="margin-top: 40px;"><strong>Caso o pagamento não seja efetuado até a data de vencimento do boleto, seu pedido será cancelado!</strong></p>
+                    @elseif($requestmodel->payment->method == 'DO')
+                    <p>Você selecionou o pagamento por débito online, para que seu pedido seja confirmado para entrega, efetue o pagamento por meio deste link: <a href="{{ $requestmodel->payment->link }}" target="_blank">{{ $requestmodel->payment->link }}</a></p>
+                    <p style="margin-top: 40px;"><strong>Caso o pagamento não seja efetuado, seu pedido será cancelado!</strong></p>
+                    @endif
+                @else
+                <p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>
+                @endif
             @endif
         </div>
     </div>

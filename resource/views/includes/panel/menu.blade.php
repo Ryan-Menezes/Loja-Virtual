@@ -38,6 +38,18 @@
 			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-images"></i> Banners</li></a>
 		@endif
 
+		@if(can('view.partners'))
+			<a href="{{ route('panel.partners') }}" title="Página de Parceiros"><li><i class="fas fa-handshake"></i> Parceiros</li></a>
+		@else
+			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-handshake"></i> Parceiros</li></a>
+		@endif
+
+		@if(can('view.galleries'))
+			<a href="{{ route('panel.galleries') }}" title="Página de Galerias"><li><i class="fas fa-camera-retro"></i> Galerias</li></a>
+		@else
+			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-camera-retro"></i> Galerias</li></a>
+		@endif
+
 		@if(can('view.depoiments'))
 			<a href="{{ route('panel.depoiments') }}" title="Página de Depoimentos"><li><i class="fas fa-smile"></i> Depoimentos</li></a>
 		@else

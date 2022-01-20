@@ -12,6 +12,8 @@ use App\Controllers\Panel\{
 	CouponController,
 	SlideShowController,
 	BannerController,
+	GaleryController,
+	PartnerController,
 	DepoimentController,
 	NoticeController,
 	CommentController,
@@ -31,6 +33,7 @@ use App\Controllers\Site\{
 	CategoryController as CategoryControllerSite,
 	CartController,
 	LgpdController,
+	PaymentController,
 	SiteMapController
 };
 use App\Controllers\Site\MyAccount\{
@@ -112,6 +115,26 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 			Route::get('/{id}/editar', [BannerController::class, 'edit'])->name('panel.banners.edit');
 			Route::put('/{id}/editar/salvar', [BannerController::class, 'update'])->name('panel.banners.update');
 			Route::delete('/{id}', [BannerController::class, 'destroy'])->name('panel.banners.destroy');
+		});
+
+		// ROUTE GALLERIES
+		Route::group(['prefix' => 'galerias'], function(){
+			Route::any('/', [GaleryController::class, 'index'])->name('panel.galleries');
+			Route::get('/novo', [GaleryController::class, 'create'])->name('panel.galleries.create');
+			Route::post('/novo/salvar', [GaleryController::class, 'store'])->name('panel.galleries.store');
+			Route::get('/{id}/editar', [GaleryController::class, 'edit'])->name('panel.galleries.edit');
+			Route::put('/{id}/editar/salvar', [GaleryController::class, 'update'])->name('panel.galleries.update');
+			Route::delete('/{id}', [GaleryController::class, 'destroy'])->name('panel.galleries.destroy');
+		});
+
+		// ROUTE PARTNERS
+		Route::group(['prefix' => 'parceiros'], function(){
+			Route::any('/', [PartnerController::class, 'index'])->name('panel.partners');
+			Route::get('/novo', [PartnerController::class, 'create'])->name('panel.partners.create');
+			Route::post('/novo/salvar', [PartnerController::class, 'store'])->name('panel.partners.store');
+			Route::get('/{id}/editar', [PartnerController::class, 'edit'])->name('panel.partners.edit');
+			Route::put('/{id}/editar/salvar', [PartnerController::class, 'update'])->name('panel.partners.update');
+			Route::delete('/{id}', [PartnerController::class, 'destroy'])->name('panel.partners.destroy');
 		});
 
 		// ROUTE DEPOIMENTS
@@ -200,11 +223,23 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		Route::group(['prefix' => 'sistema'], function(){
 			Route::get('/', [SystemController::class, 'index'])->name('panel.system');
 			Route::post('/salvar', [SystemController::class, 'update'])->name('panel.system.update');
+
+			Route::get('/endereco', [SystemController::class, 'address'])->name('panel.system.address');
 			Route::post('/endereco/salvar', [SystemController::class, 'updateAddress'])->name('panel.system.address.update');
+
+			Route::get('/contato', [SystemController::class, 'contact'])->name('panel.system.contact');
 			Route::post('/contato/salvar', [SystemController::class, 'updateContact'])->name('panel.system.contact.update');
-			Route::post('/social/salvar', [SystemController::class, 'updateSocial'])->name('panel.system.social.update');
-			Route::post('/loja/salvar', [SystemController::class, 'updateStore'])->name('panel.system.store.update');
+
+			Route::get('/redes-sociais', [SystemController::class, 'social'])->name('panel.system.social');
+			Route::post('/redes-sociais/salvar', [SystemController::class, 'updateSocial'])->name('panel.system.social.update');
+
+			Route::get('/loja-online', [SystemController::class, 'store'])->name('panel.system.store');
+			Route::post('/loja-online/salvar', [SystemController::class, 'updateStore'])->name('panel.system.store.update');
+
+			Route::get('/lgpd', [SystemController::class, 'lgpd'])->name('panel.system.lgpd');
 			Route::post('/lgpd/salvar', [SystemController::class, 'updateLgpd'])->name('panel.system.lgpd.update');
+
+			Route::get('/floater', [SystemController::class, 'floater'])->name('panel.system.floater');
 			Route::post('/floater/salvar', [SystemController::class, 'updateFloater'])->name('panel.system.floater.update');
 		});
 
@@ -376,5 +411,10 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 		Route::group(['prefix' => '/{category}'], function(){
 			Route::any('/{subcategory}', [CategoryControllerSite::class, 'productSubCategory'])->name('site.products.category.subcategory');
 		});
+	});
+
+	// PAYMENT
+	Route::group(['prefix' => 'notificacao'], function(){
+		Route::any('/pagseguro', [PaymentController::class, 'notificationPagseguro'])->name('site.notification.pagseguro');
 	});
 });

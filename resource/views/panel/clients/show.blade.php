@@ -4,7 +4,7 @@
 
 @section('container')
 <section class="p-4">
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2 class="mb-4">{{ $client->name }}</h2>
 
 		<p class="p-0 m-0"><strong>CPF: </strong>{{ mask($client->cpf, '###.###.###-##') }}</p>
@@ -14,7 +14,7 @@
 		<p class="p-0 m-0"><strong>Telefone: </strong>{{ $client->telephone }}</p>
 	</div>
 
-	<div class="border mb-4 p-4">
+	<div class="border mb-4 p-4 bg-white">
 		<h2>Endereços</h2><hr />
 
 		<table class="table table-hover">

@@ -47,7 +47,7 @@
             <div class="card-body">
                 <p class="p-0 m-0"><strong>Tipo: </strong>{{ $requestmodel->payment->shippingTypeFormat }}</p>
                 <p class="p-0 m-0"><strong>Valor: </strong>R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</p>
-                <p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>Dentro de {{ $requestmodel->payment->shipping_days }} dia(s)</p>
+                <p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>Dentro de {{ $requestmodel->payment->shipping_days }} dia(s) após o pagamento</p>
             </div>
         </div>
     </div>

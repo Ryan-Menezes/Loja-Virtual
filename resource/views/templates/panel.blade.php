@@ -48,7 +48,7 @@
 
 			<section class="content-main">
 				<main class="content-breadcrumb">
-					<nav aria-label="breadcrumb" class="p-3 border">
+					<nav aria-label="breadcrumb" class="p-3 border bg-white">
 						<ol class="breadcrumb p-0 m-0">
 							@php $routeComplete = '' @endphp
 							@foreach(explode('/', route()) as $route)

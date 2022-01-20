@@ -47,6 +47,16 @@ class RequestController extends Controller{
     public function show($id){
         $requestmodel = $this->client->requests()->findOrFail($id);
 
+		// Objeto do pagseguro
+		$email = config('store.payment.credentials.pagseguro.email');
+		$token = config('store.payment.credentials.pagseguro.token');
+		$production = config('store.payment.production');
+
+		$pagseguro = new PagSeguro($email, $token, !$production);
+
+		// Verifica se a transação para este pedido já foi feita
+		update_payment_request($pagseguro, $requestmodel);
+
         return view('site.myaccount.requests.show', compact('requestmodel'));
     }
 
@@ -63,6 +73,18 @@ class RequestController extends Controller{
 		];
 		$groups = [];
 		$excludes = [];
+
+		// Objeto do pagseguro
+		$email = config('store.payment.credentials.pagseguro.email');
+		$token = config('store.payment.credentials.pagseguro.token');
+		$production = config('store.payment.production');
+
+		$pagseguro = new PagSeguro($email, $token, !$production);
+
+		// Verifica se a transação para este pedido já foi feita
+		if(update_payment_request($pagseguro, $requestmodel)){
+			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+		}
 
 		// Parcelas do cartão sem juros
 		$installment_no_interest = 0;
@@ -127,18 +149,12 @@ class RequestController extends Controller{
 				'DISCOUNT_PERCENT' => $discount_percent
 			];
 		}
-
-		// Objeto do pagseguro
-		$email = config('store.payment.credentials.pagseguro.email');
-		$token = config('store.payment.credentials.pagseguro.token');
-		$production = config('store.payment.production');
-
-		$pagseguro = new PagSeguro($email, $token, !$production);
-
+		
+		// Configurando checkout
 		$pagseguro->setReceiverEmail($email);
 		$pagseguro->setCurrency('BRL');
-		$pagseguro->setExtraAmount(-($requestmodel->payment->discount_cart + $requestmodel->payment->discount_installment + $requestmodel->payment->discount_coupon));
-		$pagseguro->setNotificationURL(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+		$pagseguro->setExtraAmount(-($requestmodel->payment->discount_cart + $requestmodel->payment->discount_coupon));
+		$pagseguro->setNotificationURL(route('site.notification.pagseguro'));
 		$pagseguro->setReference($requestmodel->id);
 		$pagseguro->setSender($client->name, $client->cpf, $client->telephone, $client->email);
 		$pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
@@ -147,7 +163,7 @@ class RequestController extends Controller{
 		foreach($products as $product){
 			$pagseguro->addItem(md5($product->id . $product->product->id), $product->product->name . ' | COR: ' . $product->color . ' | TAMANHO: ' . $product->size, $product->price, $product->quantity);
 		}
-
+		
 		$response = $pagseguro->checkout(route('site.myaccount.requests.show', ['id' => $requestmodel->id]), $groups, $excludes);
 		
 		$code = $response->code ?? null;

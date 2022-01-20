@@ -85,6 +85,9 @@ class AddressController extends Controller{
 	public function destroy($id){
 		$address = $this->client->adresses()->findOrFail($id);
 
+		if($address->id == $this->client->shipping_address_id || $address->id == $this->client->billing_address_id)
+			abort(404);
+
 		if($address->delete()){
 			redirect(route('site.myaccount.adresses'), ['success' => 'Endereço deletado com sucesso']);
 		}

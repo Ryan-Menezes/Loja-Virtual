@@ -11,7 +11,6 @@
 
     <section style="margin-bottom: 40px;">
         <div style="padding: 20px; border: 1px solid #bfbfbf; border-radius: 5px;">
-            <h3 style="margin-bottom: 10px;"></h3>
             <p>Para validar sua conta clique no botão abaixo:</p>
         </div>
     </section>

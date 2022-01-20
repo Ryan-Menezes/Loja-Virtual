@@ -48,7 +48,7 @@
                 // Chamada do lightbox passando o código de checkout e os comandos para o callback
                 let isOpenLightbox = PagSeguroLightbox('{{ $code }}', {
                     success: function(transactionCode) {
-                        console.log("Compra feita com sucesso, código de transação: " + transactionCode);
+                        window.document.location.reload(true)
                     },
                     abort: function(){}
                 })

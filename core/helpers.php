@@ -506,6 +506,77 @@ if(!function_exists('freight_format')){
 	}
 }
 
+if(!function_exists('parse_object')){
+	function parse_object($value){
+		return ((array)$value)[0];
+	}
+}
+
+if(!function_exists('update_payment_request')){
+	function update_payment_request($pagseguro, $requestmodel): bool{
+		$response = $pagseguro->transaction($requestmodel->id);
+		if($response && $response->transactions && !empty($response->transactions)){
+			$transaction = $response->transactions->transaction;
+			
+			$transaction = $pagseguro->transactionDetails($transaction->code);
+			if($transaction->code){
+				$status = [
+					'AP',
+					'EA', 
+					'PA',
+					'DI', 
+					'ED',
+					'DE',
+					'CA'
+				];
+				$methods = [
+					1 => 'CC',
+					2 => 'BO',
+					3 => 'DO',
+					4 => 'BA',
+					7 => 'DE'
+				];
+
+				$requestmodel->payment->update([
+					'code' 					=> parse_object($transaction->code),
+					'type' 					=> 'PS',
+					'method'				=> $methods[parse_object($transaction->paymentMethod->type)] ?? null,
+					'status'				=> parse_object($transaction->status),
+					'status_type'			=> $status[parse_object($transaction->status) - 1],
+					'installments'			=> parse_object($transaction->installmentCount),
+					'discount_installment'	=> parse_object($transaction->discountAmount),
+					'link'					=> (isset($transaction->paymentLink) ? parse_object($transaction->paymentLink) : null),
+					'details'				=> json_encode($transaction)
+				]);
+
+				$sta = $status[parse_object($transaction->status) - 1];
+
+				$status = [
+					'AP' => 'AP',
+					'PA' => 'PA',
+					'CA' => 'CA'
+				];
+
+				if(array_key_exists($sta, $status) && $status[$sta] != $requestmodel->status){
+					if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
+						$requestmodel->update([
+							'status' => $status[$sta]
+						]);	
+					}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
+						$requestmodel->update([
+							'status' => $status[$sta]
+						]);
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
 if(!function_exists('slugify')){
 	function slugify(string $string, string $separator = '-') : string{
 		$string = preg_replace('/[\t\n]/', ' ', $string);

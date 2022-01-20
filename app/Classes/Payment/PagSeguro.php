@@ -67,9 +67,9 @@ class PagSeguro{
 
     public function __construct(string $email, string $token, bool $sandbox = false){
         if($sandbox){
-            $this->url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/';
+            $this->url = 'https://ws.sandbox.pagseguro.uol.com.br/';
         }else{
-            $this->url = 'https://ws.pagseguro.uol.com.br/v2/';
+            $this->url = 'https://ws.pagseguro.uol.com.br/';
         }
 
         $this->email = $email;
@@ -195,8 +195,66 @@ class PagSeguro{
         $this->creditCard['sender']['telephone']['number']      = mb_substr($telephone, 2);
     }
 
+    public function notification(string $notificationCode){
+        $url = $this->url . "v3/transactions/notifications/{$notificationCode}?";
+
+        $data = [
+            'email'     => $this->email,
+            'token'     => $this->token
+        ];
+    
+        $response = $this->curl($url . http_build_query($data), ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function transaction(string $reference){
+        $url = $this->url . 'v2/transactions?';
+
+        $data = [
+            'email'      => $this->email,
+            'token'      => $this->token,
+            'reference'  => $reference
+        ];
+
+        $response = $this->curl($url . http_build_query($data), [], true, true);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function transactionDetails(string $transactionCode){
+        $url = $this->url . "v3/transactions/{$transactionCode}?";
+
+        $data = [
+            'email' => $this->email,
+            'token' => $this->token
+        ];
+
+        $response = $this->curl($url . http_build_query($data), [], true, true);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
     public function checkout(string $redirectURL, array $groups = [], array $excludes = []) : ?object{
-        $url = $this->url . 'checkout';
+        $url = $this->url . 'v2/checkout';
 
         $data = [
             'email'                     => $this->email,
