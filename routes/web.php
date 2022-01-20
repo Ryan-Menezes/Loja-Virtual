@@ -321,6 +321,10 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 			Route::group(['prefix' => '{id}'], function(){
 				Route::get('/', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
 				Route::get('/pagar', [RequestControllerSite::class, 'checkout'])->name('site.myaccount.requests.show.checkout');
+				Route::get('/cartao-de-credito', [RequestControllerSite::class, 'creditCard'])->name('site.myaccount.requests.show.creditCard');
+				Route::get('/boleto', [RequestControllerSite::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
+				Route::post('/boleto', [RequestControllerSite::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
+				Route::get('/debito-online', [RequestControllerSite::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
 			});
 		});
 

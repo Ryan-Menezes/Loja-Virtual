@@ -99,7 +99,7 @@
 
 <div class="mb-4 text-end text-right">
     <p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</strong></p>
-    @if($requestmodel->payment->status_type != 'AP')
+    @if(!empty($requestmodel->payment->code))
         @if($requestmodel->payment->installments == 1)
         <p class="p-0 m-0">(Desconto Pagamento à Vista) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
         @else

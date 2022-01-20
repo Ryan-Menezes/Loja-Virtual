@@ -253,6 +253,25 @@ class PagSeguro{
         return $response;
     }
 
+    public function getSession() : ?object{
+        $url = $this->url . 'v2/sessions';
+
+        $data = [
+            'email' => $this->email,
+            'token' => $this->token
+        ];
+
+        $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
     public function checkout(string $redirectURL, array $groups = [], array $excludes = []) : ?object{
         $url = $this->url . 'v2/checkout';
 
@@ -324,6 +343,207 @@ class PagSeguro{
             if(array_key_exists('methods', $excludes) && !empty($excludes['groups'])){
                 $data['excludePaymentMethodName'] = implode(',', $excludes['methods']);
             }
+        }
+
+        $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function creditCard(){
+        $url = $this->url . 'v2/transactions/';
+
+        $data = [
+            'email'                     => $this->email,
+            'token'                     => $this->token,
+            'paymentMode'               => 'default',
+            'paymentMethod'             => 'creditCard',
+            'receiverEmail'             => $this->receiverEmail,
+            'currency'                  => $this->currency,
+            'extraAmount'               => $this->extraAmount,
+            'notificationURL'           => $this->notificationURL,
+            'reference'                 => $this->reference,
+            'senderName'                => $this->sender['name'],
+            'senderCPF'                 => $this->sender['cpf'],
+            'senderAreaCode'            => $this->sender['telephone']['ddd'],
+            'senderPhone'               => $this->sender['telephone']['number'],
+            'senderEmail'               => $this->sender['email'],
+            'shippingAddressRequired'   => $this->shippingAddress['required'] ? 'true' : 'false'
+        ];
+
+        // Itens
+        for($i = 1; $i <= count($this->itens); $i++){
+            $id             = $this->itens[$i - 1]['id'];
+            $description    = $this->itens[$i - 1]['description'];
+            $amount         = $this->itens[$i - 1]['amount'];
+            $quantity       = $this->itens[$i - 1]['quantity'];
+
+            $data["itemId{$i}"]             = $id;
+            $data["itemDescription{$i}"]    = $description;
+            $data["itemAmount{$i}"]         = $amount;
+            $data["itemQuantity{$i}"]       = $quantity;
+        }
+
+        // Installment
+        $data['installmentQuantity']                = $this->installment['quantity'];
+        $data['installmentValue']                   = $this->installment['value'];
+        $data['noInterestInstallmentQuantity']      = $this->installment['no_interest_quantity'];
+
+        // CreditCard Credentials
+        $data['creditCardToken']                = $this->creaditCard['token'];
+        $data['creditCardHolderName']           = $this->creaditCard['holder']['name'];
+        $data['creditCardHolderCPF']            = $this->creaditCard['holder']['cpf'];
+        $data['creditCardHolderBirthDate']      = $this->creaditCard['holder']['birth'];
+        $data['creditCardHolderAreaCode']       = $this->creaditCard['holder']['telephone']['ddd'];
+        $data['creditCardHolderPhone']          = $this->creaditCard['holder']['telephone']['number'];
+
+        // Shipping Address
+        if($this->shippingAddress['required']){
+            $data['shippingAddressStreet']        = $this->shippingAddress['street'];
+            $data['shippingAddressNumber']        = $this->shippingAddress['number'];
+            $data['shippingAddressComplement']    = $this->shippingAddress['complement'];
+            $data['shippingAddressDistrict']      = $this->shippingAddress['district'];
+            $data['shippingAddressPostalCode']    = $this->shippingAddress['postal_code'];
+            $data['shippingAddressCity']          = $this->shippingAddress['city'];
+            $data['shippingAddressState']         = $this->shippingAddress['state'];
+            $data['shippingAddressCountry']       = $this->shippingAddress['country'];
+            $data['shippingType']                 = $this->shippingAddress['type'];
+            $data['shippingCost']                 = $this->shippingAddress['cost'];
+        }
+
+        // Billing Address
+        $data['billingAddressStreet']        = $this->billingAddress['street'];
+        $data['billingAddressNumber']        = $this->billingAddress['number'];
+        $data['billingAddressComplement']    = $this->billingAddress['complement'];
+        $data['billingAddressDistrict']      = $this->billingAddress['district'];
+        $data['billingAddressPostalCode']    = $this->billingAddress['postal_code'];
+        $data['billingAddressCity']          = $this->billingAddress['city'];
+        $data['billingAddressState']         = $this->billingAddress['state'];
+        $data['billingAddressCountry']       = $this->billingAddress['country'];
+
+        $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function bolet(){
+        $url = $this->url . 'v2/transactions/';
+
+        $data = [
+            'email'                     => $this->email,
+            'token'                     => $this->token,
+            'paymentMode'               => 'default',
+            'paymentMethod'             => 'boleto',
+            'receiverEmail'             => $this->receiverEmail,
+            'currency'                  => $this->currency,
+            'extraAmount'               => $this->extraAmount,
+            'notificationURL'           => $this->notificationURL,
+            'reference'                 => $this->reference,
+            'senderName'                => $this->sender['name'],
+            'senderCPF'                 => $this->sender['cpf'],
+            'senderAreaCode'            => $this->sender['telephone']['ddd'],
+            'senderPhone'               => $this->sender['telephone']['number'],
+            'senderEmail'               => $this->sender['email'],
+            'shippingAddressRequired'   => $this->shippingAddress['required'] ? 'true' : 'false'
+        ];
+
+        // Itens
+        for($i = 1; $i <= count($this->itens); $i++){
+            $id             = $this->itens[$i - 1]['id'];
+            $description    = $this->itens[$i - 1]['description'];
+            $amount         = $this->itens[$i - 1]['amount'];
+            $quantity       = $this->itens[$i - 1]['quantity'];
+
+            $data["itemId{$i}"]             = $id;
+            $data["itemDescription{$i}"]    = $description;
+            $data["itemAmount{$i}"]         = $amount;
+            $data["itemQuantity{$i}"]       = $quantity;
+        }
+
+        // Shipping Address
+        if($this->shippingAddress['required']){
+            $data['shippingAddressStreet']        = $this->shippingAddress['street'];
+            $data['shippingAddressNumber']        = $this->shippingAddress['number'];
+            $data['shippingAddressComplement']    = $this->shippingAddress['complement'];
+            $data['shippingAddressDistrict']      = $this->shippingAddress['district'];
+            $data['shippingAddressPostalCode']    = $this->shippingAddress['postal_code'];
+            $data['shippingAddressCity']          = $this->shippingAddress['city'];
+            $data['shippingAddressState']         = $this->shippingAddress['state'];
+            $data['shippingAddressCountry']       = $this->shippingAddress['country'];
+            $data['shippingType']                 = $this->shippingAddress['type'];
+            $data['shippingCost']                 = $this->shippingAddress['cost'];
+        }
+
+        $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
+
+        if($response != 'Unauthorized'){
+            $response = simplexml_load_string($response);
+        }else{
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function debitOnline(string $bankName){
+        $url = $this->url . 'v2/transactions/';
+
+        $data = [
+            'email'                     => $this->email,
+            'token'                     => $this->token,
+            'paymentMode'               => 'default',
+            'paymentMethod'             => 'eft',
+            'bankName'                  => $bankName,
+            'receiverEmail'             => $this->receiverEmail,
+            'currency'                  => $this->currency,
+            'extraAmount'               => $this->extraAmount,
+            'notificationURL'           => $this->notificationURL,
+            'reference'                 => $this->reference,
+            'senderName'                => $this->sender['name'],
+            'senderCPF'                 => $this->sender['cpf'],
+            'senderAreaCode'            => $this->sender['telephone']['ddd'],
+            'senderPhone'               => $this->sender['telephone']['number'],
+            'senderEmail'               => $this->sender['email'],
+            'shippingAddressRequired'   => $this->shippingAddress['required'] ? 'true' : 'false'
+        ];
+
+        // Itens
+        for($i = 1; $i <= count($this->itens); $i++){
+            $id             = $this->itens[$i - 1]['id'];
+            $description    = $this->itens[$i - 1]['description'];
+            $amount         = $this->itens[$i - 1]['amount'];
+            $quantity       = $this->itens[$i - 1]['quantity'];
+
+            $data["itemId{$i}"]             = $id;
+            $data["itemDescription{$i}"]    = $description;
+            $data["itemAmount{$i}"]         = $amount;
+            $data["itemQuantity{$i}"]       = $quantity;
+        }
+
+        // Shipping Address
+        if($this->shippingAddress['required']){
+            $data['shippingAddressStreet']        = $this->shippingAddress['street'];
+            $data['shippingAddressNumber']        = $this->shippingAddress['number'];
+            $data['shippingAddressComplement']    = $this->shippingAddress['complement'];
+            $data['shippingAddressDistrict']      = $this->shippingAddress['district'];
+            $data['shippingAddressPostalCode']    = $this->shippingAddress['postal_code'];
+            $data['shippingAddressCity']          = $this->shippingAddress['city'];
+            $data['shippingAddressState']         = $this->shippingAddress['state'];
+            $data['shippingAddressCountry']       = $this->shippingAddress['country'];
+            $data['shippingType']                 = $this->shippingAddress['type'];
+            $data['shippingCost']                 = $this->shippingAddress['cost'];
         }
 
         $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);

@@ -544,7 +544,7 @@ if(!function_exists('update_payment_request')){
 					'status'				=> parse_object($transaction->status),
 					'status_type'			=> $status[parse_object($transaction->status) - 1],
 					'installments'			=> parse_object($transaction->installmentCount),
-					'discount_installment'	=> parse_object($transaction->discountAmount),
+					'discount_installment'	=> abs(abs((float)parse_object($transaction->extraAmount)) - ($requestmodel->payment->discount_coupon + $requestmodel->payment->discount_cart)),
 					'link'					=> (isset($transaction->paymentLink) ? parse_object($transaction->paymentLink) : null),
 					'details'				=> json_encode($transaction)
 				]);

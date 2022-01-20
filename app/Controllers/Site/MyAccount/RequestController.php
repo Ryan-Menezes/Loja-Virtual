@@ -169,4 +169,91 @@ class RequestController extends Controller{
 		$code = $response->code ?? null;
 		return view('site.myaccount.requests.pagseguro.checkout.index', compact('requestmodel', 'code'));
 	}
+
+	public function bolet($id){
+		$requestmodel = $this->client->requests()->findOrFail($id);
+
+		// Objeto do pagseguro
+		$email = config('store.payment.credentials.pagseguro.email');
+		$token = config('store.payment.credentials.pagseguro.token');
+		$production = config('store.payment.production');
+
+		$pagseguro = new PagSeguro($email, $token, !$production);
+
+		// Verifica se a transação para este pedido já foi feita
+		if(update_payment_request($pagseguro, $requestmodel)){
+			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+		}
+
+		$session = $pagseguro->getSession();
+		$session_id = $session->id ?? null;
+		
+		return view('site.myaccount.requests.pagseguro.bolet.index', compact('requestmodel', 'session_id'));
+	}
+
+	public function boletStore($id){
+		$requestmodel = $this->client->requests()->findOrFail($id);
+		$client = $requestmodel->client;
+		$address = $requestmodel->address;
+		$payment = $requestmodel->payment;
+		$products = $requestmodel->products;
+		$shipping_types = [
+			'PC' => PagSeguro::SHIPPING_PAC,
+			'SX' => PagSeguro::SHIPPING_SEDEX,
+			'PE' => PagSeguro::SHIPPING_ALT
+		];
+
+		// Objeto do pagseguro
+		$email = config('store.payment.credentials.pagseguro.email');
+		$token = config('store.payment.credentials.pagseguro.token');
+		$production = config('store.payment.production');
+
+		$pagseguro = new PagSeguro($email, $token, !$production);
+
+		// Verifica se a transação para este pedido já foi feita
+		if(update_payment_request($pagseguro, $requestmodel)){
+			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+		}
+
+		$request = new Request();
+		$data = $request->all();
+
+		// Desconto pelo método de pagamento
+		$discount_percent = 0;
+		foreach($products as $product){
+			$product = $product->product;
+			$discount = $product->discounts->where('installment', 1)->first();
+
+			if($discount){
+				$discount_percent += $discount->percent;
+			}
+		}
+
+		$discount_price = '0.00';
+		if($discount_percent > 0){
+			$discount_percent = $discount_percent / $products->count();
+
+			$discount_price = ($requestmodel->payment->amount * ($discount_percent / 100));
+		}
+		
+		// Configurando checkout
+		$pagseguro->setReceiverEmail($email);
+		$pagseguro->setCurrency('BRL');
+		$pagseguro->setExtraAmount(-($requestmodel->payment->discount_cart + $discount_price + $requestmodel->payment->discount_coupon));
+		$pagseguro->setNotificationURL(route('site.notification.pagseguro'));
+		$pagseguro->setReference($requestmodel->id);
+		$pagseguro->setSender($client->name, $client->cpf, $client->telephone, $client->email);
+		$pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
+
+		// Produtos do pedido
+		foreach($products as $product){
+			$pagseguro->addItem(md5($product->id . $product->product->id), $product->product->name . ' | COR: ' . $product->color . ' | TAMANHO: ' . $product->size, $product->price, $product->quantity);
+		}
+		
+		$response = $pagseguro->bolet();
+
+		update_payment_request($pagseguro, $requestmodel);
+
+		return json_encode($response);
+	}
 }
