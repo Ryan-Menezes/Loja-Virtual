@@ -10,38 +10,49 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-image: url('../../../../assets/img/panel/background.jpg');
 	background-size: cover;
 	flex-direction: column;
+	background-color: #e62942;
 }
 .content .alert{
 	width: 400px;
 	border-radius: 0px;
 }
 .content form{
-	width: 400px;
-	background-color: #1c1c1c;
+	background-color: white;
 	border: none!important;
-	color: white;
+	color: #171717;
+	width: 400px;
+	padding: 60px 40px;
+	display: flex;
+	flex-direction: column;
+	box-shadow: 0px 10px 20px #c7001b;
+
 }
 .content form img{
 	width: 200px;
 }
-.content form .form-control{
-	border-radius: 0px;
-}
 .content form input{
-	color: white!important;
+	color: #171717!important;
 }
-.content form input[type=email], 
-.content form input[type=password]{
-	background-color: #242424;
+.content .box-input{
+	padding: 15px;
+	background-color: #ebebeb;
+	color: #171717;
+	display: grid;
+	grid-template-columns: 1fr 20px;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 30px;
+}
+.content form .box-input input[type=email], 
+.content form .box-input input[type=password]{
+	background-color: transparent;
 	border: none;
 }
-.content form .btn{
-	border-radius: 0px;
-	margin-top: 20px;
-}
-.content form h1{
-	font-size: 25px;
+.content form button{
+	padding: 15px;
+	border: none;
+	background-color: #e62942;
+	color: white;
 }

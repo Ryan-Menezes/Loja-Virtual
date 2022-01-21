@@ -37,7 +37,7 @@ class AddressController extends Controller{
 		$page = (($request->input('page') ?? 1) - 1) * $limit;
 		$pages = ceil($client->adresses->count() / $limit);
 
-		$adresses = $client->adresses()->offset($page)->limit($limit)->get();
+		$adresses = $client->adresses()->orderBy('id', 'DESC')->offset($page)->limit($limit)->get();
 
 		return view('site.myaccount.adresses.index', compact('client', 'adresses', 'pages', 'builder'));
 	}

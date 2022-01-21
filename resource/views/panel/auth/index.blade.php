@@ -5,21 +5,17 @@
 @section('container')
 @include('includes.messages')
 
-<form action="{{ route('panel.login.validate') }}" method="POST" class="form p-4 border">
-	<img src="{{ public_path('assets/img/logo.png') }}" title="{{ config('app.name') }}" alt="{{ config('app.name') }}"><hr>
-
+<form action="{{ route('panel.login.validate') }}" method="POST" class="form">
 	<input type="hidden" name="_method" value="POST">
-	@include('includes.components.form.input', [
-		'type' => 'email',
-		'name' => 'email',
-		'title' => 'E-Mail'
-	])
-	@include('includes.components.form.input', [
-		'type' => 'password',
-		'name' => 'password',
-		'title' => 'Senha'
-	])
+	<div class="box-input">
+		<input type="email" name="email" placeholder="E-Mail" />
+		<i class="fas fa-key"></i>
+	</div>
+	<div class="box-input">
+		<input type="password" name="password" placeholder="Senha" />
+		<i class="fas fa-lock"></i>
+	</div>
 
-	<input type="submit" value="Entrar" class="btn btn-danger">
+	<button type="submit">Entrar</button>
 </form>
 @endsection

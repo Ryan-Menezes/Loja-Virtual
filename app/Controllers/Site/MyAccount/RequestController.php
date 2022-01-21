@@ -39,7 +39,7 @@ class RequestController extends Controller{
 		$page = (($request->input('page') ?? 1) - 1) * $limit;
 		$pages = ceil($client->requests->count() / $limit);
 
-		$requests = $client->requests()->offset($page)->limit($limit)->get();
+		$requests = $client->requests()->orderBy('id', 'DESC')->offset($page)->limit($limit)->get();
 
 		return view('site.myaccount.requests.index', compact('client', 'requests', 'pages', 'builder'));
 	}

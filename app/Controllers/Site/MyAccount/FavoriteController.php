@@ -42,7 +42,7 @@ class FavoriteController extends Controller{
 		$page = (($request->input('page') ?? 1) - 1) * $limit;
 		$pages = ceil($client->favorites->count() / $limit);
 
-		$favorites = $client->favorites()->offset($page)->limit($limit)->get();
+		$favorites = $client->favorites()->orderBy('id', 'DESC')->offset($page)->limit($limit)->get();
 
 		return view('site.myaccount.favorites.index', compact('client', 'favorites', 'pages', 'builder'));
 	}

@@ -37,7 +37,7 @@ class CardController extends Controller{
 		$page = (($request->input('page') ?? 1) - 1) * $limit;
 		$pages = ceil($client->cards->count() / $limit);
 
-		$cards = $client->cards()->offset($page)->limit($limit)->get();
+		$cards = $client->cards()->orderBy('id', 'DESC')->offset($page)->limit($limit)->get();
 
 		return view('site.myaccount.cards.index', compact('client', 'cards', 'pages', 'builder'));
 	}
