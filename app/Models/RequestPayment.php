@@ -107,6 +107,10 @@ class RequestPayment extends Model{
 		return $this->shipping_types[$this->shipping_type];
 	}
 
+	public function getAmountFormatAttribute(){
+		return $this->amount - $this->discount_cart - $this->discount_installment - $this->discount_coupon + $this->shipping_value;
+	}
+
 	public function request(){
 		return $this->hasOne(Request::class, 'request_payment_id', 'id');
 	}

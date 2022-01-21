@@ -8,7 +8,7 @@
 					'name' => $name ?? 'urls-video[]',
 					'title' => 'Url do Video',
 					'value' => $texturl ?? null,
-					'class' => 'youtube-url-video required',
+					'class' => 'youtube-url-video required nosortable',
 					'required' => true
 				])
 			@else

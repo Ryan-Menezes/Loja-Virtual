@@ -71,23 +71,26 @@
 						])
 					</div>
 				</div>
-
-				@include('includes.components.form.input', [
-					'title' => 'CPF',
-					'name' => 'cpf',
-					'type' => 'text',
-					'value' => $client->cpf,
-					'class' => 'required cpf-mask',
-					'required' => true
-				])
-				@include('includes.components.form.input', [
-					'title' => 'CNPJ',
-					'name' => 'cnpj',
-					'type' => 'text',
-					'value' => $client->cnpj,
-					'class' => 'required cnpj-mask',
-					'required' => true
-				])
+				
+				@if(!empty($client->cpf))
+					@include('includes.components.form.input', [
+						'title' => 'CPF',
+						'name' => 'cpf',
+						'type' => 'text',
+						'value' => $client->cpf,
+						'class' => 'required cpf-mask',
+						'required' => true
+					])
+				@else
+					@include('includes.components.form.input', [
+						'title' => 'CNPJ',
+						'name' => 'cnpj',
+						'type' => 'text',
+						'value' => $client->cnpj,
+						'class' => 'required cnpj-mask',
+						'required' => true
+					])
+				@endif
 
 				<br /><h2>Endereços Principais</h2><hr />
 

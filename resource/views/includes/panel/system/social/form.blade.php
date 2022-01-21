@@ -72,7 +72,8 @@
 				'type' => 'text', 
 				'name' => 'WhatsApp', 
 				'title' => 'whatsapp', 
-				'value' => (isset($system) && $system->social ? $system->social->whatsapp : null)
+				'value' => (isset($system) && $system->social ? $system->social->whatsapp : null),
+				'class' => 'cell-mask'
 			])
 		</div>
 	</div>

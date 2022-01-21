@@ -40,6 +40,7 @@ use App\Controllers\Site\MyAccount\{
 	MyAccountController,
 	CLientController as CLientControllerSite,
 	RequestController as RequestControllerSite,
+	PagSeguroController,
 	AddressController,
 	CardController,
 	FavoriteController
@@ -320,11 +321,19 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 			
 			Route::group(['prefix' => '{id}'], function(){
 				Route::get('/', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
-				Route::get('/pagar', [RequestControllerSite::class, 'checkout'])->name('site.myaccount.requests.show.checkout');
-				Route::get('/cartao-de-credito', [RequestControllerSite::class, 'creditCard'])->name('site.myaccount.requests.show.creditCard');
-				Route::get('/boleto', [RequestControllerSite::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
-				Route::post('/boleto', [RequestControllerSite::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
-				Route::get('/debito-online', [RequestControllerSite::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
+
+				if(config('store.payment.types.pagseguro')){
+					if(!config('store.payment.checkouts.transparent')){
+						Route::get('/pagar', [PagSeguroController::class, 'checkout'])->name('site.myaccount.requests.show.checkout');
+					}else{
+						Route::get('/cartao-de-credito', [PagSeguroController::class, 'creditCard'])->name('site.myaccount.requests.show.credit_card');
+						Route::post('/cartao-de-credito', [PagSeguroController::class, 'creditCardStore'])->name('site.myaccount.requests.show.credit_card.store');
+						Route::get('/boleto', [PagSeguroController::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
+						Route::post('/boleto', [PagSeguroController::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
+						Route::get('/debito-online', [PagSeguroController::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
+						Route::post('/debito-online', [PagSeguroController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
+					}
+				}
 			});
 		});
 
@@ -338,15 +347,14 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 			Route::delete('/{id}/deletar', [AddressController::class, 'destroy'])->name('site.myaccount.adresses.destroy');
 		});
 
-		// ROUTE CARDS
-		Route::group(['prefix' => 'cartoes'], function(){
-			Route::get('/', [CardController::class, 'index'])->name('site.myaccount.cards');
-			Route::get('/novo', [CardController::class, 'create'])->name('site.myaccount.cards.create');
-			Route::post('/novo/salvar', [CardController::class, 'store'])->name('site.myaccount.cards.store');
-			Route::get('/{id}/editar', [CardController::class, 'edit'])->name('site.myaccount.cards.edit');
-			Route::put('/{id}/editar/salvar', [CardController::class, 'update'])->name('site.myaccount.cards.update');
-			Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
-		});
+		if(config('store.payment.checkouts.transparent')){
+			// ROUTE CARDS
+			Route::group(['prefix' => 'cartoes'], function(){
+				Route::get('/', [CardController::class, 'index'])->name('site.myaccount.cards');
+				Route::get('/{id}', [CardController::class, 'show'])->name('site.myaccount.cards.show');
+				Route::delete('/{id}/deletar', [CardController::class, 'destroy'])->name('site.myaccount.cards.destroy');
+			});
+		}
 
 		// ROUTE FAVORITES
 		Route::group(['prefix' => 'favoritos'], function(){

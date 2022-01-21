@@ -51,7 +51,7 @@
 			@endif
 			<p class="p-0 m-0">(Desconto do Carrinho) <strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</strong></p>
 			<p class="p-0 m-0">(Valor do Frete) <strong>+R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</strong></p>
-			<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_cart - $requestmodel->payment->discount_installment - $requestmodel->payment->discount_coupon + $requestmodel->payment->shipping_value, 2, ',', '.') }}</h2>
+			<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</h2>
 		</div>
 	</div>
 

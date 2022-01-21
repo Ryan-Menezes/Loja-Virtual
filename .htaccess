@@ -15,7 +15,7 @@ Header add Access-Control-Allow-Origin "*"
 	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 	# Locking the HTACCESS file
-	<files "^.*">
+	<files ^.*>
 		order allow,deny
 		deny from all
 	</files>

@@ -5,6 +5,7 @@ $(document).ready(function(){
     $('a[href^="#"]').attr('data-linkdisable', true)
 
     // Carregamento sem refresh
+    /*
     $('a:not([data-linkdisable])').click(function(e){
         e.preventDefault()
 
@@ -29,6 +30,7 @@ $(document).ready(function(){
             }
         }
     })
+    */
 
     $(window).on('popstate', function(){
         setHtml(window.history.state.url)
@@ -66,9 +68,13 @@ $(document).ready(function(){
     })
 
     // Configurações para ordenar elementos
-    $('.sortable').sortable()
+    $('.sortable').sortable({
+        cancel: '.nosortable'
+    })
     $('*').delegate('.sortable', 'load mousemove', function(){
-        $(this).sortable()
+        $(this).sortable({
+            cancel: '.nosortable'
+        })
     })
 
     // Configuração para o container de checkbox

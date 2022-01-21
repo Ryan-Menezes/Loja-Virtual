@@ -1,6 +1,6 @@
 @extends('templates.site')
 
-@section('title', 'Pagamento Por Checkout Seguro do PagSeguro Para o Pedido #' . $requestmodel->id)
+@section('title', 'Pagamento por checkout seguro do pagSeguro para o pedido #' . $requestmodel->id)
 @section('url', route('site.myaccount.requests.show.checkout', ['id' => $requestmodel->id]))
 @section('keywords', config('app.keywords'))
 @section('description', config('app.description'))
@@ -18,9 +18,9 @@
                 <p>Ao clicar no botão abaixo você será redirecionado ao checkout seguro do pagseguro, e por lá efetuará o seu pagamento.</p>
 
                 @if(config('store.payment.production'))
-                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_cart - $requestmodel->payment->discount_installment - $requestmodel->payment->discount_coupon + $requestmodel->payment->shipping_value, 2, ',', '.') }}</a>
+                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
                 @else
-                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amount - $requestmodel->payment->discount_cart - $requestmodel->payment->discount_installment - $requestmodel->payment->discount_coupon + $requestmodel->payment->shipping_value, 2, ',', '.') }}</a>
+                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar pagamento do pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
                 @endif
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />

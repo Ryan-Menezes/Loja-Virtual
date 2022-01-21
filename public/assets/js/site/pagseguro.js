@@ -11,15 +11,6 @@ function getPaymentMethods(amount, success, error, complete){
     })
 }
 
-function getPaymentMethods(amount, success, error, complete){
-    PagSeguroDirectPayment.getPaymentMethods({
-        amount: amount,
-        success: success,
-        error: error,
-        complete: complete
-    })
-}
-
 function getSenderHash(callback){
     PagSeguroDirectPayment.onSenderHashReady(callback)
 }

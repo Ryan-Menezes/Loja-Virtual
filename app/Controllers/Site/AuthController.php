@@ -67,10 +67,12 @@ class AuthController extends Controller{
 		$data = $request->all();
 		$data['cell'] = preg_replace('/[^\d]/i', '', $data['cell']);
 		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
-		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
 
-		if(isset($data['cnpj']))
+		if(isset($data['cpf'])){
+			$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
+		}else if(isset($data['cnpj'])){
 			$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
+		}
 
 		$data['postal_code'] = preg_replace('/[^\d]/i', '', $data['postal_code']);
 		$redirect = $data['redirect'] ?? 'pf';
@@ -84,7 +86,7 @@ class AuthController extends Controller{
 		}
 
 		$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-		$data['token'] = md5(password_hash(implode($data, ','), PASSWORD_DEFAULT));
+		$data['token'] = md5(password_hash(implode(',', $data), PASSWORD_DEFAULT));
 		$client = $this->client->create($data);
 
 		if($client){

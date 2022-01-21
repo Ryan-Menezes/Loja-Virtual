@@ -60,11 +60,13 @@ blockquote{
 .lgpd-container{
   box-sizing: border-box;
   padding: 20px;
-  width: 100%;
+  width: 90%;
+  margin: 20px;
+  margin-left: 5%;
   position: fixed;
   bottom: 0px;
   left: 0px;
-  background-color: #D21737;
+  background-color: rgba(210, 23, 55, 0.95);
   color: white;
   z-index: 99999999999;
   display: grid;
@@ -72,6 +74,7 @@ blockquote{
   grid-column-gap: 10px;
   align-items: center;
   font-size: 15px;
+  border-radius: 10px;
 }
 .lgpd-container p{
   padding: 0px;

@@ -140,7 +140,9 @@
                                         @if($category->subcategories->count())
                                         <optgroup label="{{ $category->name }}">
                                             @foreach($category->subcategories as $subcategory)
-                                            <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}</option>
+                                                @if($category->products()->count())
+                                                <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}</option>
+                                                @endif
                                             @endforeach
                                         </optgroup>
                                         @endif

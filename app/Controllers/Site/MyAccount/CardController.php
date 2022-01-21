@@ -42,48 +42,10 @@ class CardController extends Controller{
 		return view('site.myaccount.cards.index', compact('client', 'cards', 'pages', 'builder'));
 	}
 
-	public function create(){
-		return view('site.myaccount.cards.create');
-	}
-
-	public function store(){
-		$request = new Request();
-		$data = $request->all();
-		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
-		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
-		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
-
-		$this->validator($data, $this->card->rolesCreate, $this->card->messages);
-
-		if($this->client->cards()->create($data)){
-			redirect(route('site.myaccount.cards.create'), ['success' => 'Cartão cadastrado com sucesso']);
-		}
-
-		redirect(route('site.myaccount.cards.create'), ['error' => 'Cartão NÃO cadastrado, Ocorreu um erro no processo de cadastro!'], true);
-	}
-
-	public function edit($id){
+	public function show($id){
 		$card = $this->client->cards()->findOrFail($id);
 
-		return view('site.myaccount.cards.edit', compact('card'));
-	}
-
-	public function update($id){
-		$card = $this->client->cards()->findOrFail($id);
-
-		$request = new Request();
-		$data = $request->all();
-		$data['number'] = preg_replace('/[^\d]/i', '', $data['number']);
-		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
-		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
-
-		$this->validator($data, $card->rolesUpdate, $card->messages);
-
-		if($card->update($data)){
-			redirect(route('site.myaccount.cards.edit', ['id' => $card->id]), ['success' => 'Cartão editado com sucesso']);
-		}
-
-		redirect(route('site.myaccount.cards.edit', ['id' => $card->id]), ['error' => 'Cartão NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		return view('site.myaccount.cards.show', compact('card'));
 	}
 
 	public function destroy($id){

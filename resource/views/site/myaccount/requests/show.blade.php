@@ -26,7 +26,7 @@
                         @include('includes.components.card', ['title' => 'Cartão de Crédito', 'link' => route('site.myaccount.requests.show.credit_card', ['id' => $requestmodel->id]), 'class' => 'text-danger', 'amount' => 'Cartão de Crédito', 'icon' => 'fa fa-credit-card'])
                     @endif
 
-                    @if(config('store.payment.methods.debit_card'))
+                    @if(config('store.payment.methods.debit_card') && !config('store.types.pagseguro'))
                         @include('includes.components.card', ['title' => 'Cartão de Débito', 'link' => route('site.myaccount.requests.show.debit_card', ['id' => $requestmodel->id]), 'class' => 'text-info', 'amount' => 'Cartão de Débito', 'icon' => 'fa fa-credit-card'])
                     @endif
 

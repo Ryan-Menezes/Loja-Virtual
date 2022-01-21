@@ -1,4 +1,4 @@
-<form action="{{ $action }}" method="{{ ($method != 'GET' && $method != 'POST') ? 'POST' : $method }}" class="border p-4 form-validate">
+<form action="{{ $action }}" method="{{ ($method != 'GET' && $method != 'POST') ? 'POST' : $method }}" class="form-validate">
 	@include('includes.messages')
 	
 	<input type="hidden" name="_method" value="{{ $method }}">

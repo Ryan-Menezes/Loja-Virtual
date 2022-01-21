@@ -40,7 +40,7 @@ class PaymentController extends Controller{
                 if($requestmodel){
                     $status = $requestmodel->status;
 
-                    if(update_payment_request($pagseguro, $requestmodel)){
+                    if(update_payment_request_pagseguro($pagseguro, $requestmodel)){
                         $requestmodel = $this->requestmodel->find(parse_object($requestmodel->id));
 
                         if($status != $requestmodel->status){

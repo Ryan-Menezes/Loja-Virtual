@@ -512,8 +512,8 @@ if(!function_exists('parse_object')){
 	}
 }
 
-if(!function_exists('update_payment_request')){
-	function update_payment_request($pagseguro, $requestmodel): bool{
+if(!function_exists('update_payment_request_pagseguro')){
+	function update_payment_request_pagseguro($pagseguro, $requestmodel): bool{
 		$response = $pagseguro->transaction($requestmodel->id);
 		if($response && $response->transactions && !empty($response->transactions)){
 			$transaction = $response->transactions->transaction;
@@ -537,6 +537,13 @@ if(!function_exists('update_payment_request')){
 					7 => 'DE'
 				];
 
+				$discount_installment = 0;
+				if($transaction->discountAmount > 0){
+					$discount_installment = $transaction->discountAmount;
+				}else{
+					$discount_installment = abs(abs((float)parse_object($transaction->extraAmount)) - ($requestmodel->payment->discount_coupon + $requestmodel->payment->discount_cart));
+				}
+
 				$requestmodel->payment->update([
 					'code' 					=> parse_object($transaction->code),
 					'type' 					=> 'PS',
@@ -544,7 +551,7 @@ if(!function_exists('update_payment_request')){
 					'status'				=> parse_object($transaction->status),
 					'status_type'			=> $status[parse_object($transaction->status) - 1],
 					'installments'			=> parse_object($transaction->installmentCount),
-					'discount_installment'	=> abs(abs((float)parse_object($transaction->extraAmount)) - ($requestmodel->payment->discount_coupon + $requestmodel->payment->discount_cart)),
+					'discount_installment'	=> $discount_installment,
 					'link'					=> (isset($transaction->paymentLink) ? parse_object($transaction->paymentLink) : null),
 					'details'				=> json_encode($transaction)
 				]);

@@ -8,6 +8,6 @@
 		@endif
 	</div>
 	<div class="nosortable">
-		<textarea name="{{ $name }}" placeholder="{{ $title }}" rows="{{ $rows ?? 5 }}" required class="textarea-editor form-control required">{{ old($name) ?? ($value ?? null) }}</textarea>
+		<textarea name="{{ $name }}" placeholder="{{ $title }}" rows="{{ $rows ?? 5 }}" required class="textarea-editor form-control required nosortable">{{ old($name) ?? ($value ?? null) }}</textarea>
 	</div>
 </div>
