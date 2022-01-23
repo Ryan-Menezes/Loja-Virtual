@@ -80,15 +80,15 @@ class PagSeguroController extends Controller{
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
-                $discount = $product->discounts->where('installment', 1)->first();
+                $discount = $product->getDiscount(1);
 
                 if($discount){
-                    $discount_percent += $discount->percent;
+                    $discount_percent += $discount / $products->count();
                 }
             }
 
             if($discount_percent > 0){
-                $discount_percent = number_format($discount_percent / $products->count(), 2, '.', '');
+                $discount_percent = number_format($discount_percent, 2, '.', '');
 
                 $groups['BOLETO'] = [
                     'DISCOUNT_PERCENT' => $discount_percent
@@ -188,10 +188,24 @@ class PagSeguroController extends Controller{
 			}
 		}
 
+        // Descontos das parcelas
+        $installments_discounts = [];
+        foreach($requestmodel->products as $product){
+            foreach($product->product->discounts as $discount){
+                if($discount->percent){
+                    if(!isset($installments_discounts[$discount->installment])){
+                        $installments_discounts[$discount->installment] = $discount->percent / $requestmodel->products->count();
+                    }else{
+                        $installments_discounts[$discount->installment] += $discount->percent / $requestmodel->products->count();
+                    }
+                }
+            }
+        }
+
 		$session = $pagseguro->getSession();
 		$session_id = $session->id ?? null;
 		
-		return view('site.myaccount.requests.pagseguro.credit_card.index', compact('requestmodel', 'session_id', 'installment_no_interest'));
+		return view('site.myaccount.requests.pagseguro.credit_card.index', compact('requestmodel', 'session_id', 'installment_no_interest', 'installments_discounts'));
 	}
 
     public function creditCardStore($id){
@@ -266,21 +280,19 @@ class PagSeguroController extends Controller{
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
-                $discount = $product->discounts->where('installment', $installment_quantity)->first();
+                $discount = $product->getDiscount($installment_quantity);
 
                 if($discount){
-                    $discount_percent += $discount->percent;
+                    $discount_percent += $discount / $products->count();
                 }
             }
 
-            $discount_price = '0.00';
+            $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_percent = $discount_percent / $products->count();
-
-                $discount_price = ($requestmodel->payment->amount * ($discount_percent / 100));
+                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_price + $requestmodel->payment->discount_coupon;
+            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
             
             if($discount > $requestmodel->payment->amount){
                 $discount = $requestmodel->payment->amount - 1;
@@ -414,25 +426,23 @@ class PagSeguroController extends Controller{
                 ]);
             }
 
-            // Desconto pelo método de pagamento
+            // Desconto pela parcela selecionada
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
-                $discount = $product->discounts->where('installment', 1)->first();
+                $discount = $product->getDiscount(1);
 
                 if($discount){
-                    $discount_percent += $discount->percent;
+                    $discount_percent += $discount / $products->count();
                 }
             }
 
-            $discount_price = '0.00';
+            $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_percent = $discount_percent / $products->count();
-
-                $discount_price = ($requestmodel->payment->amount * ($discount_percent / 100));
+                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_price + $requestmodel->payment->discount_coupon;
+            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
             
             if($discount > $requestmodel->payment->amount){
                 $discount = $requestmodel->payment->amount - 1;
@@ -549,25 +559,23 @@ class PagSeguroController extends Controller{
                 ]);
             }
 
-            // Desconto pelo método de pagamento
+            // Desconto pela parcela selecionada
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
-                $discount = $product->discounts->where('installment', 1)->first();
+                $discount = $product->getDiscount(1);
 
                 if($discount){
-                    $discount_percent += $discount->percent;
+                    $discount_percent += $discount / $products->count();
                 }
             }
 
-            $discount_price = '0.00';
+            $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_percent = $discount_percent / $products->count();
-
-                $discount_price = ($requestmodel->payment->amount * ($discount_percent / 100));
+                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_price + $requestmodel->payment->discount_coupon;
+            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
 
             if($discount > $requestmodel->payment->amount){
                 $discount = $requestmodel->payment->amount - 1;

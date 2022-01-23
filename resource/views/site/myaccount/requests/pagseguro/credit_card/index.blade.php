@@ -138,6 +138,13 @@
         <script type="text/javascript" src="{{ public_path('assets/js/site/pagseguro.js') }}"></script>
 
         <script type="text/javascript">
+            const amount = Number({{ $requestmodel->payment->amountFormat }})
+            const installments_discounts = {
+                @foreach($installments_discounts as $key => $value)
+                {{ $key }}: {{ $value }},
+                @endforeach
+            }
+
             $(document).ready(function(){
                 setSessionId($('#session_id').val())
 
@@ -154,17 +161,20 @@
                         $('#brand').val(response.brand.name)
                         $('.brand-card').html(`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/${response.brand.name}.png" alt="${response.brand.name}" title="${response.brand.name}" />`).show()
 
-                        getInstallments({{ $requestmodel->payment->amountFormat }}, {{ $installment_no_interest }}, response.brand.name, function(response){
+                        const brand = response.brand.name
+
+                        // Buscar pelas parcelas disponíveis
+                        getInstallments(amount, {{ $installment_no_interest }}, brand, function(response){
                             if(response.error){
                                 $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show()
                                 return
                             }
-
-                            $.each(response.installments, function(index, value){
-                                $.each(response.installments[index], function(index, value){
-                                    $('.installments_card').append(`<option value="${value.quantity}x${value.installmentAmount}">${value.quantity} parcela(s) de ${value.installmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} = ${value.totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}  - ${value.interestFree ? 'Sem' : 'Com'} Juros</option>`)
-                                })
+                            
+                            $.each(response.installments[brand], function(index, value){
+                                $('.installments_card').append(optionInstallment(index + 1, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree))
                             })
+
+                            replaceInstallments(brand)
                         },
                         function(response){
                             $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show()
@@ -213,7 +223,6 @@
                                         showLoad('Validando Pagamento, aguarde...')
                                     },
                                     success: function(response){
-                                        console.log(response)
                                         if(response.result){
                                             $('.cont-content').html('<h2>Os dados do cartão foram enviados com sucesso!</h2>')
                                             $('.cont-content').append('<p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>')
@@ -239,6 +248,32 @@
                     }
                 })
             })
+
+            function optionInstallment(installment, quantity, totalAmount, installmentAmount, interestFree, discount = 0){
+                return `<option value="${quantity}x${installmentAmount}" id="installment_${installment}">${quantity} ${quantity > 1 ? 'parcelas' : 'parcela'} de ${installmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} = ${totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}${discount ? (' com ' + (String(discount).replace('.', ',')) + '% desconto') : ''} - ${interestFree ? 'Sem' : 'Com'} Juros</option>`
+            }
+
+            async function replaceInstallments(brand){
+                // Substituindo parcelas com desconto
+                for(let installment in installments_discounts){
+                    const discount = installments_discounts[installment]
+
+                    if(discount){
+                        const value = await new Promise((resolve, reject) => {
+                            getInstallments(amount - (amount * (discount  / 100)), {{ $installment_no_interest }}, brand, function(response){
+                                if(response.error){
+                                    reject('Erro')
+                                }
+                                
+                                resolve(response.installments[brand][installment - 1])
+                            })
+                        })
+
+                        await $(`option#installment_${installment}`)
+                                    .replaceWith(optionInstallment(installment, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree, discount))
+                    }
+                }
+            }
         </script>
     @endsection
 @else

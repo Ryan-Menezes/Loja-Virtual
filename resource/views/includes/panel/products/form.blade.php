@@ -91,8 +91,8 @@
 				@include('includes.components.form.select', [
 					'name' => 'installment_no_interest', 
 					'title' => 'Quantidade de Parcelas sem Juros',
-					'value' => (isset($product) ? $product->installment_no_interest : 1),
-					'options' => array_combine(range(1, $installments_amount), range(1, $installments_amount)),
+					'value' => (isset($product) ? $product->installment_no_interest : 2),
+					'options' => array_combine(range(2, $installments_amount), range(2, $installments_amount)),
 					'class' => 'required',
 					'required' => true
 				])

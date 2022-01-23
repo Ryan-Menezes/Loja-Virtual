@@ -55,13 +55,6 @@
 		"ratingValue": "{{ number_format(($product->ratings()->where('visible', true)->avg('stars') ?? 0), 2) }}",
 		"reviewCount": "{{ $product->ratings()->where('visible', true)->count() }}"
 	},
-	"offers": {
-		"@type": "AggregateOffer",
-		"offerCount": "{{ $product->sizes()->count() }}",
-		"lowPrice": "{{ $product->sizes()->min('price') }}",
-		"highPrice": "{{ $product->sizes()->max('price') }}",
-		"priceCurrency": "BRL"
-	},
 	@if($product->freight_free)
 	"shippingDetails": {
 		"@type": "OfferShippingDetails",
@@ -75,8 +68,15 @@
 			"addressCountry": "BR",
 			"addressRegion": ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SO", "TO"]
 		}]
-	}
+	},
 	@endif
+	"offers": {
+		"@type": "AggregateOffer",
+		"offerCount": "{{ $product->sizes()->count() }}",
+		"lowPrice": "{{ $product->sizes()->min('price') }}",
+		"highPrice": "{{ $product->sizes()->max('price') }}",
+		"priceCurrency": "BRL"
+	}
 }
 </script>
 @endsection
@@ -127,10 +127,10 @@
 					<h1 class="product-name">{{ $product->name }}</h1>
 
 					@if($product->freight_free)
-					<span class="product-available" style="margin-left: 0px;">Frete Grátis</span>
+					<span>Frete Grátis</span>
 					@endif
 
-					<div>
+					<div style="margin-top: 20px;">
 						@if($product->ratings_active)
 							@if($product->ratings->where('visible', true)->count() > 0)
 							<div class="product-rating">
@@ -165,8 +165,11 @@
 						@if($product->getDiscount(1) > 0)
 						<p><strong class="price-discount">R$ {{ number_format($product->sizes->first()->getPriceDiscount(1), 2, ',', '.') }}</strong> <small>à vista com {{ $product->getDiscount(1) }}% de desconto</small></p>
 						@endif
+
+						<p><small>Em até {{ $product->installment_no_interest }} vezes sem juros</small></p>
 					</div>
-					<p>{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
+					
+					<p style="margin-top: 20px;">{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
 
 					<div class="product-options">
 						<div>

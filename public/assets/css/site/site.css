@@ -116,10 +116,6 @@ blockquote{
   padding: 10px;
   border: 1px solid #cfcfcf;
 }
-.input-container form input,
-.input-container form select{
-  max-width: 270px;
-}
 .input-container form button{
   background-color: #005bdb;
   border: 1px solid #005bdb;

@@ -17,7 +17,7 @@ class PagSeguro{
     private $extraAmount        = '0.00';
     private $itens              = [];
     private $notificationURL    = null;
-    private $reference          = 'REF1234';
+    private $reference          = null;
     private $sender             = [
         'name'      => null,
         'cpf'       => null,
@@ -213,7 +213,7 @@ class PagSeguro{
         
             $response = $this->curl($url . http_build_query($data), ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -237,7 +237,7 @@ class PagSeguro{
 
             $response = $this->curl($url . http_build_query($data), [], true, true);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -260,7 +260,7 @@ class PagSeguro{
 
             $response = $this->curl($url . http_build_query($data), [], true, true);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -283,7 +283,7 @@ class PagSeguro{
 
             $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -376,7 +376,7 @@ class PagSeguro{
 
             $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -467,7 +467,7 @@ class PagSeguro{
             
             $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -535,7 +535,7 @@ class PagSeguro{
 
             $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;
@@ -604,7 +604,7 @@ class PagSeguro{
 
             $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
-            if(!empty($response) && $response != 'Unauthorized'){
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);
             }else{
                 $response = null;

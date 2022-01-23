@@ -84,7 +84,7 @@
     	<p style="font-size: 20px;"><strong>TOTAL: </strong> R$ {{ number_format($cart->amount(), 2, ',', '.') }}</p>
     </div>
 	<div class="row" style="margin-top: 40px;">
-		<div class="col-md-4">
+		<div class="col-md-7">
     		<div class="input-container">
     			<form action="{{ route('site.cart.freight') }}" method="POST" id="form-freight" data-container=".result-frete">
     				@if($client)
@@ -100,16 +100,15 @@
 		    	</form>
 		    	<div class="result-frete"></div>
     		</div>
-    	</div>
-
-    	<div class="col-md-3">
-    		<div class="input-container">
-	    		<form action="{{ route('site.cart.coupon.validate') }}" method="POST" id="form-coupon" data-container=".result-coupon">
-	    			<input type="text" name="code" placeholder="Cupom de desconto" id="code">
-	    			<button type="submit" form="form-coupon">VALIDAR</button>
-		    	</form>
-		    	<div class="result-coupon"></div>
-		    </div>
+			<div>
+				<div class="input-container">
+					<form action="{{ route('site.cart.coupon.validate') }}" method="POST" id="form-coupon" data-container=".result-coupon">
+						<input type="text" name="code" placeholder="Cupom de desconto" id="code">
+						<button type="submit" form="form-coupon">VALIDAR</button>
+					</form>
+					<div class="result-coupon"></div>
+				</div>
+			</div>
     	</div>
     	
     	<form action="{{ route('site.cart.store.request') }}" method="POST" id="form-request" class="col-md-5 text-right text-end">
