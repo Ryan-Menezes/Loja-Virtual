@@ -46,7 +46,7 @@ class PartnerController extends Controller{
 		$data = $request->all();
 
 		$this->validator($data, $this->partner->rolesCreate, $this->partner->messages);
-
+		$data['slug'] = slugify($data['title']);
 		$data['image'] = $request->file('image')->store('partners');
 
 		$partner = $this->partner->create($data);
@@ -79,6 +79,7 @@ class PartnerController extends Controller{
 		$imagePrev = $partner->image;
 
 		$this->validator($data, $partner->rolesUpdate, $partner->messages);
+		$data['slug'] = slugify($data['title']);
 
 		if(!is_null($image) && mb_strlen($image->type) > 0){
 			$data['image'] = $image->store('partners');

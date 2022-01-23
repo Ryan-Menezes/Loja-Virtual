@@ -12,6 +12,8 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.lang') }}">
 <head>
+    @yield('ld-json')
+
     <meta http-equiv="Content-Type" content="text/html; charset={{ config('app.charset') }}" />
     <meta name="keywords" content="@yield('keywords')">
     <meta name="description" content="@yield('description')">
@@ -100,7 +102,7 @@
                 <ul class="header-links pull-left">
                     <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
                     <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
-                    <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+                    <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ config('app.address.postal_code') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
                 </ul>
                 <ul class="header-links pull-right">
                     @if(!auth('site'))
@@ -303,25 +305,25 @@
                 <div class="row">
                     <div class="col-md-3 col-xs-6">
                         <div class="footer">
-                            <h3 class="footer-title">About Us</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
+                            <h3 class="footer-title">Contato</h3>
                             <ul class="footer-links">
-                                <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-                                <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-                                <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+                                <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ config('app.address.postal_code') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
+                                <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
+                                <li><a href="callto:{{ config('app.contact.cell') }}" title="Entrar em Contato por Celular"><i class="fa fa-phone"></i> {{ mask(config('app.contact.cell'), '(##)#####-####') }}</a></li>
+                                <li><a href="https://wa.me/{{ config('app.social.whatsapp') }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
+                                <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-xs-6">
                         <div class="footer">
-                            <h3 class="footer-title">Categories</h3>
+                            <h3 class="footer-title">Redes Sociais</h3>
                             <ul class="footer-links">
-                                <li><a href="#">Hot deals</a></li>
-                                <li><a href="#">Laptops</a></li>
-                                <li><a href="#">Smartphones</a></li>
-                                <li><a href="#">Cameras</a></li>
-                                <li><a href="#">Accessories</a></li>
+                                <li><a href="{{ config('app.social.facebook') }}" title="Nosso Facebook" target="_blank"><i class="fa fa-facebook"></i> Facebook</a></li>
+                                <li><a href="{{ config('app.social.instagram') }}" title="Nosso Instagram" target="_blank"><i class="fa fa-instagram"></i> Instagram</a></li>
+                                <li><a href="{{ config('app.social.twitter') }}" title="Nosso Twitter" target="_blank"><i class="fa fa-twitter"></i> Twitter</a></li>
+                                <li><a href="{{ config('app.social.linkedin') }}" title="Nosso Linkedin" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></li>
                             </ul>
                         </div>
                     </div>
@@ -330,26 +332,25 @@
 
                     <div class="col-md-3 col-xs-6">
                         <div class="footer">
-                            <h3 class="footer-title">Information</h3>
+                            <h3 class="footer-title">Informações</h3>
                             <ul class="footer-links">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Orders and Returns</a></li>
-                                <li><a href="#">Terms & Conditions</a></li>
+                                <li><a href="{{ route('site') }}" title="Página Inicial">Início</a></li>
+                                <li><a href="{{ route('site.products') }}" title="Página de Produtos">Produtos</a></li>
+                                <li><a href="{{ route('site.notices') }}" title="Página do Blog">Blog</a></li>
+                                <li><a href="{{ route('site.privacy_policy') }}" title="Nossa Política de Privacidade" target="_blank">Política de Privacidade</a></li>
+                                <li><a href="{{ route('site.terms_conditions') }}" title="Nosso Termos e Condições" target="_blank">Termos & Condições</a></li>
+                                <li><a href="{{ route('site.return_policy') }}" title="Nossa Política de Devolução" target="_blank">Política de Devolução</a></li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="col-md-3 col-xs-6">
                         <div class="footer">
-                            <h3 class="footer-title">Service</h3>
+                            <h3 class="footer-title">Serviços</h3>
                             <ul class="footer-links">
-                                <li><a href="#">My Account</a></li>
-                                <li><a href="#">View Cart</a></li>
-                                <li><a href="#">Wishlist</a></li>
-                                <li><a href="#">Track My Order</a></li>
-                                <li><a href="#">Help</a></li>
+                                <li><a href="{{ route('site.myaccount') }}" title="Minha Conta">Minha Conta</a></li>
+                                <li><a href="{{ route('site.cart') }}" title="Carrinho de Compras">Carrinho</a></li>
+                                <li><a href="{{ route('site.myaccount.favorites') }}" title="Seus Produtos Favoritos">Favoritos</a></li>
                             </ul>
                         </div>
                     </div>

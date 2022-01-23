@@ -31,8 +31,11 @@ return [
 		'street' 		=> $system->address->street,
 		'number'		=> $system->address->number,
 		'district' 		=> $system->address->district,
-		'region'		=> $system->address->region,
+		'city'			=> $system->address->city,
 		'state'			=> $system->address->state,
-		'country'		=> 'BRA'
+		'country'		=> 'BRA',
+		'latitude'		=> $system->address->latitude,
+		'longitude'		=> $system->address->longitude,
+		'complement'	=> $system->address->complement
 	]
 ];

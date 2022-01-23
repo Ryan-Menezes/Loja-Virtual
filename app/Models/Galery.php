@@ -5,25 +5,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Galery extends Model{
 	public $table = 'galleries';
-	protected $fillable = ['title', 'description'];
+	protected $fillable = ['title', 'slug', 'description'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
 		return [
-			'title' 		=> "min:1|max:100",
+			'title' 		=> "required|min:1|max:100",
 			'description' 	=> "min:1",
 		];
 	}
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'title' 		=> "min:1|max:100",
+			'title' 		=> "required|min:1|max:100",
 			'description' 	=> "min:1"
 		];
 	}
 
 	public function getMessagesAttribute(){
 		return [
+			'title.required' 		=> 'O preenchimento do campo titulo é obrigatório!',
 			'title.min' 			=> 'O campo titulo deve conter no mínimo %min% caracteres!',
 			'title.max' 			=> 'O campo titulo deve conter no máximo %max% caracteres!',
 			'description.required' 	=> 'O preenchimento do campo descrição é obrigatório!',
@@ -48,4 +49,8 @@ class Galery extends Model{
 			abort(404);
 		}
 	}
+
+	public function images(){
+        return $this->hasMany(GaleryImage::class, 'galery_id', 'id');
+    }
 }

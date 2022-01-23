@@ -5,12 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model{
 	public $table = 'products';
-	protected $fillable = ['name', 'slug', 'description', 'details', 'video', 'visible', 'ratings_active', 'freight_free', 'installment_no_interest'];
+	protected $fillable = ['name', 'slug', 'brand', 'description', 'details', 'video', 'visible', 'ratings_active', 'freight_free', 'showcase', 'installment_no_interest'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){
 		return [
 			'name' 				=> "required|min:1|max:191|unique:{$this->table},name",
+			'brand' 			=> 'required|min:1|max:191',
 			'description' 		=> 'required|min:1',
 			'details'			=> 'required|min:1'
 		];
@@ -19,6 +20,7 @@ class Product extends Model{
 	public function getRolesUpdateAttribute(){
 		return [
 			'name' 				=> "required|min:1|max:191|unique:{$this->table},name,{$this->id},id",
+			'brand' 			=> 'required|min:1|max:191',
 			'description' 		=> 'required|min:1',
 			'details'			=> 'required|min:1'
 		];
@@ -44,6 +46,9 @@ class Product extends Model{
 			'name.min' 					=> 'O campo nome deve conter no mínimo %min% caracteres!',
 			'name.max' 					=> 'O campo nome deve conter no máximo %max% caracteres!',
 			'name.unique' 				=> 'Este nome já está sendo utilizado, Tente outro nome!',
+			'brand.required' 			=> 'O preenchimento do campo marca é obrigatório!',
+			'brand.min' 				=> 'O campo marca deve conter no mínimo %min% caracteres!',
+			'brand.max' 				=> 'O campo marca deve conter no máximo %max% caracteres!',
 			'description.required' 		=> 'O preenchimento do campo descrição é obrigatório!',
 			'description.min' 			=> 'O campo descrição deve conter no mínimo %min% caracteres!',
 			'details.required' 			=> 'O preenchimento do campo detalhes é obrigatório!',

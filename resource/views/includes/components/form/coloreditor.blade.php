@@ -5,34 +5,33 @@
 	<input type="hidden" name="elements[]" value="COLOREDITOR">
 	<input type="hidden" name="id-colors[]" value="{{ $id }}">
 	<div class="row mb-2">
-		<div class="col-md-11 row">
-			<div class="col-md-1">
-				@include('includes.components.form.input', [
-					'type' => 'color', 
-					'name' => 'hex-colors[]', 
-					'title' => 'Cor',
-					'value' => $hex ?? null,
-					'class' => 'required',
-					'required' => true
-				])
-			</div>
-			<div class="col-md-11">
-				@include('includes.components.form.input', [
-					'type' => 'text', 
-					'name' => 'description-colors[]', 
-					'title' => 'Descrição da Cor',
-					'value' => $description ?? null,
-					'class' => 'required',
-					'required' => true
-				])
-			</div>
-		</div>
-		<div class="col-md-1">
+		<div class="col-md-12">
 			@if(!isset($notoptions))
 			<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento"><i class="fas fa-trash-alt"></i></button>
-
-			<button type="button" class="btn btn-sm btn-dark btn-duplicate-element float-end" title="Duplicar Elemento"><i class="fas fa-clone"></i></button>
 			@endif
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-1">
+			@include('includes.components.form.input', [
+				'type' => 'color', 
+				'name' => 'hex-colors[]', 
+				'title' => 'Cor',
+				'value' => $hex ?? null,
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-11">
+			@include('includes.components.form.input', [
+				'type' => 'text', 
+				'name' => 'description-colors[]', 
+				'title' => 'Descrição da Cor',
+				'value' => $description ?? null,
+				'class' => 'required',
+				'required' => true
+			])
 		</div>
 	</div>
 	
@@ -77,10 +76,7 @@
 	</div>
 
 	<div class="row text-center mt-5">
-		<div class="col-md-12">
-			<button type="button" class="btn border" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar imagem <i class="fas fa-image"></i></button>
-
-			<button type="button" class="btn border" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">Adicionar tamanho <i class="fas fa-size"></i></button>
-		</div>
+		<div class="col-md-6 text-center p-4 bg-danger text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">NOVA IMAGEM <i class="fas fa-image"></i></div>
+		<div class="col-md-6 text-center p-4 bg-success text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo tamanho" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">NOVO TAMANHO <i class="fas fa-search"></i></div>
 	</div>
 </div>

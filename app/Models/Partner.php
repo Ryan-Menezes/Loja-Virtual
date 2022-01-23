@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Partner extends Model{
 	public $table = 'partners';
-	protected $fillable = ['title', 'description', 'link', 'type', 'image'];
+	protected $fillable = ['title', 'slug', 'description', 'link', 'type', 'image'];
 	public $timestamps = false;
 	public $_status = [
 		'CL' => 'Cliente',
@@ -14,7 +14,7 @@ class Partner extends Model{
 
 	public function getRolesCreateAttribute(){
 		return [
-			'title' 		=> 'min:1|max:100',
+			'title' 		=> 'required|min:1|max:191',
 			'description' 	=> 'min:1',
 			'link' 			=> 'min:1|max:191',
 			'type'			=> 'min:2|max:2'
@@ -23,7 +23,7 @@ class Partner extends Model{
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'title' 		=> 'min:1|max:100',
+			'title' 		=> 'required|min:1|max:191',
 			'description' 	=> 'min:1',
 			'link' 			=> 'min:1|max:191',
 			'type'			=> 'min:2|max:2'
@@ -32,6 +32,7 @@ class Partner extends Model{
 
 	public function getMessagesAttribute(){
 		return [
+			'title.required' 		=> 'O preenchimento do campo titulo é obrigatório!',
 			'title.min' 			=> 'O campo titulo deve conter no mínimo %min% caracteres!',
 			'title.max' 			=> 'O campo titulo deve conter no máximo %max% caracteres!',
 			'description.required' 	=> 'O preenchimento do campo descrição é obrigatório!',

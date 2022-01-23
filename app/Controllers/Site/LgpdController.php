@@ -26,4 +26,14 @@ class LgpdController extends Controller{
 
 		return file_get_contents(dirname(__DIR__, 3) . '/storage/app/public/' . config('lgpd.terms_conditions'));
 	}
+
+	public function return_policy(){
+		if(!config('lgpd.return_policy')){
+			abort(404);
+		}
+
+		header('Content-Type: application/pdf');
+
+		return file_get_contents(dirname(__DIR__, 3) . '/storage/app/public/' . config('lgpd.return_policy'));
+	}
 }

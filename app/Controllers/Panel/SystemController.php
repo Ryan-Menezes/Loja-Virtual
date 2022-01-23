@@ -33,6 +33,7 @@ class SystemController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+		$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
 
 		$this->validator($data, $system->rolesUpdate, $system->messages);
 
@@ -185,6 +186,7 @@ class SystemController extends Controller{
 		$data = $request->all();
 		$privacy = $request->file('privacy_policy');
 		$terms = $request->file('terms_conditions');
+		$return = $request->file('return_policy');
 		$removes = [];
 
 		// Privacy File
@@ -208,6 +210,17 @@ class SystemController extends Controller{
 		}else{
 			unset($data['terms_conditions']);
 		}
+
+		// Return File
+		if($return && $return->error == 0){
+			if(!empty($lgpd->return_policy)){
+				$removes[] = $lgpd->return_policy;
+			}
+
+			$data['return_policy'] = $return->store('return_policy');
+		}else{
+			unset($data['return_policy']);
+		}
 		
 		if($lgpd->update($data)){
 			foreach($removes as $remove){
@@ -224,6 +237,10 @@ class SystemController extends Controller{
 
 		if($terms && isset($data['terms_conditions'])){
 			Storage::delete($data['terms_conditions']);
+		}
+
+		if($return && isset($data['return_policy'])){
+			Storage::delete($data['return_policy']);
 		}
 		
 		redirect(route('panel.system.lgpd'), ['error' => 'LGPD NÃO editado, Ocorreu um erro no processo de edição!'], true);

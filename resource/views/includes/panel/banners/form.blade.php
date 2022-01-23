@@ -8,7 +8,8 @@
 		'title' => 'Imagem',
 		'value' => (isset($banner) && $banner->image ? url('storage/app/public/' . $banner->image) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($banner) ? 'required' : null)
+		'class' => (!isset($banner) ? 'required' : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [

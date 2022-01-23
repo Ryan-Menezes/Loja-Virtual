@@ -27,6 +27,14 @@
 		</div>
 	</div>
 	
+	@include('includes.components.form.input', [
+		'type' => 'text', 
+		'name' => 'cnpj', 
+		'title' => 'CNPJ', 
+		'value' => (isset($system) ? $system->cnpj : null),
+		'class' => 'required cnpj-mask',
+		'required' => true
+	])
 
 	@include('includes.components.form.textarea', [
 		'name' => 'keywords',

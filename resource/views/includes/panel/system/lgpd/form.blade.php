@@ -16,7 +16,7 @@
 	@include('includes.components.form.file', [
 		'type' => 'file', 
 		'name' => 'privacy_policy', 
-		'title' => 'Politica de Privacidade', 
+		'title' => 'Política de Privacidade', 
 		'value' => (isset($system) && $system->lgpd && $system->lgpd->privacy_policy ? url('storage/app/public/' . $system->lgpd->privacy_policy) : null),
 		'accept' => 'application/pdf'
 	])
@@ -26,6 +26,14 @@
 		'name' => 'terms_conditions', 
 		'title' => 'Termos e Condições', 
 		'value' => (isset($system) && $system->lgpd && $system->lgpd->terms_conditions ? url('storage/app/public/' . $system->lgpd->terms_conditions) : null),
+		'accept' => 'application/pdf'
+	])
+
+	@include('includes.components.form.file', [
+		'type' => 'file', 
+		'name' => 'return_policy', 
+		'title' => 'Política de Devolução', 
+		'value' => (isset($system) && $system->lgpd && $system->lgpd->return_policy ? url('storage/app/public/' . $system->lgpd->return_policy) : null),
 		'accept' => 'application/pdf'
 	])
 	<br>

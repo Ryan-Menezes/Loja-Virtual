@@ -14,10 +14,28 @@
 	@include('includes.components.form.textarea', [
 		'name' => 'description',
 		'title' => 'Descrição',
-		'class' => 'required',
-		'value' => (isset($galery) ? $galery->description : null),
-		'required' => true
+		'value' => (isset($galery) ? $galery->description : null)
 	])
+
+	<div class="product-images row">
+		@if(isset($galery))
+			@foreach($galery->images as $image)
+				@include('includes.components.form.imageeditor', [
+					'nottitle' => 'true',
+					'image' => url('storage/app/public/' . $image->source),
+					'imageRemove' => $image->source,
+					'class' => 'col-md-4'
+				])
+			@endforeach
+		@endif
+
+		<input type="hidden" name="images-remove">
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" alt="Adicionar nova imagem" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}" data-nottitle="true" data-container=".product-images" data-class="col-md-4">NOVA IMAGEM <i class="fas fa-plus-circle"></i></div>
+	</div>
+
 	<br>
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>
 </form>

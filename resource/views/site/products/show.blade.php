@@ -7,6 +7,80 @@
 @section('image_width', 100)
 @section('image_height', 100)
 
+@section('ld-json')
+<script type="application/ld+json">
+{
+	"@context": "https://schema.org/",
+	"@type": "Product",
+	"name": "{{ $product->name }}",
+	@if($product->images->count())
+	"image": [
+		@foreach($product->images as $image)
+			"{{ url('storage/app/public/' . $image->source) }}"
+			@if(!$loop->last)
+			,
+			@endif
+		@endforeach
+	],
+	@endif
+	"description": "{{ $product->description }}",
+	"sku": "{{ $product->id }}",
+	"brand": {
+		"@type": "Brand",
+		"name": "{{ $product->brand }}"
+	},
+	@if($product->ratings->count())
+	"review": [
+		@foreach($product->ratings as $rating)
+			{
+				"@type": "Review",
+				"reviewRating": {
+					"@type": "Rating",
+					"ratingValue": "{{ $rating->stars }}",
+					"bestRating": "5"
+				},
+				"author": {
+					"@type": "Person",
+					"name": "{{ $rating->client->name }}"
+				}
+			}
+			@if(!$loop->last)
+			,
+			@endif
+		@endforeach
+	],
+	@endif
+	"aggregateRating": {
+		"@type": "AggregateRating",
+		"ratingValue": "{{ number_format(($product->ratings()->where('visible', true)->avg('stars') ?? 0), 2) }}",
+		"reviewCount": "{{ $product->ratings()->where('visible', true)->count() }}"
+	},
+	"offers": {
+		"@type": "AggregateOffer",
+		"offerCount": "{{ $product->sizes()->count() }}",
+		"lowPrice": "{{ $product->sizes()->min('price') }}",
+		"highPrice": "{{ $product->sizes()->max('price') }}",
+		"priceCurrency": "BRL"
+	},
+	@if($product->freight_free)
+	"shippingDetails": {
+		"@type": "OfferShippingDetails",
+		"shippingRate": {
+			"@type": "MonetaryAmount",
+			"value": "0",
+			"currency": "BRL"
+		},
+		"shippingDestination": [{
+			"@type": "DefinedRegion",
+			"addressCountry": "BR",
+			"addressRegion": ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", "SC", "SP", "SO", "TO"]
+		}]
+	}
+	@endif
+}
+</script>
+@endsection
+
 @section('container')
 <!-- SECTION -->
 <div class="section">

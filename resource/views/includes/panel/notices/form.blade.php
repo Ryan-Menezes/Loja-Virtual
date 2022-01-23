@@ -17,7 +17,8 @@
 					'title' => 'Capa', 
 					'value' => (isset($notice) && $notice->poster ? url('storage/app/public/' . $notice->poster) : null), 
 					'accept' => 'image/*',
-					'class' => (!isset($notice) ? 'required' : null)
+					'class' => (!isset($notice) ? 'required' : null),
+					'required' => true
 				])
 
 				@include('includes.components.form.input', [
@@ -123,12 +124,10 @@
 			</div>
 
 			<div class="row text-center mt-5 bg-white">
-				<div class="col-md-12">
-					<button type="button" class="btn border" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">Adicionar texto <i class="fas fa-paragraph"></i></button>
-
-					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}">Adicionar imagem <i class="fas fa-image"></i></button>
-
-					<button type="button" class="btn border" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.youtubeeditor']) }}" data-required="true">Adicionar Video do Youtube <i class="fas fa-video"></i></button>
+				<div class="col-md-12 row">
+					<div class="col-md-4 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo parágrafo" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">NOVO TEXTO <i class="fas fa-paragraph"></i></div>
+					<div class="col-md-4 text-center p-4 bg-success text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}">NOVA IMAGEM <i class="fas fa-image"></i></div>
+					<div class="col-md-4 text-center p-4 bg-danger text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo video" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.youtubeeditor']) }}" data-required="true">NOVO VIDEO DO YOUTUBE <i class="fas fa-video"></i></div>
 				</div>
 			</div>
 		</div>

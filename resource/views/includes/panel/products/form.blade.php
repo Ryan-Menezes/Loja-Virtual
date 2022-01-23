@@ -25,7 +25,16 @@
 					'required' => true
 				])
 
-				<div class="col-md-4">
+				@include('includes.components.form.input', [
+					'type' => 'text', 
+					'name' => 'brand', 
+					'title' => 'Marca', 
+					'class' => 'required',
+					'value' => (isset($product) ? $product->brand : null),
+					'required' => true
+				])
+
+				<div class="col-md-6">
 					@include('includes.components.form.select', [
 						'name' => 'visible', 
 						'title' => 'Visibilidade',
@@ -38,7 +47,7 @@
 						'required' => true
 					])
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					@include('includes.components.form.select', [
 						'name' => 'ratings_active', 
 						'title' => 'Avaliações',
@@ -51,11 +60,25 @@
 						'required' => true
 					])
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-6">
 					@include('includes.components.form.select', [
 						'name' => 'freight_free', 
 						'title' => 'Frete Grátis',
 						'value' => (isset($product) ? $product->freight_free : 0),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+				</div>
+
+				<div class="col-md-6">
+					@include('includes.components.form.select', [
+						'name' => 'showcase', 
+						'title' => 'Vitrine',
+						'value' => (isset($product) ? $product->showcase : 0),
 						'options' => [
 							1 => 'Ativado',
 							0 => 'Desativado'
@@ -124,9 +147,7 @@
 			</div>
 
 			<div class="row text-center mt-5">
-				<div class="col-md-12">
-					<button type="button" class="btn border" data-urlajax="{{ route('panel.products.component', ['name' => 'form.coloreditor']) }}" data-urlimage="{{ route('panel.products.component', ['name' => 'form.imageeditor']) }}" data-urlsize="{{ route('panel.products.component', ['name' => 'form.sizeeditor']) }}">Adicionar uma Cor <i class="fas fa-fill-drip"></i></button>
-				</div>
+				<div class="col-md-12 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova cor" data-urlajax="{{ route('panel.products.component', ['name' => 'form.coloreditor']) }}" data-urlimage="{{ route('panel.products.component', ['name' => 'form.imageeditor']) }}" data-urlsize="{{ route('panel.products.component', ['name' => 'form.sizeeditor']) }}">NOVA COR <i class="fas fa-fill-drip"></i></div>
 			</div>
 		</div>
 

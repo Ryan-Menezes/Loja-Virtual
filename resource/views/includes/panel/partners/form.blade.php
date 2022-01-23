@@ -8,7 +8,8 @@
 		'title' => 'Imagem',
 		'value' => (isset($partner) && $partner->image ? url('storage/app/public/' . $partner->image) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($partner) ? 'required' : null)
+		'class' => (!isset($partner) ? 'required' : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [
@@ -23,18 +24,14 @@
 	@include('includes.components.form.textarea', [
 		'name' => 'description',
 		'title' => 'Descrição',
-		'class' => 'required',
-		'value' => (isset($partner) ? $partner->description : null),
-		'required' => true
+		'value' => (isset($partner) ? $partner->description : null)
 	])
 
 	@include('includes.components.form.input', [
 		'type' => 'url', 
 		'name' => 'link', 
 		'title' => 'Link', 
-		'class' => 'required',
-		'value' => (isset($partner) ? $partner->link : null),
-		'required' => true
+		'value' => (isset($partner) ? $partner->link : null)
 	])
 
 	@include('includes.components.form.select', [

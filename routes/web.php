@@ -288,8 +288,8 @@ Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]
 	// ROUTE TERMS CONDITIONS
 	Route::get('/termos-e-condicoes', [LgpdController::class, 'terms_conditions'])->name('site.terms_conditions');
 
-	// ROUTE VALIDATE ACCOUNT
-	Route::get('/politica-de-privacidade', [LgpdController::class, 'privacy_policy'])->name('site.privacy_policy');
+	// ROUTE RETURN POLICY
+	Route::get('/politica-de-devolucao', [LgpdController::class, 'return_policy'])->name('site.return_policy');
 
 	// ROUTE LOGIN
 	Route::group(['prefix' => 'login'], function(){

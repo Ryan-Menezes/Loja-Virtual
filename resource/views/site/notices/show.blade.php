@@ -8,6 +8,43 @@
 @section('image_width', 1200)
 @section('image_height', 628)
 
+@section('ld-json')
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ route('site.notices.show', ['slug' => $notice->slug]) }}"
+    },
+    "headline": "{{ $notice->title }},
+    "image": [
+        @foreach(json_decode($notice->content)->elements as $element)
+            @if($element->type == 'image')
+            "{{ url('storage/app/public/' . $element->src) }}",
+            @endif
+        @endforeach
+        "{{ url('storage/app/public/' . $notice->poster) }}"
+    ],
+    "datePublished": "{{ date('Y-m-d', strtotime($notice->created_at)) }}T{{ date('H:i:s', strtotime($notice->created_at)) }}+00:00",
+    "dateModified": "{{ date('Y-m-d', strtotime($notice->updated_at)) }}T{{ date('H:i:s', strtotime($notice->updated_at)) }}+00:00",
+    "author": {
+        "@type": "Person",
+        "name": "{{ $notice->author->name }}",
+        "url": "{{ url() }}"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "{{ config('app.name') }}",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ public_path('assets/img/logo.png') }}"
+        }
+    }
+}
+</script>
+@endsection
+
 @section('container')
 <section class="container">
     <section class="notice-banner" style="background-image: url('{{ url('storage/app/public/' . $notice->poster) }}')">

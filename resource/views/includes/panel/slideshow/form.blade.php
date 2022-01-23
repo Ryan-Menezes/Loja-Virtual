@@ -8,7 +8,8 @@
 		'title' => 'Imagem', 
 		'value' => (isset($slideshow) && $slideshow->image ? url('storage/app/public/' . $slideshow->image) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($slideshow) ? 'required' : null)
+		'class' => (!isset($slideshow) ? 'required' : null),
+		'required' => true
 	])
 
 	@include('includes.components.form.input', [

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemLgpd extends Model{
 	public $table = 'system_lgpd';
-	protected $fillable = ['active', 'privacy_policy', 'terms_conditions'];
+	protected $fillable = ['active', 'privacy_policy', 'terms_conditions', 'return_policy'];
 	public $timestamps = false;
 
 	public function verifyPermission(string $permission){
