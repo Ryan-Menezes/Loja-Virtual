@@ -122,7 +122,7 @@
 				</div>
 
 				<br />
-				<input type="submit" class="btn btn-danger" value="Salvar">
+				<button type="submit" class="btn btn-danger">Salvar <i class="fa fa-save"></i></button>
 			</form>
         </div>
     </div>

@@ -37,7 +37,7 @@
 				@foreach($banners as $banner)
 				<tr>
 					<td>{{ $banner->id }}</td>
-					<td><img src="{{ url('storage/app/public/' . $banner->image) }}" title="{{ $banner->title }}" alt="{{ $banner->title }}"></td>
+					<td><img src="{{ url('storage/app/public/' . $banner->image, config('ftp.active')) }}" title="{{ $banner->title }}" alt="{{ $banner->title }}"></td>
 					<td style="max-width: 200px;">{{ $banner->title }}</td>
 					<td style="max-width: 200px;"><a href="{{ $banner->link }}" title="Ver Link" target="_blank">{{ $banner->link }} <i class="fas fa-external-link-alt"></i></a></td>
 					<td>

@@ -47,6 +47,7 @@ use App\Controllers\Site\MyAccount\{
 };
 use App\Middlewares\{
 	Authenticate,
+	Expiration,
 	Maintenance,
 	Lgpd
 };
@@ -55,7 +56,7 @@ use App\Middlewares\{
 // ROUTE PANEL
 // ------------------------------------------------------------------------------
 
-Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], function(){
+Route::group(['prefix' => 'painel', 'middleware' => [Expiration::class, Authenticate::class]], function(){
 	// ROUTE HOME
 	Route::get('/', [PanelController::class, 'index'])->name('panel');
 
@@ -154,9 +155,10 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 		// ROUTE PRODUCTS
 		Route::group(['prefix' => 'produtos'], function(){
 			Route::any('/', [ProductController::class, 'index'])->name('panel.products');
+			Route::any('/componente/{name}', [ProductController::class, 'component'])->name('panel.products.component');
 			Route::get('/novo', [ProductController::class, 'create'])->name('panel.products.create');
 			Route::post('/novo/salvar', [ProductController::class, 'store'])->name('panel.products.store');
-			Route::any('/componente/{name}', [ProductController::class, 'component'])->name('panel.products.component');
+			Route::any('/novo/produtos', [ProductController::class, 'products'])->name('panel.create.products');
 			Route::get('/{id}/editar', [ProductController::class, 'edit'])->name('panel.products.edit');
 			Route::put('/{id}/editar/salvar', [ProductController::class, 'update'])->name('panel.products.update');
 			Route::delete('/{id}/deletar', [ProductController::class, 'destroy'])->name('panel.products.destroy');
@@ -193,9 +195,9 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 	Route::group(['prefix' => 'blog'], function(){
 		Route::group(['prefix' => 'artigos'], function(){
 			Route::any('/', [NoticeController::class, 'index'])->name('panel.notices');
+			Route::any('/componente/{name}', [NoticeController::class, 'component'])->name('panel.notices.component');
 			Route::get('/novo', [NoticeController::class, 'create'])->name('panel.notices.create');
 			Route::post('/novo/salvar', [NoticeController::class, 'store'])->name('panel.notices.store');
-			Route::any('/componente/{name}', [NoticeController::class, 'component'])->name('panel.notices.component');
 			Route::get('/{id}/editar', [NoticeController::class, 'edit'])->name('panel.notices.edit');
 			Route::put('/{id}/editar/salvar', [NoticeController::class, 'update'])->name('panel.notices.update');
 			Route::delete('/{id}/deletar', [NoticeController::class, 'destroy'])->name('panel.notices.destroy');
@@ -242,6 +244,9 @@ Route::group(['prefix' => 'painel', 'middleware' => Authenticate::class], functi
 
 			Route::get('/floater', [SystemController::class, 'floater'])->name('panel.system.floater');
 			Route::post('/floater/salvar', [SystemController::class, 'updateFloater'])->name('panel.system.floater.update');
+
+			Route::get('/ftp', [SystemController::class, 'ftp'])->name('panel.system.ftp');
+			Route::post('/ftp/salvar', [SystemController::class, 'updateFtp'])->name('panel.system.ftp.update');
 		});
 
 		// ROUTE ROLES
@@ -272,7 +277,7 @@ Route::group(['prefix' => 'painel'], function(){
 // ROUTE SITE
 // ------------------------------------------------------------------------------
 
-Route::group(['prefix' => '/', 'middleware' => [Maintenance::class, Lgpd::class]], function(){
+Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, Maintenance::class]], function(){
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 

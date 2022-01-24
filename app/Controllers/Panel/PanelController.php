@@ -107,7 +107,8 @@ class PanelController extends Controller{
 				'system.social', 
 				'system.store', 
 				'system.lgpd', 
-				'system.floater'
+				'system.floater',
+				'system.ftp'
 			]
 		);
 

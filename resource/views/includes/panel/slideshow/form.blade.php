@@ -6,10 +6,9 @@
 		'type' => 'file', 
 		'name' => 'image', 
 		'title' => 'Imagem', 
-		'value' => (isset($slideshow) && $slideshow->image ? url('storage/app/public/' . $slideshow->image) : null), 
+		'value' => (isset($slideshow) && $slideshow->image ? url('storage/app/public/' . $slideshow->image, config('ftp.active')) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($slideshow) ? 'required' : null),
-		'required' => true
+		'class' => (!isset($slideshow) ? 'required' : null)
 	])
 
 	@include('includes.components.form.input', [

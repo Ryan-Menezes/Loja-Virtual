@@ -141,4 +141,8 @@ class Product extends Model{
     public function ratings(){
 		return $this->hasMany(Rating::class, 'product_id', 'id');
 	}
+
+	public function relateds(){
+		return $this->hasMany(ProductRelated::class, 'product_id', 'id');
+	}
 }

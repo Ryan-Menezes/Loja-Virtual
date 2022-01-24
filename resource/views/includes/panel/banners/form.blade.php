@@ -6,10 +6,9 @@
 		'type' => 'file', 
 		'name' => 'image', 
 		'title' => 'Imagem',
-		'value' => (isset($banner) && $banner->image ? url('storage/app/public/' . $banner->image) : null), 
+		'value' => (isset($banner) && $banner->image ? url('storage/app/public/' . $banner->image, config('ftp.active')) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($banner) ? 'required' : null),
-		'required' => true
+		'class' => (!isset($banner) ? 'required' : null)
 	])
 
 	@include('includes.components.form.input', [

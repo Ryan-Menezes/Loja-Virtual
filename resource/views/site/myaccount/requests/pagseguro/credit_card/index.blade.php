@@ -15,7 +15,7 @@
             @include('includes.site.account.menu')
             <div class="cont-content">
                 <h1 style="margin-top: 20px;">Pagamento por cartão de crédito</h1><hr />
-                <p>Informe os dados de seu cartão de crédito e finalize o pagamento:</p>
+                <p style="margin-bottom: 40px;">Informe os dados de seu cartão de crédito para finalizar o pagamento e enviarmos seu pedido para entrega:</p>
 
                 <div class="alert alert-danger" id="message-request" style="display: none;"></div>
 
@@ -36,14 +36,13 @@
                             ])
                         </div>
                         <div class="col-md-6">
-                            @include('includes.components.form.input', [
-                                'type' => 'text', 
-                                'name' => 'number', 
-                                'title' => 'Número', 
-                                'class' => 'required credit-number-mask number_card',
-                                'required' => true
-                            ])
-                            <div class="brand-card btn diabled"></div>
+                            <div class="form-group">
+                                <label class="form-label"><strong>Número:</strong></label>
+                                <div class="input-group">
+                                    <input type="text" name="number" class="form-control required credit-number-mask number_card" placeholder="Número" required />
+                                    <span class="input-group-addon brand-card" id="basic-addon2"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -151,7 +150,7 @@
                 // Pega a bandeira do cartão
                 $('.number_card').keyup(function(){
                     $('#brand').val('')
-                    $('.brand-card').html('').hide()
+                    $('.brand-card').html('')
                     $('.installments_card').html('')
                     $('#message-request').text('').hide()
 
@@ -159,7 +158,7 @@
 
                     getBrand(number, function(response){
                         $('#brand').val(response.brand.name)
-                        $('.brand-card').html(`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/${response.brand.name}.png" alt="${response.brand.name}" title="${response.brand.name}" />`).show()
+                        $('.brand-card').html(`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/${response.brand.name}.png" alt="${response.brand.name}" title="${response.brand.name}" />`)
 
                         const brand = response.brand.name
 

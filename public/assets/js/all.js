@@ -30,13 +30,13 @@ $(document).ready(function(){
             }
         }
     })
-    */
 
     $(window).on('popstate', function(){
         setHtml(window.history.state.url)
         
         return true
     })
+    */
 
     $('.btn-delete').click(function(){
         let route = $(this).data('route')

@@ -11,6 +11,7 @@
 			<li><a href="#tab-details">Cores, Imagens e Tamanhos</a></li>
 			<li><a href="#tab-discounts">Descontos</a></li>
 			<li><a href="#tab-categories">Categorias</a></li>
+			<li><a href="#tab-products-related">Produtos Relacionados</a></li>
 		</ul>
 
 		<div class="product" id="tab-product">
@@ -209,7 +210,38 @@
 				@endforeach
 			</div>
 		</div>
-	</div>
 
-	<button type="submit" class="btn btn-danger mt-3">Salvar <i class="fas fa-save"></i></button>
+		<div class="products_related" id="tab-products-related">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="input-group input-group-lg">
+						<input type="search" placeholder="Pesquise por algum produto..." name="search" class="form-control" id="search_product_related" data-action="{{ route('panel.create.products') }}">
+						<span class="input-group-text"><i class="fas fa-search"></i></span>
+					</div>
+
+					<div class="list-group mt-4 products_related_list"></div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header"><strong>Produtos Adicionados</strong></div>
+						<div class="card-body">
+							<ul class="list-group products_related_selected">
+							@if(isset($product))
+								@foreach($product->relateds as $related)
+								<li class="list-group-item d-flex justify-content-between align-items-center">
+									<input type="hidden" name="products_related[]" value="{{ $related->product_related_id }}" />
+									<p class="m-0 p-0">{{ $related->productRelated->name }}</p>
+									<span class="badge btn btn-danger btn-sm rounded-pill" data-removeid="{{ $related->product_related_id }}">&times;</span>
+								</li>
+								@endforeach
+							@endif
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<button type="submit" class="btn btn-danger m-3">Salvar <i class="fas fa-save"></i></button>
+	</div>
 </form>

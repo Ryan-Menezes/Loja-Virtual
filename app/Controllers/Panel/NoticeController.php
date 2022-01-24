@@ -128,6 +128,7 @@ class NoticeController extends Controller{
 		$data['poster'] = $request->file('poster')->store('notices');
 		$data['slug'] = slugify($data['title']);
 		$data['content'] = json_encode($content);
+		$data['expiration'] = empty($data['expiration']) ? null : $data['expiration'];
 		$notice = auth()->user()->notices()->create($data);
 
 		if($notice){
@@ -275,6 +276,7 @@ class NoticeController extends Controller{
 
 		$data['slug'] = slugify($data['title']);
 		$data['content'] = json_encode($content);
+		$data['expiration'] = empty($data['expiration']) ? null : $data['expiration'];
 
 		if($notice->update($data)){
 			// cadastrando subcategorias

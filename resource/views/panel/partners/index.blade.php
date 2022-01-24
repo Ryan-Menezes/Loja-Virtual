@@ -37,7 +37,7 @@
 				@foreach($partners as $partner)
 				<tr>
 					<td>{{ $partner->id }}</td>
-					<td><img src="{{ url('storage/app/public/' . $partner->image) }}" title="{{ $partner->title }}" alt="{{ $partner->title }}"></td>
+					<td><img src="{{ url('storage/app/public/' . $partner->image, config('ftp.active')) }}" title="{{ $partner->title }}" alt="{{ $partner->title }}"></td>
 					<td style="max-width: 200px;">{{ $partner->title }}</td>
 					<td style="max-width: 200px;"><a href="{{ $partner->link }}" title="Ver Link" target="_blank">{{ $partner->link }} <i class="fas fa-external-link-alt"></i></a></td>
 					<td>

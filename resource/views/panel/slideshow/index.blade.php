@@ -37,7 +37,7 @@
 				@foreach($slideshow as $slide)
 				<tr>
 					<td>{{ $slide->id }}</td>
-					<td><img src="{{ url('storage/app/public/' . $slide->image) }}" title="{{ $slide->title }}" alt="{{ $slide->title }}"></td>
+					<td><img src="{{ url('storage/app/public/' . $slide->image, config('ftp.active')) }}" title="{{ $slide->title }}" alt="{{ $slide->title }}"></td>
 					<td style="max-width: 200px;">{{ $slide->title }}</td>
 					<td style="max-width: 200px;"><a href="{{ $slide->link }}" title="Ver Link" target="_blank">{{ $slide->link }} <i class="fas fa-external-link-alt"></i></a></td>
 					<td>

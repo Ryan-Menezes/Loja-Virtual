@@ -48,6 +48,25 @@ class ProductController extends Controller{
 		return view("includes.components.{$name}", $data);
 	}
 
+	public function products(){
+		$data = (new Request())->all();
+		$search = $data['search'] ?? null;
+
+		$products = $this->product->where('name', 'LIKE', "%{$search}%")->get();
+
+		$html = '';
+		foreach($products as $product){
+			$html .= view('includes.panel.products.card', [
+				'id' => $product->id,
+				'title' => $product->name,
+				'image' => url('storage/app/public/' . $product->images->first()->source),
+				'description' => $product->description
+			]);
+		}
+
+		return $html;
+	}
+
 	public function create(){
 		$this->product->verifyPermission('create.products');
 		$categories = Category::all();
@@ -177,6 +196,15 @@ class ProductController extends Controller{
 							}
 						}
 					}
+				}
+			}
+
+			// Cadastrando produtos relacionados
+			if(isset($data['products_related'])){
+				foreach($data['products_related'] as $product_related){
+					$product->relateds()->create([
+						'product_related_id' => $product_related
+					]);
 				}
 			}
 
@@ -346,6 +374,16 @@ class ProductController extends Controller{
 							}
 						}
 					}
+				}
+			}
+
+			// Cadastrando produtos relacionados
+			$product->relateds()->delete();
+			if(isset($data['products_related'])){
+				foreach($data['products_related'] as $product_related){
+					$product->relateds()->create([
+						'product_related_id' => $product_related
+					]);
 				}
 			}
 

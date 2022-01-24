@@ -5,7 +5,7 @@
 @section('container')
 @if(can('delete.galleries'))
 	@include('includes.components.modais.delete', [
-		'title' => 'Deletar Parceiro',
+		'title' => 'Deletar Galeria',
 		'message' => 'Deseja realmente deletar esta geleria?',
 		'btnmsg' => 'Deletar'
 	])

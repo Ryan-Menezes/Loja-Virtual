@@ -6,10 +6,9 @@
 		'type' => 'file', 
 		'name' => 'image', 
 		'title' => 'Imagem',
-		'value' => (isset($partner) && $partner->image ? url('storage/app/public/' . $partner->image) : null), 
+		'value' => (isset($partner) && $partner->image ? url('storage/app/public/' . $partner->image, config('ftp.active')) : null), 
 		'accept' => 'image/*',
-		'class' => (!isset($partner) ? 'required' : null),
-		'required' => true
+		'class' => (!isset($partner) ? 'required' : null)
 	])
 
 	@include('includes.components.form.input', [

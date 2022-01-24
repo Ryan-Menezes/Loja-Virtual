@@ -15,10 +15,9 @@
 					'type' => 'file', 
 					'name' => 'poster', 
 					'title' => 'Capa', 
-					'value' => (isset($notice) && $notice->poster ? url('storage/app/public/' . $notice->poster) : null), 
+					'value' => (isset($notice) && $notice->poster ? url('storage/app/public/' . $notice->poster, config('ftp.active')) : null), 
 					'accept' => 'image/*',
-					'class' => (!isset($notice) ? 'required' : null),
-					'required' => true
+					'class' => (!isset($notice) ? 'required' : null)
 				])
 
 				@include('includes.components.form.input', [
@@ -30,12 +29,22 @@
 					'required' => true
 				])
 
-				@include('includes.components.form.input', [
-					'type' => 'text', 
-					'name' => 'tags', 
-					'title' => 'Tags', 
-					'value' => (isset($notice) ? $notice->tags : null)
-				])
+				<div class="col-md-6">
+					@include('includes.components.form.input', [
+						'type' => 'text', 
+						'name' => 'tags', 
+						'title' => 'Tags', 
+						'value' => (isset($notice) ? $notice->tags : null)
+					])
+				</div>
+				<div class="col-md-6">
+					@include('includes.components.form.input', [
+						'type' => 'date', 
+						'name' => 'expiration', 
+						'title' => 'Visível até', 
+						'value' => (isset($notice) ? $notice->expiration : null)
+					])
+				</div>
 
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
@@ -98,7 +107,7 @@
 						@elseif($element->type == 'image')
 							@include('includes.components.form.imageeditor', [
 								'title' => $element->title,
-								'image' => url('storage/app/public/' . $element->src),
+								'image' => url('storage/app/public/' . $element->src, config('ftp.active')),
 								'imageRemove' => $element->src
 							])
 

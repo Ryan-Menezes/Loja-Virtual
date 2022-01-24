@@ -26,13 +26,45 @@ class Upload{
 	  */
 	public function storeAs(string $dir, string $filename){
 		if(mb_strlen($dir) > 0){
-			$dirComplete = Storage::dir() . '/' . trim($dir, '/') . '/';
+			// Caso o FTP estiver ligado será upado o arquivo para o servidor informado
+			if(config('ftp.active') && !empty(config('ftp.server')) && !empty(config('ftp.username')) && !empty(config('ftp.password'))){
+				$server = config('ftp.server');
+				$port = empty(config('ftp.port')) ? 21 : config('ftp.port');
+				$username = config('ftp.username');
+				$password = config('ftp.password');
+				$directory = empty(trim(config('ftp.directory'), '/')) ? '/' : trim(config('ftp.directory'), '/');
 
-			if(!is_dir($dirComplete))
-				mkdir($dirComplete, 0777, true);
+				$dirname = config('upload.dir');
+				$directories = config('upload.directories');
+				$dirComplete = '/' . $directory . '/' .trim($directories[$dirname], '/') . '/' . trim($dir, '/') . '/';
 
-			if(move_uploaded_file($this->file->tmp_name, $dirComplete . $filename)){
-				return (trim($dir, '/') . '/' . $filename);
+				$ftp = ftp_connect($server, $port);
+
+				if($ftp && ftp_login($ftp, $username, $password)){
+					if(!ftp_nlist($ftp, $dirComplete)){
+						ftp_mkdir($ftp, $dirComplete);
+					}
+
+					if(ftp_put($ftp, $dirComplete . $filename, $this->file->tmp_name, FTP_BINARY)){
+						return (trim($dir, '/') . '/' . $filename);
+					}
+				}
+
+				if($ftp){
+					ftp_close($ftp);
+				}
+			}
+			// Faz o upload do arquivo no servidor
+			else{
+				$dirComplete = Storage::dir() . '/' . trim($dir, '/') . '/';
+
+				if(!is_dir($dirComplete)){
+					mkdir($dirComplete, 0777, true);
+				}
+
+				if(move_uploaded_file($this->file->tmp_name, $dirComplete . $filename)){
+					return (trim($dir, '/') . '/' . $filename);
+				}
 			}
 		}
 		

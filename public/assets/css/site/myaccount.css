@@ -93,6 +93,7 @@ form span.error{
 .card-simple{
 	border: 1px solid #d4d2d2;
 	border-radius: 5px;
+	margin-bottom: 20px;
 }
 .card-simple .card-header{
 	background-color: #d4d2d2;

@@ -64,8 +64,13 @@ if(!function_exists('redirect')){
 }
 
 if(!function_exists('url')){
-	function url(string $route = null) : string{
-		$url = trim(config('app.url'), '/');
+	function url(string $route = null, bool $ftp_url = false) : string{
+		if($ftp_url){
+			$url = trim(config('ftp.url'), '/');
+		}else{
+			$url = trim(config('app.url'), '/');
+		}
+
 		$route = trim($route, '/');
 
 		return str_ireplace("\\", '/', $url . '/' . $route);

@@ -22,7 +22,7 @@
 			@foreach($galery->images as $image)
 				@include('includes.components.form.imageeditor', [
 					'nottitle' => 'true',
-					'image' => url('storage/app/public/' . $image->source),
+					'image' => url('storage/app/public/' . $image->source, config('ftp.active')),
 					'imageRemove' => $image->source,
 					'class' => 'col-md-4'
 				])

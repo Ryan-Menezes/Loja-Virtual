@@ -39,7 +39,7 @@
 				@foreach($products as $product)
 				<tr>
 					<td>{{ $product->id }}</td>
-					<td><img src="{{ url('storage/app/public/' . $product->colors->first()->images->first()->source) }}" title="{{ $product->name }}" alt="{{ $product->name }}"></td>
+					<td><img src="{{ url('storage/app/public/' . $product->colors->first()->images->first()->source, config('ftp.active')) }}" title="{{ $product->name }}" alt="{{ $product->name }}"></td>
 					@if($product->visible)
 					<td style="max-width: 200px;"><a href="{{ route('site.products.show', ['slug' => $product->slug]) }}" title="Página do produto: {{ $product->name }}" target="_blank">{{ $product->name }} <i class="fas fa-external-link-alt"></i></a></td>
 					@else

@@ -155,4 +155,48 @@ $(document).ready(function(){
         $('.modal').hide()
         $(this).trigger('reset')
     })
+
+    // Products Related
+    $('#search_product_related').keyup(function(){
+        const search = $(this).val()
+        const data = $(this).data()
+
+        $.ajax({
+            url: data.action,
+            method: 'POST',
+            data: {
+                search: search
+            },
+            beforeSend: function(){
+                $('.products_related_list').html('<div class="load"></div>')
+            },
+            success: function(response){
+                $('.products_related_list').html(response)
+            },
+            error: function(response){
+                console.log(response)
+            }
+        })
+    })
+
+    $('*').delegate('[data-productid]', 'click', function(){
+        const data = $(this).data()
+
+        $('.products_related_selected')
+                .append(`<li class="list-group-item d-flex justify-content-between align-items-center">
+                            <input type="hidden" name="products_related[]" value="${data.productid}" />
+                            <p class="m-0 p-0">${data.title}</p>
+                            <span class="badge btn btn-danger btn-sm rounded-pill" data-removeid="${data.productid}">&times;</span>
+                         </li>`)
+
+        return false
+    })
+
+    $('*').delegate('[data-removeid]', 'click', function(){
+        const data = $(this).data()
+
+        $(this).parent().remove()
+
+        return false
+    })
 })

@@ -286,4 +286,28 @@ class SystemController extends Controller{
 		
 		redirect(route('panel.system.floater'), ['error' => 'Floater NÃO editado, Ocorreu um erro no processo de edição!'], true);
 	}
+
+	public function ftp(){
+		$this->system->verifyPermission('all.system.ftp');
+		$system = $this->system;
+
+		return view('panel.system.ftp.index', compact('system'));
+	}
+
+	public function updateFtp(){
+		$this->system->verifyPermission('all.system.ftp');
+
+		$ftp = $this->system->ftp->firstOrFail();
+
+		$request = new Request();
+		$data = $request->all();
+
+		$this->validator($data, $ftp->rolesUpdate, $ftp->messages);
+
+		if($ftp->update($data)){
+			redirect(route('panel.system.ftp'), ['success' => 'FTP editado com sucesso']);
+		}
+
+		redirect(route('panel.system.ftp'), ['error' => 'FTP NÃO editado, Ocorreu um erro no processo de edição!'], true);
+	}
 }

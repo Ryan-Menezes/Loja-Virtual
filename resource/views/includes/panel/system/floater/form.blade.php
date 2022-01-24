@@ -17,7 +17,7 @@
 		'type' => 'file', 
 		'name' => 'image', 
 		'title' => 'Imagem',
-		'value' => (isset($system) && $system->floater && $system->floater->image ? url('storage/app/public/' . $system->floater->image) : null), 
+		'value' => (isset($system) && $system->floater && $system->floater->image ? url('storage/app/public/' . $system->floater->image, config('ftp.active')) : null), 
 		'accept' => 'image/*'
 	])
 

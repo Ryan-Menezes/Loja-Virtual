@@ -55,18 +55,12 @@
 			<!-- Products tab & slick -->
 			<div class="col-md-12">
 				<div class="row">
-					<div class="products-tabs">
-						<!-- tab -->
-						<div id="tab1" class="tab-pane active">
-							<div class="products-slick" data-nav="#slick-nav-1">
-								@foreach($products as $product)
-								@include('includes.site.products.card', ['new' => true])
-								@endforeach
-							</div>
-							<div id="slick-nav-1" class="products-slick-nav"></div>
-						</div>
-						<!-- /tab -->
+					<div class="products-slick" data-nav="#slick-nav-1">
+						@foreach($products as $product)
+						@include('includes.site.products.card', ['new' => true])
+						@endforeach
 					</div>
+					<div id="slick-nav-1" class="products-slick-nav"></div>
 				</div>
 			</div>
 			<!-- Products tab & slick -->

@@ -405,8 +405,10 @@ class Route{
 					}else{
 						$parameters = [];
 					}
-
-					self::addHistoric(Web::getRoute());
+					
+					if($route['method'] == 'GET'){
+						self::addHistoric(Web::getRoute());
+					}
 
 					if(!empty($route['middlewares'])){
 						foreach($route['middlewares'] as $md){

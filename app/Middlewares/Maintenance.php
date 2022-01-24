@@ -8,8 +8,7 @@ class Maintenance{
 		$system = System::first();
 
 		if($system && $system->maintenance){
-			echo view('site.maintenance');
-			die();
+			die(view('site.maintenance'));
 		}
 	}
 }

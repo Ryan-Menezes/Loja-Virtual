@@ -39,7 +39,30 @@ class Storage{
 	  * @return void
 	  */
 	public static function delete(string $filename) : void{
-		if(self::exists($filename)){
+		// Caso o FTP estiver ligado será deletado o arquivo do servidor informado
+		if(config('ftp.active') && !empty(config('ftp.server')) && !empty(config('ftp.username')) && !empty(config('ftp.password'))){
+			$server = config('ftp.server');
+			$port = empty(config('ftp.port')) ? 21 : config('ftp.port');
+			$username = config('ftp.username');
+			$password = config('ftp.password');
+			$directory = empty(trim(config('ftp.directory'), '/')) ? '/' : trim(config('ftp.directory'), '/');
+
+			$dirname = config('upload.dir');
+			$directories = config('upload.directories');
+			$dirComplete = '/' . $directory . '/' .trim($directories[$dirname], '/');
+
+			$ftp = ftp_connect($server, $port);
+
+			if($ftp && ftp_login($ftp, $username, $password)){
+				ftp_delete($ftp, $dirComplete . '/' . $filename);
+			}
+
+			if($ftp){
+				ftp_close($ftp);
+			}
+		}
+		// Deleta o arquivo do servidor atual
+		else if(self::exists($filename)){
 			unlink(self::dir() . '/' . $filename);
 		}
 	}

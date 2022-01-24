@@ -39,7 +39,7 @@
 				@foreach($notices as $notice)
 				<tr>
 					<td>{{ $notice->id }}</td>
-					<td><img src="{{ url('storage/app/public/' . $notice->poster) }}" title="{{ $notice->title }}" alt="{{ $notice->title }}"></td>
+					<td><img src="{{ url('storage/app/public/' . $notice->poster, config('ftp.active')) }}" title="{{ $notice->title }}" alt="{{ $notice->title }}"></td>
 					@if($notice->visible)
 					<td style="max-width: 200px;"><a href="{{ route('site.notices.show', ['slug' => $notice->slug]) }}" title="Página da notícia: {{ $notice->title }}" target="_blank">{{ $notice->title }} <i class="fas fa-external-link-alt"></i></a></td>
 					@else

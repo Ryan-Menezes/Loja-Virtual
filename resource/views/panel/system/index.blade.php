@@ -36,6 +36,10 @@
 		@if(can('all.system.floater'))
 			@include('includes.components.card', ['title' => 'Floater', 'link' => route('panel.system.floater'), 'class' => 'text-info', 'amount' => 'Floater', 'icon' => 'fas fa-exclamation-circle'])
 		@endif
+
+		@if(can('all.system.ftp'))
+			@include('includes.components.card', ['title' => 'FTP', 'link' => route('panel.system.ftp'), 'class' => 'text-black', 'amount' => 'FTP', 'icon' => 'fas fa-network-wired'])
+		@endif
 	</div>
 </div>
 @endsection
