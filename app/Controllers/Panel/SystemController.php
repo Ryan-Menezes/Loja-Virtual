@@ -140,9 +140,20 @@ class SystemController extends Controller{
 		$this->validator($data, $store->rolesUpdate, $store->messages);
 		$this->validator($data, $store->freight->rolesUpdate, $store->freight->messages);
 		$this->validator($data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
+		$this->validator($data, $store->picpay->rolesUpdate, $store->picpay->messages);
 
 		$store->freight->update($data);
-		$store->pagseguro->update($data);
+		$store->pagseguro->update([
+			'email' => $data['email_pagseguro'],
+			'token' => $data['token_pagseguro'],
+			'app_id' => $data['app_id_pagseguro'],
+			'app_key' => $data['app_key_pagseguro']
+		]);
+		$store->picpay->update([
+			'token' => $data['token_picpay'],
+			'seller_token' => $data['seller_token_picpay'],
+			'expiration_minutes' => $data['expiration_minutes_picpay']
+		]);
 
 		// Atualizando as faixas de cep
 		$store->freight->freight_customized()->delete();

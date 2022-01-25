@@ -42,6 +42,11 @@ return [
 				'token' 				=> $system->store->pagseguro->token,
 				'app_id'				=> $system->store->pagseguro->app_id,
 				'app_key'				=> $system->store->pagseguro->app_key
+			],
+			'picpay' => [
+				'token' 				=> $system->store->picpay->token,
+				'seller_token'			=> $system->store->picpay->seller_token,
+				'expiration_minutes'	=> $system->store->picpay->expiration_minutes
 			]
 		]
 	]

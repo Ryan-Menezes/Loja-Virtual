@@ -17,7 +17,7 @@
 
             @include('includes.site.requests.body')
 
-            @if($requestmodel->status == 'AP' && empty($requestmodel->payment->code))
+            @if($requestmodel->status == 'AP' && empty($requestmodel->payment->code) && empty($requestmodel->payment->method))
             <h2 style="margin-top: 20px;">Pagamento</h2><hr />
 
             <div class="cards">
@@ -65,6 +65,12 @@
                     <a style="margin-top: 20px;" href="{{ $requestmodel->payment->link }}" target="_blank" class="btn btn-success">Finalizar o Pagamento Por Débito Online <i class="fa fa-external-link"></i></a>
 
                     <p style="margin-top: 20px;"><strong>Caso o pagamento não seja efetuado, seu pedido será cancelado!</strong></p>
+                    @elseif($requestmodel->payment->method == 'PX')
+                    <p>Você selecionou o pagamento por PIX, para que seu pedido seja confirmado para entrega, efetue o pagamento escaneando o qrcode abaixo:</p>
+
+                    <a href="{{ $requestmodel->payment->link }}" target="_blank" title="Escaneie o qrcode para finalizar o pagamento"><img src="{{ $requestmodel->payment->qrcode }}" title="Escaneie o qrcode para finalizar o pagamento" alt="QRCode de Pgamento" /></a>
+
+                    <p style="margin-top: 20px;"><strong>Esse qrcode irá expirar em {{ config('store.payment.credentials.picpay.expiration_minutes') }} minutos, Caso o pagamento não seja efetuado, seu pedido será cancelado!</strong></p>
                     @endif
                 @else
                 <p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>

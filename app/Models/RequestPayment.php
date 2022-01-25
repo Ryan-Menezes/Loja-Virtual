@@ -5,12 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class RequestPayment extends Model{
 	public $table = 'request_payment';
-	protected $fillable = ['code', 'type', 'method', 'status', 'status_type', 'installments', 'installment_no_interest', 'amount', 'discount_coupon', 'discount_installment', 'discount_cart', 'shipping_type', 'shipping_value', 'shipping_days', 'shipping_message', 'link', 'details'];
+	protected $fillable = ['code', 'type', 'method', 'status', 'status_type', 'installments', 'installment_no_interest', 'amount', 'discount_coupon', 'discount_installment', 'discount_cart', 'shipping_type', 'shipping_value', 'shipping_days', 'shipping_message', 'link', 'qrcode', 'details'];
 	public $timestamps = true;
 	private $types = [
 		'PS' => 'PagSeguro',
 		'MP' => 'Mercado Pago',
-		'PP' => 'PayPal' 
+		'PP' => 'PayPal',
+		'PC' => 'PicPay'
 	];
 	private $methods = [
 		'CC' => 'Cartão de Crédito',
@@ -54,6 +55,7 @@ class RequestPayment extends Model{
 			'discount_installment'		=> 'required|numeric',
 			'discount_ store'			=> 'required|numeric',
 			'link'						=> 'min:1|max:191', 
+			'qrcode'					=> 'min:1',
 			'details'					=> 'min:1'
 		];
 	}
@@ -75,6 +77,7 @@ class RequestPayment extends Model{
 			'discount_installment'		=> 'required|numeric',
 			'discount_ store'			=> 'required|numeric',
 			'link'						=> 'min:1|max:191', 
+			'qrcode'					=> 'min:1',
 			'details'					=> 'min:1'
 		];
 	}

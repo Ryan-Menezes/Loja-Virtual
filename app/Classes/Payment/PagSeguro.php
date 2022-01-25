@@ -58,7 +58,7 @@ class PagSeguro{
         'token'     => null,
         'holder'    => [
             'name'          => null,
-            'cpf'           => null,
+            'document'      => null,
             'birth_date'    => null,
             'telephone' => [
                 'ddd'       => null,
@@ -222,7 +222,7 @@ class PagSeguro{
             return $response;
         }catch(Exception $e){
             return null;
-        } 
+        }
     }
 
     public function transaction(string $reference){
@@ -259,6 +259,58 @@ class PagSeguro{
             ];
 
             $response = $this->curl($url . http_build_query($data), [], true, true);
+
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
+                $response = simplexml_load_string($response);
+            }else{
+                $response = null;
+            }
+
+            return $response;
+        }catch(Exception $e){
+            return null;
+        }
+    }
+
+    public function cancel(string $transactionCode){
+        try{
+            $url = $this->url . 'v2/transactions/cancels?';
+
+            $data = [
+                'email'             => $this->email,
+                'token'             => $this->token,
+                'transactionCode'   => $transactionCode
+            ];
+        
+            $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
+
+            if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
+                $response = simplexml_load_string($response);
+            }else{
+                $response = null;
+            }
+
+            return $response;
+        }catch(Exception $e){
+            return null;
+        }
+    }
+
+    public function refund(string $transactionCode, float $value = null){
+        try{
+            $url = $this->url . 'v2/transactions/refunds?';
+
+            $data = [
+                'email'             => $this->email,
+                'token'             => $this->token,
+                'transactionCode'   => $transactionCode
+            ];
+
+            if(!empty($value)){
+                $data['refundValue'] = number_format($value, 2, '.', '');
+            }
+        
+            $response = $this->curl($url, ['Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
 
             if(!empty($response) && $response != 'Unauthorized' && $response != 'Internal Server Error'){
                 $response = simplexml_load_string($response);

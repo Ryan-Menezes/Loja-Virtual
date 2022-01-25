@@ -43,7 +43,13 @@
                         <td>
                             <a href="{{ route('site.myaccount.requests.show', ['id' => $request->id]) }}" class="btn btn-sm btn-warning" title="Detalhes do Pedido"><i class="fa fa-info-circle"></i></a>
 
-                            <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-delete" data-route="{{ route('site.myaccount.requests.cancel', ['id' => $request->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Cancelar Pedido"><i class="fa fa-ban"></i></a>
+                            @if($request->status != 'EN' && $request->status != 'CO' && $request->status != 'CA')
+                                @if($request->status == 'AP')
+                                <a href="javascript:void(0)" class="btn btn-sm btn-danger btn-delete" data-route="{{ route('site.myaccount.requests.cancel', ['id' => $request->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Cancelar Pedido"><i class="fa fa-ban"></i></a>
+                                @elseif($request->status == 'PA' && $request->payment->method != 'PX')
+                                <a href="javascript:void(0)" class="btn btn-sm btn-primary btn-delete" data-route="{{ route('site.myaccount.requests.refund', ['id' => $request->id]) }}" data-toggle="modal" data-target="#modalDelete" title="Pedir Reembolso e Cancelar Pedido"><i class="fa fa-money"></i></a>
+                                @endif
+                            @endif
                         </td>
                     </tr>
                     @endforeach

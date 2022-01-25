@@ -57,4 +57,8 @@ class SystemStore extends Model{
 	public function pagseguro(){
 		return $this->belongsTo(SystemPagseguro::class, 'system_pagseguro_id', 'id');
 	}
+
+	public function picpay(){
+		return $this->belongsTo(SystemPicpay::class, 'system_picpay_id', 'id');
+	}
 }

@@ -41,6 +41,7 @@ use App\Controllers\Site\MyAccount\{
 	CLientController as CLientControllerSite,
 	RequestController as RequestControllerSite,
 	PagSeguroController,
+	PicPayController,
 	AddressController,
 	CardController,
 	FavoriteController
@@ -326,6 +327,8 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 			
 			Route::group(['prefix' => '{id}'], function(){
 				Route::get('/', [RequestControllerSite::class, 'show'])->name('site.myaccount.requests.show');
+				Route::post('/cancelar', [RequestControllerSite::class, 'cancel'])->name('site.myaccount.requests.cancel');
+				Route::post('/reembolsar', [RequestControllerSite::class, 'refund'])->name('site.myaccount.requests.refund');
 
 				if(config('store.payment.types.pagseguro')){
 					if(!config('store.payment.checkouts.transparent')){
@@ -339,6 +342,8 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 						Route::post('/debito-online', [PagSeguroController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
 					}
 				}
+
+				Route::get('/pix', [PicPayController::class, 'pix'])->name('site.myaccount.requests.show.pix');
 			});
 		});
 
@@ -433,5 +438,6 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	// PAYMENT
 	Route::group(['prefix' => 'notificacao'], function(){
 		Route::any('/pagseguro', [PaymentController::class, 'notificationPagseguro'])->name('site.notification.pagseguro');
+		Route::any('/picpay', [PaymentController::class, 'notificationPicpay'])->name('site.notification.picpay');
 	});
 });

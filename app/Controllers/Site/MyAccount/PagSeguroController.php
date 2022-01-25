@@ -125,10 +125,10 @@ class PagSeguroController extends Controller{
             }
 
             // Outros descontos
-            $discount = $requestmodel->payment->discount_cart + $requestmodel->payment->discount_coupon;
+            $discount = $payment->discount_cart + $payment->discount_coupon;
             
-            if($discount > $requestmodel->payment->amount){
-                $discount = $requestmodel->payment->amount - 1;
+            if($discount > $payment->amount){
+                $discount = $payment->amount - 1;
 
                 if($payment->shipping_value > 0){
                     $payment->shipping_value--;
@@ -289,13 +289,13 @@ class PagSeguroController extends Controller{
 
             $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
+            $discount = $payment->discount_cart + $discount_installment + $payment->discount_coupon;
             
-            if($discount > $requestmodel->payment->amount){
-                $discount = $requestmodel->payment->amount - 1;
+            if($discount > $payment->amount){
+                $discount = $payment->amount - 1;
 
                 if($payment->shipping_value > 0){
                     $payment->shipping_value--;
@@ -426,7 +426,7 @@ class PagSeguroController extends Controller{
                 ]);
             }
 
-            // Desconto pela parcela selecionada
+            // Desconto por pagamento à vista
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
@@ -439,13 +439,14 @@ class PagSeguroController extends Controller{
 
             $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
+            // Desconto total
+            $discount = $payment->discount_cart + $discount_installment + $payment->discount_coupon;
             
-            if($discount > $requestmodel->payment->amount){
-                $discount = $requestmodel->payment->amount - 1;
+            if($discount > $payment->amount){
+                $discount = $payment->amount - 1;
 
                 if($payment->shipping_value > 0){
                     $payment->shipping_value--;
@@ -559,7 +560,7 @@ class PagSeguroController extends Controller{
                 ]);
             }
 
-            // Desconto pela parcela selecionada
+            // Desconto por pagamento à vista
             $discount_percent = 0;
             foreach($products as $product){
                 $product = $product->product;
@@ -572,13 +573,14 @@ class PagSeguroController extends Controller{
 
             $discount_installment = 0;
             if($discount_percent > 0){
-                $discount_installment = ($requestmodel->payment->amountFormat * ($discount_percent / 100));
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
             }
 
-            $discount = $requestmodel->payment->discount_cart + $discount_installment + $requestmodel->payment->discount_coupon;
-
-            if($discount > $requestmodel->payment->amount){
-                $discount = $requestmodel->payment->amount - 1;
+            // Desconto total
+            $discount = $payment->discount_cart + $discount_installment + $payment->discount_coupon;
+            
+            if($discount > $payment->amount){
+                $discount = $payment->amount - 1;
 
                 if($payment->shipping_value > 0){
                     $payment->shipping_value--;

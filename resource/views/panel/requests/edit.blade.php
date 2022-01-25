@@ -33,26 +33,26 @@
 						<td>{{ $product->product->name }}</td>
 						@endif
 						<td>COR: {{ $product->color }} | TAMANHO: {{ $product->size }}</td>
-						<td>{{ number_format($product->price, 2, ',', '.') }}</td>
+						<td>{{ number_format((float)$product->price, 2, ',', '.') }}</td>
 						<td>{{ $product->quantity }}</td>
-						<td>{{ number_format($product->price * $product->quantity, 2, ',', '.') }}</td>
+						<td>{{ number_format((float)$product->price * $product->quantity, 2, ',', '.') }}</td>
 					</tr>
 					@endforeach
 				</tbody>
 			</table>
 
 			<div class="mb-4 text-end">
-				<p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</strong></p>
+				<p class="p-0 m-0 mt-4">(Desconto por Cupom) <strong>-R$ {{ number_format((float)$requestmodel->payment->discount_coupon, 2, ',', '.') }}</strong></p>
 				@if($requestmodel->payment->status_type != 'AP')
 					@if($requestmodel->payment->installments == 1)
-					<p class="p-0 m-0">(Desconto Pagamento à Vista) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+					<p class="p-0 m-0">(Desconto Pagamento à Vista) <strong>-R$ {{ number_format((float)$requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
 					@else
-					<p class="p-0 m-0">(Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas) <strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
+					<p class="p-0 m-0">(Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas) <strong>-R$ {{ number_format((float)$requestmodel->payment->discount_installment, 2, ',', '.') }}</strong></p>
 					@endif
 				@endif
-				<p class="p-0 m-0">(Desconto do Carrinho) <strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</strong></p>
-				<p class="p-0 m-0">(Valor do Frete) <strong>+R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</strong></p>
-				<h2 class="mt-2">Total: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</h2>
+				<p class="p-0 m-0">(Desconto do Carrinho) <strong>-R$ {{ number_format((float)$requestmodel->payment->discount_cart, 2, ',', '.') }}</strong></p>
+				<p class="p-0 m-0">(Valor do Frete) <strong>+R$ {{ number_format((float)$requestmodel->payment->shipping_value, 2, ',', '.') }}</strong></p>
+				<h2 class="mt-2">Total: R$ {{ number_format((float)$requestmodel->payment->amountFormat, 2, ',', '.') }}</h2>
 			</div>
 		</div>
 	</div>
@@ -118,15 +118,15 @@
 	<div class="card mb-4">
 		<div class="card-header p-3"><strong>Descontos Aplicados</strong></div>
 		<div class="card-body">
-			<p class="p-0 m-0"><strong>Desconto por Cupom: </strong>-R$ {{ number_format($requestmodel->payment->discount_coupon, 2, ',', '.') }}</p>
+			<p class="p-0 m-0"><strong>Desconto por Cupom: </strong>-R$ {{ number_format((float)$requestmodel->payment->discount_coupon, 2, ',', '.') }}</p>
 			@if($requestmodel->payment->status_type != 'AP')
 				@if($requestmodel->payment->installments == 1)
-				<p class="p-0 m-0"><strong>Desconto por pagamento à vista: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+				<p class="p-0 m-0"><strong>Desconto por pagamento à vista: </strong>-R$ {{ number_format((float)$requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
 				@else
-				<p class="p-0 m-0"><strong>Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas: </strong>-R$ {{ number_format($requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
+				<p class="p-0 m-0"><strong>Desconto por Selecionar {{ $requestmodel->payment->installments }} Parcelas: </strong>-R$ {{ number_format((float)$requestmodel->payment->discount_installment, 2, ',', '.') }}</p>
 				@endif
 			@endif
-			<p class="p-0 m-0"><strong>Desconto do Carrinho: </strong>-R$ {{ number_format($requestmodel->payment->discount_cart, 2, ',', '.') }}</p>
+			<p class="p-0 m-0"><strong>Desconto do Carrinho: </strong>-R$ {{ number_format((float)$requestmodel->payment->discount_cart, 2, ',', '.') }}</p>
 		</div>
 	</div>
 
@@ -134,7 +134,7 @@
 		<div class="card-header p-3"><strong>Frete</strong></div>
 		<div class="card-body">
 			<p class="p-0 m-0"><strong>Tipo: </strong>{{ $requestmodel->payment->shippingTypeFormat }}</p>
-			<p class="p-0 m-0"><strong>Valor: </strong>R$ {{ number_format($requestmodel->payment->shipping_value, 2, ',', '.') }}</p>
+			<p class="p-0 m-0"><strong>Valor: </strong>R$ {{ number_format((float)$requestmodel->payment->shipping_value, 2, ',', '.') }}</p>
 			<p class="p-0 m-0"><strong>Estimativa para à entrega: </strong>Dentro de {{ $requestmodel->payment->shipping_days }} dia(s)</p>
 		</div>
 	</div>

@@ -520,7 +520,7 @@ if(!function_exists('parse_object')){
 if(!function_exists('update_payment_request_pagseguro')){
 	function update_payment_request_pagseguro($pagseguro, $requestmodel): bool{
 		$response = $pagseguro->transaction($requestmodel->id);
-		if($response && $response->transactions && !empty($response->transactions)){
+		if($response && isset($response->transactions) && !empty($response->transactions)){
 			$transaction = $response->transactions->transaction;
 			
 			$transaction = $pagseguro->transactionDetails($transaction->code);
@@ -583,6 +583,64 @@ if(!function_exists('update_payment_request_pagseguro')){
 
 				return true;
 			}
+		}
+
+		return false;
+	}
+}
+
+if(!function_exists('update_payment_request_picpay')){
+	function update_payment_request_picpay($picpay, $requestmodel): bool{
+		$response = $picpay->status($requestmodel->id);
+
+		if($response && isset($response->referenceId)){
+			$transaction = $response;
+			
+			$status = [
+				'created' 		=> 'AP',
+				'expired' 		=> 'CA',
+				'analysis' 		=> 'PA',
+				'paid' 			=> 'PA',
+				'completed' 	=> 'DI',
+				'refunded' 		=> 'DE',
+				'chargeback' 	=> 'PA'
+			];
+
+			$requestmodel->payment->update([
+				'code' 					=> (isset($transaction->authorizationId)) ? parse_object($transaction->authorizationId) : null,
+				'type' 					=> 'PC',
+				'method'				=> 'PX',
+				'status'				=> parse_object($transaction->status),
+				'status_type'			=> $status[parse_object($transaction->status)],
+				'installments'			=> 1,
+				'details'				=> json_encode($transaction)
+			]);
+
+			$status = [
+				'created' 		=> 'AP',
+				'expired' 		=> 'CA',
+				'analysis' 		=> 'PA',
+				'paid' 			=> 'PA',
+				'completed' 	=> 'PA',
+				'refunded' 		=> 'CA',
+				'chargeback' 	=> 'PA'
+			];
+
+			$sta = parse_object($transaction->status);
+
+			if(array_key_exists($sta, $status) && $status[$sta] != $requestmodel->status){
+				if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
+					$requestmodel->update([
+						'status' => $status[$sta]
+					]);	
+				}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
+					$requestmodel->update([
+						'status' => $status[$sta]
+					]);
+				}
+			}
+
+			return true;
 		}
 
 		return false;
