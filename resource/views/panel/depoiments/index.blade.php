@@ -28,6 +28,7 @@
 				<tr>
 					<th>ID</th>
 					<th>Nome</th>
+					<th>Visível</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -36,6 +37,13 @@
 				<tr>
 					<td>{{ $depoiment->id }}</td>
 					<td>{{ $depoiment->name }}</td>
+					<td>
+						@if($depoiment->visible)
+						<i class="fas fa-check-circle text-success"></i>
+						@else
+						<i class="fas fa-times-circle text-danger"></i>
+						@endif
+					</td>
 					<td>
 						@if(can('edit.depoiments'))
 							<a href="{{ route('panel.depoiments.edit', ['id' => $depoiment->id]) }}" class="btn btn-sm btn-primary" title="Editar Depoimento"><i class="fas fa-pencil-alt"></i></a>

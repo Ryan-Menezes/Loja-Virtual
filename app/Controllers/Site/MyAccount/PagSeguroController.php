@@ -144,7 +144,7 @@ class PagSeguroController extends Controller{
             $pagseguro->setCurrency('BRL');
             $pagseguro->setExtraAmount(-$discount);
             $pagseguro->setNotificationURL(route('site.notification.pagseguro'));
-            $pagseguro->setReference($requestmodel->id);
+            $pagseguro->setReference(config('store.reference_prefix') . $requestmodel->id);
             $pagseguro->setSender($client->name, $sender_doc, $sender_phone, $client->email);
             $pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
 
@@ -321,7 +321,7 @@ class PagSeguroController extends Controller{
             $pagseguro->setCurrency('BRL');
             $pagseguro->setExtraAmount(-$discount);
             $pagseguro->setNotificationURL(route('site.notification.pagseguro'));
-            $pagseguro->setReference($requestmodel->id);
+            $pagseguro->setReference(config('store.reference_prefix') . $requestmodel->id);
             $pagseguro->setSender($client->name, $sender_doc, $sender_phone, $client->email, $data['sender_hash']);
             $pagseguro->setInstallment($installment_quantity, $installment_value, $installment_no_interest);
             $pagseguro->setCreditCard($data['credit_card_token'], $name, $cpf, $birth, $telephone);
@@ -462,7 +462,7 @@ class PagSeguroController extends Controller{
             $pagseguro->setCurrency('BRL');
             $pagseguro->setExtraAmount(-$discount);
             $pagseguro->setNotificationURL(route('site.notification.pagseguro'));
-            $pagseguro->setReference($requestmodel->id);
+            $pagseguro->setReference(config('store.reference_prefix') . $requestmodel->id);
             $pagseguro->setSender($client->name, $sender_doc, $sender_phone, $client->email, $data['sender_hash']);
             $pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
 
@@ -596,7 +596,7 @@ class PagSeguroController extends Controller{
             $pagseguro->setCurrency('BRL');
             $pagseguro->setExtraAmount(-$discount);
             $pagseguro->setNotificationURL(route('site.notification.pagseguro'));
-            $pagseguro->setReference($requestmodel->id);
+            $pagseguro->setReference(config('store.reference_prefix') . $requestmodel->id);
             $pagseguro->setSender($client->name, $sender_doc, $sender_phone, $client->email, $data['sender_hash']);
             $pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
 

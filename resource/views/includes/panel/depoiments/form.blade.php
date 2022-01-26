@@ -19,5 +19,17 @@
 		'required' => true
 	])
 
+	@include('includes.components.form.select', [
+		'name' => 'visible', 
+		'title' => 'Visibilidade',
+		'value' => (isset($depoiment) ? $depoiment->visible : 0),
+		'options' => [
+			1 => 'Visível',
+			0 => 'Invisivel'
+		],
+		'class' => 'required',
+		'required' => true
+	])
+
 	<button type="submit" class="btn btn-danger">Salvar <i class="fas fa-save"></i></button>
 </form>

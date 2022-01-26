@@ -38,7 +38,7 @@ use App\Controllers\Site\{
 };
 use App\Controllers\Site\MyAccount\{
 	MyAccountController,
-	CLientController as CLientControllerSite,
+	ClientController as ClientControllerSite,
 	RequestController as RequestControllerSite,
 	PagSeguroController,
 	PicPayController,
@@ -317,8 +317,8 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 
 		// ROUTES CLIENT
 		Route::group(['prefix' => 'dados-pessoais'], function(){
-			Route::get('/', [CLientControllerSite::class, 'index'])->name('site.myaccount.client');
-			Route::put('/salvar', [CLientControllerSite::class, 'update'])->name('site.myaccount.client.update');
+			Route::get('/', [ClientControllerSite::class, 'index'])->name('site.myaccount.client');
+			Route::put('/salvar', [ClientControllerSite::class, 'update'])->name('site.myaccount.client.update');
 		});
 
 		// ROUTE REQUESTS

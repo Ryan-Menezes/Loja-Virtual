@@ -8,7 +8,7 @@ use Src\Classes\{
 };
 use App\Classes\Payment\{
     PagSeguro,
-    PicPayPIX
+    PicPay
 };
 use App\Models\{
 	Request as RequestModel,
@@ -38,7 +38,8 @@ class PaymentController extends Controller{
             $transaction = $pagseguro->notification($notificationCode);
 
             if($transaction && is_object($transaction) && $transaction->code){
-                $requestmodel = $this->requestmodel->find(parse_object($transaction->reference));
+                $reference = str_ireplace(config('store.reference_prefix'), '', parse_object($transaction->reference));
+                $requestmodel = $this->requestmodel->find($reference);
 
                 if($requestmodel){
                     $status = $requestmodel->status;
@@ -66,7 +67,8 @@ class PaymentController extends Controller{
 	    $pay = json_decode($content);
 
         if(isset($pay->referenceId)){
-            $requestmodel = $this->requestmodel->find(parse_object($pay->referenceId));
+            $reference = str_ireplace(config('store.reference_prefix'), '', parse_object($pay->referenceId));
+            $requestmodel = $this->requestmodel->find($reference);
 
             if($requestmodel){
                 // Objeto do picpay

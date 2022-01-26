@@ -1,8 +1,9 @@
-<div class="card content-group p-0 {{ $class ?? null }}">
+<div class="card content-group p-0 mb-2 {{ $class ?? null }}">
 	<input type="hidden" name="elements[]" value="IMAGEEDITOR">
 	
 	@if(!isset($notoptions))
 	<div class="card-header">
+		<span>O ideal seria uma imagem de até 300kb que no máximo tenha 1200x1200 de resolução</span>
 		<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento" data-remove="{{ $imageRemove ?? null }}"><i class="fas fa-trash-alt"></i></button>
 	</div>
 	@endif

@@ -1,6 +1,6 @@
 @extends('templates.panel')
 
-@section('title', 'Sub Categorias de: ' . $category->name)
+@section('title', 'Sub Categorias de ' . $category->name)
 
 @section('container')
 @if(can('delete.categories'))
@@ -12,6 +12,10 @@
 @endif
 
 <div class="container-main">
+	<div class="p-4 bg-white border mb-4">
+		<h2 class="p-0 m-0">Sub Categorias de {{ $category->name }}</h2>
+	</div>
+
 	@include('includes.messages')
 
 	<div class="p-4 bg-white border">

@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Depoiment extends Model{
 	public $table = 'depoiments';
-	protected $fillable = ['name', 'content'];
+	protected $fillable = ['name', 'content', 'visible'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){

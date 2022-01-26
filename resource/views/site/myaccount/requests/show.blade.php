@@ -38,7 +38,7 @@
                         @include('includes.components.card', ['title' => 'Débito Online', 'link' => route('site.myaccount.requests.show.debit_online', ['id' => $requestmodel->id]), 'class' => 'text-warning', 'amount' => 'Débito Online', 'icon' => 'fa fa-bank'])
                     @endif
                 @else
-                    @include('includes.components.card', ['title' => 'Pagar Pedido', 'link' => route('site.myaccount.requests.show.checkout', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Pagar Pedido', 'icon' => 'fa fa-money'])
+                    @include('includes.components.card', ['title' => 'Efetuar Pagamento', 'link' => route('site.myaccount.requests.show.checkout', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Efetuar Pagamento', 'icon' => 'fa fa-money'])
                 @endif
         
                 @if(config('store.payment.methods.pix'))

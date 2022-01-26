@@ -2,6 +2,7 @@
 $system = (new \App\Models\System())->firstOrFail();
 
 return [
+	'reference_prefix'					=> 'request_',
 	'installments_amount' 				=> 18,
 	'cart' => [
 		'promotion'						=> $system->store->cart_promotion,

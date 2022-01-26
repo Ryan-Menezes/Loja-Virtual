@@ -92,7 +92,7 @@ class PicPayController extends Controller{
             $picpay->setValue($payment->amount + $payment->shipping_value - $discount);
             $picpay->setCallbackUrl(route('site.notification.picpay'));
             $picpay->setReturnUrl(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
-            $picpay->setReference($requestmodel->id);
+            $picpay->setReference(config('store.reference_prefix') . $requestmodel->id);
             $picpay->setExpiresAt(config('store.payment.credentials.picpay.expiration_minutes'));
             $picpay->setBuyer($firstName, $lastName, $sender_doc, $client->email, $sender_phone);
 

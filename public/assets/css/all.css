@@ -54,3 +54,6 @@
 .modal-load p{
 	margin-top: 20px;
 }
+.ui-tabs .ui-tabs-panel{
+  height: auto!important;
+}

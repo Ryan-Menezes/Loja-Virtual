@@ -519,7 +519,7 @@ if(!function_exists('parse_object')){
 
 if(!function_exists('update_payment_request_pagseguro')){
 	function update_payment_request_pagseguro($pagseguro, $requestmodel): bool{
-		$response = $pagseguro->transaction($requestmodel->id);
+		$response = $pagseguro->transaction(config('store.reference_prefix') . $requestmodel->id);
 		if($response && isset($response->transactions) && !empty($response->transactions)){
 			$transaction = $response->transactions->transaction;
 			
@@ -591,7 +591,7 @@ if(!function_exists('update_payment_request_pagseguro')){
 
 if(!function_exists('update_payment_request_picpay')){
 	function update_payment_request_picpay($picpay, $requestmodel): bool{
-		$response = $picpay->status($requestmodel->id);
+		$response = $picpay->status(config('store.reference_prefix') . $requestmodel->id);
 
 		if($response && isset($response->referenceId)){
 			$transaction = $response;
