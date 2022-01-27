@@ -137,23 +137,39 @@ class SystemController extends Controller{
 		$data['cart_amount_promotion'] = number($data['cart_amount_promotion']);
 		$data['postal_code_origin'] = preg_replace('/[^\d]/i', '', $data['postal_code_origin']);
 
+		$pagseguro_data = [
+			'active' => $data['active_pagseguro'] ?? 1,
+			'email' => $data['email_pagseguro'] ?? null,
+			'token' => $data['token_pagseguro'] ?? null,
+			'app_id' => $data['app_id_pagseguro'] ?? null,
+			'app_key' => $data['app_key_pagseguro'] ?? null,
+			'type_checkout' => $data['type_checkout_pagseguro'] ?? 'LR'
+		];
+
+		$mercadopago_data = [
+			'active' => $data['active_mercadopago'] ?? 1,
+			'access_token' => $data['access_token_mercadopago'] ?? null,
+			'public_key' => $data['public_key_mercadopago'] ?? null,
+			'type_checkout' => $data['type_checkout_mercadopago'] ?? 'LR'
+		];
+
+		$picpay_data = [
+			'active' => $data['active_picpay'] ?? 1,
+			'token' => $data['token_picpay'] ?? null,
+			'seller_token' => $data['seller_token_picpay'] ?? null,
+			'expiration_minutes' => $data['expiration_minutes_picpay'] ?? null
+		];
+
 		$this->validator($data, $store->rolesUpdate, $store->messages);
 		$this->validator($data, $store->freight->rolesUpdate, $store->freight->messages);
-		$this->validator($data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
-		$this->validator($data, $store->picpay->rolesUpdate, $store->picpay->messages);
+		$this->validator($pagseguro_data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
+		$this->validator($mercadopago_data, $store->mercadopago->rolesUpdate, $store->mercadopago->messages);
+		$this->validator($picpay_data, $store->picpay->rolesUpdate, $store->picpay->messages);
 
 		$store->freight->update($data);
-		$store->pagseguro->update([
-			'email' => $data['email_pagseguro'],
-			'token' => $data['token_pagseguro'],
-			'app_id' => $data['app_id_pagseguro'],
-			'app_key' => $data['app_key_pagseguro']
-		]);
-		$store->picpay->update([
-			'token' => $data['token_picpay'],
-			'seller_token' => $data['seller_token_picpay'],
-			'expiration_minutes' => $data['expiration_minutes_picpay']
-		]);
+		$store->pagseguro->update($pagseguro_data);
+		$store->mercadopago->update($mercadopago_data);
+		$store->picpay->update($picpay_data);
 
 		// Atualizando as faixas de cep
 		$store->freight->freight_customized()->delete();

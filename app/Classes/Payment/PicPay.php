@@ -124,7 +124,7 @@ class PicPay{
             }
 
             $response = $this->curl($url, ["x-picpay-token: {$this->picpay_token}", 'Content-Type: application/x-www-form-urlencoded; charset=utf-8'], true, true, true, $data);
-
+            
             if(!empty($response)){
                 $response = json_decode($response);
             }else{

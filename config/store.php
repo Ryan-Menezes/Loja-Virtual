@@ -17,15 +17,10 @@ return [
 	],
 	'payment' => [
 		'production' 					=> (bool)$system->store->payment_production,
+		'checkout_transparent'			=> (bool)$system->store->payment_checkout_transparent,
 		'types' => [
 			'pagseguro'					=> (bool)($system->store->payment_type == 'PS'),
-			'mercadopago'				=> (bool)($system->store->payment_type == 'MP'),
-			'paypal'					=> (bool)($system->store->payment_type == 'PP')
-		],
-		'checkouts' => [
-			'transparent'				=> (bool)($system->store->payment_type_checkout == 'CT'),
-			'redirect'					=> (bool)($system->store->payment_type_checkout == 'LR'),
-			'lightbox'					=> (bool)($system->store->payment_type_checkout == 'LB')
+			'mercadopago'				=> (bool)($system->store->payment_type == 'MP')
 		],
 		'methods' => [
 			'credit_card' 				=> (bool)$system->store->payment_credit_card,
@@ -33,18 +28,31 @@ return [
 			'balance'					=> (bool)$system->store->payment_balance,
 			'bolet' 					=> (bool)$system->store->payment_bolet,
 			'deposit'					=> (bool)$system->store->payment_deposit,
-			'debit_online' 				=> (bool)$system->store->payment_debit_online,
-			'pix'						=> (bool)$system->store->payment_pix,
-			'paypal'					=> (bool)$system->store->payment_paypal
+			'debit_online' 				=> (bool)$system->store->payment_debit_online
 		],
 		'credentials' => [
 			'pagseguro' => [
+				'active'				=> $system->store->pagseguro->active,
 				'email' 				=> $system->store->pagseguro->email,
 				'token' 				=> $system->store->pagseguro->token,
 				'app_id'				=> $system->store->pagseguro->app_id,
-				'app_key'				=> $system->store->pagseguro->app_key
+				'app_key'				=> $system->store->pagseguro->app_key,
+				'checkouts' => [
+					'redirect'			=> (bool)($system->store->pagseguro->type_checkout == 'LR'),
+					'lightbox'			=> (bool)($system->store->pagseguro->type_checkout == 'LB')
+				]
+			],
+			'mercadopago' => [
+				'active'				=> $system->store->mercadopago->active,
+				'public_key'			=> $system->store->mercadopago->public_key,
+				'access_token' 			=> $system->store->mercadopago->access_token,
+				'checkouts' => [
+					'redirect'			=> (bool)($system->store->mercadopago->type_checkout == 'LR'),
+					'lightbox'			=> (bool)($system->store->mercadopago->type_checkout == 'LB')
+				]
 			],
 			'picpay' => [
+				'active'				=> $system->store->picpay->active,
 				'token' 				=> $system->store->picpay->token,
 				'seller_token'			=> $system->store->picpay->seller_token,
 				'expiration_minutes'	=> $system->store->picpay->expiration_minutes

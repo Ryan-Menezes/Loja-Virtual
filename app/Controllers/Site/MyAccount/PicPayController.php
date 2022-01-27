@@ -95,7 +95,7 @@ class PicPayController extends Controller{
             $picpay->setReference(config('store.reference_prefix') . $requestmodel->id);
             $picpay->setExpiresAt(config('store.payment.credentials.picpay.expiration_minutes'));
             $picpay->setBuyer($firstName, $lastName, $sender_doc, $client->email, $sender_phone);
-
+            
             $response = $picpay->pix();
 
             if(isset($response->paymentUrl) && isset($response->qrcode) && isset($response->qrcode->base64)){

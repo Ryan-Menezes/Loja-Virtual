@@ -18,9 +18,9 @@
                 <p>Ao clicar no botão abaixo você será redirecionado ao checkout seguro do pagseguro, e por lá efetuará o seu pagamento.</p>
 
                 @if(config('store.payment.production'))
-                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
+                <a href="https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Efetuar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
                 @else
-                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Finalizar pagamento do pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Pagar R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
+                <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Efetuar Pagamento do pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
                 @endif
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -30,7 +30,7 @@
     </section>
     @endsection
 
-    @if(config('store.payment.checkouts.lightbox'))
+    @if(config('store.payment.credentials.pagseguro.checkouts.lightbox'))
         @section('scripts')
             @if(config('store.payment.production'))
             <script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.lightbox.js"></script>

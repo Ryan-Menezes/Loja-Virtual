@@ -22,7 +22,7 @@
                 <form action="{{ route('site.myaccount.requests.show.bolet.store', ['id' => $requestmodel->id]) }}" method="POST" id="form-payment">
                     <input type="hidden" name="session_id" id="session_id" value="{{ $session_id }}">
                     <input type="hidden" name="sender_hash" id="sender_hash">
-                    <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Gerar boleto para o este valor: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
+                    <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Gerar boleto para o este valor: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
                 </form>
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />

@@ -104,37 +104,6 @@
 	<div class="card mb-4">
 		<div class="card-header p-3"><strong>Configurações de Pagamento</strong></div>
 		<div class="card-body">
-			<div class="row">
-				<div class="col-md-6">
-					@include('includes.components.form.select', [
-						'name' => 'payment_type', 
-						'title' => 'Tipo de Pagamento',
-						'value' => (isset($system) && $system->store ? $system->store->payment_type : 'PS'),
-						'options' => [
-							'PS' => 'PagSeguro',
-							'MP' => 'Mercado Pago',
-							'PP' => 'PayPal'
-						],
-						'class' => 'required',
-						'required' => true
-					])
-				</div>
-				<div class="col-md-6">
-					@include('includes.components.form.select', [
-						'name' => 'payment_type_checkout', 
-						'title' => 'Tipo de Checkout',
-						'value' => (isset($system) && $system->store ? $system->store->payment_type_checkout : 'CT'),
-						'options' => [
-							'CT' => 'Checkout Transparente',
-							'LR' => 'Link de Redirecionamento',
-							'LB' => 'LightBox'
-						],
-						'class' => 'required',
-						'required' => true
-					])
-				</div>
-			</div>
-
 			@include('includes.components.form.select', [
 				'name' => 'payment_production', 
 				'title' => 'Modo de Produção',
@@ -146,6 +115,40 @@
 				'class' => 'required',
 				'required' => true
 			])
+
+			<div class="card mb-4">
+				<div class="card-header p-3"><strong>Checkout Transparente</strong></div>
+				<div class="card-body">	
+					<div class="row">
+						<div class="col-md-6">
+							@include('includes.components.form.select', [
+								'name' => 'payment_type', 
+								'title' => 'Tipo de Pagamento',
+								'value' => (isset($system) && $system->store ? $system->store->payment_type : 'PS'),
+								'options' => [
+									'PS' => 'PagSeguro',
+									'MP' => 'Mercado Pago'
+								],
+								'class' => 'required',
+								'required' => true
+							])
+						</div>
+						<div class="col-md-6">
+							@include('includes.components.form.select', [
+								'name' => 'payment_checkout_transparent', 
+								'title' => 'Situação',
+								'value' => (isset($system) && $system->store ? $system->store->payment_checkout_transparent : 1),
+								'options' => [
+									1 => 'Ativado',
+									0 => 'Desativado'
+								],
+								'class' => 'required',
+								'required' => true
+							])
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<div class="card mb-4">
 				<div class="card-header p-3"><strong>Métodos de Pagamento</strong></div>
@@ -236,41 +239,24 @@
 							])
 						</div>
 					</div>
-
-					<div class="row">
-						<div class="col-md-6">
-							@include('includes.components.form.select', [
-								'name' => 'payment_pix', 
-								'title' => 'PIX',
-								'value' => (isset($system) && $system->store ? $system->store->payment_pix : 1),
-								'options' => [
-									1 => 'Ativado',
-									0 => 'Desativado'
-								],
-								'class' => 'required',
-								'required' => true
-							])
-						</div>
-						<div class="col-md-6">
-							@include('includes.components.form.select', [
-								'name' => 'payment_paypal', 
-								'title' => 'PayPal',
-								'value' => (isset($system) && $system->store ? $system->store->payment_paypal : 1),
-								'options' => [
-									1 => 'Ativado',
-									0 => 'Desativado'
-								],
-								'class' => 'required',
-								'required' => true
-							])
-						</div>
-					</div>
 				</div>
 			</div>
 
 			<div class="card mb-4">
-				<div class="card-header p-3"><strong>Credenciais PagSeguro</strong></div>
-				<div class="card-body">		
+				<div class="card-header p-3"><strong>PagSeguro</strong></div>
+				<div class="card-body">	
+					@include('includes.components.form.select', [
+						'name' => 'active_pagseguro', 
+						'title' => 'Situação',
+						'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+					
 					@include('includes.components.form.input', [
 						'type' => 'email', 
 						'name' => 'email_pagseguro', 
@@ -303,12 +289,79 @@
 							])
 						</div>
 					</div>
+
+					@include('includes.components.form.select', [
+						'name' => 'type_checkout_pagseguro', 
+						'title' => 'Tipo de Checkout',
+						'value' => (isset($system) && $system->store && $system->store->pagseguro ? $system->store->pagseguro->type_checkout : 'LR'),
+						'options' => [
+							'LR' => 'Link de Redirecionamento',
+							'LB' => 'LightBox'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header p-3"><strong>MercadoPago</strong></div>
+				<div class="card-body">	
+					@include('includes.components.form.select', [
+						'name' => 'active_mercadopago', 
+						'title' => 'Situação',
+						'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+
+					@include('includes.components.form.input', [
+						'type' => 'text', 
+						'name' => 'public_key_mercadopago', 
+						'title' => 'Chave Pública', 
+						'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->public_key : null)
+					])
+					
+					@include('includes.components.form.input', [
+						'type' => 'text', 
+						'name' => 'access_token_mercadopago', 
+						'title' => 'Token de Acesso', 
+						'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->access_token : null)
+					])
+
+					@include('includes.components.form.select', [
+						'name' => 'type_checkout_mercadopago', 
+						'title' => 'Tipo de Checkout',
+						'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->type_checkout : 'LR'),
+						'options' => [
+							'LR' => 'Link de Redirecionamento',
+							'LB' => 'LightBox'
+						],
+						'class' => 'required',
+						'required' => true
+					])
 				</div>
 			</div>
 
 			<div class="card">
-				<div class="card-header p-3"><strong>Credenciais PicPay</strong></div>
+				<div class="card-header p-3"><strong>PicPay(PIX)</strong></div>
 				<div class="card-body">
+					@include('includes.components.form.select', [
+						'name' => 'active_picpay', 
+						'title' => 'Situação',
+						'value' => (isset($system) && $system->store && $system->store->picpay ? $system->store->picpay->active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+
 					@include('includes.components.form.input', [
 						'type' => 'text', 
 						'name' => 'token_picpay', 

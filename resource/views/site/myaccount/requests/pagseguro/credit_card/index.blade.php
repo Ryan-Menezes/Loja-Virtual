@@ -117,7 +117,7 @@
                     </div>
 
                     <br>
-                    <button type="submit" title="Finalizar Pagamento" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px;">Finalizar Pagamento: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
+                    <button type="submit" title="Efetuar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
                 </form>
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />

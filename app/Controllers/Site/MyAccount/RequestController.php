@@ -112,7 +112,7 @@ class RequestController extends Controller{
 				$picpay = new PicPay($token, $seller_token);
 
 				// Cancela a transação
-				$response = $picpay->cancel($requestmodel->id);
+				$response = $picpay->cancel(config('store.reference_prefix') . $requestmodel->id);
 
 				// Verifica se a transação para este pedido já foi feita
 				update_payment_request_picpay($picpay, $requestmodel);

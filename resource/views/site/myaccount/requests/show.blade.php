@@ -21,7 +21,7 @@
             <h2 style="margin-top: 20px;">Pagamento</h2><hr />
 
             <div class="cards">
-                @if(config('store.payment.checkouts.transparent'))
+                @if(config('store.payment.checkout_transparent'))
                     @if(config('store.payment.methods.credit_card'))
                         @include('includes.components.card', ['title' => 'Cartão de Crédito', 'link' => route('site.myaccount.requests.show.credit_card', ['id' => $requestmodel->id]), 'class' => 'text-danger', 'amount' => 'Cartão de Crédito', 'icon' => 'fa fa-credit-card'])
                     @endif
@@ -37,16 +37,18 @@
                     @if(config('store.payment.methods.debit_online'))
                         @include('includes.components.card', ['title' => 'Débito Online', 'link' => route('site.myaccount.requests.show.debit_online', ['id' => $requestmodel->id]), 'class' => 'text-warning', 'amount' => 'Débito Online', 'icon' => 'fa fa-bank'])
                     @endif
-                @else
-                    @include('includes.components.card', ['title' => 'Efetuar Pagamento', 'link' => route('site.myaccount.requests.show.checkout', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Efetuar Pagamento', 'icon' => 'fa fa-money'])
+                @endif
+
+                @if(config('store.payment.pagseguro.active'))
+                    @include('includes.components.card', ['title' => 'PagSeguro', 'link' => route('site.myaccount.requests.show.pagseguro', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Pagseguro', 'icon' => 'fa fa-money'])
+                @endif
+
+                @if(config('store.payment.mercadopago.active'))
+                    @include('includes.components.card', ['title' => 'Mercado Pago', 'link' => route('site.myaccount.requests.show.mercadopago', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Mercado Pago', 'icon' => 'fa fa-money'])
                 @endif
         
-                @if(config('store.payment.methods.pix'))
+                @if(config('store.payment.picpay.active'))
                     @include('includes.components.card', ['title' => 'PIX', 'link' => route('site.myaccount.requests.show.pix', ['id' => $requestmodel->id]), 'class' => 'text-success', 'amount' => 'PIX', 'icon' => 'fa fa-qrcode'])
-                @endif
-                
-                @if(config('store.payment.methods.paypal'))
-                    @include('includes.components.card', ['title' => 'PayPal', 'link' => route('site.myaccount.requests.show.paypal', ['id' => $requestmodel->id]), 'class' => 'text-primary', 'amount' => 'PayPal', 'icon' => 'fa fa-paypal'])
                 @endif
             </div>
             @elseif($requestmodel->payment->status_type != 'PA' && $requestmodel->payment->status_type != 'CA')

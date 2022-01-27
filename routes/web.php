@@ -41,6 +41,7 @@ use App\Controllers\Site\MyAccount\{
 	ClientController as ClientControllerSite,
 	RequestController as RequestControllerSite,
 	PagSeguroController,
+	MercadoPagoController,
 	PicPayController,
 	AddressController,
 	CardController,
@@ -330,20 +331,35 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 				Route::post('/cancelar', [RequestControllerSite::class, 'cancel'])->name('site.myaccount.requests.cancel');
 				Route::post('/reembolsar', [RequestControllerSite::class, 'refund'])->name('site.myaccount.requests.refund');
 
-				if(config('store.payment.types.pagseguro')){
-					if(!config('store.payment.checkouts.transparent')){
-						Route::get('/pagar', [PagSeguroController::class, 'checkout'])->name('site.myaccount.requests.show.checkout');
-					}else{
-						Route::get('/cartao-de-credito', [PagSeguroController::class, 'creditCard'])->name('site.myaccount.requests.show.credit_card');
-						Route::post('/cartao-de-credito', [PagSeguroController::class, 'creditCardStore'])->name('site.myaccount.requests.show.credit_card.store');
-						Route::get('/boleto', [PagSeguroController::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
-						Route::post('/boleto', [PagSeguroController::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
-						Route::get('/debito-online', [PagSeguroController::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
-						Route::post('/debito-online', [PagSeguroController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
-					}
+				// Checkouts
+				if(config('store.payment.pagseguro.active')){
+					Route::get('/pagseguro', [PagSeguroController::class, 'checkout'])->name('site.myaccount.requests.show.pagseguro');
 				}
 
-				Route::get('/pix', [PicPayController::class, 'pix'])->name('site.myaccount.requests.show.pix');
+				if(config('store.payment.mercadopago.active')){
+					Route::get('/mercado-pago', [MercadoPagoController::class, 'checkout'])->name('site.myaccount.requests.show.mercadopago');
+				}
+
+				if(config('store.payment.picpay.active')){
+					Route::get('/pix', [PicPayController::class, 'pix'])->name('site.myaccount.requests.show.pix');
+				}
+
+				// Checkout transparent
+				if(config('store.payment.types.pagseguro')){
+					Route::get('/cartao-de-credito', [PagSeguroController::class, 'creditCard'])->name('site.myaccount.requests.show.credit_card');
+					Route::post('/cartao-de-credito', [PagSeguroController::class, 'creditCardStore'])->name('site.myaccount.requests.show.credit_card.store');
+					Route::get('/boleto', [PagSeguroController::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
+					Route::post('/boleto', [PagSeguroController::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
+					Route::get('/debito-online', [PagSeguroController::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
+					Route::post('/debito-online', [PagSeguroController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
+				}else if(config('store.payment.types.mercadopago')){
+					Route::get('/cartao-de-credito', [MercadoPagoController::class, 'creditCard'])->name('site.myaccount.requests.show.credit_card');
+					Route::post('/cartao-de-credito', [MercadoPagoController::class, 'creditCardStore'])->name('site.myaccount.requests.show.credit_card.store');
+					Route::get('/boleto', [MercadoPagoController::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
+					Route::post('/boleto', [MercadoPagoController::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
+					Route::get('/debito-online', [MercadoPagoController::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
+					Route::post('/debito-online', [MercadoPagoController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
+				}
 			});
 		});
 

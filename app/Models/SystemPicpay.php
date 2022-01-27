@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemPicpay extends Model{
 	public $table = 'system_picpay';
-	protected $fillable = ['token', 'seller_token', 'expiration_minutes'];
+	protected $fillable = ['active', 'token', 'seller_token', 'expiration_minutes'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){

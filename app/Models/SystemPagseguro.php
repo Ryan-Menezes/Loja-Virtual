@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SystemPagseguro extends Model{
 	public $table = 'system_pagseguro';
-	protected $fillable = ['email', 'token', 'app_id', 'app_key'];
+	protected $fillable = ['active', 'email', 'token', 'app_id', 'app_key', 'type_checkout'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
