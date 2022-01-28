@@ -26,15 +26,15 @@
                         @include('includes.components.card', ['title' => 'Cartão de Crédito', 'link' => route('site.myaccount.requests.show.credit_card', ['id' => $requestmodel->id]), 'class' => 'text-danger', 'amount' => 'Cartão de Crédito', 'icon' => 'fa fa-credit-card'])
                     @endif
 
-                    @if(config('store.payment.methods.debit_card') && !config('store.types.pagseguro'))
+                    @if(config('store.payment.methods.debit_card') && !config('store.types.pagseguro') && !config('store.types.mercadopago'))
                         @include('includes.components.card', ['title' => 'Cartão de Débito', 'link' => route('site.myaccount.requests.show.debit_card', ['id' => $requestmodel->id]), 'class' => 'text-info', 'amount' => 'Cartão de Débito', 'icon' => 'fa fa-credit-card'])
                     @endif
 
-                    @if(config('store.payment.methods.bolet') && !config('store.payment.types.paypal'))
+                    @if(config('store.payment.methods.bolet'))
                         @include('includes.components.card', ['title' => 'Boleto', 'link' => route('site.myaccount.requests.show.bolet', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Boleto', 'icon' => 'fa fa-barcode'])
                     @endif
                     
-                    @if(config('store.payment.methods.debit_online'))
+                    @if(config('store.payment.methods.debit_online') && !config('store.types.mercadopago'))
                         @include('includes.components.card', ['title' => 'Débito Online', 'link' => route('site.myaccount.requests.show.debit_online', ['id' => $requestmodel->id]), 'class' => 'text-warning', 'amount' => 'Débito Online', 'icon' => 'fa fa-bank'])
                     @endif
                 @endif

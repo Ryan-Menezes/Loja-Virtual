@@ -242,7 +242,7 @@ class PagSeguroController extends Controller{
 
             // Validando os dados
             $data['number'] = preg_replace('/\D/i', '', $data['number']);
-            $data['cpf'] = preg_replace('/\D/i', '', $data['cpf']);
+            $data['document'] = preg_replace('/\D/i', '', $data['document']);
             $data['telephone'] = preg_replace('/\D/i', '', $data['telephone']);
 
             $validator = Validator::make($data, [
@@ -250,11 +250,11 @@ class PagSeguroController extends Controller{
                 'brand'                 => 'required|min:1',
                 'credit_card_token'     => 'required|min:1',
                 'number'                => 'required|numeric|min:16|max:16',
-                'cvv'                   => 'required|min:3|max:3',
+                'cvv'                   => 'required|min:3|max:10',
                 'month'                 => 'required|numeric|min:1|max:2',
                 'year'                  => 'required|numeric|min:2|max:2',
                 'name'                  => 'required|min:1',
-                'cpf'                   => 'required|numeric|min:11|max:11',
+                'document'              => 'required|numeric|min:11|max:11',
                 'birth'                 => 'required|min:10|max:10',
                 'telephone'             => 'required|numeric|min:10|max:11',
                 'installments'          => 'required|min:1'
@@ -268,7 +268,7 @@ class PagSeguroController extends Controller{
             }  
 
             $name = $data['name'];
-            $cpf = preg_replace('/\D/i', '', $data['cpf']);
+            $document = preg_replace('/\D/i', '', $data['document']);
             $birth = date('d/m/Y', strtotime($data['birth']));
             $telephone = preg_replace('/\D/i', '', $data['telephone']);
 
@@ -324,7 +324,7 @@ class PagSeguroController extends Controller{
             $pagseguro->setReference(config('store.reference_prefix') . $requestmodel->id);
             $pagseguro->setSender($client->name, $sender_doc, $sender_phone, $client->email, $data['sender_hash']);
             $pagseguro->setInstallment($installment_quantity, $installment_value, $installment_no_interest);
-            $pagseguro->setCreditCard($data['credit_card_token'], $name, $cpf, $birth, $telephone);
+            $pagseguro->setCreditCard($data['credit_card_token'], $name, $document, $birth, $telephone);
             $pagseguro->setShippingAddress(true, $shipping_types[$payment->shipping_type], $payment->shipping_value, $address->postal_code, $address->street, $address->number, $address->district, $address->city, $address->state, $address->complement);
             $pagseguro->setBillingAddress($client->billing_address->postal_code, $client->billing_address->street, $client->billing_address->number, $client->billing_address->district, $client->billing_address->city, $client->billing_address->state, $client->billing_address->complement);
 
@@ -338,11 +338,6 @@ class PagSeguroController extends Controller{
             update_payment_request_pagseguro($pagseguro, $requestmodel);
             
             if(is_object($response) && $response->code){
-                if(!$client->cards()->where('number', $data['number'])->where('cvv', $data['cvv'])->first()){
-                    $data['type'] = 'C';
-                    $client->cards()->create($data);
-                }
-
                 return json_encode([
                     'result'	=> true,
                     'data' 		=> $response

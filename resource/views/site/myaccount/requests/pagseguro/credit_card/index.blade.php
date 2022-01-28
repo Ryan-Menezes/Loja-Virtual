@@ -40,7 +40,7 @@
                                 <label class="form-label"><strong>Número:</strong></label>
                                 <div class="input-group">
                                     <input type="text" name="number" class="form-control required credit-number-mask number_card" placeholder="Número" required />
-                                    <span class="input-group-addon brand-card" id="basic-addon2"></span>
+                                    <span class="input-group-addon brand-card"></span>
                                 </div>
                             </div>
                         </div>
@@ -82,33 +82,33 @@
                         'required' => true
                     ])
 
-                    <br /><h3>Dados do Dono do Cartão</h3><hr />
+                    <br /><h3>Dados do dono do cartão</h3><hr />
 
-                    <div class="row">
-                        <div class="col-md-4">
+                    <div class="row">       
+                        <div class="col-md-12" style="margin-bottom: 20px;">
                             @include('includes.components.form.input', [
                                 'type' => 'text', 
-                                'name' => 'cpf', 
-                                'title' => 'CPF do Dono do Cartão', 
-                                'class' => 'required cpf-mask',
+                                'name' => 'document', 
+                                'title' => 'Documento do dono do cartão', 
+                                'class' => 'required cpf-mask col-md-6',
                                 'required' => true
                             ])
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             @include('includes.components.form.input', [
                                 'type' => 'date', 
                                 'name' => 'birth', 
-                                'title' => 'Nascimento do Dono do Cartão', 
+                                'title' => 'Nascimento do dono do cartão', 
                                 'value' => (isset($card) ? $card->birth : null),
                                 'class' => 'required',
                                 'required' => true
                             ])
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             @include('includes.components.form.input', [
                                 'type' => 'text', 
                                 'name' => 'telephone', 
-                                'title' => 'Telefone do Dono do Cartão', 
+                                'title' => 'Telefone do dono do cartão', 
                                 'value' => (isset($card) ? $card->telephone : null),
                                 'class' => 'required phone-mask',
                                 'required' => true
@@ -117,7 +117,7 @@
                     </div>
 
                     <br>
-                    <button type="submit" title="Efetuar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
+                    <button type="submit" title="Efetuar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></button>
                 </form>
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -150,9 +150,9 @@
                 // Pega a bandeira do cartão
                 $('.number_card').keyup(function(){
                     $('#brand').val('')
-                    $('.brand-card').html('')
-                    $('.installments_card').html('')
-                    $('#message-request').text('').hide()
+                    $('.brand-card').empty()
+                    $('.installments_card').empty()
+                    $('#message-request').empty().hide()
 
                     let number = $(this).val().replace(/\D/ig, '')
 
@@ -188,19 +188,19 @@
                 $('#form-payment').submit(function(){
                     event.preventDefault()
 
-                    let form            = this
-                    let brand           = $('#brand').val()
-                    let name            = $(form).find('input[name=name]').val()
-                    let number          = $(form).find('input[name=number]').val().replace(/\D/ig, '')
-                    let cvv             = $(form).find('input[name=cvv]').val()
-                    let month           = $(form).find('select[name=month]').val()
-                    let year            = $(form).find('select[name=year]').val()
-                    let cpf             = $(form).find('input[name=cpf]').val().replace(/\D/ig, '')
-                    let birth           = $(form).find('input[name=birth]').val()
-                    let telephone       = $(form).find('input[name=telephone]').val().replace(/\D/ig, '')
-                    let installments    = $(form).find('select[name=installments]').val()
+                    const form            = this
+                    const brand           = $('#brand').val()
+                    const name            = $(form).find('input[name=name]').val()
+                    const number          = $(form).find('input[name=number]').val().replace(/\D/ig, '')
+                    const cvv             = $(form).find('input[name=cvv]').val()
+                    const month           = $(form).find('select[name=month]').val()
+                    const year            = $(form).find('select[name=year]').val()
+                    const document        = $(form).find('input[name=document]').val().replace(/\D/ig, '')
+                    const birth           = $(form).find('input[name=birth]').val()
+                    const telephone       = $(form).find('input[name=telephone]').val().replace(/\D/ig, '')
+                    const installments    = $(form).find('select[name=installments]').val()
 
-                    if(brand && name && number.length == 16 && cvv.length == 3 && month && year && cpf.length == 11 && birth.length == 10 && telephone.length == 10 && installments){
+                    if(brand && name && number.length >= 15 && cvv.length >= 3 && month && year && document.length >= 11 && birth.length == 10 && telephone.length >= 10 && installments){
                         getCardToken(number, brand, cvv, month, '20' + year, function(response){
                             $('#credit_card_token').val(response.card.token)
 

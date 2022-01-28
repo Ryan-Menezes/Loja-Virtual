@@ -131,13 +131,13 @@ $(document).ready(function(){
 
     $('.credit-number-mask').mask('9999 9999 9999 9999')
     $('*').delegate('.credit-number-mask', 'focus load', function(){
-        $(this).mask('9999 9999 9999 9999')
+        $(this).mask('999999999999999#')
         return false
     })
 
     $('.cvv-mask').mask('999')
     $('*').delegate('.cvv-mask', 'focus load', function(){
-        $(this).mask('999')
+        $(this).mask('999#######')
         return false
     })
 

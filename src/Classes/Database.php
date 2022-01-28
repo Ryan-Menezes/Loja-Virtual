@@ -1,6 +1,7 @@
 <?php
 namespace Src\Classes;
 
+use PDOException;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
@@ -40,7 +41,7 @@ class Database{
 			// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 			$capsule->bootEloquent();
 		}catch(PDOException $error){
-			$this->addError($error->getCode(), $error->getMessage(), $error->getLine(), $error->getFile());
+			self::addError($error->getCode(), $error->getMessage(), $error->getLine(), $error->getFile());
 		}
 	}
 
@@ -49,7 +50,7 @@ class Database{
 	  *
 	  * @return array
 	  */
-	public function errors() : array{
+	public static function errors() : array{
 		return (array) self::$errors;
 	}
 
@@ -63,7 +64,7 @@ class Database{
 	  *
 	  * @return void
 	  */
-	private function addError(string $code, string $message, string $line, string $file) : void{
+	private static function addError(string $code, string $message, string $line, string $file) : void{
 		self::$errors[] = "ERROR: {$message} on line 10 in {$file} file";
 	}
 }

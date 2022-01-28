@@ -11,6 +11,10 @@ use Src\Classes\SiteMap\{
 	SiteMap,
 	SiteMapImage
 };
+use App\Classes\Payment\{
+	PagSeguro,
+	MercadoPago
+};
 use App\Classes\FreteCorreios;
 use App\Models\Permission;
 
@@ -562,6 +566,71 @@ if(!function_exists('update_payment_request_pagseguro')){
 				]);
 
 				$sta = $status[parse_object($transaction->status) - 1];
+
+				$status = [
+					'AP' => 'AP',
+					'PA' => 'PA',
+					'CA' => 'CA'
+				];
+
+				if(array_key_exists($sta, $status) && $status[$sta] != $requestmodel->status){
+					if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
+						$requestmodel->update([
+							'status' => $status[$sta]
+						]);	
+					}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
+						$requestmodel->update([
+							'status' => $status[$sta]
+						]);
+					}
+				}
+
+				return true;
+			}
+		}
+
+		return false;
+	}
+}
+
+if(!function_exists('update_payment_request_mercadopago')){
+	function update_payment_request_mercadopago($requestmodel): bool{
+		$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
+
+		$response = $mercadopago->transaction(config('store.reference_prefix') . $requestmodel->id);
+		if($response && isset($response->results) && !empty($response->results)){
+			$transaction = end($response->results);	
+			$transaction = $mercadopago->transactionDetails($transaction->id);
+
+			if($transaction->id && parse_object($transaction->status) != 'rejected'){
+				$status = [
+					'pending'		=> 'AP',
+					'in_process' 	=> 'EA', 
+					'approved' 		=> 'PA',
+					'refunded'		=> 'DE',
+					'cancelled'		=> 'CA'
+				];
+				$methods = [
+					'credit_card' 	=> 'CC',
+					'debit_card'	=> 'CD',
+					'ticket' 		=> 'BO',
+					'account_money' => 'BA',
+					'bank_transfer' => 'DE'
+				];
+
+				$requestmodel->payment->update([
+					'code' 					=> parse_object($transaction->id),
+					'type' 					=> 'MP',
+					'method'				=> $methods[parse_object($transaction->payment_type_id)] ?? null,
+					'status'				=> parse_object($transaction->status),
+					'status_type'			=> $status[parse_object($transaction->status)],
+					'installments'			=> (isset($transaction->installments) ? parse_object($transaction->installments) : 1),
+					'discount_installment'	=> 0,
+					'link'					=> (isset($transaction->transaction_details->external_resource_url) ? parse_object($transaction->transaction_details->external_resource_url) : null),
+					'details'				=> json_encode($transaction)
+				]);
+
+				$sta = $status[parse_object($transaction->status)];
 
 				$status = [
 					'AP' => 'AP',

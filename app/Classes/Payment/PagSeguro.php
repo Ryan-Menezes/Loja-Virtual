@@ -193,10 +193,10 @@ class PagSeguro{
         $this->installment['no_interest_quantity']  = $no_interest_quantity;
     }
 
-    public function setCreditCard(string $token, string $name, string $cpf, string $birth_date, string $telephone){
+    public function setCreditCard(string $token, string $name, string $document, string $birth_date, string $telephone){
         $this->creditCard['token']                              = $token;
         $this->creditCard['holder']['name']                     = $name;
-        $this->creditCard['holder']['cpf']                      = $cpf;
+        $this->creditCard['holder']['document']                 = $document;
         $this->creditCard['holder']['birth_date']               = $birth_date;
         $this->creditCard['holder']['telephone']['ddd']         = mb_substr($telephone, 0, 2);
         $this->creditCard['holder']['telephone']['number']      = mb_substr($telephone, 2);
@@ -488,7 +488,7 @@ class PagSeguro{
             // CreditCard Credentials
             $data['creditCardToken']                = $this->creditCard['token'];
             $data['creditCardHolderName']           = $this->creditCard['holder']['name'];
-            $data['creditCardHolderCPF']            = $this->creditCard['holder']['cpf'];
+            $data['creditCardHolderCPF']            = $this->creditCard['holder']['document'];
             $data['creditCardHolderBirthDate']      = $this->creditCard['holder']['birth_date'];
             $data['creditCardHolderAreaCode']       = $this->creditCard['holder']['telephone']['ddd'];
             $data['creditCardHolderPhone']          = $this->creditCard['holder']['telephone']['number'];

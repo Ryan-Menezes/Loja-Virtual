@@ -357,8 +357,6 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 					Route::post('/cartao-de-credito', [MercadoPagoController::class, 'creditCardStore'])->name('site.myaccount.requests.show.credit_card.store');
 					Route::get('/boleto', [MercadoPagoController::class, 'bolet'])->name('site.myaccount.requests.show.bolet');
 					Route::post('/boleto', [MercadoPagoController::class, 'boletStore'])->name('site.myaccount.requests.show.bolet.store');
-					Route::get('/debito-online', [MercadoPagoController::class, 'debitOnline'])->name('site.myaccount.requests.show.debit_online');
-					Route::post('/debito-online', [MercadoPagoController::class, 'debitOnlineStore'])->name('site.myaccount.requests.show.debit_online.store');
 				}
 			});
 		});

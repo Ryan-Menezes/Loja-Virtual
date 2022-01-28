@@ -19,7 +19,7 @@
 
                 <div class="btn-payment" style="margin: 30px 0px;">
                     @if(!config('store.payment.credentials.mercadopago.checkouts.lightbox'))
-                    <a href="{{ $preference->init_point }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="padding: 15px;">Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</a>
+                    <a href="{{ $preference->init_point }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="padding: 15px; width: 100%;"><strong>Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></a>
                     @endif
                 </div>
 
@@ -33,12 +33,11 @@
     @if(config('store.payment.credentials.mercadopago.checkouts.lightbox'))
         @section('scripts')
         <script src="https://sdk.mercadopago.com/js/v2"></script>
-        <script>
+        <script type="text/javascript" src="{{ public_path('assets/js/site/mercadopago.js') }}"></script>
+
+        <script type="text/javascript">
             $(document).ready(function(){
-                // Adicione as credenciais do SDK
-                const mp = new MercadoPago("{{ config('store.payment.credentials.mercadopago.public_key') }}", {
-                    locale: 'pt-BR'
-                })
+                setPublicKey("{{ config('store.payment.credentials.mercadopago.public_key') }}")
 
                 const checkout = mp.checkout({
                     preference: {

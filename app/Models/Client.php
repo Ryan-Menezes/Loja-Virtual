@@ -96,11 +96,7 @@ class Client extends Model{
 			abort(404);
 		}
 	}
-
-	public function cards(){
-		return $this->hasMany(ClientCard::class, 'client_id', 'id');
-	}
-
+	
 	public function adresses(){
 		return $this->hasMany(ClientAddress::class, 'client_id', 'id');
 	}

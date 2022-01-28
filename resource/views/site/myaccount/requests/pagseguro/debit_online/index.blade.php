@@ -26,7 +26,7 @@
                     <label>Selecione o banco que executará o pagamento por débito online:</label>
                     <select name="bank" class="form-control" id="banks"></select>
 
-                    <button type="submit" title="Gerar link de pagamento" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px;">Gerar link de pagamento para o valor: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</button>
+                    <button type="submit" title="Gerar link de pagamento" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar link de pagamento para o valor: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></button>
                 </form>
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />

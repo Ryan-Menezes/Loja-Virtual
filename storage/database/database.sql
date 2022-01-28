@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Tempo de geração: 27-Jan-2022 às 17:57
--- Versão do servidor: 5.7.36
--- versão do PHP: 8.0.13
+-- Host: 127.0.0.1
+-- Tempo de geração: 28-Jan-2022 às 21:01
+-- Versão do servidor: 10.4.22-MariaDB
+-- versão do PHP: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,15 +27,13 @@ SET time_zone = "+00:00";
 -- Estrutura da tabela `banners`
 --
 
-DROP TABLE IF EXISTS `banners`;
-CREATE TABLE IF NOT EXISTS `banners` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `banners` (
+  `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `banners`
@@ -52,16 +50,12 @@ INSERT INTO `banners` (`id`, `title`, `description`, `link`, `image`) VALUES
 -- Estrutura da tabela `categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `categories` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `categories`
@@ -94,9 +88,8 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `description`) VALUES
 -- Estrutura da tabela `clients`
 --
 
-DROP TABLE IF EXISTS `clients`;
-CREATE TABLE IF NOT EXISTS `clients` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `clients` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -107,17 +100,12 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `google_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `facebook_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `validated` tinyint(1) NOT NULL DEFAULT '0',
+  `validated` tinyint(1) NOT NULL DEFAULT 0,
   `shipping_address_id` int(10) UNSIGNED DEFAULT NULL,
   `billing_address_id` int(10) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`),
-  UNIQUE KEY `token` (`token`),
-  KEY `clients_ibfk_1` (`shipping_address_id`),
-  KEY `clients_ibfk_2` (`billing_address_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `clients`
@@ -133,20 +121,17 @@ INSERT INTO `clients` (`id`, `name`, `email`, `password`, `telephone`, `cell`, `
 -- Estrutura da tabela `client_adresses`
 --
 
-DROP TABLE IF EXISTS `client_adresses`;
-CREATE TABLE IF NOT EXISTS `client_adresses` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `client_adresses` (
+  `id` int(11) UNSIGNED NOT NULL,
   `postal_code` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
   `district` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `complement` text COLLATE utf8mb4_unicode_ci,
-  `client_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `client_id` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `complement` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `client_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `client_adresses`
@@ -161,54 +146,19 @@ INSERT INTO `client_adresses` (`id`, `postal_code`, `street`, `number`, `distric
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `client_cards`
---
-
-DROP TABLE IF EXISTS `client_cards`;
-CREATE TABLE IF NOT EXISTS `client_cards` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `number` char(16) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cvv` char(3) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `month` tinyint(2) UNSIGNED ZEROFILL NOT NULL,
-  `year` tinyint(2) NOT NULL,
-  `brand` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` enum('C','D') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'C' COMMENT 'C - Crédito | D- Débito',
-  `cpf` char(11) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `birth` date NOT NULL,
-  `telephone` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `client_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `client_id` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `client_cards`
---
-
-INSERT INTO `client_cards` (`id`, `name`, `number`, `cvv`, `month`, `year`, `brand`, `type`, `cpf`, `birth`, `telephone`, `client_id`) VALUES
-(3, 'Carlos Oliveira', '4111111111111111', '123', 12, 30, 'visa', 'C', '53881489800', '1980-02-01', '1199999999', 10),
-(4, 'Ryan Menezes', '4111111111111111', '123', 12, 30, 'visa', 'C', '53881489800', '2022-01-30', '1199999999', 9);
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `comments`
 --
 
-DROP TABLE IF EXISTS `comments`;
-CREATE TABLE IF NOT EXISTS `comments` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `comments` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `visible` tinyint(1) NOT NULL,
   `notice_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `notice_id` (`notice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `comments`
@@ -225,15 +175,12 @@ INSERT INTO `comments` (`id`, `name`, `email`, `content`, `visible`, `notice_id`
 -- Estrutura da tabela `coupons`
 --
 
-DROP TABLE IF EXISTS `coupons`;
-CREATE TABLE IF NOT EXISTS `coupons` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `coupons` (
+  `id` int(11) UNSIGNED NOT NULL,
   `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `percent` tinyint(100) UNSIGNED NOT NULL,
-  `expiration` date DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `code` (`code`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `expiration` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `coupons`
@@ -248,14 +195,12 @@ INSERT INTO `coupons` (`id`, `code`, `percent`, `expiration`) VALUES
 -- Estrutura da tabela `depoiments`
 --
 
-DROP TABLE IF EXISTS `depoiments`;
-CREATE TABLE IF NOT EXISTS `depoiments` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `depoiments` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `visible` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `depoiments`
@@ -270,15 +215,11 @@ INSERT INTO `depoiments` (`id`, `name`, `content`, `visible`) VALUES
 -- Estrutura da tabela `favorites`
 --
 
-DROP TABLE IF EXISTS `favorites`;
-CREATE TABLE IF NOT EXISTS `favorites` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `favorites` (
+  `id` int(10) UNSIGNED NOT NULL,
   `client_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `client_id` (`client_id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `favorites`
@@ -297,14 +238,11 @@ INSERT INTO `favorites` (`id`, `client_id`, `product_id`) VALUES
 -- Estrutura da tabela `galery_images`
 --
 
-DROP TABLE IF EXISTS `galery_images`;
-CREATE TABLE IF NOT EXISTS `galery_images` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `galery_images` (
+  `id` int(10) UNSIGNED NOT NULL,
   `source` varchar(191) NOT NULL,
-  `galery_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `galery_id` (`galery_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+  `galery_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -312,14 +250,12 @@ CREATE TABLE IF NOT EXISTS `galery_images` (
 -- Estrutura da tabela `galleries`
 --
 
-DROP TABLE IF EXISTS `galleries`;
-CREATE TABLE IF NOT EXISTS `galleries` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `galleries` (
+  `id` int(10) UNSIGNED NOT NULL,
   `title` varchar(191) NOT NULL,
   `slug` varchar(191) NOT NULL,
-  `description` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -327,122 +263,17 @@ CREATE TABLE IF NOT EXISTS `galleries` (
 -- Estrutura da tabela `lgpd`
 --
 
-DROP TABLE IF EXISTS `lgpd`;
-CREATE TABLE IF NOT EXISTS `lgpd` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `lgpd` (
+  `id` int(10) UNSIGNED NOT NULL,
   `url` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `ip` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
   `browser` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `device` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `so` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `server` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6523 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Extraindo dados da tabela `lgpd`
---
-
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6431, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"50728\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643290359.174105,\"REQUEST_TIME\":1643290359}', '2022-01-27 13:32:39', '2022-01-27 13:32:39'),
-(6432, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_PURPOSE\":\"prefetch\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64818\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292703.938,\"REQUEST_TIME\":1643292703}', '2022-01-27 14:11:43', '2022-01-27 14:11:43'),
-(6433, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64821\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292704.555338,\"REQUEST_TIME\":1643292704}', '2022-01-27 14:11:44', '2022-01-27 14:11:44'),
-(6434, 'http://www.lojavirtual.com.br/carrinho/adicionar/41', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"0\",\"HTTP_ACCEPT\":\"application\\/json, text\\/javascript, *\\/*; q=0.01\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_X_REQUESTED_WITH\":\"XMLHttpRequest\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64818\",\"REDIRECT_URL\":\"\\/carrinho\\/adicionar\\/41\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\\/adicionar\\/41\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=carrinho\\/adicionar\\/41\",\"REQUEST_URI\":\"\\/carrinho\\/adicionar\\/41\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292708.21394,\"REQUEST_TIME\":1643292708}', '2022-01-27 14:11:48', '2022-01-27 14:11:48'),
-(6435, 'http://www.lojavirtual.com.br/carrinho/adicionar/40', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"0\",\"HTTP_ACCEPT\":\"application\\/json, text\\/javascript, *\\/*; q=0.01\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_X_REQUESTED_WITH\":\"XMLHttpRequest\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64818\",\"REDIRECT_URL\":\"\\/carrinho\\/adicionar\\/40\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\\/adicionar\\/40\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=carrinho\\/adicionar\\/40\",\"REQUEST_URI\":\"\\/carrinho\\/adicionar\\/40\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292709.052035,\"REQUEST_TIME\":1643292709}', '2022-01-27 14:11:49', '2022-01-27 14:11:49'),
-(6436, 'http://www.lojavirtual.com.br/login', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64818\",\"REDIRECT_URL\":\"\\/login\",\"REDIRECT_QUERY_STRING\":\"route=login\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=login\",\"REQUEST_URI\":\"\\/login\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292712.184176,\"REQUEST_TIME\":1643292712}', '2022-01-27 14:11:52', '2022-01-27 14:11:52'),
-(6437, 'http://www.lojavirtual.com.br/login', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"40\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"CONTENT_TYPE\":\"application\\/x-www-form-urlencoded\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/login\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/login\",\"REDIRECT_QUERY_STRING\":\"route=login\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=login\",\"REQUEST_URI\":\"\\/login\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292720.29812,\"REQUEST_TIME\":1643292720}', '2022-01-27 14:12:00', '2022-01-27 14:12:00'),
-(6438, 'http://www.lojavirtual.com.br/minha-conta', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/login\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/minha-conta\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\",\"REQUEST_URI\":\"\\/minha-conta\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292720.443696,\"REQUEST_TIME\":1643292720}', '2022-01-27 14:12:00', '2022-01-27 14:12:00'),
-(6439, 'http://www.lojavirtual.com.br/carrinho', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/carrinho\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=carrinho\",\"REQUEST_URI\":\"\\/carrinho\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292723.453914,\"REQUEST_TIME\":1643292723}', '2022-01-27 14:12:03', '2022-01-27 14:12:03'),
-(6440, 'http://www.lojavirtual.com.br/carrinho/frete', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"20\",\"HTTP_ACCEPT\":\"*\\/*\",\"HTTP_X_REQUESTED_WITH\":\"XMLHttpRequest\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"CONTENT_TYPE\":\"application\\/x-www-form-urlencoded; charset=UTF-8\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/carrinho\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/carrinho\\/frete\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\\/frete\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=carrinho\\/frete\",\"REQUEST_URI\":\"\\/carrinho\\/frete\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292726.73631,\"REQUEST_TIME\":1643292726}', '2022-01-27 14:12:06', '2022-01-27 14:12:06'),
-(6441, 'http://www.lojavirtual.com.br/carrinho/cupom/validar', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"10\",\"HTTP_ACCEPT\":\"*\\/*\",\"HTTP_X_REQUESTED_WITH\":\"XMLHttpRequest\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"CONTENT_TYPE\":\"application\\/x-www-form-urlencoded; charset=UTF-8\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/carrinho\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/carrinho\\/cupom\\/validar\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\\/cupom\\/validar\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=carrinho\\/cupom\\/validar\",\"REQUEST_URI\":\"\\/carrinho\\/cupom\\/validar\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292729.397217,\"REQUEST_TIME\":1643292729}', '2022-01-27 14:12:09', '2022-01-27 14:12:09'),
-(6442, 'http://www.lojavirtual.com.br/carrinho/finalizar-pedido', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"CONTENT_LENGTH\":\"39\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_ORIGIN\":\"http:\\/\\/www.lojavirtual.com.br\",\"CONTENT_TYPE\":\"application\\/x-www-form-urlencoded\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/carrinho\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/carrinho\\/finalizar-pedido\",\"REDIRECT_QUERY_STRING\":\"route=carrinho\\/finalizar-pedido\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"POST\",\"QUERY_STRING\":\"route=carrinho\\/finalizar-pedido\",\"REQUEST_URI\":\"\\/carrinho\\/finalizar-pedido\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292730.27223,\"REQUEST_TIME\":1643292730}', '2022-01-27 14:12:10', '2022-01-27 14:12:10'),
-(6443, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/carrinho\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292730.456085,\"REQUEST_TIME\":1643292730}', '2022-01-27 14:12:10', '2022-01-27 14:12:10'),
-(6444, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292733.977057,\"REQUEST_TIME\":1643292733}', '2022-01-27 14:12:14', '2022-01-27 14:12:14'),
-(6445, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292736.553293,\"REQUEST_TIME\":1643292736}', '2022-01-27 14:12:16', '2022-01-27 14:12:16'),
-(6446, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"64828\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643292742.256326,\"REQUEST_TIME\":1643292742}', '2022-01-27 14:12:22', '2022-01-27 14:12:22'),
-(6447, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56120\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295519.817101,\"REQUEST_TIME\":1643295519}', '2022-01-27 14:58:39', '2022-01-27 14:58:39'),
-(6448, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56120\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295521.890399,\"REQUEST_TIME\":1643295521}', '2022-01-27 14:58:41', '2022-01-27 14:58:41');
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6449, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56121\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295548.619622,\"REQUEST_TIME\":1643295548}', '2022-01-27 14:59:08', '2022-01-27 14:59:08'),
-(6450, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56135\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295570.7708,\"REQUEST_TIME\":1643295570}', '2022-01-27 14:59:30', '2022-01-27 14:59:30'),
-(6451, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56139\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295587.48029,\"REQUEST_TIME\":1643295587}', '2022-01-27 14:59:47', '2022-01-27 14:59:47'),
-(6452, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56143\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295600.89119,\"REQUEST_TIME\":1643295600}', '2022-01-27 15:00:00', '2022-01-27 15:00:00'),
-(6453, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"56147\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643295641.796321,\"REQUEST_TIME\":1643295641}', '2022-01-27 15:00:41', '2022-01-27 15:00:41'),
-(6454, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/efetuar-pagamento', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"50140\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/efetuar-pagamento\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643298991.113177,\"REQUEST_TIME\":1643298991}', '2022-01-27 15:56:31', '2022-01-27 15:56:31'),
-(6455, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"52018\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643304299.780339,\"REQUEST_TIME\":1643304299}', '2022-01-27 17:24:59', '2022-01-27 17:24:59'),
-(6456, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"52040\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643304308.646577,\"REQUEST_TIME\":1643304308}', '2022-01-27 17:25:08', '2022-01-27 17:25:08'),
-(6457, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"52040\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643304311.905215,\"REQUEST_TIME\":1643304311}', '2022-01-27 17:25:12', '2022-01-27 17:25:12'),
-(6458, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54766\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305153.359064,\"REQUEST_TIME\":1643305153}', '2022-01-27 17:39:13', '2022-01-27 17:39:13'),
-(6459, 'http://www.lojavirtual.com.br/minha-conta', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54769\",\"REDIRECT_URL\":\"\\/minha-conta\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\",\"REQUEST_URI\":\"\\/minha-conta\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305155.211833,\"REQUEST_TIME\":1643305155}', '2022-01-27 17:39:15', '2022-01-27 17:39:15'),
-(6460, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54769\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305157.235253,\"REQUEST_TIME\":1643305157}', '2022-01-27 17:39:17', '2022-01-27 17:39:17'),
-(6461, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54769\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305158.612219,\"REQUEST_TIME\":1643305158}', '2022-01-27 17:39:18', '2022-01-27 17:39:18'),
-(6462, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54769\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305161.286062,\"REQUEST_TIME\":1643305161}', '2022-01-27 17:39:21', '2022-01-27 17:39:21'),
-(6463, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54803\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305241.678238,\"REQUEST_TIME\":1643305241}', '2022-01-27 17:40:41', '2022-01-27 17:40:41'),
-(6464, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54824\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305280.903114,\"REQUEST_TIME\":1643305280}', '2022-01-27 17:41:21', '2022-01-27 17:41:21'),
-(6465, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54825\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305288.16463,\"REQUEST_TIME\":1643305288}', '2022-01-27 17:41:28', '2022-01-27 17:41:28');
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6466, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54851\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305290.010595,\"REQUEST_TIME\":1643305290}', '2022-01-27 17:41:30', '2022-01-27 17:41:30'),
-(6467, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54851\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305291.095095,\"REQUEST_TIME\":1643305291}', '2022-01-27 17:41:31', '2022-01-27 17:41:31'),
-(6468, 'http://www.lojavirtual.com.br/minha-conta', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54851\",\"REDIRECT_URL\":\"\\/minha-conta\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\",\"REQUEST_URI\":\"\\/minha-conta\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305292.181687,\"REQUEST_TIME\":1643305292}', '2022-01-27 17:41:32', '2022-01-27 17:41:32'),
-(6469, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54851\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305293.187667,\"REQUEST_TIME\":1643305293}', '2022-01-27 17:41:33', '2022-01-27 17:41:33'),
-(6470, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54882\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305345.926941,\"REQUEST_TIME\":1643305345}', '2022-01-27 17:42:26', '2022-01-27 17:42:26'),
-(6471, 'http://www.lojavirtual.com.br/minha-conta', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54890\",\"REDIRECT_URL\":\"\\/minha-conta\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\",\"REQUEST_URI\":\"\\/minha-conta\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305348.031554,\"REQUEST_TIME\":1643305348}', '2022-01-27 17:42:28', '2022-01-27 17:42:28'),
-(6472, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54890\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305349.605591,\"REQUEST_TIME\":1643305349}', '2022-01-27 17:42:29', '2022-01-27 17:42:29'),
-(6473, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54890\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305351.184676,\"REQUEST_TIME\":1643305351}', '2022-01-27 17:42:31', '2022-01-27 17:42:31'),
-(6474, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54890\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305354.093229,\"REQUEST_TIME\":1643305354}', '2022-01-27 17:42:34', '2022-01-27 17:42:34'),
-(6475, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54891\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305372.60751,\"REQUEST_TIME\":1643305372}', '2022-01-27 17:42:52', '2022-01-27 17:42:52'),
-(6476, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54918\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305400.799581,\"REQUEST_TIME\":1643305400}', '2022-01-27 17:43:20', '2022-01-27 17:43:20'),
-(6477, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54940\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305405.310727,\"REQUEST_TIME\":1643305405}', '2022-01-27 17:43:25', '2022-01-27 17:43:25'),
-(6478, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/cartao-de-credito', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54940\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305408.070542,\"REQUEST_TIME\":1643305408}', '2022-01-27 17:43:28', '2022-01-27 17:43:28'),
-(6479, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54940\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305410.933596,\"REQUEST_TIME\":1643305410}', '2022-01-27 17:43:31', '2022-01-27 17:43:31'),
-(6480, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54940\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305413.151111,\"REQUEST_TIME\":1643305413}', '2022-01-27 17:43:33', '2022-01-27 17:43:33'),
-(6481, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54940\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305414.904036,\"REQUEST_TIME\":1643305414}', '2022-01-27 17:43:34', '2022-01-27 17:43:34'),
-(6482, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/debito-online', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54954\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/debito-online\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/debito-online\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/debito-online\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/debito-online\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305424.829913,\"REQUEST_TIME\":1643305424}', '2022-01-27 17:43:44', '2022-01-27 17:43:44');
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6483, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"54954\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305427.604569,\"REQUEST_TIME\":1643305427}', '2022-01-27 17:43:47', '2022-01-27 17:43:47'),
-(6484, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"55000\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305471.240386,\"REQUEST_TIME\":1643305471}', '2022-01-27 17:44:31', '2022-01-27 17:44:31'),
-(6485, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"55027\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305506.512657,\"REQUEST_TIME\":1643305506}', '2022-01-27 17:45:06', '2022-01-27 17:45:06'),
-(6486, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"55027\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305509.004607,\"REQUEST_TIME\":1643305509}', '2022-01-27 17:45:09', '2022-01-27 17:45:09'),
-(6487, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"55041\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305543.448998,\"REQUEST_TIME\":1643305543}', '2022-01-27 17:45:43', '2022-01-27 17:45:43'),
-(6488, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63522\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305564.22419,\"REQUEST_TIME\":1643305564}', '2022-01-27 17:46:04', '2022-01-27 17:46:04'),
-(6489, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63526\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305584.301647,\"REQUEST_TIME\":1643305584}', '2022-01-27 17:46:24', '2022-01-27 17:46:24'),
-(6490, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63542\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305594.769176,\"REQUEST_TIME\":1643305594}', '2022-01-27 17:46:34', '2022-01-27 17:46:34'),
-(6491, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63542\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305597.656264,\"REQUEST_TIME\":1643305597}', '2022-01-27 17:46:37', '2022-01-27 17:46:37'),
-(6492, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63542\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305600.694566,\"REQUEST_TIME\":1643305600}', '2022-01-27 17:46:40', '2022-01-27 17:46:40'),
-(6493, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63556\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305623.85575,\"REQUEST_TIME\":1643305623}', '2022-01-27 17:47:03', '2022-01-27 17:47:03'),
-(6494, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63609\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305649.448991,\"REQUEST_TIME\":1643305649}', '2022-01-27 17:47:29', '2022-01-27 17:47:29'),
-(6495, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63610\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305658.258065,\"REQUEST_TIME\":1643305658}', '2022-01-27 17:47:38', '2022-01-27 17:47:38'),
-(6496, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63610\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305661.103112,\"REQUEST_TIME\":1643305661}', '2022-01-27 17:47:41', '2022-01-27 17:47:41'),
-(6497, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63610\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305663.95305,\"REQUEST_TIME\":1643305663}', '2022-01-27 17:47:44', '2022-01-27 17:47:44'),
-(6498, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63610\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305664.68915,\"REQUEST_TIME\":1643305664}', '2022-01-27 17:47:44', '2022-01-27 17:47:44'),
-(6499, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63618\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305687.727636,\"REQUEST_TIME\":1643305687}', '2022-01-27 17:48:07', '2022-01-27 17:48:07');
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6500, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63661\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305716.945608,\"REQUEST_TIME\":1643305716}', '2022-01-27 17:48:37', '2022-01-27 17:48:37'),
-(6501, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63661\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305720.53276,\"REQUEST_TIME\":1643305720}', '2022-01-27 17:48:40', '2022-01-27 17:48:40'),
-(6502, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pix', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63672\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pix\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pix\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305757.785445,\"REQUEST_TIME\":1643305757}', '2022-01-27 17:49:17', '2022-01-27 17:49:17'),
-(6503, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63699\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305779.703947,\"REQUEST_TIME\":1643305779}', '2022-01-27 17:49:39', '2022-01-27 17:49:39'),
-(6504, 'http://www.lojavirtual.com.br', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63734\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"\",\"REQUEST_URI\":\"\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305848.430971,\"REQUEST_TIME\":1643305848}', '2022-01-27 17:50:48', '2022-01-27 17:50:48'),
-(6505, 'http://www.lojavirtual.com.br/minha-conta', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63737\",\"REDIRECT_URL\":\"\\/minha-conta\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\",\"REQUEST_URI\":\"\\/minha-conta\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305850.371625,\"REQUEST_TIME\":1643305850}', '2022-01-27 17:50:50', '2022-01-27 17:50:50'),
-(6506, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63737\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305852.193918,\"REQUEST_TIME\":1643305852}', '2022-01-27 17:50:52', '2022-01-27 17:50:52'),
-(6507, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63737\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305853.750145,\"REQUEST_TIME\":1643305853}', '2022-01-27 17:50:53', '2022-01-27 17:50:53'),
-(6508, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/cartao-de-credito', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63737\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/cartao-de-credito\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305856.747947,\"REQUEST_TIME\":1643305856}', '2022-01-27 17:50:56', '2022-01-27 17:50:56'),
-(6509, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63737\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305862.467992,\"REQUEST_TIME\":1643305862}', '2022-01-27 17:51:02', '2022-01-27 17:51:02'),
-(6510, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63779\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305882.025172,\"REQUEST_TIME\":1643305882}', '2022-01-27 17:51:22', '2022-01-27 17:51:22'),
-(6511, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63779\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305884.331206,\"REQUEST_TIME\":1643305884}', '2022-01-27 17:51:24', '2022-01-27 17:51:24'),
-(6512, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63782\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305933.229622,\"REQUEST_TIME\":1643305933}', '2022-01-27 17:52:13', '2022-01-27 17:52:13'),
-(6513, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63782\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305937.088664,\"REQUEST_TIME\":1643305937}', '2022-01-27 17:52:17', '2022-01-27 17:52:17'),
-(6514, 'http://www.lojavirtual.com.br/minha-conta/pedidos', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63810\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305943.31353,\"REQUEST_TIME\":1643305943}', '2022-01-27 17:52:23', '2022-01-27 17:52:23'),
-(6515, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"63829\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305949.747798,\"REQUEST_TIME\":1643305949}', '2022-01-27 17:52:29', '2022-01-27 17:52:29'),
-(6516, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57908\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643305975.036004,\"REQUEST_TIME\":1643305975}', '2022-01-27 17:52:55', '2022-01-27 17:52:55');
-INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `created_at`, `updated_at`) VALUES
-(6517, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57951\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306137.494519,\"REQUEST_TIME\":1643306137}', '2022-01-27 17:55:37', '2022-01-27 17:55:37'),
-(6518, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_PRAGMA\":\"no-cache\",\"HTTP_CACHE_CONTROL\":\"no-cache\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57952\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306149.725678,\"REQUEST_TIME\":1643306149}', '2022-01-27 17:55:49', '2022-01-27 17:55:49'),
-(6519, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_CACHE_CONTROL\":\"max-age=0\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57955\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306198.685992,\"REQUEST_TIME\":1643306198}', '2022-01-27 17:56:38', '2022-01-27 17:56:38'),
-(6520, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/mercado-pago', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57955\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/mercado-pago\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/mercado-pago\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306202.38314,\"REQUEST_TIME\":1643306202}', '2022-01-27 17:56:42', '2022-01-27 17:56:42'),
-(6521, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57955\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306204.069869,\"REQUEST_TIME\":1643306204}', '2022-01-27 17:56:44', '2022-01-27 17:56:44'),
-(6522, 'http://www.lojavirtual.com.br/minha-conta/pedidos/87/pagseguro', '127.0.0.1', 'Chrome', 'Computer', 'Windows 10', '{\"REDIRECT_STATUS\":\"200\",\"HTTP_HOST\":\"www.lojavirtual.com.br\",\"HTTP_CONNECTION\":\"keep-alive\",\"HTTP_UPGRADE_INSECURE_REQUESTS\":\"1\",\"HTTP_USER_AGENT\":\"Mozilla\\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/97.0.4692.99 Safari\\/537.36\",\"HTTP_ACCEPT\":\"text\\/html,application\\/xhtml+xml,application\\/xml;q=0.9,image\\/avif,image\\/webp,image\\/apng,*\\/*;q=0.8,application\\/signed-exchange;v=b3;q=0.9\",\"HTTP_REFERER\":\"http:\\/\\/www.lojavirtual.com.br\\/minha-conta\\/pedidos\\/87\",\"HTTP_ACCEPT_ENCODING\":\"gzip, deflate\",\"HTTP_ACCEPT_LANGUAGE\":\"pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7\",\"HTTP_COOKIE\":\"cookieaccept=1; PHPSESSID=d4tonu106597elalr6cb0nik9i\",\"PATH\":\"C:\\\\Python310\\\\Scripts\\\\;C:\\\\Python310\\\\;C:\\\\WINDOWS\\\\system32;C:\\\\WINDOWS;C:\\\\WINDOWS\\\\System32\\\\Wbem;C:\\\\WINDOWS\\\\System32\\\\WindowsPowerShell\\\\v1.0\\\\;C:\\\\WINDOWS\\\\System32\\\\OpenSSH\\\\;C:\\\\Program Files\\\\nodejs\\\\;C:\\\\ProgramData\\\\chocolatey\\\\bin;C:\\\\Program Files\\\\Git\\\\cmd;C:\\\\xampp\\\\php;C:\\\\ProgramData\\\\ComposerSetup\\\\bin;C:\\\\WINDOWS\\\\system32\\\\config\\\\systemprofile\\\\AppData\\\\Local\\\\Microsoft\\\\WindowsApps\",\"SystemRoot\":\"C:\\\\WINDOWS\",\"COMSPEC\":\"C:\\\\WINDOWS\\\\system32\\\\cmd.exe\",\"PATHEXT\":\".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY;.PYW;.PHAR\",\"WINDIR\":\"C:\\\\WINDOWS\",\"SERVER_SIGNATURE\":\"<address>Apache\\/2.4.51 (Win64) PHP\\/8.0.13 Server at www.lojavirtual.com.br Port 80<\\/address>\\n\",\"SERVER_SOFTWARE\":\"Apache\\/2.4.51 (Win64) PHP\\/8.0.13\",\"SERVER_NAME\":\"www.lojavirtual.com.br\",\"SERVER_ADDR\":\"127.0.0.1\",\"SERVER_PORT\":\"80\",\"REMOTE_ADDR\":\"127.0.0.1\",\"DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"REQUEST_SCHEME\":\"http\",\"CONTEXT_PREFIX\":\"\",\"CONTEXT_DOCUMENT_ROOT\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\",\"SERVER_ADMIN\":\"www.lojavirtual.com.br\",\"SCRIPT_FILENAME\":\"C:\\/Users\\/Ryan\\/Pictures\\/DEV\\/Projetos\\/PHP\\/Loja-Virtual\\/public\\/index.php\",\"REMOTE_PORT\":\"57955\",\"REDIRECT_URL\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"REDIRECT_QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"GATEWAY_INTERFACE\":\"CGI\\/1.1\",\"SERVER_PROTOCOL\":\"HTTP\\/1.1\",\"REQUEST_METHOD\":\"GET\",\"QUERY_STRING\":\"route=minha-conta\\/pedidos\\/87\\/pagseguro\",\"REQUEST_URI\":\"\\/minha-conta\\/pedidos\\/87\\/pagseguro\",\"SCRIPT_NAME\":\"\\/public\\/index.php\",\"PHP_SELF\":\"\\/public\\/index.php\",\"REQUEST_TIME_FLOAT\":1643306206.616189,\"REQUEST_TIME\":1643306206}', '2022-01-27 17:56:46', '2022-01-27 17:56:46');
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -450,28 +281,22 @@ INSERT INTO `lgpd` (`id`, `url`, `ip`, `browser`, `device`, `so`, `server`, `cre
 -- Estrutura da tabela `notices`
 --
 
-DROP TABLE IF EXISTS `notices`;
-CREATE TABLE IF NOT EXISTS `notices` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `notices` (
+  `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `tags` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '0',
-  `comments_active` tinyint(1) NOT NULL DEFAULT '1',
-  `visits` int(11) UNSIGNED NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT 0,
+  `comments_active` tinyint(1) NOT NULL DEFAULT 1,
+  `visits` int(11) UNSIGNED NOT NULL DEFAULT 0,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `poster` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `expiration` date DEFAULT NULL,
   `user_id` int(11) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `title` (`title`),
-  UNIQUE KEY `slug` (`slug`),
-  UNIQUE KEY `poster` (`poster`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `notices`
@@ -492,15 +317,11 @@ INSERT INTO `notices` (`id`, `title`, `slug`, `tags`, `visible`, `comments_activ
 -- Estrutura da tabela `notices_subcategories`
 --
 
-DROP TABLE IF EXISTS `notices_subcategories`;
-CREATE TABLE IF NOT EXISTS `notices_subcategories` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `notices_subcategories` (
+  `id` int(10) UNSIGNED NOT NULL,
   `notice_id` int(10) UNSIGNED NOT NULL,
-  `subcategory_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `notice_id` (`notice_id`),
-  KEY `subcategory_id` (`subcategory_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `subcategory_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `notices_subcategories`
@@ -517,17 +338,15 @@ INSERT INTO `notices_subcategories` (`id`, `notice_id`, `subcategory_id`) VALUES
 -- Estrutura da tabela `partners`
 --
 
-DROP TABLE IF EXISTS `partners`;
-CREATE TABLE IF NOT EXISTS `partners` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `partners` (
+  `id` int(10) UNSIGNED NOT NULL,
   `title` varchar(191) DEFAULT NULL,
   `slug` varchar(191) NOT NULL,
-  `description` text,
+  `description` text DEFAULT NULL,
   `link` varchar(191) DEFAULT NULL,
   `type` enum('CL','CO') NOT NULL DEFAULT 'CO' COMMENT 'CL - Cliente | CO - Colaborador ',
-  `image` varchar(191) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `image` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -535,14 +354,11 @@ CREATE TABLE IF NOT EXISTS `partners` (
 -- Estrutura da tabela `permissions`
 --
 
-DROP TABLE IF EXISTS `permissions`;
-CREATE TABLE IF NOT EXISTS `permissions` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `permissions` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `permissions`
@@ -628,26 +444,22 @@ INSERT INTO `permissions` (`id`, `name`, `description`) VALUES
 -- Estrutura da tabela `products`
 --
 
-DROP TABLE IF EXISTS `products`;
-CREATE TABLE IF NOT EXISTS `products` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `brand` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `details` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `video` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '1',
-  `ratings_active` tinyint(1) NOT NULL DEFAULT '1',
-  `freight_free` tinyint(1) NOT NULL DEFAULT '0',
-  `showcase` tinyint(1) NOT NULL DEFAULT '0',
-  `installment_no_interest` tinyint(3) UNSIGNED NOT NULL DEFAULT '2',
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `visible` tinyint(1) NOT NULL DEFAULT 1,
+  `ratings_active` tinyint(1) NOT NULL DEFAULT 1,
+  `freight_free` tinyint(1) NOT NULL DEFAULT 0,
+  `showcase` tinyint(1) NOT NULL DEFAULT 0,
+  `installment_no_interest` tinyint(3) UNSIGNED NOT NULL DEFAULT 2,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `products`
@@ -669,15 +481,11 @@ INSERT INTO `products` (`id`, `name`, `slug`, `brand`, `description`, `details`,
 -- Estrutura da tabela `products_related`
 --
 
-DROP TABLE IF EXISTS `products_related`;
-CREATE TABLE IF NOT EXISTS `products_related` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products_related` (
+  `id` int(10) UNSIGNED NOT NULL,
   `product_id` int(10) UNSIGNED NOT NULL,
-  `product_related_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `product_related_id` (`product_related_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+  `product_related_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `products_related`
@@ -696,15 +504,11 @@ INSERT INTO `products_related` (`id`, `product_id`, `product_related_id`) VALUES
 -- Estrutura da tabela `products_subcategories`
 --
 
-DROP TABLE IF EXISTS `products_subcategories`;
-CREATE TABLE IF NOT EXISTS `products_subcategories` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `products_subcategories` (
+  `id` int(10) UNSIGNED NOT NULL,
   `product_id` int(10) UNSIGNED NOT NULL,
-  `subcategory_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `subcategory_id` (`subcategory_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `subcategory_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `products_subcategories`
@@ -729,15 +533,12 @@ INSERT INTO `products_subcategories` (`id`, `product_id`, `subcategory_id`) VALU
 -- Estrutura da tabela `product_colors`
 --
 
-DROP TABLE IF EXISTS `product_colors`;
-CREATE TABLE IF NOT EXISTS `product_colors` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_colors` (
+  `id` int(10) UNSIGNED NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `hex` char(7) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `product_colors`
@@ -764,16 +565,13 @@ INSERT INTO `product_colors` (`id`, `description`, `hex`, `product_id`) VALUES
 -- Estrutura da tabela `product_discounts`
 --
 
-DROP TABLE IF EXISTS `product_discounts`;
-CREATE TABLE IF NOT EXISTS `product_discounts` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_discounts` (
+  `id` int(10) UNSIGNED NOT NULL,
   `installment` tinyint(3) UNSIGNED NOT NULL,
   `percent` tinyint(100) UNSIGNED NOT NULL,
   `expiration` date DEFAULT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `product_discounts`
@@ -781,7 +579,6 @@ CREATE TABLE IF NOT EXISTS `product_discounts` (
 
 INSERT INTO `product_discounts` (`id`, `installment`, `percent`, `expiration`, `product_id`) VALUES
 (74, 4, 50, NULL, 37),
-(79, 1, 10, '2022-01-28', 40),
 (80, 1, 50, NULL, 34),
 (114, 1, 10, NULL, 41),
 (115, 2, 5, NULL, 41),
@@ -794,15 +591,11 @@ INSERT INTO `product_discounts` (`id`, `installment`, `percent`, `expiration`, `
 -- Estrutura da tabela `product_images`
 --
 
-DROP TABLE IF EXISTS `product_images`;
-CREATE TABLE IF NOT EXISTS `product_images` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_images` (
+  `id` int(10) UNSIGNED NOT NULL,
   `source` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `product_color_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `source` (`source`),
-  KEY `product_images_ibfk_1` (`product_color_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_color_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `product_images`
@@ -862,21 +655,18 @@ INSERT INTO `product_images` (`id`, `source`, `product_color_id`) VALUES
 -- Estrutura da tabela `product_sizes`
 --
 
-DROP TABLE IF EXISTS `product_sizes`;
-CREATE TABLE IF NOT EXISTS `product_sizes` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `product_sizes` (
+  `id` int(10) UNSIGNED NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(10,2) UNSIGNED NOT NULL,
   `price_previous` decimal(10,2) UNSIGNED DEFAULT NULL,
-  `quantity` smallint(5) UNSIGNED NOT NULL DEFAULT '0',
-  `width` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `height` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `depth` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `weight` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `product_color_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `product_color_id` (`product_color_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=498 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `quantity` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
+  `width` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `height` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `depth` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `weight` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `product_color_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `product_sizes`
@@ -912,20 +702,16 @@ INSERT INTO `product_sizes` (`id`, `description`, `price`, `price_previous`, `qu
 -- Estrutura da tabela `ratings`
 --
 
-DROP TABLE IF EXISTS `ratings`;
-CREATE TABLE IF NOT EXISTS `ratings` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `stars` tinyint(5) UNSIGNED NOT NULL DEFAULT '5',
+CREATE TABLE `ratings` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `stars` tinyint(5) UNSIGNED NOT NULL DEFAULT 5,
   `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `visible` tinyint(1) NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT 0,
   `product_id` int(10) UNSIGNED NOT NULL,
   `client_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `product_id` (`product_id`),
-  KEY `client_id` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `ratings`
@@ -941,20 +727,15 @@ INSERT INTO `ratings` (`id`, `stars`, `content`, `visible`, `product_id`, `clien
 -- Estrutura da tabela `requests`
 --
 
-DROP TABLE IF EXISTS `requests`;
-CREATE TABLE IF NOT EXISTS `requests` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `requests` (
+  `id` int(10) UNSIGNED NOT NULL,
   `status` enum('AP','PA','EN','CO','CA') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AP' COMMENT 'AP - Aguardando Pagamento | PA - Pago | EN - Enviado para a entrega | CO - Concluído | CA - Cancelado',
   `client_id` int(10) UNSIGNED NOT NULL,
   `request_address_id` int(10) UNSIGNED NOT NULL,
   `request_payment_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `client_id` (`client_id`),
-  KEY `request_address_id` (`request_address_id`),
-  KEY `request_payment_id` (`request_payment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `requests`
@@ -966,7 +747,21 @@ INSERT INTO `requests` (`id`, `status`, `client_id`, `request_address_id`, `requ
 (84, 'PA', 9, 89, 90, '2022-01-26 18:51:45', '2022-01-26 18:51:48'),
 (85, 'AP', 9, 90, 91, '2022-01-26 18:54:01', '2022-01-26 18:54:01'),
 (86, 'AP', 9, 91, 92, '2022-01-26 18:54:32', '2022-01-26 18:54:32'),
-(87, 'AP', 9, 92, 93, '2022-01-27 14:12:10', '2022-01-27 14:12:10');
+(87, 'CA', 9, 92, 93, '2022-01-27 14:12:10', '2022-01-27 18:16:03'),
+(88, 'CA', 9, 93, 94, '2022-01-27 19:02:29', '2022-01-28 19:51:14'),
+(89, 'PA', 9, 94, 95, '2022-01-28 16:24:27', '2022-01-28 16:52:40'),
+(90, 'PA', 9, 95, 96, '2022-01-28 17:04:25', '2022-01-28 17:08:17'),
+(91, 'CA', 9, 96, 97, '2022-01-28 17:13:52', '2022-01-28 18:25:38'),
+(92, 'CA', 9, 97, 98, '2022-01-28 17:59:43', '2022-01-28 18:35:46'),
+(93, 'CA', 9, 98, 99, '2022-01-28 18:37:19', '2022-01-28 18:38:23'),
+(94, 'CA', 9, 99, 100, '2022-01-28 18:42:53', '2022-01-28 19:45:47'),
+(95, 'CA', 9, 100, 101, '2022-01-28 19:46:06', '2022-01-28 19:50:56'),
+(96, 'CA', 9, 101, 102, '2022-01-28 19:48:28', '2022-01-28 19:50:50'),
+(97, 'AP', 9, 102, 103, '2022-01-28 19:51:24', '2022-01-28 19:51:24'),
+(98, 'AP', 9, 103, 104, '2022-01-28 19:52:32', '2022-01-28 19:52:32'),
+(99, 'AP', 9, 104, 105, '2022-01-28 19:54:36', '2022-01-28 19:54:36'),
+(100, 'AP', 9, 105, 106, '2022-01-28 19:57:27', '2022-01-28 19:57:27'),
+(101, 'AP', 9, 106, 107, '2022-01-28 19:59:36', '2022-01-28 19:59:36');
 
 -- --------------------------------------------------------
 
@@ -974,19 +769,15 @@ INSERT INTO `requests` (`id`, `status`, `client_id`, `request_address_id`, `requ
 -- Estrutura da tabela `requests_products`
 --
 
-DROP TABLE IF EXISTS `requests_products`;
-CREATE TABLE IF NOT EXISTS `requests_products` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `requests_products` (
+  `id` int(10) UNSIGNED NOT NULL,
   `color` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `size` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` decimal(10,2) UNSIGNED NOT NULL,
   `quantity` smallint(5) UNSIGNED NOT NULL,
   `request_id` int(10) UNSIGNED NOT NULL,
-  `product_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `request_id` (`request_id`),
-  KEY `product_size_id` (`product_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `product_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `requests_products`
@@ -1002,7 +793,31 @@ INSERT INTO `requests_products` (`id`, `color`, `size`, `price`, `quantity`, `re
 (99, 'Preto', '10x60x20', '8000.00', 1, 85, 37),
 (100, 'Preto', '12 Polegadas', '800.30', 1, 86, 41),
 (101, 'Preto', '12 Polegadas', '800.30', 1, 87, 41),
-(102, 'Preto', 'M', '500.00', 1, 87, 40);
+(102, 'Preto', 'M', '500.00', 1, 87, 40),
+(103, 'Preto', '12 Polegadas', '800.30', 1, 88, 41),
+(104, 'Preto', 'M', '500.00', 1, 88, 40),
+(105, 'Preto', '12 Polegadas', '800.30', 1, 89, 41),
+(106, 'Preto', 'M', '500.00', 1, 89, 40),
+(107, 'Preto', '10x40', '800.00', 1, 89, 39),
+(108, 'Preto', 'M', '500.00', 1, 90, 40),
+(109, 'Preto', '12 Polegadas', '800.30', 1, 90, 41),
+(110, 'Preto', '10x40', '800.00', 1, 90, 39),
+(111, 'Preto', '10x60x20', '8000.00', 3, 91, 37),
+(112, 'Preto', '12 Polegadas', '800.30', 1, 92, 41),
+(113, 'Preto', '12 Polegadas', '800.30', 1, 93, 41),
+(114, 'Preto', '10x40', '800.00', 1, 94, 39),
+(115, 'Preto', 'M', '500.00', 1, 95, 40),
+(116, 'Preto', '10x40', '800.00', 1, 95, 39),
+(117, 'Preto', 'M', '500.00', 1, 96, 40),
+(118, 'Preto', '12 Polegadas', '800.30', 1, 97, 41),
+(119, 'Preto', 'M', '500.00', 1, 97, 40),
+(120, 'Preto', '10x40', '800.00', 1, 98, 39),
+(121, 'Preto', 'M', '500.00', 1, 98, 40),
+(122, 'Preto', '10x40', '800.00', 1, 99, 39),
+(123, 'Preto', 'M', '500.00', 1, 99, 40),
+(124, 'Preto', '10x40', '800.00', 1, 100, 39),
+(125, 'Preto', '12 Polegadas', '800.30', 1, 101, 41),
+(126, 'Preto', 'M', '500.00', 1, 101, 40);
 
 -- --------------------------------------------------------
 
@@ -1010,18 +825,16 @@ INSERT INTO `requests_products` (`id`, `color`, `size`, `price`, `quantity`, `re
 -- Estrutura da tabela `request_address`
 --
 
-DROP TABLE IF EXISTS `request_address`;
-CREATE TABLE IF NOT EXISTS `request_address` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `request_address` (
+  `id` int(10) UNSIGNED NOT NULL,
   `postal_code` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
   `district` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `city` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `complement` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `complement` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `request_address`
@@ -1097,7 +910,21 @@ INSERT INTO `request_address` (`id`, `postal_code`, `street`, `number`, `distric
 (89, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
 (90, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
 (91, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
-(92, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', '');
+(92, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(93, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(94, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(95, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(96, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(97, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(98, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(99, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(100, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(101, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(102, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(103, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(104, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(105, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(106, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', '');
 
 -- --------------------------------------------------------
 
@@ -1105,31 +932,29 @@ INSERT INTO `request_address` (`id`, `postal_code`, `street`, `number`, `distric
 -- Estrutura da tabela `request_payment`
 --
 
-DROP TABLE IF EXISTS `request_payment`;
-CREATE TABLE IF NOT EXISTS `request_payment` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `request_payment` (
+  `id` int(10) UNSIGNED NOT NULL,
   `code` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` enum('PS','MP','PP','PC') COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'PS - PagSeguro | MP - Mercado Pago | PP - PayPal | PC - PicPay',
   `method` enum('CC','CD','BA','BO','DE','DO','PX','PP') COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'CC - Cartão de Crédito | CD - Cartão de Débito | BA - Saldo | BO - Boleto | DE - Depósito | DO - Débito Online | PX - PIX | PP - PayPal',
   `status` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status_type` enum('AP','EA','PA','DI','ED','DE','CA') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'AP' COMMENT 'AP - Aguardando Pagamento | EA - Em Análise | PA - Paga | DI - Disponível | ED - Em Disputa | DE - Devolvida | CA - Cancelada',
-  `installments` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
-  `installment_no_interest` tinyint(3) UNSIGNED NOT NULL DEFAULT '2',
+  `installments` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `installment_no_interest` tinyint(3) UNSIGNED NOT NULL DEFAULT 2,
   `amount` decimal(10,2) UNSIGNED NOT NULL,
-  `discount_coupon` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `discount_installment` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `discount_cart` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `discount_coupon` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `discount_installment` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `discount_cart` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
   `shipping_type` enum('PC','SX','PE') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PC - PAC | SX - SEDEX | PE - Personalizado',
-  `shipping_value` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `shipping_days` tinyint(3) UNSIGNED NOT NULL DEFAULT '1',
-  `shipping_message` text COLLATE utf8mb4_unicode_ci,
+  `shipping_value` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `shipping_days` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
+  `shipping_message` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `qrcode` longblob,
-  `details` longtext COLLATE utf8mb4_unicode_ci,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `qrcode` longblob DEFAULT NULL,
+  `details` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `request_payment`
@@ -1141,7 +966,22 @@ INSERT INTO `request_payment` (`id`, `code`, `type`, `method`, `status`, `status
 (90, 'A1CFDD09-B06B-4085-A931-656939C7D272', 'PS', 'DO', '3', 'PA', 1, 2, '8000.00', '1600.00', '1903.89', '800.00', 'PE', '150.00', 5, NULL, 'https://sandbox.pagseguro.uol.com.br/checkout/payment/eft/print.jhtml?c=86812bdb74e28be7824d4ea87838ce036a4b8b11d7ced6c7989210b5cde4b3c1229bd8ca33eec9a1', NULL, '{\"date\":\"2022-01-26T15:17:41.000-03:00\",\"code\":\"A1CFDD09-B06B-4085-A931-656939C7D272\",\"reference\":\"84\",\"type\":\"1\",\"status\":\"3\",\"lastEventDate\":\"2022-01-26T15:18:07.000-03:00\",\"paymentMethod\":{\"type\":\"3\",\"code\":\"302\"},\"paymentLink\":\"https:\\/\\/sandbox.pagseguro.uol.com.br\\/checkout\\/payment\\/eft\\/print.jhtml?c=86812bdb74e28be7824d4ea87838ce036a4b8b11d7ced6c7989210b5cde4b3c1229bd8ca33eec9a1\",\"grossAmount\":\"954.19\",\"discountAmount\":\"0.00\",\"creditorFees\":{\"intermediationRateAmount\":\"0.40\",\"intermediationFeeAmount\":\"47.61\"},\"netAmount\":\"906.18\",\"extraAmount\":\"-496.11\",\"escrowEndDate\":\"2022-02-09T15:18:07.000-03:00\",\"installmentCount\":\"1\",\"itemCount\":\"2\",\"items\":{\"item\":[{\"id\":\"69db61ce36a56178711fec066e07aeb6\",\"description\":\"Tablet | COR: Preto | TAMANHO: 12 Polegadas\",\"quantity\":\"1\",\"amount\":\"800.30\"},{\"id\":\"62306523b3c77c077b2938f0d6ab91f5\",\"description\":\"Headset | COR: Preto | TAMANHO: M\",\"quantity\":\"1\",\"amount\":\"500.00\"}]},\"sender\":{\"name\":\"Ryan Menezes\",\"email\":\"ryan@gmail.com\",\"phone\":{\"areaCode\":\"11\",\"number\":\"99999999\"},\"documents\":{\"document\":{\"type\":\"CPF\",\"value\":\"53881489800\"}}},\"shipping\":{\"address\":{\"street\":\"Rua Batista\",\"number\":\"21\",\"complement\":{},\"district\":\"Jardim Batista\",\"city\":\"S\\u00e3o Paulo\",\"state\":\"SP\",\"country\":\"BRA\",\"postalCode\":\"11111111\"},\"type\":\"3\",\"cost\":\"150.00\"},\"primaryReceiver\":{\"publicKey\":\"PUBFD3757E636D341E0B4BA2E83589F6498\"}}', '2022-01-26 18:51:45', '2022-01-26 18:51:48'),
 (91, '04CDAB4F-10F8-4873-A6F4-0DD103251E76', 'PS', 'CC', '6', 'DE', 6, 2, '9300.00', '1860.00', '2400.00', '930.00', 'PE', '150.00', 5, NULL, NULL, NULL, '{\"date\":\"2022-01-26T15:20:07.000-03:00\",\"code\":\"04CDAB4F-10F8-4873-A6F4-0DD103251E76\",\"reference\":\"85\",\"type\":\"1\",\"status\":\"6\",\"lastEventDate\":\"2022-01-26T15:24:17.000-03:00\",\"paymentMethod\":{\"type\":\"1\",\"code\":\"101\"},\"grossAmount\":\"1060.00\",\"discountAmount\":\"0.00\",\"creditorFees\":{\"installmentFeeAmount\":\"86.50\",\"intermediationRateAmount\":\"0.40\",\"intermediationFeeAmount\":\"52.89\"},\"netAmount\":\"920.21\",\"extraAmount\":\"-390.00\",\"escrowEndDate\":\"2022-02-09T15:22:53.000-03:00\",\"installmentCount\":\"6\",\"itemCount\":\"2\",\"items\":{\"item\":[{\"id\":\"9d12d071c18b535cda26f47f20e5c7ae\",\"description\":\"Headset | COR: Preto | TAMANHO: M\",\"quantity\":\"1\",\"amount\":\"500.00\"},{\"id\":\"2a8009525763356ad5e3bb48b7475b4d\",\"description\":\"Celular LG K4 | COR: Preto | TAMANHO: 10x40\",\"quantity\":\"1\",\"amount\":\"800.00\"}]},\"sender\":{\"name\":\"Ryan Menezes\",\"email\":\"ryan@gmail.com\",\"phone\":{\"areaCode\":\"11\",\"number\":\"99999999\"},\"documents\":{\"document\":{\"type\":\"CPF\",\"value\":\"53881489800\"}}},\"shipping\":{\"address\":{\"street\":\"Rua Batista\",\"number\":\"21\",\"complement\":{},\"district\":\"Jardim Batista\",\"city\":\"S\\u00e3o Paulo\",\"state\":\"SP\",\"country\":\"BRA\",\"postalCode\":\"11111111\"},\"type\":\"3\",\"cost\":\"150.00\"},\"gatewaySystem\":{\"type\":\"cielo\",\"rawCode\":{},\"rawMessage\":{},\"normalizedCode\":{},\"normalizedMessage\":{},\"authorizationCode\":\"0\",\"nsu\":\"0\",\"tid\":\"0\",\"establishmentCode\":\"1056784170\",\"acquirerName\":\"CIELO\"},\"primaryReceiver\":{\"publicKey\":\"PUBFD3757E636D341E0B4BA2E83589F6498\"}}', '2022-01-26 18:54:01', '2022-01-26 18:54:03'),
 (92, NULL, NULL, NULL, NULL, 'AP', 1, 2, '800.30', '160.06', '0.00', '80.03', 'PE', '150.00', 5, NULL, NULL, NULL, NULL, '2022-01-26 18:54:32', '2022-01-26 18:54:32'),
-(93, NULL, NULL, NULL, NULL, 'AP', 1, 2, '1300.30', '260.06', '0.00', '130.03', 'PE', '150.00', 5, NULL, NULL, NULL, NULL, '2022-01-27 14:12:10', '2022-01-27 14:12:10');
+(93, NULL, 'PC', 'PX', 'expired', 'CA', 1, 2, '1300.30', '260.06', '106.02', '130.03', 'PE', '150.00', 5, NULL, 'https://app.picpay.com/checkout/NjFmMmUxMDJhNjc0ZWIyYzBhM2UyYjI4', 0x646174613a696d6167652f706e673b6261736536342c6956424f5277304b47676f414141414e5355684555674141415a414141414751434149414141415033614762414141414358424957584d41414137454141414f784147564b7734624141414c48306c45515652346e4f33643230356a4f525246556170552f2f2f4a714e2b376a655353653138576a50454d4f53454a553066796a763372382f507a41794442372b6b6e4148424c734941596767584545437767686d41424d51514c6943465951417a42416d494946684244734941596767584545437767686d41424d51514c6943465951417a42416d494946684244734941596767584545437767686d41424d51514c6943465951417a42416d49494668424473494159676758452b4650786f4c392f722b7667352b666e35552f65502f6e6a5978352f2f66377139783566354d656e5650466e566e78736f6c2f352b7863352b6a2f7572367a374f77472b496c6841444d45435967675745454f77674269434263516f475773344b6c726d2f4b2f374a6437485a65505a4359614b3565324b6b593548625265366635456635784c61526841572f7366394439647175784c41493845435967675745454f7767426943426351514c43424733316a4430657957412f652f506a7573384c6774784f506965735856377a302b7a38664876502f31696747494372502f63652f63595145784241754949566841444d45435967675745454f7767426a445977327a4b74626d4b3459415a6c66484b353738374c595146527479564978666a4d38514c4f514f433467685745414d77514a6943425951513743414749494678506a525977327a612f4e7450336e763866794f783539382f4e76625a6b66756d57443433376e44416d494946684244734941596767584545437767686d41424d596248476d5a58633974573853753248486855636472467659707a4d53716530757a684978585335796663595145784241754949566841444d45435967675745454f77674268395977327a712f6a3332725a77614c7636374c42437852344d733164766d77785965434c4a75472f344a7748666c5741424d51514c6943465951417a42416d49494668436a5a4b776835527668432b635348682f7a3375795a4377764e7a6e6c5566454b2b4a58645951417a42416d49494668424473494159676758454543776752736c5951397658784263653770447946666e4835316e785a375a746a6242777734504854334c304a68392f4a654f2f432b4244734941676767584545437767686d41424d51514c694c46787434614679374570712f68744a3268552f50713978354d706a6f3550366645546b764c7239385a6e4864786841544545433467685745414d77514a694342595151374341474c387156682f6256736358616c7577663153785a44373770662f5a557a6c6d5037514c6e3779784275436e45797767686d41424d51514c6943465951417a42416d4b556a445538616c767a7274697459654542422f66615a6c7a6158766d4b575965465177414c6e314b526466387a414638524c434347594145784241754949566841444d45435976534e4e63782b51582f3264495a486266736c564667344b6e482f6d4c4e6d427773366a356134742b354e4176694b594145784241754949566841444d454359676757454f505039424e34556e475377717a5a45783857546b58635737686a5164756e7275324e472f382f57766578412f694b594145784241754949566841444d45435967675745474e3474345a4843383849534e6b42346c48305a672f333274366a697447544e7031507952305745454f7767426943426351514c434347594145784241754955624a62772b78582b64746d48653466632b47333969742b6665452b4247337a4b473350632b456f547964335745414d77514a69434259515137434147494946784241734945624a5745506274387772766b792f384869466f396e644c3259583178634f6c4e784c6d544a5a2b4e4a39754d4d436767675745454f7767426943426351514c434347594145782b673668574768324b714a746234504871332b2f2b596d466e2f6e5a62545a32546a416375634d435967675745454f7767426943426351514c434347594145784e6835434d627546772f30524134396d427941654c647a5834616a7445496f3273794d493478396164316841444d45435967675745454f7767426943426351514c4342473332344e4656386f50337063696d37624871427468586a684268494c333650374339314c4f64446b61505a442b355867467854346151514c6943465951417a42416d494946684244734941594a627331564b6a59576546783554566c7334665a437a3375367a44376c4f363148662b524d6f64557842305745454f7767426943426351514c43434759414578424175493054665738454f4f6c6a697157417875573243653356476a5976546b3063494a686f716e315059652f5256335745414d77514a69434259515137434147494946784241734945624a49525452652b38667a523661384c6a41765042776833757a692b7356463670343479727333465869753555462b4d5945433467685745414d77514a6943425951513743414743566a446663656c336a62646f413471706768754e65325a38446a5939356671474a7076324a746676616a7550424378686f414467514c6943465951417a42416d4949466842447349415966596451334b2b6e5071356b507936795070356855624532582f47742f6262486242737365487a4d364e4d5a326a377a73314e51482b367767434343426351514c4343475941457842417549495668416a4c3678686f58664d722b2f304f797777754e6b774d4b7445576274584c422f6b664b5a662b634f433467685745414d77514a69434259515137434147494946784e69345738507359315a6f5733572b762f726a536e62624b7a39374e73536a78386d56746c632b614b516a3478386534454f7767434343426351514c434347594145784241754955544c575550486c37396e392f47655056356964594c692f30464846307636396976306e326b593632715933466b3645664d556446684244734941596767584545437767686d41424d51514c6950467234654a6c3942344d7336764f7336634a7a4536757046786f346363375a66654c4433645951424442416d49494668424473494159676758454543776752743959772b7a47444c50722f55635663776d7a757a5573334271686255654e783665557373484a2b4b79444f797767686d41424d51514c6943465951417a42416d49494668426a3432344e6a7861754f732f4f45455476363944326b30634c7a2b3959754c4e4335395864595145784241754949566841444d45435967675745454f776742682f4b68353064693335636456353462344f5277753357336938304f794c5850454a656254776c4a4e7837724341474949467842417349495a6741544545433467685745434d6b7430614675354463502f72523750722f52555875746532356c307844584f556373704a78527433663647646530573477774a694342595151374341474949467842417349495a6741544532486b495266597245374f7535634c6547364b7458504d2f5a777a4965663333384d2b384f433467685745414d77514a6943425951513743414749494678436735684f4c6f63554830667046316470662b326258352b352b635851692f742f44736b725a562f4c5a5038694f374e5141634342595151374341474949467842417349495a674154464b7868706d6877416531366662546a31494f572f692f6b495637337662795252486266736c7a46366f6252626e586377544252417349495a6741544545433467685745414d77514a69444f2f57634e533273384c39727a397147344359585a392b66504a7475794173584e7166485a465a2b494a385a654e7a416a67534c434347594145784241754949566841444d45435976534e4e5278567247512f507562436f5971323878455748693378714f3344384867655374747544592b504f587371783463374c434349594145784241754949566841444d454359676757454f4e5832354a6b32334c737665697a4952592b35714f4b66523153706b7a616a7639596550572f3467344c6943465951417a42416d49494668424473494159676758454742357275446537346e367659734f446c4e47546969474174744d5a5a76644c754e663249752f386a334f48426351514c434347594145784241754949566841444d45435970534d4e63784f4d4c534e43387975347439622b4a54757a523741556647555a6c2f506f36425a68335776486342584241754949566841444d45435967675745454f7767426839757a55734e487534513975793863494e4a4e704f44326e6261754a657969752f6334735264316841444d45435967675745454f7767426943426351514c4344476e346f4854666b2b2b6c48626b3239624e6d37624d364269554b4e744969526c5a34576a7878636b614c5970342f30412b4241734949686741544545433467685745414d77514a696c497731484c55746e565a4d4272536455504334754c3777774968486a332f52347874584d58725364733749766366505a7964335745414d77514a694342595151374341474949467842417349456266574d4e527858372b6a31642f584d31744f31726933754f6b7866456e4636374e5031356f34596b6b39342f35714f49543468414b344b63544c434347594145784241754949566841444d4543596779504e5378554d576c5273554c6339704e4846584d657338397a3967794c32534d77646b3477484c6e44416d494946684244734941596767584545437767686d41424d5977312f467646476d3346462f526e6e2b66434266754b493058754c2f54344873324f4331534d695252786877584545437767686d41424d51514c6943465951417a42416d494d6a7a574d72354b2b6546794b72766a623237376666315478743065667a74426d34565345517969416e30367767426943426351514c4343475941457842417549305466574d4c76696675392b6a6262743349473267786a75663731743269426c78344b4b4e2b366f596f5a673967694d76374c784f5145634352595151374341474949467842417349495a674154462b52652b584150776f37724341474949467842417349495a6741544545433467685745414d77514a694342595151374341474949467842417349495a6741544545433467685745414d77514a694342595151374341474949467842417349495a6741544545433467685745414d77514a694342595151374341474949467842417349495a674154482b4161542f74435449695841564141414141456c46546b5375516d4343, '{\"referenceId\":\"request_87\",\"status\":\"expired\",\"createdAt\":\"2022-01-27T18:14:26.000000Z\",\"updatedAt\":\"2022-01-27T23:07:43.000000Z\",\"value\":954.19}', '2022-01-27 14:12:10', '2022-01-28 14:53:46'),
+(94, '1245707677', 'MP', 'CC', 'approved', 'PA', 1, 2, '1300.30', '260.06', '0.00', '130.03', 'PE', '150.00', 5, NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-01-28T10:31:21.000-04:00\",\"date_last_updated\":\"2022-01-28T10:31:21.000-04:00\",\"expiration_month\":12,\"expiration_year\":2025,\"first_six_digits\":\"503143\",\"id\":null,\"last_four_digits\":\"6351\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-01-28T10:31:21.628-04:00\",\"date_created\":\"2022-01-28T10:31:21.516-04:00\",\"date_last_updated\":\"2022-01-28T10:31:21.628-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_88\",\"fee_details\":[{\"amount\":72.37,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245707677,\"installments\":1,\"integrator_id\":null,\"issuer_id\":\"24\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-01-28T10:31:21.628-04:00\",\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"master\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"approved\",\"status_detail\":\"accredited\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1450.3,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1450.3,\"net_received_amount\":1377.93,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":1450.3}}', '2022-01-27 19:02:29', '2022-01-28 19:51:14'),
+(95, '1245710612', 'MP', 'CC', 'refunded', 'DE', 5, 2, '2100.30', '420.06', '0.00', '210.03', 'PE', '150.00', 5, NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"ip_address\":\"45.191.149.84\",\"items\":[{\"category_id\":null,\"description\":\"Tablet | COR: Preto | TAMANHO: 12 Polegadas\",\"id\":null,\"picture_url\":null,\"quantity\":\"1\",\"title\":\"Tablet\",\"unit_price\":\"640.27001953125\"},{\"category_id\":null,\"description\":\"Headset | COR: Preto | TAMANHO: M\",\"id\":null,\"picture_url\":null,\"quantity\":\"1\",\"title\":\"Headset\",\"unit_price\":\"339.9700012207031\"},{\"category_id\":null,\"description\":\"Celular LG K4 | COR: Preto | TAMANHO: 10x40\",\"id\":null,\"picture_url\":null,\"quantity\":\"1\",\"title\":\"Celular LG K4\",\"unit_price\":\"639.969970703125\"}],\"nsu_processadora\":null,\"payer\":{\"address\":{\"street_name\":\"Rua Socialista\",\"street_number\":\"14\",\"zip_code\":\"04472205\"}}},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menzes\"},\"date_created\":\"2022-01-28T12:52:40.000-04:00\",\"date_last_updated\":\"2022-01-28T12:52:40.000-04:00\",\"expiration_month\":12,\"expiration_year\":2025,\"first_six_digits\":\"375365\",\"id\":null,\"last_four_digits\":\"6885\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-01-28T12:52:41.105-04:00\",\"date_created\":\"2022-01-28T12:52:40.901-04:00\",\"date_last_updated\":\"2022-01-28T15:51:13.784-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":\"Tablet\",\"differential_pricing_id\":null,\"external_reference\":\"request_89\",\"fee_details\":[{\"amount\":193.29,\"fee_payer\":\"payer\",\"type\":\"financing_fee\"},{\"amount\":80.85,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245710612,\"installments\":5,\"integrator_id\":null,\"issuer_id\":\"18\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-01-28T12:52:41.105-04:00\",\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{\"id\":\"4044161236\",\"type\":\"mercadopago\"},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"amex\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"checkout_pro\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[{\"adjustment_amount\":0,\"amount\":1620.21,\"date_created\":\"2022-01-28T15:51:13.784-04:00\",\"external_refund_id\":null,\"funder\":null,\"id\":1245701830,\"labels\":[],\"metadata\":{},\"partition_details\":[],\"payment_id\":1245710612,\"reason\":null,\"refund_mode\":\"standard\",\"source\":{\"id\":\"774678190\",\"name\":\"Burch Mcmillan\",\"type\":\"collector\"},\"status\":\"approved\",\"unique_sequence_number\":null}],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"refunded\",\"status_detail\":\"refunded\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1620.21,\"transaction_amount_refunded\":1620.21,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":362.7,\"net_received_amount\":1539.36,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":1813.5}}', '2022-01-28 16:24:27', '2022-01-28 19:51:08'),
+(96, '1245710695', 'MP', 'CC', 'refunded', 'DE', 2, 2, '2100.30', '420.06', '0.00', '210.03', 'PE', '150.00', 5, NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-01-28T13:08:15.000-04:00\",\"date_last_updated\":\"2022-01-28T13:08:15.000-04:00\",\"expiration_month\":12,\"expiration_year\":2030,\"first_six_digits\":\"503143\",\"id\":null,\"last_four_digits\":\"6351\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-01-28T13:08:15.113-04:00\",\"date_created\":\"2022-01-28T13:08:15.004-04:00\",\"date_last_updated\":\"2022-01-28T15:51:06.211-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_90\",\"fee_details\":[{\"amount\":152.12,\"fee_payer\":\"payer\",\"type\":\"financing_fee\"},{\"amount\":112.29,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245710695,\"installments\":2,\"integrator_id\":null,\"issuer_id\":\"24\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-01-28T13:08:15.113-04:00\",\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"master\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[{\"adjustment_amount\":0,\"amount\":2250.3,\"date_created\":\"2022-01-28T15:51:06.211-04:00\",\"external_refund_id\":null,\"funder\":null,\"id\":1245702646,\"labels\":[],\"metadata\":{},\"partition_details\":[],\"payment_id\":1245710695,\"reason\":null,\"refund_mode\":\"standard\",\"source\":{\"id\":\"774678190\",\"name\":\"Burch Mcmillan\",\"type\":\"collector\"},\"status\":\"approved\",\"unique_sequence_number\":null}],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"refunded\",\"status_detail\":\"refunded\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":2250.3,\"transaction_amount_refunded\":2250.3,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1201.21,\"net_received_amount\":2138.01,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":2402.42}}', '2022-01-28 17:04:25', '2022-01-28 19:51:01'),
+(97, '1245711654', 'MP', 'CC', 'refunded', 'DE', 12, 2, '24000.00', '4800.00', '0.00', '2400.00', 'PE', '150.00', 5, NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"ip_address\":\"45.191.149.84\",\"items\":[{\"category_id\":null,\"description\":\"PC Gamer Completo | COR: Preto | TAMANHO: 10x60x20\",\"id\":null,\"picture_url\":null,\"quantity\":\"3\",\"title\":\"PC Gamer Completo\",\"unit_price\":\"5650.0\"}],\"nsu_processadora\":null,\"payer\":{\"address\":{\"street_name\":\"Rua Socialista\",\"street_number\":\"14\",\"zip_code\":\"04472205\"}}},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-01-28T13:39:06.000-04:00\",\"date_last_updated\":\"2022-01-28T13:39:06.000-04:00\",\"expiration_month\":12,\"expiration_year\":2025,\"first_six_digits\":\"423564\",\"id\":null,\"last_four_digits\":\"5682\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-01-28T13:39:06.114-04:00\",\"date_created\":\"2022-01-28T13:39:06.006-04:00\",\"date_last_updated\":\"2022-01-28T14:25:03.667-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":\"PC Gamer Completo\",\"differential_pricing_id\":null,\"external_reference\":\"request_91\",\"fee_details\":[{\"amount\":4025.63,\"fee_payer\":\"payer\",\"type\":\"financing_fee\"},{\"amount\":845.81,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245711654,\"installments\":12,\"integrator_id\":null,\"issuer_id\":\"25\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-01-28T13:39:06.114-04:00\",\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{\"id\":\"4044464681\",\"type\":\"mercadopago\"},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"visa\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"checkout_pro\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[{\"adjustment_amount\":0,\"amount\":16950,\"date_created\":\"2022-01-28T14:25:03.667-04:00\",\"external_refund_id\":null,\"funder\":null,\"id\":1245702563,\"labels\":[],\"metadata\":{},\"partition_details\":[],\"payment_id\":1245711654,\"reason\":null,\"refund_mode\":\"standard\",\"source\":{\"id\":\"774678190\",\"name\":\"Burch Mcmillan\",\"type\":\"collector\"},\"status\":\"approved\",\"unique_sequence_number\":null}],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"refunded\",\"status_detail\":\"refunded\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":16950,\"transaction_amount_refunded\":16950,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1747.97,\"net_received_amount\":16104.19,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":20975.63}}', '2022-01-28 17:13:52', '2022-01-28 18:26:11'),
+(98, '1245712070', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '800.30', '160.06', '0.00', '80.03', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245712070&payment_method_reference_id=9913831236&caller_id=130141172&hash=721c89b5-f9a9-490c-abe1-f8950dce3d4e', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"ip_address\":\"45.191.149.84\",\"items\":[{\"category_id\":null,\"description\":\"Tablet | COR: Preto | TAMANHO: 12 Polegadas\",\"id\":null,\"picture_url\":null,\"quantity\":\"1\",\"title\":\"Tablet\",\"unit_price\":\"710.2100219726562\"}],\"nsu_processadora\":null,\"payer\":{\"address\":{\"street_name\":\"Rua Socialista\",\"street_number\":\"14\",\"zip_code\":\"04472205\"}}},\"authorization_code\":null,\"barcode\":{\"content\":\"23794888200000710213380260991383123600633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T14:00:22.127-04:00\",\"date_last_updated\":\"2022-01-28T14:35:26.351-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":\"Tablet\",\"differential_pricing_id\":null,\"external_reference\":\"request_92\",\"fee_details\":[],\"id\":1245712070,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{\"id\":\"4044595398\",\"type\":\"mercadopago\"},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"checkout_pro\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":710.21,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245712070&payment_method_reference_id=9913831236&caller_id=130141172&hash=721c89b5-f9a9-490c-abe1-f8950dce3d4e\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913831236\",\"total_paid_amount\":710.21,\"verification_code\":\"9913831236\"}}', '2022-01-28 17:59:43', '2022-01-28 18:35:46'),
+(99, '1245712444', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '800.30', '160.06', '0.00', '80.03', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245712444&payment_method_reference_id=9913848054&caller_id=130141172&hash=08e5dcb3-b651-4751-bcec-7caa96269d83', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"ip_address\":\"45.191.149.84\",\"items\":[{\"category_id\":null,\"description\":\"Tablet | COR: Preto | TAMANHO: 12 Polegadas\",\"id\":null,\"picture_url\":null,\"quantity\":\"1\",\"title\":\"Tablet\",\"unit_price\":\"710.2100219726562\"}],\"nsu_processadora\":null,\"payer\":{\"address\":{\"street_name\":\"Rua Socialista\",\"street_number\":\"14\",\"zip_code\":\"04472205\"}}},\"authorization_code\":null,\"barcode\":{\"content\":\"23792888200000710213380260991384805400633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T14:37:59.532-04:00\",\"date_last_updated\":\"2022-01-28T14:38:28.349-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":\"Tablet\",\"differential_pricing_id\":null,\"external_reference\":\"request_93\",\"fee_details\":[],\"id\":1245712444,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{\"id\":\"4044820347\",\"type\":\"mercadopago\"},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"checkout_pro\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":710.21,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245712444&payment_method_reference_id=9913848054&caller_id=130141172&hash=08e5dcb3-b651-4751-bcec-7caa96269d83\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913848054\",\"total_paid_amount\":710.21,\"verification_code\":\"9913848054\"}}', '2022-01-28 18:37:19', '2022-01-28 18:38:44'),
+(100, '1245712932', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '800.00', '160.00', '0.00', '80.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245712932&payment_method_reference_id=9913881315&caller_id=130141172&hash=aae64c7d-d808-4b41-9538-928e065af5ad', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23796888200000950003380260991388131500633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:44:13.230-04:00\",\"date_last_updated\":\"2022-01-28T15:45:52.028-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_94\",\"fee_details\":[],\"id\":1245712932,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":950,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245712932&payment_method_reference_id=9913881315&caller_id=130141172&hash=aae64c7d-d808-4b41-9538-928e065af5ad\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913881315\",\"total_paid_amount\":950,\"verification_code\":\"9913881315\"}}', '2022-01-28 18:42:53', '2022-01-28 19:45:47'),
+(101, '1245713812', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '1300.00', '260.00', '0.00', '130.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245713812&payment_method_reference_id=9913882833&caller_id=130141172&hash=ac643fc7-b539-4c61-985d-7b9a03a959d4', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23796888200001450003380260991388283300633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:46:37.496-04:00\",\"date_last_updated\":\"2022-01-28T15:51:00.894-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_95\",\"fee_details\":[],\"id\":1245713812,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1450,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245713812&payment_method_reference_id=9913882833&caller_id=130141172&hash=ac643fc7-b539-4c61-985d-7b9a03a959d4\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913882833\",\"total_paid_amount\":1450,\"verification_code\":\"9913882833\"}}', '2022-01-28 19:46:06', '2022-01-28 19:50:56'),
+(102, '1245713829', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '500.00', '100.00', '0.00', '50.00', 'PE', '0.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245713829&payment_method_reference_id=9913883926&caller_id=130141172&hash=27d70b50-0743-47e2-bc5b-c2339bbed704', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23793888200000500003380260991388392600633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:48:54.901-04:00\",\"date_last_updated\":\"2022-01-28T15:50:55.901-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_96\",\"fee_details\":[],\"id\":1245713829,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":500,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245713829&payment_method_reference_id=9913883926&caller_id=130141172&hash=27d70b50-0743-47e2-bc5b-c2339bbed704\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913883926\",\"total_paid_amount\":500,\"verification_code\":\"9913883926\"}}', '2022-01-28 19:48:28', '2022-01-28 19:50:50'),
+(103, '1245714017', 'MP', 'BO', 'pending', 'AP', 1, 2, '1300.30', '260.06', '0.00', '130.03', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245714017&payment_method_reference_id=9913885283&caller_id=130141172&hash=02b9be73-edd5-41cc-92bf-422493bf9abf', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23791888200001450303380260991388528300633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:51:43.857-04:00\",\"date_last_updated\":\"2022-01-28T15:51:43.857-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_97\",\"fee_details\":[],\"id\":1245714017,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"pending\",\"status_detail\":\"pending_waiting_payment\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1450.3,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245714017&payment_method_reference_id=9913885283&caller_id=130141172&hash=02b9be73-edd5-41cc-92bf-422493bf9abf\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913885283\",\"total_paid_amount\":1450.3,\"verification_code\":\"9913885283\"}}', '2022-01-28 19:51:24', '2022-01-28 19:52:09'),
+(104, '1245714024', 'MP', 'BO', 'pending', 'AP', 1, 2, '1300.00', '260.00', '0.00', '130.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245714024&payment_method_reference_id=9913886073&caller_id=130141172&hash=837e3ee1-a909-4ef6-a209-21ae5f3e3170', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23796888200001450003380260991388607300633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:53:31.748-04:00\",\"date_last_updated\":\"2022-01-28T15:53:31.748-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_98\",\"fee_details\":[],\"id\":1245714024,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"pending\",\"status_detail\":\"pending_waiting_payment\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1450,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245714024&payment_method_reference_id=9913886073&caller_id=130141172&hash=837e3ee1-a909-4ef6-a209-21ae5f3e3170\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913886073\",\"total_paid_amount\":1450,\"verification_code\":\"9913886073\"}}', '2022-01-28 19:52:32', '2022-01-28 19:54:13');
+INSERT INTO `request_payment` (`id`, `code`, `type`, `method`, `status`, `status_type`, `installments`, `installment_no_interest`, `amount`, `discount_coupon`, `discount_installment`, `discount_cart`, `shipping_type`, `shipping_value`, `shipping_days`, `shipping_message`, `link`, `qrcode`, `details`, `created_at`, `updated_at`) VALUES
+(105, '1245713866', 'MP', 'BO', 'pending', 'AP', 1, 2, '1300.00', '260.00', '0.00', '130.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245713866&payment_method_reference_id=9913886656&caller_id=130141172&hash=3f73f994-deff-404d-83ae-aeaa263bcadb', NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23794888200001450003380260991388665600633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-28T15:54:54.284-04:00\",\"date_last_updated\":\"2022-01-28T15:54:54.284-04:00\",\"date_of_expiration\":\"2022-01-31T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_99\",\"fee_details\":[],\"id\":1245713866,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":null,\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"pending\",\"status_detail\":\"pending_waiting_payment\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1450,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245713866&payment_method_reference_id=9913886656&caller_id=130141172&hash=3f73f994-deff-404d-83ae-aeaa263bcadb\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9913886656\",\"total_paid_amount\":1450,\"verification_code\":\"9913886656\"}}', '2022-01-28 19:54:36', '2022-01-28 19:55:51'),
+(106, NULL, NULL, NULL, NULL, 'AP', 1, 2, '800.00', '160.00', '0.00', '80.00', 'PE', '150.00', 5, NULL, NULL, NULL, NULL, '2022-01-28 19:57:27', '2022-01-28 19:57:27'),
+(107, NULL, NULL, NULL, NULL, 'AP', 1, 2, '1300.30', '260.06', '0.00', '130.03', 'PE', '150.00', 5, NULL, NULL, NULL, NULL, '2022-01-28 19:59:36', '2022-01-28 19:59:36');
 
 -- --------------------------------------------------------
 
@@ -1149,14 +989,11 @@ INSERT INTO `request_payment` (`id`, `code`, `type`, `method`, `status`, `status
 -- Estrutura da tabela `roles`
 --
 
-DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `roles`
@@ -1172,15 +1009,11 @@ INSERT INTO `roles` (`id`, `name`, `description`) VALUES
 -- Estrutura da tabela `roles_permissions`
 --
 
-DROP TABLE IF EXISTS `roles_permissions`;
-CREATE TABLE IF NOT EXISTS `roles_permissions` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles_permissions` (
+  `id` int(11) UNSIGNED NOT NULL,
   `role_id` int(11) UNSIGNED NOT NULL,
-  `permission_id` int(11) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `role_id` (`role_id`),
-  KEY `permission_id` (`permission_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=591 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `permission_id` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `roles_permissions`
@@ -1266,14 +1099,12 @@ INSERT INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 -- Estrutura da tabela `slideshow`
 --
 
-DROP TABLE IF EXISTS `slideshow`;
-CREATE TABLE IF NOT EXISTS `slideshow` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `slideshow` (
+  `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1282,18 +1113,13 @@ CREATE TABLE IF NOT EXISTS `slideshow` (
 -- Estrutura da tabela `subcategories`
 --
 
-DROP TABLE IF EXISTS `subcategories`;
-CREATE TABLE IF NOT EXISTS `subcategories` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `subcategories` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `slug` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `category_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `category_id` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `category_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `subcategories`
@@ -1325,19 +1151,16 @@ INSERT INTO `subcategories` (`id`, `name`, `slug`, `description`, `category_id`)
 -- Estrutura da tabela `subcomments`
 --
 
-DROP TABLE IF EXISTS `subcomments`;
-CREATE TABLE IF NOT EXISTS `subcomments` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `subcomments` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `visible` tinyint(1) NOT NULL,
   `comment_id` int(10) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `comment_id` (`comment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `subcomments`
@@ -1352,30 +1175,21 @@ INSERT INTO `subcomments` (`id`, `name`, `email`, `content`, `visible`, `comment
 -- Estrutura da tabela `system`
 --
 
-DROP TABLE IF EXISTS `system`;
-CREATE TABLE IF NOT EXISTS `system` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cnpj` char(14) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `keywords` text COLLATE utf8mb4_unicode_ci,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `maintenance` tinyint(1) NOT NULL DEFAULT '0',
+  `keywords` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `maintenance` tinyint(1) NOT NULL DEFAULT 0,
   `system_address_id` int(10) UNSIGNED NOT NULL,
   `system_contact_id` int(10) UNSIGNED NOT NULL,
   `system_social_id` int(10) UNSIGNED NOT NULL,
   `system_store_id` int(10) UNSIGNED NOT NULL,
   `system_lgpd_id` int(10) UNSIGNED NOT NULL,
   `system_floater_id` int(10) UNSIGNED NOT NULL,
-  `system_ftp_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `settings_address_id` (`system_address_id`),
-  KEY `settings_contact_id` (`system_contact_id`),
-  KEY `settings_floater_id` (`system_floater_id`),
-  KEY `settings_social_id` (`system_social_id`),
-  KEY `system_lgpd_id` (`system_lgpd_id`),
-  KEY `system_store_id` (`system_store_id`),
-  KEY `system_ftp_id` (`system_ftp_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `system_ftp_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system`
@@ -1390,9 +1204,8 @@ INSERT INTO `system` (`id`, `name`, `cnpj`, `keywords`, `description`, `maintena
 -- Estrutura da tabela `system_address`
 --
 
-DROP TABLE IF EXISTS `system_address`;
-CREATE TABLE IF NOT EXISTS `system_address` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_address` (
+  `id` int(11) UNSIGNED NOT NULL,
   `postal_code` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `street` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `number` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1401,9 +1214,8 @@ CREATE TABLE IF NOT EXISTS `system_address` (
   `state` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `complement` text COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `complement` text COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_address`
@@ -1418,14 +1230,12 @@ INSERT INTO `system_address` (`id`, `postal_code`, `street`, `number`, `district
 -- Estrutura da tabela `system_contact`
 --
 
-DROP TABLE IF EXISTS `system_contact`;
-CREATE TABLE IF NOT EXISTS `system_contact` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_contact` (
+  `id` int(10) UNSIGNED NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `telephone` char(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cell` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `cell` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_contact`
@@ -1440,14 +1250,12 @@ INSERT INTO `system_contact` (`id`, `email`, `telephone`, `cell`) VALUES
 -- Estrutura da tabela `system_floater`
 --
 
-DROP TABLE IF EXISTS `system_floater`;
-CREATE TABLE IF NOT EXISTS `system_floater` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `system_floater` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 0,
   `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `link` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_floater`
@@ -1462,13 +1270,11 @@ INSERT INTO `system_floater` (`id`, `active`, `image`, `link`) VALUES
 -- Estrutura da tabela `system_freight`
 --
 
-DROP TABLE IF EXISTS `system_freight`;
-CREATE TABLE IF NOT EXISTS `system_freight` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_freight` (
+  `id` int(10) UNSIGNED NOT NULL,
   `type` enum('C','P') COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'C - Correios | P - Personalizado',
-  `postal_code_origin` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `postal_code_origin` char(8) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_freight`
@@ -1483,28 +1289,25 @@ INSERT INTO `system_freight` (`id`, `type`, `postal_code_origin`) VALUES
 -- Estrutura da tabela `system_freight_custom`
 --
 
-DROP TABLE IF EXISTS `system_freight_custom`;
-CREATE TABLE IF NOT EXISTS `system_freight_custom` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_freight_custom` (
+  `id` int(10) UNSIGNED NOT NULL,
   `postal_code_min` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `postal_code_max` char(8) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` decimal(10,2) UNSIGNED NOT NULL,
   `days` tinyint(3) UNSIGNED NOT NULL,
-  `system_freight_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `system_freight_id` (`system_freight_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=437 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `system_freight_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_freight_custom`
 --
 
 INSERT INTO `system_freight_custom` (`id`, `postal_code_min`, `postal_code_max`, `value`, `days`, `system_freight_id`) VALUES
-(432, '11111111', '22222222', '150.00', 5, 1),
-(433, '33333333', '44444444', '200.00', 10, 1),
-(434, '55555555', '66666666', '5.00', 5, 1),
-(435, '66666666', '77777777', '6.00', 5, 1),
-(436, '88888888', '99999999', '7.00', 5, 1);
+(457, '11111111', '22222222', '150.00', 5, 1),
+(458, '33333333', '44444444', '200.00', 10, 1),
+(459, '55555555', '66666666', '5.00', 5, 1),
+(460, '66666666', '77777777', '6.00', 5, 1),
+(461, '88888888', '99999999', '7.00', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -1512,18 +1315,16 @@ INSERT INTO `system_freight_custom` (`id`, `postal_code_min`, `postal_code_max`,
 -- Estrutura da tabela `system_ftp`
 --
 
-DROP TABLE IF EXISTS `system_ftp`;
-CREATE TABLE IF NOT EXISTS `system_ftp` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `system_ftp` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 0,
   `url` varchar(191) DEFAULT NULL,
   `server` varchar(20) DEFAULT NULL,
   `port` smallint(3) UNSIGNED NOT NULL,
   `username` varchar(191) DEFAULT NULL,
   `password` varchar(191) DEFAULT NULL,
-  `directory` varchar(191) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  `directory` varchar(191) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `system_ftp`
@@ -1538,15 +1339,13 @@ INSERT INTO `system_ftp` (`id`, `active`, `url`, `server`, `port`, `username`, `
 -- Estrutura da tabela `system_lgpd`
 --
 
-DROP TABLE IF EXISTS `system_lgpd`;
-CREATE TABLE IF NOT EXISTS `system_lgpd` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+CREATE TABLE `system_lgpd` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   `privacy_policy` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `terms_conditions` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `return_policy` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `return_policy` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_lgpd`
@@ -1561,15 +1360,13 @@ INSERT INTO `system_lgpd` (`id`, `active`, `privacy_policy`, `terms_conditions`,
 -- Estrutura da tabela `system_mercadopago`
 --
 
-DROP TABLE IF EXISTS `system_mercadopago`;
-CREATE TABLE IF NOT EXISTS `system_mercadopago` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+CREATE TABLE `system_mercadopago` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   `public_key` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `access_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type_checkout` enum('LR','LB') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LR' COMMENT 'LR - Link de Redirecionamento | LB - LightBox',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `type_checkout` enum('LR','LB') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LR' COMMENT 'LR - Link de Redirecionamento | LB - LightBox'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_mercadopago`
@@ -1584,17 +1381,15 @@ INSERT INTO `system_mercadopago` (`id`, `active`, `public_key`, `access_token`, 
 -- Estrutura da tabela `system_pagseguro`
 --
 
-DROP TABLE IF EXISTS `system_pagseguro`;
-CREATE TABLE IF NOT EXISTS `system_pagseguro` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+CREATE TABLE `system_pagseguro` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `app_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `app_key` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type_checkout` enum('LR','LB') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LR' COMMENT 'LR - Link de Redirecionamento | LB - LightBox',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `type_checkout` enum('LR','LB') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'LR' COMMENT 'LR - Link de Redirecionamento | LB - LightBox'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_pagseguro`
@@ -1609,15 +1404,13 @@ INSERT INTO `system_pagseguro` (`id`, `active`, `email`, `token`, `app_id`, `app
 -- Estrutura da tabela `system_picpay`
 --
 
-DROP TABLE IF EXISTS `system_picpay`;
-CREATE TABLE IF NOT EXISTS `system_picpay` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
+CREATE TABLE `system_picpay` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
   `token` varchar(191) DEFAULT NULL,
   `seller_token` varchar(191) DEFAULT NULL,
-  `expiration_minutes` tinyint(3) UNSIGNED DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+  `expiration_minutes` tinyint(3) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Extraindo dados da tabela `system_picpay`
@@ -1632,9 +1425,8 @@ INSERT INTO `system_picpay` (`id`, `active`, `token`, `seller_token`, `expiratio
 -- Estrutura da tabela `system_social`
 --
 
-DROP TABLE IF EXISTS `system_social`;
-CREATE TABLE IF NOT EXISTS `system_social` (
-  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `system_social` (
+  `id` int(10) UNSIGNED NOT NULL,
   `facebook` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `instagram` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `twitter` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -1642,9 +1434,8 @@ CREATE TABLE IF NOT EXISTS `system_social` (
   `youtube` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `twitch` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `discord` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `whatsapp` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `whatsapp` char(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_social`
@@ -1659,39 +1450,33 @@ INSERT INTO `system_social` (`id`, `facebook`, `instagram`, `twitter`, `linkedin
 -- Estrutura da tabela `system_store`
 --
 
-DROP TABLE IF EXISTS `system_store`;
-CREATE TABLE IF NOT EXISTS `system_store` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `cart_promotion` tinyint(1) NOT NULL DEFAULT '0',
-  `cart_amount_promotion` decimal(10,2) UNSIGNED NOT NULL DEFAULT '0.00',
-  `cart_discount_percent_promotion` tinyint(100) UNSIGNED NOT NULL DEFAULT '0',
-  `cart_freight_free_promotion` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `system_store` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `cart_promotion` tinyint(1) NOT NULL DEFAULT 0,
+  `cart_amount_promotion` decimal(10,2) UNSIGNED NOT NULL DEFAULT 0.00,
+  `cart_discount_percent_promotion` tinyint(100) UNSIGNED NOT NULL DEFAULT 0,
+  `cart_freight_free_promotion` tinyint(1) NOT NULL DEFAULT 0,
   `payment_type` enum('PS','MP') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PS' COMMENT 'PS - PagSeguro | MP - Mercado Pago',
-  `payment_checkout_transparent` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_production` tinyint(1) NOT NULL DEFAULT '0',
-  `payment_credit_card` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_debit_card` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_balance` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_bolet` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_deposit` tinyint(1) NOT NULL DEFAULT '1',
-  `payment_debit_online` tinyint(1) NOT NULL DEFAULT '1',
+  `payment_checkout_transparent` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_production` tinyint(1) NOT NULL DEFAULT 0,
+  `payment_credit_card` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_debit_card` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_balance` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_bolet` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_deposit` tinyint(1) NOT NULL DEFAULT 1,
+  `payment_debit_online` tinyint(1) NOT NULL DEFAULT 1,
   `system_freight_id` int(10) UNSIGNED NOT NULL,
   `system_pagseguro_id` int(10) UNSIGNED NOT NULL,
   `system_mercadopago_id` int(10) UNSIGNED NOT NULL,
-  `system_picpay_id` int(10) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `system_pagseguro_id` (`system_pagseguro_id`),
-  KEY `system_store_ibfk_2` (`system_freight_id`),
-  KEY `system_picpay_id` (`system_picpay_id`),
-  KEY `system_mercadopago_id` (`system_mercadopago_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `system_picpay_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `system_store`
 --
 
 INSERT INTO `system_store` (`id`, `cart_promotion`, `cart_amount_promotion`, `cart_discount_percent_promotion`, `cart_freight_free_promotion`, `payment_type`, `payment_checkout_transparent`, `payment_production`, `payment_credit_card`, `payment_debit_card`, `payment_balance`, `payment_bolet`, `payment_deposit`, `payment_debit_online`, `system_freight_id`, `system_pagseguro_id`, `system_mercadopago_id`, `system_picpay_id`) VALUES
-(1, 1, '100.00', 10, 0, 'PS', 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+(1, 1, '100.00', 10, 0, 'MP', 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1699,16 +1484,14 @@ INSERT INTO `system_store` (`id`, `cart_promotion`, `cart_amount_promotion`, `ca
 -- Estrutura da tabela `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users`
@@ -1731,15 +1514,11 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `created_at`, `updated_a
 -- Estrutura da tabela `users_roles`
 --
 
-DROP TABLE IF EXISTS `users_roles`;
-CREATE TABLE IF NOT EXISTS `users_roles` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users_roles` (
+  `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
-  `role_id` int(11) UNSIGNED NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `role_id` (`role_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `role_id` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Extraindo dados da tabela `users_roles`
@@ -1748,6 +1527,636 @@ CREATE TABLE IF NOT EXISTS `users_roles` (
 INSERT INTO `users_roles` (`id`, `user_id`, `role_id`) VALUES
 (9, 1, 1),
 (10, 4, 2);
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices para tabela `banners`
+--
+ALTER TABLE `banners`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Índices para tabela `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `token` (`token`),
+  ADD KEY `clients_ibfk_1` (`shipping_address_id`),
+  ADD KEY `clients_ibfk_2` (`billing_address_id`);
+
+--
+-- Índices para tabela `client_adresses`
+--
+ALTER TABLE `client_adresses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`);
+
+--
+-- Índices para tabela `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notice_id` (`notice_id`);
+
+--
+-- Índices para tabela `coupons`
+--
+ALTER TABLE `coupons`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `code` (`code`);
+
+--
+-- Índices para tabela `depoiments`
+--
+ALTER TABLE `depoiments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `favorites`
+--
+ALTER TABLE `favorites`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Índices para tabela `galery_images`
+--
+ALTER TABLE `galery_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `galery_id` (`galery_id`);
+
+--
+-- Índices para tabela `galleries`
+--
+ALTER TABLE `galleries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `lgpd`
+--
+ALTER TABLE `lgpd`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `notices`
+--
+ALTER TABLE `notices`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `title` (`title`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD UNIQUE KEY `poster` (`poster`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Índices para tabela `notices_subcategories`
+--
+ALTER TABLE `notices_subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `notice_id` (`notice_id`),
+  ADD KEY `subcategory_id` (`subcategory_id`);
+
+--
+-- Índices para tabela `partners`
+--
+ALTER TABLE `partners`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Índices para tabela `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
+-- Índices para tabela `products_related`
+--
+ALTER TABLE `products_related`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `product_related_id` (`product_related_id`);
+
+--
+-- Índices para tabela `products_subcategories`
+--
+ALTER TABLE `products_subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `subcategory_id` (`subcategory_id`);
+
+--
+-- Índices para tabela `product_colors`
+--
+ALTER TABLE `product_colors`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Índices para tabela `product_discounts`
+--
+ALTER TABLE `product_discounts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Índices para tabela `product_images`
+--
+ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `source` (`source`),
+  ADD KEY `product_images_ibfk_1` (`product_color_id`);
+
+--
+-- Índices para tabela `product_sizes`
+--
+ALTER TABLE `product_sizes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_color_id` (`product_color_id`);
+
+--
+-- Índices para tabela `ratings`
+--
+ALTER TABLE `ratings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `client_id` (`client_id`);
+
+--
+-- Índices para tabela `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`),
+  ADD KEY `request_address_id` (`request_address_id`),
+  ADD KEY `request_payment_id` (`request_payment_id`);
+
+--
+-- Índices para tabela `requests_products`
+--
+ALTER TABLE `requests_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `request_id` (`request_id`),
+  ADD KEY `product_size_id` (`product_id`);
+
+--
+-- Índices para tabela `request_address`
+--
+ALTER TABLE `request_address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `request_payment`
+--
+ALTER TABLE `request_payment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
+
+--
+-- Índices para tabela `roles_permissions`
+--
+ALTER TABLE `roles_permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role_id` (`role_id`),
+  ADD KEY `permission_id` (`permission_id`);
+
+--
+-- Índices para tabela `slideshow`
+--
+ALTER TABLE `slideshow`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `subcategories`
+--
+ALTER TABLE `subcategories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `category_id` (`category_id`);
+
+--
+-- Índices para tabela `subcomments`
+--
+ALTER TABLE `subcomments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `comment_id` (`comment_id`);
+
+--
+-- Índices para tabela `system`
+--
+ALTER TABLE `system`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `settings_address_id` (`system_address_id`),
+  ADD KEY `settings_contact_id` (`system_contact_id`),
+  ADD KEY `settings_floater_id` (`system_floater_id`),
+  ADD KEY `settings_social_id` (`system_social_id`),
+  ADD KEY `system_lgpd_id` (`system_lgpd_id`),
+  ADD KEY `system_store_id` (`system_store_id`),
+  ADD KEY `system_ftp_id` (`system_ftp_id`);
+
+--
+-- Índices para tabela `system_address`
+--
+ALTER TABLE `system_address`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_contact`
+--
+ALTER TABLE `system_contact`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_floater`
+--
+ALTER TABLE `system_floater`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_freight`
+--
+ALTER TABLE `system_freight`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_freight_custom`
+--
+ALTER TABLE `system_freight_custom`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `system_freight_id` (`system_freight_id`);
+
+--
+-- Índices para tabela `system_ftp`
+--
+ALTER TABLE `system_ftp`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_lgpd`
+--
+ALTER TABLE `system_lgpd`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_mercadopago`
+--
+ALTER TABLE `system_mercadopago`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_pagseguro`
+--
+ALTER TABLE `system_pagseguro`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_picpay`
+--
+ALTER TABLE `system_picpay`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_social`
+--
+ALTER TABLE `system_social`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `system_store`
+--
+ALTER TABLE `system_store`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `system_pagseguro_id` (`system_pagseguro_id`),
+  ADD KEY `system_store_ibfk_2` (`system_freight_id`),
+  ADD KEY `system_picpay_id` (`system_picpay_id`),
+  ADD KEY `system_mercadopago_id` (`system_mercadopago_id`);
+
+--
+-- Índices para tabela `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `users_roles`
+--
+ALTER TABLE `users_roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role_id` (`role_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT de tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `banners`
+--
+ALTER TABLE `banners`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de tabela `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT de tabela `clients`
+--
+ALTER TABLE `clients`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `client_adresses`
+--
+ALTER TABLE `client_adresses`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT de tabela `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de tabela `coupons`
+--
+ALTER TABLE `coupons`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `depoiments`
+--
+ALTER TABLE `depoiments`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de tabela `galery_images`
+--
+ALTER TABLE `galery_images`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de tabela `galleries`
+--
+ALTER TABLE `galleries`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `lgpd`
+--
+ALTER TABLE `lgpd`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7185;
+
+--
+-- AUTO_INCREMENT de tabela `notices`
+--
+ALTER TABLE `notices`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de tabela `notices_subcategories`
+--
+ALTER TABLE `notices_subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `partners`
+--
+ALTER TABLE `partners`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+
+--
+-- AUTO_INCREMENT de tabela `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+
+--
+-- AUTO_INCREMENT de tabela `products_related`
+--
+ALTER TABLE `products_related`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `products_subcategories`
+--
+ALTER TABLE `products_subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+
+--
+-- AUTO_INCREMENT de tabela `product_colors`
+--
+ALTER TABLE `product_colors`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
+-- AUTO_INCREMENT de tabela `product_discounts`
+--
+ALTER TABLE `product_discounts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+
+--
+-- AUTO_INCREMENT de tabela `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT de tabela `product_sizes`
+--
+ALTER TABLE `product_sizes`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=498;
+
+--
+-- AUTO_INCREMENT de tabela `ratings`
+--
+ALTER TABLE `ratings`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de tabela `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+
+--
+-- AUTO_INCREMENT de tabela `requests_products`
+--
+ALTER TABLE `requests_products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
+
+--
+-- AUTO_INCREMENT de tabela `request_address`
+--
+ALTER TABLE `request_address`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=107;
+
+--
+-- AUTO_INCREMENT de tabela `request_payment`
+--
+ALTER TABLE `request_payment`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+
+--
+-- AUTO_INCREMENT de tabela `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `roles_permissions`
+--
+ALTER TABLE `roles_permissions`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=591;
+
+--
+-- AUTO_INCREMENT de tabela `slideshow`
+--
+ALTER TABLE `slideshow`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `subcategories`
+--
+ALTER TABLE `subcategories`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT de tabela `subcomments`
+--
+ALTER TABLE `subcomments`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `system`
+--
+ALTER TABLE `system`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_address`
+--
+ALTER TABLE `system_address`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_contact`
+--
+ALTER TABLE `system_contact`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_floater`
+--
+ALTER TABLE `system_floater`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_freight`
+--
+ALTER TABLE `system_freight`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_freight_custom`
+--
+ALTER TABLE `system_freight_custom`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=462;
+
+--
+-- AUTO_INCREMENT de tabela `system_ftp`
+--
+ALTER TABLE `system_ftp`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_lgpd`
+--
+ALTER TABLE `system_lgpd`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_mercadopago`
+--
+ALTER TABLE `system_mercadopago`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_pagseguro`
+--
+ALTER TABLE `system_pagseguro`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_picpay`
+--
+ALTER TABLE `system_picpay`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_social`
+--
+ALTER TABLE `system_social`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `system_store`
+--
+ALTER TABLE `system_store`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de tabela `users_roles`
+--
+ALTER TABLE `users_roles`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Restrições para despejos de tabelas
@@ -1765,12 +2174,6 @@ ALTER TABLE `clients`
 --
 ALTER TABLE `client_adresses`
   ADD CONSTRAINT `client_adresses_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Limitadores para a tabela `client_cards`
---
-ALTER TABLE `client_cards`
-  ADD CONSTRAINT `client_cards_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `comments`

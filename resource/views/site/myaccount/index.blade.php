@@ -19,9 +19,6 @@
                 @include('includes.components.card', ['title' => 'Pedidos', 'link' => route('site.myaccount.requests'), 'class' => 'text-primary', 'amount' => $client->requests->count(), 'icon' => 'fa fa-list'])
                 @include('includes.components.card', ['title' => 'Carrinho de Compras', 'link' => route('site.cart'), 'class' => 'text-warning', 'amount' => $cart->quantity(), 'icon' => 'fa fa-shopping-cart'])
                 @include('includes.components.card', ['title' => 'Endereços', 'link' => route('site.myaccount.adresses'), 'class' => 'text-info', 'amount' => $client->adresses->count(), 'icon' => 'fa fa-map-marker'])
-                @if(config('store.payment.checkouts.transparent'))
-                    @include('includes.components.card', ['title' => 'Cartões', 'link' => route('site.myaccount.cards'), 'class' => 'text-success', 'amount' => $client->cards->count(), 'icon' => 'fa fa-credit-card'])
-                @endif
                 @include('includes.components.card', ['title' => 'Favoritos', 'link' => route('site.myaccount.favorites'), 'class' => 'text-danger', 'amount' => $client->favorites->count(), 'icon' => 'fa fa-heart'])
             </div>
         </div>
