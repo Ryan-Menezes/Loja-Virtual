@@ -26,7 +26,7 @@
                         @include('includes.components.card', ['title' => 'Cartão de Crédito', 'link' => route('site.myaccount.requests.show.credit_card', ['id' => $requestmodel->id]), 'class' => 'text-danger', 'amount' => 'Cartão de Crédito', 'icon' => 'fa fa-credit-card'])
                     @endif
 
-                    @if(config('store.payment.methods.debit_card') && !config('store.types.pagseguro') && !config('store.types.mercadopago'))
+                    @if(config('store.payment.methods.debit_card') && !config('store.payment.types.pagseguro') && !config('store.payment.types.mercadopago'))
                         @include('includes.components.card', ['title' => 'Cartão de Débito', 'link' => route('site.myaccount.requests.show.debit_card', ['id' => $requestmodel->id]), 'class' => 'text-info', 'amount' => 'Cartão de Débito', 'icon' => 'fa fa-credit-card'])
                     @endif
 
@@ -34,7 +34,7 @@
                         @include('includes.components.card', ['title' => 'Boleto', 'link' => route('site.myaccount.requests.show.bolet', ['id' => $requestmodel->id]), 'class' => 'text-black', 'amount' => 'Boleto', 'icon' => 'fa fa-barcode'])
                     @endif
                     
-                    @if(config('store.payment.methods.debit_online') && !config('store.types.mercadopago'))
+                    @if(config('store.payment.methods.debit_online') && config('store.payment.types.pagseguro'))
                         @include('includes.components.card', ['title' => 'Débito Online', 'link' => route('site.myaccount.requests.show.debit_online', ['id' => $requestmodel->id]), 'class' => 'text-warning', 'amount' => 'Débito Online', 'icon' => 'fa fa-bank'])
                     @endif
                 @endif
@@ -51,7 +51,7 @@
                     @include('includes.components.card', ['title' => 'PIX', 'link' => route('site.myaccount.requests.show.pix', ['id' => $requestmodel->id]), 'class' => 'text-success', 'amount' => 'PIX', 'icon' => 'fa fa-qrcode'])
                 @endif
             </div>
-            @elseif($requestmodel->payment->status_type != 'PA' && $requestmodel->payment->status_type != 'CA')
+            @elseif($requestmodel->payment->status_type != 'PA' && $requestmodel->payment->status_type != 'CA' && $requestmodel->payment->status_type != 'DE')
                 <h2 style="margin-top: 20px;">Pagamento</h2><hr />
 
                 @if($requestmodel->payment->status_type == 'AP' && !empty($requestmodel->payment->link))

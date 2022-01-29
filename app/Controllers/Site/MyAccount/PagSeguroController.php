@@ -233,7 +233,8 @@ class PagSeguroController extends Controller{
             if(update_payment_request_pagseguro($pagseguro, $requestmodel)){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message' 	=> 'Já foi realizado o pagamento para este pedido!'
                 ]);
             }
 
@@ -263,7 +264,8 @@ class PagSeguroController extends Controller{
             if(!$validator){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message'   => 'Preencha o formulário corretamente com os dados de seu cartão de crédito!'
                 ]);
             }  
 
@@ -340,18 +342,21 @@ class PagSeguroController extends Controller{
             if(is_object($response) && $response->code){
                 return json_encode([
                     'result'	=> true,
-                    'data' 		=> $response
+                    'data' 		=> $response,
+                    'message' 	=> PagSeguro::message($response)
                 ]);
             }
             
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $response
+                'data' 		=> $response,
+                'message' 	=> PagSeguro::message($response)
             ]);
         }catch(Exception $e){
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $e->getMessage()
+                'data' 		=> $e->getMessage(),
+                'message' 	=> PagSeguro::message(null)
             ]);
         }
     }
@@ -371,10 +376,21 @@ class PagSeguroController extends Controller{
 			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
 		}
 
+        // Desconto pela parcela selecionada
+        $discount_percent = 0;
+        foreach($requestmodel->products as $product){
+            $product = $product->product;
+            $discount = $product->getDiscount(1);
+
+            if($discount){
+                $discount_percent += $discount / $requestmodel->products->count();
+            }
+        }
+
 		$session = $pagseguro->getSession();
 		$session_id = $session->id ?? null;
 		
-		return view('site.myaccount.requests.pagseguro.bolet.index', compact('requestmodel', 'session_id'));
+		return view('site.myaccount.requests.pagseguro.bolet.index', compact('requestmodel', 'discount_percent', 'session_id'));
 	}
 
 	public function boletStore($id){
@@ -402,7 +418,8 @@ class PagSeguroController extends Controller{
             if(update_payment_request_pagseguro($pagseguro, $requestmodel)){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message' 	=> 'Já foi realizado o pagamento para este pedido!'
                 ]);
             }
 
@@ -417,7 +434,8 @@ class PagSeguroController extends Controller{
             if(!$validator){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message'   => 'Ocorreu um erro ao tentar gerar o seu boleto, por favor tente novamente!'
                 ]);
             }
 
@@ -473,18 +491,21 @@ class PagSeguroController extends Controller{
             if(is_object($response) && $response->code && $response->paymentLink){
                 return json_encode([
                     'result'	=> true,
-                    'data' 		=> $response
+                    'data' 		=> $response,
+                    'message' 	=> PagSeguro::message($response)
                 ]);
             }
             
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $response
+                'data' 		=> $response,
+                'message' 	=> PagSeguro::message($response)
             ]);
         }catch(Exception $e){
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $e->getMessage()
+                'data' 		=> $e->getMessage(),
+                'message' 	=> PagSeguro::message(null)
             ]);
         }
 	}
@@ -504,10 +525,21 @@ class PagSeguroController extends Controller{
 			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
 		}
 
+        // Desconto pela parcela selecionada
+        $discount_percent = 0;
+        foreach($requestmodel->products as $product){
+            $product = $product->product;
+            $discount = $product->getDiscount(1);
+
+            if($discount){
+                $discount_percent += $discount / $requestmodel->products->count();
+            }
+        }
+
 		$session = $pagseguro->getSession();
 		$session_id = $session->id ?? null;
 		
-		return view('site.myaccount.requests.pagseguro.debit_online.index', compact('requestmodel', 'session_id'));
+		return view('site.myaccount.requests.pagseguro.debit_online.index', compact('requestmodel', 'session_id', 'discount_percent'));
 	}
 
     public function debitOnlineStore($id){
@@ -535,7 +567,8 @@ class PagSeguroController extends Controller{
             if(update_payment_request_pagseguro($pagseguro, $requestmodel)){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message' 	=> 'Já foi realizado o pagamento para este pedido!'
                 ]);
             }
 
@@ -551,7 +584,8 @@ class PagSeguroController extends Controller{
             if(!$validator){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+                    'message' 	=> 'Ocorreu um erro ao tentar processar o seu pagamento, por favor tente novamente!'
                 ]);
             }
 
@@ -607,18 +641,21 @@ class PagSeguroController extends Controller{
             if(is_object($response) && $response->code && $response->paymentLink){
                 return json_encode([
                     'result'	=> true,
-                    'data' 		=> $response
+                    'data' 		=> $response,
+                    'message' 	=> PagSeguro::message($response)
                 ]);
             }
             
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $response
+                'data' 		=> $response,
+                'message' 	=> PagSeguro::message($response)
             ]);
         }catch(Exception $e){
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $e->getMessage()
+                'data' 		=> $e->getMessage(),
+                'message' 	=> PagSeguro::message(null)
             ]);
         }
 	}

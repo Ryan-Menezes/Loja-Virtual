@@ -227,7 +227,7 @@
                                             $('.cont-content').append('<p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>')
                                             $('.cont-content').append(`<a href="{{ route('site.myaccount.requests.show', ['id' => $requestmodel->id]) }}" title="Voltar Para o Pedido" class="btn btn-success" style="margin-top: 20px;">Voltar Para o Pedido</a>`)
                                         }else{
-                                            $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR VERIFIQUE SE OS DADOS DO CARTÃO ESTÃO CORRETOS!').show()
+                                            $('#message-request').text(response.message).show()
                                         }
                                     },
                                     error: function(response){

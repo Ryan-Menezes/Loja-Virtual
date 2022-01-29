@@ -7,6 +7,7 @@ use Src\Classes\{
 	Controller,
     Validator
 };
+use App\Classes\Payment\MercadoPago;
 use App\Models\{
 	Client,
 	ClientAddress,
@@ -219,7 +220,8 @@ class MercadoPagoController extends Controller{
             if(update_payment_request_mercadopago($requestmodel)){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+					'message' 	=> 'Já foi realizado o pagamento para este pedido!'
                 ]);
             }
 
@@ -227,10 +229,6 @@ class MercadoPagoController extends Controller{
             $data = $request->all();
 
             // Validando os dados
-            $data['number'] = preg_replace('/\D/i', '', $data['number']);
-            $data['document'] = preg_replace('/\D/i', '', $data['document']);
-            $data['telephone'] = preg_replace('/\D/i', '', $data['telephone']);
-
             $validator = Validator::make($data, [
                 'brand'                 => 'required|min:1',
                 'credit_card_token'     => 'required|min:1',
@@ -245,12 +243,13 @@ class MercadoPagoController extends Controller{
             if(!$validator){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+					'message'	=> 'Preencha o formulário corretamente com os dados de seu cartão de crédito!'
                 ]);
             }
 
             // Configurando checkout
-            $payment_mp->transaction_amount = $payment->amount + $payment->shipping_value;
+            $payment_mp->transaction_amount = number_format($payment->amountFormat, 2, '.', '');;
 			$payment_mp->token = $data['credit_card_token'];
 			$payment_mp->installments = (int)$data['installments'];
 			$payment_mp->payment_method_id = $data['brand'];
@@ -293,18 +292,21 @@ class MercadoPagoController extends Controller{
 			if($payment_mp->status != 'rejected'){
 				return json_encode([
 					'result'	=> true,
-					'data' 		=> $payment_mp
+					'data' 		=> $payment_mp,
+					'message' 	=> MercadoPago::message($payment_mp)
 				]);
 			}
 
 			return json_encode([
                 'result'	=> false,
-                'data' 		=> $payment_mp
+                'data' 		=> $payment_mp,
+				'message' 	=> MercadoPago::message($payment_mp)
             ]);
         }catch(Exception $e){
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $e->getMessage()
+                'data' 		=> $e->getMessage(),
+				'message' 	=> MercadoPago::message($payment_mp)
             ]);
         }
     }
@@ -316,8 +318,19 @@ class MercadoPagoController extends Controller{
 		if(update_payment_request_mercadopago($requestmodel)){
 			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
 		}
+
+		// Desconto pela parcela selecionada
+        $discount_percent = 0;
+        foreach($requestmodel->products as $product){
+            $product = $product->product;
+            $discount = $product->getDiscount(1);
+
+            if($discount){
+                $discount_percent += $discount / $requestmodel->products->count();
+            }
+        }
 		
-		return view('site.myaccount.requests.mercadopago.bolet.index', compact('requestmodel'));
+		return view('site.myaccount.requests.mercadopago.bolet.index', compact('requestmodel', 'discount_percent'));
 	}
 
 	public function boletStore($id){
@@ -336,12 +349,29 @@ class MercadoPagoController extends Controller{
             if(update_payment_request_mercadopago($requestmodel)){
                 return json_encode([
                     'result'	=> false,
-                    'data' 		=> null
+                    'data' 		=> null,
+					'message' 	=> 'Já foi realizado o pagamento para este pedido!'
                 ]);
             }
 
+			// Desconto por pagamento à vista
+            $discount_percent = 0;
+            foreach($products as $product){
+                $product = $product->product;
+                $discount = $product->getDiscount(1);
+
+                if($discount){
+                    $discount_percent += $discount / $products->count();
+                }
+            }
+
+            $discount_installment = 0;
+            if($discount_percent > 0){
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
+            }
+
             // Configurando checkout
-            $payment_mp->transaction_amount = $payment->amount + $payment->shipping_value;
+            $payment_mp->transaction_amount = number_format($payment->amountFormat - $discount_installment, 2, '.', '');
 			$payment_mp->payment_method_id = 'bolbradesco';
 			$payment_mp->external_reference = config('store.reference_prefix') . $requestmodel->id;
 			$payment_mp->notification_url = route('site.notification.mercadopago');
@@ -379,21 +409,27 @@ class MercadoPagoController extends Controller{
             update_payment_request_mercadopago($requestmodel);
 			
 			if($payment_mp->status != 'rejected'){
+				$payment->discount_installment = $discount_installment;
+				$payment->save();
+
 				return json_encode([
 					'result'		=> true,
 					'data' 			=> $payment_mp,
-					'paymentLink' 	=> $payment_mp->transaction_details->external_resource_url
+					'paymentLink' 	=> $payment_mp->transaction_details->external_resource_url,
+					'message' 		=> MercadoPago::message($payment_mp)
 				]);
 			}
 
 			return json_encode([
                 'result'	=> false,
-                'data' 		=> $payment_mp
+                'data' 		=> $payment_mp,
+				'message' 	=> MercadoPago::message($payment_mp)
             ]);
         }catch(Exception $e){
             return json_encode([
                 'result'	=> false,
-                'data' 		=> $e->getMessage()
+                'data' 		=> $e->getMessage(),
+				'message' 	=> MercadoPago::message(null)
             ]);
         }
     }

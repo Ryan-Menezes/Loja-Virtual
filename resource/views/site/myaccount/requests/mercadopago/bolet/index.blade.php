@@ -13,6 +13,10 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
+            @if($discount_percent > 0)
+            <div class="alert alert-success"><strong>Ao efetuar o pagamento por boleto, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+            @endif
+
             <h1 style="margin-top: 20px;">Pagamento por Boleto</h1><hr />
             <p>Ao clicar no botão abaixo você irá gerar o seu boleto de pagamento</p>
 
@@ -21,7 +25,7 @@
             <form action="{{ route('site.myaccount.requests.show.bolet.store', ['id' => $requestmodel->id]) }}" method="POST" id="form-payment">
                 <input type="hidden" name="session_id" id="session_id" value="{{ $session_id }}">
                 <input type="hidden" name="sender_hash" id="sender_hash">
-                <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar boleto R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></button>
+                <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar boleto R$ {{ number_format($requestmodel->payment->amountFormat - ($requestmodel->payment->amountFormat * ($discount_percent / 100)), 2, ',', '.') }}</strong></button>
             </form>
 
             <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -32,61 +36,41 @@
 @endsection
 
 @section('scripts')
-    @if(config('store.payment.production'))
-    <script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
-    @else
-    <script type="text/javascript" src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
-    @endif
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#form-payment').submit(function(){
+            event.preventDefault()
 
-    <script type="text/javascript" src="{{ public_path('assets/js/site/pagseguro.js') }}"></script>
+            let form = this
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-            setSessionId($('#session_id').val())
-
-            $('#form-payment').submit(function(){
-                event.preventDefault()
-
-                let form = this
-
-                // Gera o hash do sender e gera o boleto
-                getSenderHash(function(response){
-                    if(response.status == 'error') {
-                        $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
-                        return false;
+            $.ajax({
+                url: form.action,
+                method: form.method,
+                data: $(form).serialize(),
+                dataType: 'json',
+                processData: false,
+                beforeSend: function(){
+                    showLoad('Gerando boleto, aguarde...')
+                },
+                success: function(response){
+                    if(response.result){
+                        $('.cont-content').html('<h2>Boleto Gerado com Sucesso!</h2>')
+                        $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>')
+                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`)
+                    }else{
+                        $('#message-request').text(response.message).show()
                     }
-
-                    $('#sender_hash').val(response.senderHash);
-
-                    $.ajax({
-                        url: form.action,
-                        method: form.method,
-                        data: $(form).serialize(),
-                        dataType: 'json',
-                        processData: false,
-                        beforeSend: function(){
-                            showLoad('Gerando boleto, aguarde...')
-                        },
-                        success: function(response){
-                            if(response.result){
-                                $('.cont-content').html('<h2>Boleto Gerado com Sucesso!</h2>')
-                                $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>')
-                                $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`)
-                            }else{
-                                $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
-                            }
-                        },
-                        error: function(response){
-                            $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
-                        },
-                        complete: function(){
-                            hideLoad()
-                        }
-                    })
-                })
+                },
+                error: function(response){
+                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
+                },
+                complete: function(){
+                    hideLoad()
+                }
             })
         })
-    </script>
+    })
+</script>
 @endsection
 
 @section('styles')

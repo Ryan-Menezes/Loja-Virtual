@@ -667,4 +667,12 @@ class PagSeguro{
             return null;
         }
     }
+
+    public static function message($response = null) :string{
+        if(isset($response->errors)){
+            return 'Não foi possível efetuar seu pagamento, Ocorreu um problema na validação do dados!';
+        }
+        
+        return 'Pagamento efetuado com sucesso!';
+    }
 }

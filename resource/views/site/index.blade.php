@@ -71,6 +71,18 @@
 </div>
 <!-- /SECTION -->
 
+<div class="container">
+	<div class="row">
+		<div class="col-md-6">
+			<img src="//assets.pagseguro.com.br/ps-integration-assets/banners/divulgacao/728x90_10X_pagseguro.gif" alt="Banner PagSeguro" title="Parcele suas compras em até 18x" style="width: 100%;" />
+		</div>
+
+		<div class="col-md-6">
+			<img src="https://imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/tipo2_468X60.jpg?v=1" alt="Mercado Pago - Meios de pagamento" title="Mercado Pago - Meios de pagamento" style="width: 100%;" />
+		</div>
+	</div>
+</div>
+
 <!-- HOT DEAL SECTION -->
 <div id="hot-deal" class="section">
 	<!-- container -->

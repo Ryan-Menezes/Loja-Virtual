@@ -14,6 +14,10 @@
         <div class="content">
             @include('includes.site.account.menu')
             <div class="cont-content">
+                @if($discount_percent > 0)
+                <div class="alert alert-success"><strong>Ao efetuar o pagamento por débito online, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+                @endif
+
                 <h1 style="margin-top: 20px;">Pagamento por débito online</h1><hr />
                 <p>Ao clicar no botão abaixo você irá gerar o link de pagamento para o banco selecionado:</p>
 
@@ -26,7 +30,7 @@
                     <label>Selecione o banco que executará o pagamento por débito online:</label>
                     <select name="bank" class="form-control" id="banks"></select>
 
-                    <button type="submit" title="Gerar link de pagamento" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar link de pagamento para o valor: R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></button>
+                    <button type="submit" title="Gerar link de pagamento" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Efetuar pagamento por débito online R$ {{ number_format($requestmodel->payment->amountFormat - ($requestmodel->payment->amountFormat * ($discount_percent / 100)), 2, ',', '.') }}</strong></button>
                 </form>
 
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -93,7 +97,7 @@
                                     $('.cont-content').append('<p>Para finalmente finalizar a sua compra, efetue o seu pagamento por débito online pelo link abaixo:</p>')
                                     $('.cont-content').append(`<a href="${response.data.paymentLink}" target="_blank" title="Finalizar Pagamento Por Débito Online" class="btn btn-success" style="margin-top: 20px;">Finalizar Pagamento Por Débito Online <i class="fa fa-external-link"></i></a>`)
                                 }else{
-                                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O LINK DE PAGAMENTO, FAVOR TENTAR NOVAMENTE!').show()
+                                    $('#message-request').text(response.message).show()
                                 }
                             },
                             error: function(response){

@@ -98,7 +98,6 @@ class RequestController extends Controller{
 
 					// Cancela a transação
 					$response = $pagseguro->cancel($requestmodel->payment->code);
-					dd($response);
 
 					// Verifica se a transação para este pedido já foi feita
 					update_payment_request_pagseguro($pagseguro, $requestmodel);

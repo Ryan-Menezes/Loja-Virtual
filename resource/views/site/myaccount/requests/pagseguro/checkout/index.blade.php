@@ -23,6 +23,8 @@
                 <a href="https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}" title="Efetuar Pagamento do pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></a>
                 @endif
 
+                <img src="//assets.pagseguro.com.br/ps-integration-assets/banners/pagamento/todos_animado_550_50.gif" alt="Logotipos de meios de pagamento do PagSeguro" title="Este site aceita pagamentos com as principais bandeiras e bancos, saldo em conta PagSeguro e boleto." style="width: 80%; margin-left: 10%; margin-bottom: 20px;" />
+
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
                 @include('includes.site.requests.body')
             </div>

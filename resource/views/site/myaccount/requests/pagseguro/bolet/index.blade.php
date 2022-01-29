@@ -14,6 +14,10 @@
         <div class="content">
             @include('includes.site.account.menu')
             <div class="cont-content">
+                @if($discount_percent > 0)
+                <div class="alert alert-success"><strong>Ao efetuar o pagamento por boleto, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+                @endif
+
                 <h1 style="margin-top: 20px;">Pagamento por Boleto</h1><hr />
                 <p>Ao clicar no botão abaixo você irá gerar o seu boleto de pagamento</p>
     
@@ -22,7 +26,7 @@
                 <form action="{{ route('site.myaccount.requests.show.bolet.store', ['id' => $requestmodel->id]) }}" method="POST" id="form-payment">
                     <input type="hidden" name="session_id" id="session_id" value="{{ $session_id }}">
                     <input type="hidden" name="sender_hash" id="sender_hash">
-                    <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar boleto R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></button>
+                    <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar boleto R$ {{ number_format($requestmodel->payment->amountFormat - ($requestmodel->payment->amountFormat * ($discount_percent / 100)), 2, ',', '.') }}</strong></button>
                 </form>
     
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -74,7 +78,7 @@
                                     $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>')
                                     $('.cont-content').append(`<a href="${response.data.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`)
                                 }else{
-                                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
+                                    $('#message-request').text(response.message).show()
                                 }
                             },
                             error: function(response){

@@ -625,7 +625,6 @@ if(!function_exists('update_payment_request_mercadopago')){
 					'status'				=> parse_object($transaction->status),
 					'status_type'			=> $status[parse_object($transaction->status)],
 					'installments'			=> (isset($transaction->installments) ? parse_object($transaction->installments) : 1),
-					'discount_installment'	=> 0,
 					'link'					=> (isset($transaction->transaction_details->external_resource_url) ? parse_object($transaction->transaction_details->external_resource_url) : null),
 					'details'				=> json_encode($transaction)
 				]);

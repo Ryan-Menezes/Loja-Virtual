@@ -23,6 +23,8 @@
                     @endif
                 </div>
 
+                <img src="https://imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/tipo2_735X40.jpg?v=1" alt="Mercado Pago - Meios de pagamento" title="Mercado Pago - Meios de pagamento" style="width: 80%; margin-left: 10%; margin-bottom: 20px;"/>
+
                 <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
                 @include('includes.site.requests.body')
             </div>
