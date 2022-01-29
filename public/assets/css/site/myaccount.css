@@ -17,11 +17,11 @@
 }
 .content .cards{
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 10px;
 }
 .content .cards .card{
-	padding: 20px;
+	padding: 30px;
 	border-radius: 5px;
 	border: 1px solid #cccccc;
 	display: flex;

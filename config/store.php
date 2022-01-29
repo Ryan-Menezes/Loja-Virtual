@@ -28,7 +28,9 @@ return [
 			'balance'					=> (bool)$system->store->payment_balance,
 			'bolet' 					=> (bool)$system->store->payment_bolet,
 			'deposit'					=> (bool)$system->store->payment_deposit,
-			'debit_online' 				=> (bool)$system->store->payment_debit_online
+			'debit_online' 				=> (bool)$system->store->payment_debit_online,
+			'bank_transfer'				=> (bool)$system->store->payment_bank_transfer,
+			'pix'						=> (bool)$system->store->payment_pix
 		],
 		'credentials' => [
 			'pagseguro' => [

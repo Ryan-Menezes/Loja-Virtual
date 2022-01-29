@@ -39,7 +39,11 @@
 					<td>{{ $slide->id }}</td>
 					<td><img src="{{ url('storage/app/public/' . $slide->image, config('ftp.active')) }}" title="{{ $slide->title }}" alt="{{ $slide->title }}"></td>
 					<td style="max-width: 200px;">{{ $slide->title }}</td>
-					<td style="max-width: 200px;"><a href="{{ $slide->link }}" title="Ver Link" target="_blank">{{ $slide->link }} <i class="fas fa-external-link-alt"></i></a></td>
+					<td style="max-width: 200px;">
+						@if(!empty($slide->link))
+						<a href="{{ $slide->link }}" title="Ver Link" target="_blank">{{ $slide->link }} <i class="fas fa-external-link-alt"></i></a>
+						@endif
+					</td>
 					<td>
 						@if(can('edit.slideshow'))
 							<a href="{{ route('panel.slideshow.edit', ['id' => $slide->id]) }}" class="btn btn-sm btn-primary" title="Editar Slide"><i class="fas fa-pencil-alt"></i></a>

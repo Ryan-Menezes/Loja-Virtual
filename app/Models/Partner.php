@@ -9,7 +9,8 @@ class Partner extends Model{
 	public $timestamps = false;
 	public $_status = [
 		'CL' => 'Cliente',
-		'CO' => 'Colaborador'
+		'CO' => 'Colaborador',
+		'LK' => 'Link Útil'
 	];
 
 	public function getRolesCreateAttribute(){

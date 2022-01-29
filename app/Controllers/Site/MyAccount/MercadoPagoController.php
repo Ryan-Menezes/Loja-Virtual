@@ -59,7 +59,9 @@ class MercadoPagoController extends Controller{
                 }
             }
 
-			$extra_item = ($payment->shipping_value - $discount) / $products->count();
+			if($products->count() > 0){
+				$extra_item = ($payment->shipping_value - $discount) / $products->count();
+			}
             
             // Configurando checkout
 			$preference = new \MercadoPago\Preference();
@@ -82,31 +84,32 @@ class MercadoPagoController extends Controller{
 				];
             }
 
-            if(!config('store.payment.methods.balance')){
-                $excludes[] = [
-					'id' => 'account_money'
-				];
-            }
-
-            if(!config('store.payment.methods.bolet')){
+            if(!config('store.payment.methods.bolet') && !config('store.payment.methods.bank_transfer')){
                 $excludes[] = [
 					'id' => 'ticket'
 				];
             }
 
-			if(!config('store.payment.methods.paypal')){
-                $excludes[] = [
-					'id' => 'digital_wallet'
-				];
-            }
-
-			if(!config('store.payment.picpay.active')){
+			if(!config('store.payment.methods.pix')){
                 $excludes[] = [
 					'id' => 'bank_transfer'
 				];
             }
 
+			/*
+            if(!config('store.payment.methods.balance')){
+                $excludes[] = [
+					'id' => 'account_money'
+				];
+            }
+			*/
+
 			// Excluindo outros meios
+			/*
+			$excludes[] = [
+				'id' => 'digital_wallet'
+			];
+			*/
 			$excludes[] = [
 				'id' => 'atm'
 			];
@@ -268,20 +271,23 @@ class MercadoPagoController extends Controller{
 			
 			if(!empty($client->cpf)){
 				$payer->identification = [
-					'type' => 'CPF',
-					'number' => $client->cpf
+					'type' 		=> 'CPF',
+					'number' 	=> $client->cpf
 				];
 			}else{
 				$payer->identification = [
-					'type' => 'CNPJ',
-					'number' => $client->cnpj
+					'type' 		=> 'CNPJ',
+					'number' 	=> $client->cnpj
 				];
 			}	
 					
 			$payer->address = array(
-				'street_name' => $client->billing_address->street,
+				'zip_code' 		=> $client->billing_address->postal_code,
+				'street_name' 	=> $client->billing_address->street,
 				'street_number' => $client->billing_address->number,
-				'zip_code' => $client->billing_address->postal_code
+				'neighborhood' 	=> $client->billing_address->district,
+				'city' 			=> $client->billing_address->city,
+				'federal_unit' 	=> $client->billing_address->state
 			);
 
 			$payment_mp->payer = $payer;
@@ -289,7 +295,7 @@ class MercadoPagoController extends Controller{
 
             update_payment_request_mercadopago($requestmodel);
 			
-			if($payment_mp->status != 'rejected'){
+			if($payment_mp->status && $payment_mp->status != 'rejected'){
 				return json_encode([
 					'result'	=> true,
 					'data' 		=> $payment_mp,
@@ -387,20 +393,23 @@ class MercadoPagoController extends Controller{
 			
 			if(!empty($client->cpf)){
 				$payer->identification = [
-					'type' => 'CPF',
-					'number' => $client->cpf
+					'type' 		=> 'CPF',
+					'number' 	=> $client->cpf
 				];
 			}else{
 				$payer->identification = [
-					'type' => 'CNPJ',
-					'number' => $client->cnpj
+					'type' 		=> 'CNPJ',
+					'number' 	=> $client->cnpj
 				];
 			}	
 					
 			$payer->address = array(
-				'street_name' => $client->billing_address->street,
+				'zip_code' 		=> $client->billing_address->postal_code,
+				'street_name' 	=> $client->billing_address->street,
 				'street_number' => $client->billing_address->number,
-				'zip_code' => $client->billing_address->postal_code
+				'neighborhood' 	=> $client->billing_address->district,
+				'city' 			=> $client->billing_address->city,
+				'federal_unit' 	=> $client->billing_address->state
 			);
 
 			$payment_mp->payer = $payer;
@@ -408,7 +417,7 @@ class MercadoPagoController extends Controller{
 
             update_payment_request_mercadopago($requestmodel);
 			
-			if($payment_mp->status != 'rejected'){
+			if($payment_mp->status && $payment_mp->status != 'rejected'){
 				$payment->discount_installment = $discount_installment;
 				$payment->save();
 
@@ -433,4 +442,240 @@ class MercadoPagoController extends Controller{
             ]);
         }
     }
+
+	public function bankTransfer($id){
+		$requestmodel = $this->client->requests()->findOrFail($id);
+
+		// Verifica se a transação para este pedido já foi feita
+		if(update_payment_request_mercadopago($requestmodel)){
+			redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+		}
+
+		// Desconto pela parcela selecionada
+        $discount_percent = 0;
+        foreach($requestmodel->products as $product){
+            $product = $product->product;
+            $discount = $product->getDiscount(1);
+
+            if($discount){
+                $discount_percent += $discount / $requestmodel->products->count();
+            }
+        }
+		
+		return view('site.myaccount.requests.mercadopago.bank_transfer.index', compact('requestmodel', 'discount_percent'));
+	}
+
+	public function bankTransferStore($id){
+        $requestmodel = $this->client->requests()->findOrFail($id);
+
+        try{
+            $client = $requestmodel->client;
+            $address = $requestmodel->address;
+            $payment = $requestmodel->payment;
+            $products = $requestmodel->products;
+
+            // Configurando checkout
+			$payment_mp = new \MercadoPago\Payment();
+
+            // Verifica se a transação para este pedido já foi feita
+            if(update_payment_request_mercadopago($requestmodel)){
+                return json_encode([
+                    'result'	=> false,
+                    'data' 		=> null,
+					'message' 	=> 'Já foi realizado o pagamento para este pedido!'
+                ]);
+            }
+
+			// Desconto por pagamento à vista
+            $discount_percent = 0;
+            foreach($products as $product){
+                $product = $product->product;
+                $discount = $product->getDiscount(1);
+
+                if($discount){
+                    $discount_percent += $discount / $products->count();
+                }
+            }
+
+            $discount_installment = 0;
+            if($discount_percent > 0){
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
+            }
+
+            // Configurando checkout
+            $payment_mp->transaction_amount = number_format($payment->amountFormat - $discount_installment, 2, '.', '');
+			$payment_mp->payment_method_id = 'pec';
+			$payment_mp->external_reference = config('store.reference_prefix') . $requestmodel->id;
+			$payment_mp->notification_url = route('site.notification.mercadopago');
+			$payment_mp->statement_descriptor = config('app.name');
+
+			// Cliente
+			$name = explode(' ', $client->name);
+
+			$payer = new \MercadoPago\Payer();
+			$payer->first_name = $name[0] ?? null;
+			$payer->last_name = $name[1] ?? null;
+			$payer->email = $client->email;
+			
+			if(!empty($client->cpf)){
+				$payer->identification = [
+					'type' 		=> 'CPF',
+					'number' 	=> $client->cpf
+				];
+			}else{
+				$payer->identification = [
+					'type' 		=> 'CNPJ',
+					'number' 	=> $client->cnpj
+				];
+			}	
+					
+			$payer->address = array(
+				'zip_code' 		=> $client->billing_address->postal_code,
+				'street_name' 	=> $client->billing_address->street,
+				'street_number' => $client->billing_address->number,
+				'neighborhood' 	=> $client->billing_address->district,
+				'city' 			=> $client->billing_address->city,
+				'federal_unit' 	=> $client->billing_address->state
+			);
+
+			$payment_mp->payer = $payer;
+			$payment_mp->save();
+
+            update_payment_request_mercadopago($requestmodel);
+			
+			if($payment_mp->status && $payment_mp->status != 'rejected'){
+				$payment->discount_installment = $discount_installment;
+				$payment->save();
+
+				return json_encode([
+					'result'		=> true,
+					'data' 			=> $payment_mp,
+					'paymentLink' 	=> $payment_mp->transaction_details->external_resource_url,
+					'message' 		=> MercadoPago::message($payment_mp)
+				]);
+			}
+
+			return json_encode([
+                'result'	=> false,
+                'data' 		=> $payment_mp,
+				'message' 	=> MercadoPago::message($payment_mp)
+            ]);
+        }catch(Exception $e){
+            return json_encode([
+                'result'	=> false,
+                'data' 		=> $e->getMessage(),
+				'message' 	=> MercadoPago::message(null)
+            ]);
+        }
+    }
+
+	public function pix($id){
+		$requestmodel = $this->client->requests()->findOrFail($id);
+
+		$qrcode_hash = null;
+		$qrcode = null;
+		$paymentLink = null;
+
+        try{
+            $client = $requestmodel->client;
+            $address = $requestmodel->address;
+            $payment = $requestmodel->payment;
+            $products = $requestmodel->products;
+
+            // Configurando checkout
+			$payment_mp = new \MercadoPago\Payment();
+
+            // Verifica se a transação para este pedido já foi feita
+			if(update_payment_request_mercadopago($requestmodel)){
+				redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+			}
+
+			// Desconto por pagamento à vista
+            $discount_percent = 0;
+            foreach($products as $product){
+                $product = $product->product;
+                $discount = $product->getDiscount(1);
+
+                if($discount){
+                    $discount_percent += $discount / $products->count();
+                }
+            }
+
+            $discount_installment = 0;
+            if($discount_percent > 0){
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
+            }
+
+            // Configurando checkout
+			$minutes = config('store.payment.credentials.picpay.expiration_minutes');
+
+            $payment_mp->transaction_amount = number_format($payment->amountFormat - $discount_installment, 2, '.', '');
+			$payment_mp->payment_method_id = 'pix';
+			$payment_mp->external_reference = config('store.reference_prefix') . $requestmodel->id;
+			$payment_mp->notification_url = route('site.notification.mercadopago');
+			$payment_mp->statement_descriptor = config('app.name');
+			$payment_mp->date_of_expiration = date('Y-m-d\TH:i:s', strtotime("+{$minutes} minutes", strtotime(date('Y-m-d H:i:s')))) . '.000-00:00';
+
+			// Cliente
+			$name = explode(' ', $client->name);
+
+			$payer = new \MercadoPago\Payer();
+			$payer->first_name = $name[0] ?? null;
+			$payer->last_name = $name[1] ?? null;
+			$payer->email = $client->email;
+			
+			if(!empty($client->cpf)){
+				$payer->identification = [
+					'type' 		=> 'CPF',
+					'number' 	=> $client->cpf
+				];
+			}else{
+				$payer->identification = [
+					'type' 		=> 'CNPJ',
+					'number' 	=> $client->cnpj
+				];
+			}	
+					
+			$payer->address = array(
+				'zip_code' 		=> $client->billing_address->postal_code,
+				'street_name' 	=> $client->billing_address->street,
+				'street_number' => $client->billing_address->number,
+				'neighborhood' 	=> $client->billing_address->district,
+				'city' 			=> $client->billing_address->city,
+				'federal_unit' 	=> $client->billing_address->state
+			);
+
+			$payment_mp->payer = $payer;
+			$payment_mp->save();
+
+            update_payment_request_mercadopago($requestmodel);
+			
+			if($payment_mp->status && $payment_mp->status != 'rejected'){
+				$qrcode_hash = $payment_mp->point_of_interaction->transaction_data->qr_code;
+				$qrcode = 'data:image/jpeg;base64,' . $payment_mp->point_of_interaction->transaction_data->qr_code_base64;
+                $paymentLink = $payment_mp->transaction_details->external_resource_url;
+
+                $payment->update([
+                    'type'                      => 'PC',
+                    'method'                    => 'PX',
+                    'status_type'               => 'AP',
+                    'discount_installment'      => $discount_installment,
+                    'link'                      => $paymentLink,
+                    'qrcode'                    => $qrcode,
+					'qrcode_hash'				=> $qrcode_hash,
+                    'details'                   => json_encode($payment_mp)
+                ]);
+			}
+        }catch(Exception $e){
+			$qrcode_hash = null;
+			$qrcode = null;
+            $paymentLink = null;
+        }
+
+		if(!$qrcode_hash || !$qrcode){
+            redirect(route('site.myaccount.requests.show', ['id' => $requestmodel->id]));
+        }
+		
+		return view('site.myaccount.requests.mercadopago.pix.index', compact('requestmodel', 'qrcode_hash', 'qrcode', 'paymentLink'));
+	}
 }

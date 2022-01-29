@@ -39,7 +39,8 @@
 		'value' => (isset($partner) ? $partner->type : 'CO'),
 		'options' => [
 			'CL' => 'Cliente',
-			'CO' => 'Colaborador'
+			'CO' => 'Colaborador',
+			'LK' => 'Link Útil'
 		],
 		'class' => 'required',
 		'required' => true

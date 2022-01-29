@@ -175,14 +175,16 @@ class CartController extends Controller{
 		$amount = $cart->amount();
 		$cart_products = $this->cart->all();
 
-		$freight_free_cart = false;
-		if(count($cart_products)){
-			$freight_free_cart = (config('store.cart.promotion') && $amount > config('store.cart.amount_promotion') && config('store.cart.freight_free_promotion'));
+		if(!count($cart_products)){
+			redirect(route('site.cart'), ['error' => 'Para finalizar seu pedido é necessário que haja produtos no seu carrinho!']);
+		}
 
-			if(count($cart_products) == 1){
-				$product = $cart_products[array_keys($cart_products)[0]];
-				$freight_free_cart = $product->product->freight_free;
-			}
+		$freight_free_cart = false;
+		$freight_free_cart = (config('store.cart.promotion') && $amount > config('store.cart.amount_promotion') && config('store.cart.freight_free_promotion'));
+
+		if(count($cart_products) == 1){
+			$product = $cart_products[array_keys($cart_products)[0]];
+			$freight_free_cart = $product->product->freight_free;
 		}
 
 		// Verificando se há algum usuário logado

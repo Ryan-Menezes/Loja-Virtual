@@ -62,6 +62,41 @@ class PaymentController extends Controller{
         }
     }
 
+    public function notificationMercadopago(){
+        $request = new Request();
+
+        if($request->has('data_id') || $request->has('data')){
+            $id = ($request->has('data_id') ? $request->input('data_id') : $request->has('data')['id']);
+
+            \MercadoPago\SDK::setAccessToken(config('store.payment.credentials.mercadopago.access_token'));
+
+            $transaction = \MercadoPago\Payment::find_by_id($id);
+
+            if($transaction && is_object($transaction) && $transaction->id){
+                $reference = str_ireplace(config('store.reference_prefix'), '', parse_object($transaction->external_reference));
+                $requestmodel = $this->requestmodel->find($reference);
+
+                if($requestmodel){
+                    $status = $requestmodel->status;
+
+                    // Atualiza status da transação
+                    if(update_payment_request_mercadopago($requestmodel)){
+                        $requestmodel = $this->requestmodel->find(parse_object($requestmodel->id));
+
+                        if($status != $requestmodel->status){
+                            Mail::isHtml(true)
+                                ->charset(config('mail.charset'))
+                                ->addFrom(config('mail.to'), config('app.name'))
+                                ->subject('Seu pedido teve seu status atualizado: ' . $requestmodel->statusFormat)
+                                ->message(view('mail.request.update_status', compact('requestmodel')))
+                                ->send($requestmodel->client->email, $requestmodel->client->name);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public function notificationPicPay(){
         $content = trim(file_get_contents("php://input"));
 	    $pay = json_decode($content);
@@ -69,6 +104,7 @@ class PaymentController extends Controller{
         if(isset($pay->referenceId)){
             $reference = str_ireplace(config('store.reference_prefix'), '', parse_object($pay->referenceId));
             $requestmodel = $this->requestmodel->find($reference);
+            $status = $requestmodel->status;
 
             if($requestmodel){
                 // Objeto do picpay

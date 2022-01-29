@@ -1,6 +1,6 @@
 @extends('templates.site')
 
-@section('title', 'Pagamento por boleto para o pedido #' . $requestmodel->id)
+@section('title', 'Pagamento por transferência bancária para o pedido #' . $requestmodel->id)
 @section('url', route('site.myaccount.requests.show.bolet', ['id' => $requestmodel->id]))
 @section('keywords', config('app.keywords'))
 @section('description', config('app.description'))
@@ -14,16 +14,16 @@
         @include('includes.site.account.menu')
         <div class="cont-content">
             @if($discount_percent > 0)
-            <div class="alert alert-success"><strong>Ao efetuar o pagamento por boleto, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+            <div class="alert alert-success"><strong>Ao efetuar o pagamento por transferência bancária, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
             @endif
 
-            <h1 style="margin-top: 20px;">Pagamento por Boleto</h1><hr />
-            <p>Ao clicar no botão abaixo você irá gerar o seu boleto de pagamento</p>
+            <h1 style="margin-top: 20px;">Pagamento por transferência bancária</h1><hr />
+            <p>Ao clicar no botão abaixo você dará início ao pagamento por transferência bancária:</p>
 
             <div class="alert alert-danger" id="message-request" style="display: none;"></div>
 
-            <form action="{{ route('site.myaccount.requests.show.bolet.store', ['id' => $requestmodel->id]) }}" method="POST" id="form-payment">
-                <button type="submit" title="Gerar Boleto" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Gerar boleto R$ {{ number_format($requestmodel->payment->amountFormat - ($requestmodel->payment->amountFormat * ($discount_percent / 100)), 2, ',', '.') }}</strong></button>
+            <form action="{{ route('site.myaccount.requests.show.bank_transfer.store', ['id' => $requestmodel->id]) }}" method="POST" id="form-payment">
+                <button type="submit" title="Iniciar transferência bancária" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="margin: 30px 0px; padding: 15px; width: 100%;"><strong>Iniciar transferência bancária R$ {{ number_format($requestmodel->payment->amountFormat - ($requestmodel->payment->amountFormat * ($discount_percent / 100)), 2, ',', '.') }}</strong></button>
             </form>
 
             <h2 style="margin-top: 40px;">Pedido #{{ $requestmodel->id }}</h2><hr />
@@ -48,13 +48,13 @@
                 dataType: 'json',
                 processData: false,
                 beforeSend: function(){
-                    showLoad('Gerando boleto, aguarde...')
+                    showLoad('Validando dados, aguarde...')
                 },
                 success: function(response){
                     if(response.result){
-                        $('.cont-content').html('<h2>Boleto Gerado com Sucesso!</h2>')
-                        $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>')
-                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`)
+                        $('.cont-content').html('<h2>Pagamento por transferência bancária</h2>')
+                        $('.cont-content').append('<p>Você selecionou o pagamento por transferência bancária, para que seu pedido seja confirmado para entrega, efetue o pagamento, para mais informações clique no botão abaixo:</p>')
+                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Mais informações sobre à transferência bancária" class="btn btn-success" style="margin-top: 20px;">Mais informações sobre à transferência bancária <i class="fa fa-external-link"></i></a>`)
                     }else{
                         $('#message-request').text(response.message).show()
                     }

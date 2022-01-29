@@ -3,6 +3,7 @@
 @endphp
 <div class="card content-group mb-2 p-0 {{ $class ?? null }}">
 	<input type="hidden" name="elements[]" value="COLOREDITOR">
+	<input type="hidden" name="id-colors[]" value="{{ $id }}">
 
 	@if(!isset($notoptions))
 	<div class="card-header">

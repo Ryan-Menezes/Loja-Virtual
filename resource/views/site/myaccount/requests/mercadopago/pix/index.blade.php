@@ -8,7 +8,7 @@
 @section('image_width', 200)
 @section('image_height', 200)
 
-@if(isset($qrcode) && isset($paymentLink))
+@if(isset($qrcode_hash) && isset($qrcode))
     @section('container')
     <section class="container">
         <div class="content">
@@ -18,6 +18,13 @@
                 <p>Você selecionou o pagamento por PIX, para que seu pedido seja confirmado para entrega, efetue o pagamento escaneando o qrcode abaixo:</p>
 
                 <a href="{{ $paymentLink ?? 'javascript:void(0)' }}" target="_blank" title="Escaneie o qrcode para finalizar o pagamento"><img src="{{ $requestmodel->payment->qrcode }}" title="Escaneie o qrcode para finalizar o pagamento" alt="QRCode de Pagamento" style="width: 400px;" /></a>
+
+                @include('includes.components.form.input', [
+                    'type' => 'text', 
+                    'name' => 'code', 
+                    'title' => 'Copiar Hash', 
+                    'value' => $qrcode_hash
+                ])
 
                 <p style="margin-top: 20px;"><strong>Esse qrcode irá expirar em {{ config('store.payment.credentials.picpay.expiration_minutes') }} minutos, Caso o pagamento não seja efetuado, seu pedido será cancelado!</strong></p>
 

@@ -239,6 +239,35 @@
 							])
 						</div>
 					</div>
+
+					<div class="row">
+						<div class="col-md-6">
+							@include('includes.components.form.select', [
+								'name' => 'payment_bank_transfer', 
+								'title' => 'Transferência Bancária',
+								'value' => (isset($system) && $system->store ? $system->store->payment_bank_transfer : 1),
+								'options' => [
+									1 => 'Ativado',
+									0 => 'Desativado'
+								],
+								'class' => 'required',
+								'required' => true
+							])
+						</div>
+						<div class="col-md-6">
+							@include('includes.components.form.select', [
+								'name' => 'payment_pix', 
+								'title' => 'PIX',
+								'value' => (isset($system) && $system->store ? $system->store->payment_pix : 1),
+								'options' => [
+									1 => 'Ativado',
+									0 => 'Desativado'
+								],
+								'class' => 'required',
+								'required' => true
+							])
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -348,7 +377,7 @@
 			</div>
 
 			<div class="card">
-				<div class="card-header p-3"><strong>PicPay(PIX)</strong></div>
+				<div class="card-header p-3"><strong>PicPay</strong></div>
 				<div class="card-body">
 					@include('includes.components.form.select', [
 						'name' => 'active_picpay', 

@@ -18,9 +18,7 @@
                 <p>Ao clicar no botão abaixo você será redirecionado ao checkout seguro do mercado pago, e por lá efetuará o seu pagamento.</p>
 
                 <div class="btn-payment" style="margin: 30px 0px;">
-                    @if(!config('store.payment.credentials.mercadopago.checkouts.lightbox'))
                     <a href="{{ $preference->init_point }}" title="Finalizar Pagamento do Pedido" class="btn btn-success btn-payment" target="_blank" data-linkdisable="true" style="padding: 15px; width: 100%;"><strong>Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}</strong></a>
-                    @endif
                 </div>
 
                 <img src="https://imgmp.mlstatic.com/org-img/MLB/MP/BANNERS/tipo2_735X40.jpg?v=1" alt="Mercado Pago - Meios de pagamento" title="Mercado Pago - Meios de pagamento" style="width: 80%; margin-left: 10%; margin-bottom: 20px;"/>
@@ -45,14 +43,22 @@
                     preference: {
                         id: '{{ $preference->id }}'
                     },
+                    /*
                     render: {
                         container: '.btn-payment',
                         label: "Efetuar Pagamento R$ {{ number_format($requestmodel->payment->amountFormat, 2, ',', '.') }}"
                     },
+                    */
                     theme: {
                         elementsColor: '#449D44',
                         headerColor: '#449D44'
                     }
+                })
+
+                $('.btn-payment').click(function(){
+                    event.preventDefault()
+
+                    checkout.open()
                 })
             })
         </script>

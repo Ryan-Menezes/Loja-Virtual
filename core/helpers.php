@@ -604,24 +604,33 @@ if(!function_exists('update_payment_request_mercadopago')){
 
 			if($transaction->id && parse_object($transaction->status) != 'rejected'){
 				$status = [
-					'pending'		=> 'AP',
-					'in_process' 	=> 'EA', 
-					'approved' 		=> 'PA',
-					'refunded'		=> 'DE',
-					'cancelled'		=> 'CA'
+					'pending'			=> 'AP',
+					'in_process' 		=> 'EA', 
+					'approved' 			=> 'PA',
+					'refunded'			=> 'DE',
+					'cancelled'			=> 'CA'
 				];
 				$methods = [
-					'credit_card' 	=> 'CC',
-					'debit_card'	=> 'CD',
-					'ticket' 		=> 'BO',
-					'account_money' => 'BA',
-					'bank_transfer' => 'DE'
+					'credit_card' 		=> 'CC',
+					'debit_card'		=> 'CD',
+					'ticket' => [
+						'bolbradesco' 	=> 'BO',
+						'pec' 			=> 'TB'
+					],
+					'account_money' 	=> 'BA',
+					'bank_transfer' 	=> 'PX',
+					'digital_wallet' 	=> 'PP'
 				];
+
+				$method = $methods[parse_object($transaction->payment_type_id)];
+				if(is_array($method)){
+					$method = $method[parse_object($transaction->payment_method_id)];
+				}
 
 				$requestmodel->payment->update([
 					'code' 					=> parse_object($transaction->id),
 					'type' 					=> 'MP',
-					'method'				=> $methods[parse_object($transaction->payment_type_id)] ?? null,
+					'method'				=> $method ?? null,
 					'status'				=> parse_object($transaction->status),
 					'status_type'			=> $status[parse_object($transaction->status)],
 					'installments'			=> (isset($transaction->installments) ? parse_object($transaction->installments) : 1),
