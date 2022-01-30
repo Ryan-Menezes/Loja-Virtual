@@ -15,7 +15,7 @@
 		<!-- row -->
 		<div class="row">
 			<!-- ASIDE -->
-			<div id="aside" class="col-md-3">
+			<form method="POST" id="aside" class="col-md-3">
 				<!-- aside Widget -->
 				<div class="aside">
 					<h3 class="aside-title">Categorias</h3>
@@ -44,27 +44,7 @@
 				<!-- /aside Widget -->
 
 				<!-- aside Widget -->
-				<div class="aside">
-					<h3 class="aside-title">Preço</h3>
-					<div class="price-filter">
-						<div id="price-slider"></div>
-						<div class="input-number price-min">
-							<input id="price-min" type="number">
-							<span class="qty-up">+</span>
-							<span class="qty-down">-</span>
-						</div>
-						<span>-</span>
-						<div class="input-number price-max">
-							<input id="price-max" type="number">
-							<span class="qty-up">+</span>
-							<span class="qty-down">-</span>
-						</div>
-					</div>
-				</div>
-				<!-- /aside Widget -->
-
-				<!-- aside Widget -->
-				<div class="aside">
+				<div class="aside" style="margin-top: 40px;">
 					<h3 class="aside-title">Frete</h3>
 					<div class="input-checkbox">
 						<input type="checkbox" name="freight_free" value="1" id="freight_free">
@@ -72,7 +52,9 @@
 					</div>
 				</div>
 				<!-- /aside Widget -->
-			</div>
+
+				<button type="submit" class="primary-btn cta-btn" style="margin-top: 20px; width: 100%;">Aplicar Filtro</button>
+			</form>
 			<!-- /ASIDE -->
 
 			<!-- STORE -->

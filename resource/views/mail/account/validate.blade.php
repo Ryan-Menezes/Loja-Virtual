@@ -15,6 +15,6 @@
         </div>
     </section>
 
-    <a href="{{ route('site.account.validate', ['token' => $token]) }}" title="Validar Conta" style="padding: 15px; border: none; text-decoration: none; background-color: #D17D21; border-radius: 50px; color: white;">Validar Conta</a>
+    <a href="{{ route('site.account.validate', ['token' => $client->token]) }}" title="Validar Conta" style="padding: 15px; border: none; text-decoration: none; background-color: #D17D21; border-radius: 50px; color: white;">Validar Conta</a>
 </body>
 </html>

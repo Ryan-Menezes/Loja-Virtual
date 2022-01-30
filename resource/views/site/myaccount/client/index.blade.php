@@ -13,12 +13,12 @@
     <div class="content">
         @include('includes.site.account.menu')
         <div class="cont-content">
-            <form action="{{ route('site.myaccount.client.update') }}" method="POST" class="form form-validate">
-				@include('includes.messages')
+			@include('includes.messages')
 
+            <form action="{{ route('site.myaccount.client.update') }}" method="POST" class="form form-validate">
 				<input type="hidden" name="_method" value="PUT">
 
-				<h1>Dados Pessoais</h1><hr />
+				<h2>Dados Pessoais</h2><hr />
 
 				@include('includes.components.form.input', [
 					'title' => 'Nome',
@@ -29,26 +29,15 @@
 					'required' => true
 				])
 
-				<div class="row">
-					<div class="col-md-6">
-						@include('includes.components.form.input', [
-							'title' => 'E-Mail',
-							'name' => 'email',
-							'type' => 'email',
-							'value' => $client->email,
-							'class' => 'required email',
-							'required' => true,
-							'disabled' => true
-						])
-					</div>
-					<div class="col-md-6">
-						@include('includes.components.form.input', [
-							'title' => 'Senha',
-							'name' => 'password',
-							'type' => 'password'
-						])
-					</div>
-				</div>
+				@include('includes.components.form.input', [
+					'title' => 'E-Mail',
+					'name' => 'email',
+					'type' => 'email',
+					'value' => $client->email,
+					'class' => 'required email',
+					'required' => true,
+					'disabled' => true
+				])
 				
 				<div class="row">
 					<div class="col-md-6">
@@ -123,6 +112,39 @@
 
 				<br />
 				<button type="submit" class="btn btn-danger">Salvar <i class="fa fa-save"></i></button>
+			</form>
+
+			<form action="{{ route('site.myaccount.client.password.update') }}" method="POST" class="form form-validate" style="margin-top: 40px;">
+				<input type="hidden" name="_method" value="PUT">
+
+				<h2>Senha</h2><hr />
+
+				@include('includes.components.form.input', [
+					'title' => 'Senha Atual',
+					'name' => 'password',
+					'type' => 'password',
+					'class' => 'required',
+					'required' => true
+				])
+
+				@include('includes.components.form.input', [
+					'title' => 'Nova Senha',
+					'name' => 'npassword',
+					'type' => 'password',
+					'class' => 'required',
+					'required' => true
+				])
+		
+				@include('includes.components.form.input', [
+					'title' => 'Repetir Nova Senha',
+					'name' => 'rnpassword',
+					'type' => 'password',
+					'class' => 'required',
+					'required' => true
+				])
+
+				<br />
+				<button type="submit" class="btn btn-danger">Alterar Senha <i class="fa fa-lock"></i></button>
 			</form>
         </div>
     </div>

@@ -304,6 +304,15 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 		Route::post('/', [AuthControllerSite::class, 'loginValidate'])->name('site.login.validate');
 	});
 
+	// ROUTE FORGET
+	Route::group(['prefix' => 'recuperar-senha'], function(){
+		Route::get('/', [AuthControllerSite::class, 'forget'])->name('site.forget');
+		Route::post('/', [AuthControllerSite::class, 'forgetStore'])->name('site.forget.store');
+
+		Route::get('/{token}', [AuthControllerSite::class, 'forgetPassword'])->name('site.forget.password');
+		Route::post('/{token}', [AuthControllerSite::class, 'forgetPasswordUpdate'])->name('site.forget.password.update');
+	});
+
 	// ROUTE CREATE ACCOUNT
 	Route::group(['prefix' => 'criar-conta'], function(){
 		Route::get('/pessoa-fisica', [AuthControllerSite::class, 'createPF'])->name('site.account.pf.create');
@@ -320,6 +329,7 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 		Route::group(['prefix' => 'dados-pessoais'], function(){
 			Route::get('/', [ClientControllerSite::class, 'index'])->name('site.myaccount.client');
 			Route::put('/salvar', [ClientControllerSite::class, 'update'])->name('site.myaccount.client.update');
+			Route::put('/senha/salvar', [ClientControllerSite::class, 'updatePassword'])->name('site.myaccount.client.password.update');
 		});
 
 		// ROUTE REQUESTS

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 30-Jan-2022 às 00:20
+-- Tempo de geração: 30-Jan-2022 às 20:26
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 8.1.2
 
@@ -112,8 +112,8 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `name`, `email`, `password`, `telephone`, `cell`, `cpf`, `cnpj`, `token`, `google_id`, `facebook_id`, `validated`, `shipping_address_id`, `billing_address_id`, `created_at`, `updated_at`) VALUES
-(9, 'Ryan Menezes', 'ryan@gmail.com', '$2y$10$CFjfwC1DbON.SpO28L8hGeysDIfCfGlDLEg/FwkfyAUwkuwGXkGs6', '1199999999', '11999999999', '53881489800', '', NULL, NULL, NULL, 1, 11, 11, '2022-01-14 20:42:09', '2022-01-21 22:22:12'),
-(10, 'Carlos Oliveira', 'carlos@gmail.com', '$2y$10$Kj62o6wwccASfYUMEZtus.s8U/x2/igo/0Znx6n.8GnAnFGGbsNMK', '', '11985111561', '', '84053838000133', NULL, NULL, NULL, 1, 14, 14, '2022-01-21 22:30:43', '2022-01-21 22:47:56');
+(9, 'Ryan Menezes', 'ryan@gmail.com', '$2y$10$7cz.QGiN3LEPvlSxT0pFL.ewITfVsXramI2IDiEeMt6AMxJDzJ07q', '1199999999', '11999999999', '53881489800', '', NULL, NULL, NULL, 1, 11, 11, '2022-01-14 20:42:09', '2022-01-30 19:13:12'),
+(10, 'Carlos Oliveira', 'carlos@gmail.com', '$2y$10$Kj62o6wwccASfYUMEZtus.s8U/x2/igo/0Znx6n.8GnAnFGGbsNMK', '', '11985111561', '', '84053838000133', NULL, NULL, NULL, 1, 14, 14, '2022-01-21 22:30:43', '2022-01-30 18:50:24');
 
 -- --------------------------------------------------------
 
@@ -2103,7 +2103,7 @@ ALTER TABLE `galleries`
 -- AUTO_INCREMENT de tabela `lgpd`
 --
 ALTER TABLE `lgpd`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8068;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `notices`

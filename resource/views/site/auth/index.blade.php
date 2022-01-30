@@ -28,7 +28,7 @@
 					'type' => 'password'
 				])
 
-				<p><a href="" title="Recuperar senha">Esqueci minha senha</a></p>
+				<p><a href="{{ route('site.forget') }}" title="Recuperar senha">Esqueci minha senha</a></p>
 
 				<input type="submit" class="primary-btn cta-btn" value="Entrar">
 
@@ -38,10 +38,24 @@
 			</form>
 		</div>
 		<div class="col-md-6">
-			<h2>Crie sua conta:</h2><hr>
+			<h2>Crie sua conta como:</h2><hr>
 
-			<a href="{{ route('site.account.pf.create') }}" title="Criar conta como pessoa física" class="btn btn-primary">Criar conta como pessoa física</a>
-			<a href="{{ route('site.account.pj.create') }}" title="Criar conta como pessoa juridica" class="btn btn-danger">Criar conta como pessoa juridica</a>
+			<div class="row">
+				<div class="col-xs-6 col-md-6">
+					<a href="{{ route('site.account.pf.create') }}" class="thumbnail text-center" title="Pessoa Física">
+						<img src="{{ public_path('assets/img/site/pf.png') }}" alt="Pessoa Física" title="Pessoa Física" style="width: 400px;">
+
+						<h3>Pessoa Física</h3>
+					</a>
+				</div>
+				<div class="col-xs-6 col-md-6">
+					<a href="{{ route('site.account.pj.create') }}" class="thumbnail text-center" title="Pessoa Jurídica">
+						<img src="{{ public_path('assets/img/site/pj.jpg') }}" alt="Pessoa Jurídica" title="Pessoa Jurídica" style="width: 400px;">
+
+						<h3>Pessoa Jurídica</h3>
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>

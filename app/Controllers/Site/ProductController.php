@@ -27,9 +27,20 @@ class ProductController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->product->search(1, $search, $this->product->where('visible', true)->count())->where('visible', true)->count() / config('paginate.limit'));
+		$query = $this->product->search(1, $search, $this->product->where('visible', true)->count());
+
+		if($request->has('freight_free')){
+			$query = $query->where('freight_free', true);
+		}
+
+		$pages = ceil($query->where('visible', true)->count() / config('paginate.limit'));
 		
-		$products = $this->product->search($page, $search)->where('visible', true)->get();
+		$query = $this->product->search($page, $search)->where('visible', true);
+		if($request->has('freight_free')){
+			$query = $query->where('freight_free', true);
+		}
+		$products = $query->get();
+
 		$categories = Category::orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));

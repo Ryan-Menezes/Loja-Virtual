@@ -49,9 +49,20 @@ class CategoryController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$pages = ceil($this->searchProduct($subcategory->products(), 1, $search, $subcategory->products->where('visible', true)->count())->count() / config('paginate.limit'));
+		$query = $this->searchProduct($subcategory->products(), 1, $search, $subcategory->products->where('visible', true)->count());
+
+		if($request->has('freight_free')){
+			$query = $query->where('freight_free', true);
+		}
+
+		$pages = ceil($query->count() / config('paginate.limit'));
 		
-		$products = $this->searchProduct($subcategory->products(), $page, $search)->get();
+		$query = $this->searchProduct($subcategory->products(), $page, $search);
+		if($request->has('freight_free')){
+			$query = $query->where('freight_free', true);
+		}
+		$products = $query->get();
+
 		$categories = $this->category->orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));

@@ -42,7 +42,7 @@ class ClientController extends Controller{
 		$data['cpf'] = preg_replace('/[^\d]/i', '', $data['cpf']);
 		$data['cnpj'] = preg_replace('/[^\d]/i', '', $data['cnpj']);
 		unset($data['email']);
-		if(empty($data['password'])){
+		if(isset($data['password'])){
 			unset($data['password']);
 		}
 
@@ -53,5 +53,28 @@ class ClientController extends Controller{
 		}
 
 		redirect(route('site.myaccount.client'), ['error' => 'Dados pessoais NÃO editado, Ocorreu um erro no processo de edição!'], true);
+	}
+
+	public function updatePassword(){
+		$data = (new Request())->all();
+
+		if(!isset($data['password']) || !isset($data['npassword']) || !isset($data['rnpassword'])){
+			redirect(route('site.myaccount.client'), ['error' => 'É necessário que todos os campos sejam preenchidos!'], true);
+		}
+		
+		$this->validator($data, $this->client->rolesUpdate, $this->client->messages);
+
+		if(!password_verify($data['password'], $this->client->password)){
+			redirect(route('site.myaccount.client'), ['error' => 'A senha atual informada é inválida!'], true);
+		}
+
+		if($data['npassword'] != $data['rnpassword']){
+			redirect(route('site.myaccount.client'), ['error' => 'As senha informadas são diferentes!'], true);
+		}
+
+		$this->client->password = password_hash($data['npassword'], PASSWORD_DEFAULT);
+		$this->client->save();
+
+		redirect(route('site.myaccount.client'), ['success' => 'Senha alterada com sucessos!']);
 	}
 }
