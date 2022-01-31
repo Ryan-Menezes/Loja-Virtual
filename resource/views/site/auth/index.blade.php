@@ -33,8 +33,11 @@
 				<input type="submit" class="primary-btn cta-btn" value="Entrar">
 
 				<hr />
-				<a href="" title="Logar com o Facebook" class="btn btn-primary"><i class="fa fa-facebook-f"></i> Facebook</a>
-				<a href="" title="Logar com o Google" class="btn btn-danger"><i class="fa fa-google"></i> Google</a>
+				<div class="login-types">
+					<a href="{{ route('site.login.facebook') }}" title="Logar com o Facebook" class="btn-primary"><i class="fa fa-facebook-f"></i> Login social com o Facebook</a>
+					<a href="{{ route('site.login.google') }}" title="Logar com o Google" class="btn-danger"><i class="fa fa-google"></i> Login social com o Google</a>
+				</div>
+				
 			</form>
 		</div>
 		<div class="col-md-6">

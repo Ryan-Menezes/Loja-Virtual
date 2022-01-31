@@ -131,3 +131,19 @@ blockquote{
 .result-coupon{
   margin-top: 10px;
 }
+.form-control{
+  border-radius: 0px!important;
+}
+.login-types{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
+}
+.login-types a{
+  padding: 15px;
+  color: white;
+}
+.login-types a i{
+  font-size: 20px;
+  margin-right: 10px;
+}

@@ -50,8 +50,8 @@
                     },
                     */
                     theme: {
-                        elementsColor: '#449D44',
-                        headerColor: '#449D44'
+                        headerColor: "{{ config('store.payment.credentials.mercadopago.header_color') }}",
+                        elementsColor: "{{ config('store.payment.credentials.mercadopago.elements_color') }}"
                     }
                 })
 

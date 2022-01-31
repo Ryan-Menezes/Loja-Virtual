@@ -57,6 +57,10 @@ class SystemStore extends Model{
 		return $this->belongsTo(SystemMercadopago::class, 'system_mercadopago_id', 'id');
 	}
 
+	public function paypal(){
+		return $this->belongsTo(SystemPaypal::class, 'system_paypal_id', 'id');
+	}
+
 	public function picpay(){
 		return $this->belongsTo(SystemPicpay::class, 'system_picpay_id', 'id');
 	}

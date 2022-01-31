@@ -16,6 +16,8 @@
 		<div class="row">
 			<!-- ASIDE -->
 			<form method="POST" id="aside" class="col-md-3">
+				<input type="hidden" name="search" value="{{ $search ?? null }}">
+
 				<!-- aside Widget -->
 				<div class="aside">
 					<h3 class="aside-title">Categorias</h3>
@@ -47,7 +49,11 @@
 				<div class="aside" style="margin-top: 40px;">
 					<h3 class="aside-title">Frete</h3>
 					<div class="input-checkbox">
+						@isset($builder['freight_free'])
+						<input type="checkbox" name="freight_free" value="1" id="freight_free" checked>
+						@else
 						<input type="checkbox" name="freight_free" value="1" id="freight_free">
+						@endisset
 						<label for="freight_free"><span></span>Frete Grátis</label>
 					</div>
 				</div>

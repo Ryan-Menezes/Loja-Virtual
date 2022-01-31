@@ -373,6 +373,63 @@
 						'class' => 'required',
 						'required' => true
 					])
+
+					<div class="row">
+						<div class="col-md-6">
+							@include('includes.components.form.input', [
+								'type' => 'color', 
+								'name' => 'header_color_mercadopago', 
+								'title' => 'Cor do Cabeçalho', 
+								'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->header_color : null)
+							])
+						</div>
+						<div class="col-md-6">
+							@include('includes.components.form.input', [
+								'type' => 'color', 
+								'name' => 'elements_color_mercadopago', 
+								'title' => 'Cor dos Elementos', 
+								'value' => (isset($system) && $system->store && $system->store->mercadopago ? $system->store->mercadopago->elements_color : null)
+							])
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="card mb-4">
+				<div class="card-header p-3"><strong>PayPal</strong></div>
+				<div class="card-body">	
+					@include('includes.components.form.select', [
+						'name' => 'active_paypal', 
+						'title' => 'Situação',
+						'value' => (isset($system) && $system->store && $system->store->paypal ? $system->store->paypal->active : null),
+						'options' => [
+							1 => 'Ativado',
+							0 => 'Desativado'
+						],
+						'class' => 'required',
+						'required' => true
+					])
+
+					@include('includes.components.form.input', [
+						'type' => 'text', 
+						'name' => 'secret_key_paypal', 
+						'title' => 'Chave Secreta', 
+						'value' => (isset($system) && $system->store && $system->store->paypal ? $system->store->paypal->secret_key : null)
+					])
+					
+					@include('includes.components.form.input', [
+						'type' => 'email', 
+						'name' => 'email_paypal', 
+						'title' => 'E-Mail', 
+						'value' => (isset($system) && $system->store && $system->store->paypal ? $system->store->paypal->email : null)
+					])
+
+					@include('includes.components.form.input', [
+						'type' => 'text', 
+						'name' => 'client_id_paypal', 
+						'title' => 'Id do Cliente', 
+						'value' => (isset($system) && $system->store && $system->store->paypal ? $system->store->paypal->client_id : null)
+					])
 				</div>
 			</div>
 

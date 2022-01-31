@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Src\Classes\Mail;
 
 class Client extends Model{
 	public $table = 'clients';
@@ -88,7 +89,23 @@ class Client extends Model{
 					->orWhere('cnpj', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
+		
+		
 					->limit($limit);
+	}
+
+	public function checkValidateAccount(){
+		// Verifica se a conta desse cliente já foi validada
+		if(!$this->validated){
+			Mail::isHtml(true)
+					->charset(config('mail.charset'))
+					->addFrom(config('mail.to'), config('app.name'))
+					->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
+					->message(view('mail.account.validate', compact('client')))
+					->send($this->email, $this->name);
+
+			redirect(route('site.login'), ['error' => 'Esta conta não está validada, Verique seu e-mail e veja se tem um link de validação!'], true);
+		}
 	}
 
 	public function verifyPermission(string $permission){

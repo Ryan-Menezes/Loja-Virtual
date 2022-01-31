@@ -150,7 +150,16 @@ class SystemController extends Controller{
 			'active' => $data['active_mercadopago'] ?? 1,
 			'access_token' => $data['access_token_mercadopago'] ?? null,
 			'public_key' => $data['public_key_mercadopago'] ?? null,
-			'type_checkout' => $data['type_checkout_mercadopago'] ?? 'LR'
+			'type_checkout' => $data['type_checkout_mercadopago'] ?? 'LR',
+			'header_color' => $data['header_color_mercadopago'] ?? '#ffffff',
+			'elements_color' => $data['elements_color_mercadopago'] ?? '#ffffff'
+		];
+
+		$paypal_data = [
+			'active' => $data['active_paypal'] ?? 1,
+			'secret_key' => $data['secret_key_paypal'] ?? null,
+			'email' => $data['email_paypal'] ?? null,
+			'client_id' => $data['client_id_paypal'] ?? null
 		];
 
 		$picpay_data = [
@@ -164,11 +173,13 @@ class SystemController extends Controller{
 		$this->validator($data, $store->freight->rolesUpdate, $store->freight->messages);
 		$this->validator($pagseguro_data, $store->pagseguro->rolesUpdate, $store->pagseguro->messages);
 		$this->validator($mercadopago_data, $store->mercadopago->rolesUpdate, $store->mercadopago->messages);
+		$this->validator($paypal_data, $store->paypal->rolesUpdate, $store->paypal->messages);
 		$this->validator($picpay_data, $store->picpay->rolesUpdate, $store->picpay->messages);
 
 		$store->freight->update($data);
 		$store->pagseguro->update($pagseguro_data);
 		$store->mercadopago->update($mercadopago_data);
+		$store->paypal->update($paypal_data);
 		$store->picpay->update($picpay_data);
 
 		// Atualizando as faixas de cep

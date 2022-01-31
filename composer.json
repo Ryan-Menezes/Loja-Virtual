@@ -21,6 +21,8 @@
         "php": ">=7",
         "jenssegers/blade": "^1.4",
         "illuminate/database": "^8.70",
-        "mercadopago/dx-php": "^2.4"
+        "mercadopago/dx-php": "^2.4",
+        "league/oauth2-facebook": "^2.0",
+        "league/oauth2-google": "^4.0"
     }
 }

@@ -51,7 +51,15 @@ return [
 				'checkouts' => [
 					'redirect'			=> (bool)($system->store->mercadopago->type_checkout == 'LR'),
 					'lightbox'			=> (bool)($system->store->mercadopago->type_checkout == 'LB')
-				]
+				],
+				'header_color'			=> $system->store->mercadopago->header_color,
+				'elements_color'		=> $system->store->mercadopago->elements_color
+			],
+			'paypal' => [
+				'active'				=> $system->store->paypal->active,
+				'secret_key'			=> $system->store->paypal->secret_key,
+				'email' 				=> $system->store->paypal->email,
+				'client_id'				=> $system->store->paypal->client_id
 			],
 			'picpay' => [
 				'active'				=> $system->store->picpay->active,

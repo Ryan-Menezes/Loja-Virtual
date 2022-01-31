@@ -9,7 +9,11 @@ use App\Models\{
 	Request as RequestModel,
 	Role
 };
-use App\Classes\Payment\PagSeguro;
+use App\Classes\Payment\{
+	PagSeguro,
+	MercadoPago,
+	PicPay
+};
 
 class RequestController extends Controller{
 	private $requestmodel;
@@ -37,18 +41,7 @@ class RequestController extends Controller{
 		$this->requestmodel->verifyPermission('edit.requests');
 
 		$requestmodel = $this->requestmodel->findOrFail($id);
-
-		if(config('store.types.pagseguro') || $requestmodel->payment->type == 'PS'){
-			// Objeto do pagseguro
-			$email = config('store.payment.credentials.pagseguro.email');
-			$token = config('store.payment.credentials.pagseguro.token');
-			$production = config('store.payment.production');
-
-			$pagseguro = new PagSeguro($email, $token, !$production);
-
-			// Verifica se a transação para este pedido já foi feita
-			update_payment_request_pagseguro($pagseguro, $requestmodel);
-		}
+		update_payment($requestmodel);
 
 		return view('panel.requests.edit', compact('requestmodel'));
 	}
@@ -63,23 +56,28 @@ class RequestController extends Controller{
 
 		$this->validator($data, $requestmodel->rolesUpdate, $requestmodel->messages);
 
-		if($requestmodel->update($data)){
-			if(config('store.types.pagseguro') || $requestmodel->payment->type == 'PS'){
-				// Objeto do pagseguro
-				$email = config('store.payment.credentials.pagseguro.email');
-				$token = config('store.payment.credentials.pagseguro.token');
-				$production = config('store.payment.production');
-	
-				$pagseguro = new PagSeguro($email, $token, !$production);
-	
-				// Verifica se a transação para este pedido já foi feita
-				update_payment_request_pagseguro($pagseguro, $requestmodel);
+		// Verificando se o status selecionado foi o de cancelar
+		if($data['status'] == 'CA'){
+			if($requestmodel->status == 'PA'){
+				if(refund_payment($requestmodel)){
+					redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['success' => 'Pedido editado com sucesso!']);
+				}
+			}else if($requestmodel->status == 'AP'){
+				if(cancel_payment($requestmodel)){
+					redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['success' => 'Pedido editado com sucesso!']);
+				}
 			}
+
+			redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['error' => 'Pedido NÃO editado, Ocorreu um erro no processo de edição!']);
+		}
+
+		if($requestmodel->update($data)){
+			update_payment($requestmodel);
 
 			redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['success' => 'Pedido editado com sucesso']);
 		}
 
-		redirect(route('panel.requests.edit'), ['error' => 'Pedido NÃO editado, Ocorreu um erro no processo de edição!'], true);
+		redirect(route('panel.requests.edit', ['id' => $requestmodel->id]), ['error' => 'Pedido NÃO editado, Ocorreu um erro no processo de edição!']);
 	}
 
 	public function destroy($id){

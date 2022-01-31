@@ -302,6 +302,8 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	Route::group(['prefix' => 'login'], function(){
 		Route::get('/', [AuthControllerSite::class, 'index'])->name('site.login');
 		Route::post('/', [AuthControllerSite::class, 'loginValidate'])->name('site.login.validate');
+		Route::get('/facebook', [AuthControllerSite::class, 'facebook'])->name('site.login.facebook');
+		Route::get('/google', [AuthControllerSite::class, 'google'])->name('site.login.google');
 	});
 
 	// ROUTE FORGET

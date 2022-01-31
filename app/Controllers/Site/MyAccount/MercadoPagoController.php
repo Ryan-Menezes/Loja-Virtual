@@ -96,6 +96,12 @@ class MercadoPagoController extends Controller{
 				];
             }
 
+			if(!config('store.payment.credentials.paypal.active')){
+                $excludes[] = [
+					'id' => 'digital_wallet'
+				];
+            }
+
 			/*
             if(!config('store.payment.methods.balance')){
                 $excludes[] = [
@@ -105,11 +111,6 @@ class MercadoPagoController extends Controller{
 			*/
 
 			// Excluindo outros meios
-			/*
-			$excludes[] = [
-				'id' => 'digital_wallet'
-			];
-			*/
 			$excludes[] = [
 				'id' => 'atm'
 			];

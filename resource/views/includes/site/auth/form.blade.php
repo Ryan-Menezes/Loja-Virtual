@@ -12,6 +12,7 @@
 		'title' => 'Nome',
 		'name' => 'name',
 		'type' => 'text',
+		'value' => (session()->has('facebook_auth') ? session('facebook_auth')->getName() : (session()->has('google_auth') ? session('google_auth')->getName() : null)),
 		'class' => 'required',
 		'required' => true
 	])
@@ -22,6 +23,7 @@
 				'title' => 'E-Mail',
 				'name' => 'email',
 				'type' => 'email',
+				'value' => (session()->has('facebook_auth') ? session('facebook_auth')->getEmail() : (session()->has('google_auth') ? session('google_auth')->getEmail() : null)),
 				'class' => 'required email',
 				'required' => true
 			])

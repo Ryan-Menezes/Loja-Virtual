@@ -51,34 +51,7 @@ class RequestController extends Controller{
     public function show($id){
         $requestmodel = $this->client->requests()->findOrFail($id);
 
-		if(config('store.types.pagseguro') || $requestmodel->payment->type == 'PS'){
-			// Objeto do pagseguro
-			$email = config('store.payment.credentials.pagseguro.email');
-			$token = config('store.payment.credentials.pagseguro.token');
-			$production = config('store.payment.production');
-
-			$pagseguro = new PagSeguro($email, $token, !$production);
-
-			// Verifica se a transação para este pedido já foi feita
-			update_payment_request_pagseguro($pagseguro, $requestmodel);
-		}
-
-		if(config('store.types.mercadopago') || $requestmodel->payment->type == 'MP'){
-			// Verifica se a transação para este pedido já foi feita
-			update_payment_request_mercadopago($requestmodel);
-		}
-		
-		if(config('store.methods.pix') || $requestmodel->payment->type == 'PC'){
-			// Objeto do picpay
-            $token = config('store.payment.credentials.picpay.token');
-            $seller_token = config('store.payment.credentials.picpay.seller_token');
-            $production = config('store.payment.production');
-
-            $picpay = new PicPay($token, $seller_token);
-
-			// Verifica se a transação para este pedido já foi feita
-			update_payment_request_picpay($picpay, $requestmodel);
-		}
+		update_payment($requestmodel);
 
         return view('site.myaccount.requests.show', compact('requestmodel'));
 	}
@@ -86,69 +59,8 @@ class RequestController extends Controller{
 	public function cancel($id){
         $requestmodel = $this->client->requests()->findOrFail($id);
 
-		if($requestmodel->status == 'AP'){
-			if($requestmodel->payment->code){
-				if($requestmodel->payment->type == 'PS'){
-					// Objeto do pagseguro
-					$email = config('store.payment.credentials.pagseguro.email');
-					$token = config('store.payment.credentials.pagseguro.token');
-					$production = config('store.payment.production');
-
-					$pagseguro = new PagSeguro($email, $token, !$production);
-
-					// Cancela a transação
-					$response = $pagseguro->cancel($requestmodel->payment->code);
-
-					// Verifica se a transação para este pedido já foi feita
-					update_payment_request_pagseguro($pagseguro, $requestmodel);
-					
-					if(!empty($response) && !isset($response->error)){
-						$requestmodel->status = 'CA';
-						$requestmodel->save();
-
-						redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
-					}
-				}else if($requestmodel->payment->type == 'MP'){
-					$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
-	
-					$response = $mercadopago->cancel($requestmodel->payment->code);
-	
-					// Verifica se a transação para este pedido já foi feita
-					update_payment_request_mercadopago($requestmodel);
-					
-					if($response){
-						$requestmodel->status = 'CA';
-						$requestmodel->save();
-	
-						redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
-					}
-				}
-			}else if($requestmodel->payment->type == 'PC'){
-				// Objeto do picpay
-				$token = config('store.payment.credentials.picpay.token');
-				$seller_token = config('store.payment.credentials.picpay.seller_token');
-				$production = config('store.payment.production');
-
-				$picpay = new PicPay($token, $seller_token);
-
-				// Cancela a transação
-				$response = $picpay->cancel(config('store.reference_prefix') . $requestmodel->id);
-
-				// Verifica se a transação para este pedido já foi feita
-				update_payment_request_picpay($picpay, $requestmodel);
-				
-				if(!empty($response) && isset($response->cancellationId)){
-					$requestmodel->status = 'CA';
-					$requestmodel->save();
-
-					redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
-				}
-			}else{
-				$requestmodel->status = 'CA';
-				$requestmodel->save();
-
-				redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
-			}
+		if(cancel_payment($requestmodel)){
+			redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
 		}
 
 		redirect(route('site.myaccount.requests'), ['error' => 'Não foi possível cancelar seu pedido, Caso o cancelamento seja urgente, favor entrar em contato conosco!']);
@@ -157,49 +69,8 @@ class RequestController extends Controller{
 	public function refund($id){
         $requestmodel = $this->client->requests()->findOrFail($id);
 
-		if($requestmodel->status == 'PA'){
-			if($requestmodel->payment->code){
-				if($requestmodel->payment->type == 'PS'){
-					// Objeto do pagseguro
-					$email = config('store.payment.credentials.pagseguro.email');
-					$token = config('store.payment.credentials.pagseguro.token');
-					$production = config('store.payment.production');
-
-					$pagseguro = new PagSeguro($email, $token, !$production);
-
-					// Cancela a transação
-					$response = $pagseguro->refund($requestmodel->payment->code);
-
-					// Verifica se a transação para este pedido já foi feita
-					update_payment_request_pagseguro($pagseguro, $requestmodel);
-					
-					if(!empty($response) && !isset($response->error)){
-						$requestmodel->status = 'CA';
-						$requestmodel->save();
-
-						redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso e o valor reembolsado!']);
-					}
-				}else if($requestmodel->payment->type == 'MP'){
-					$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
-	
-					$response = $mercadopago->refund($requestmodel->payment->code);
-	
-					// Verifica se a transação para este pedido já foi feita
-					update_payment_request_mercadopago($requestmodel);
-					
-					if(!empty($response) && !isset($response->id)){
-						$requestmodel->status = 'CA';
-						$requestmodel->save();
-
-						redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso e o valor reembolsado!']);
-					}
-				}
-			}else{
-				$requestmodel->status = 'CA';
-				$requestmodel->save();
-
-				redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso!']);
-			}
+		if(refund_payment($requestmodel)){
+			redirect(route('site.myaccount.requests'), ['success' => 'Seu pedido foi cancelado com sucesso e o valor pago foi reembolsado!']);
 		}
 
 		redirect(route('site.myaccount.requests'), ['error' => 'Não foi possível reembolsar o valor do pedido e cancelá-lo, Caso o reembolso seja urgente, favor entrar em contato conosco!']);
