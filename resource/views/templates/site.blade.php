@@ -62,6 +62,9 @@
     <!-- Bootstrap -->
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/bootstrap.min.css') }}"/>
 
+    <!-- Plugins CSS -->
+	<link type="text/css" rel="stylesheet" href="{{ public_path('assets/js/libs/plugins/lightbox/css/lightbox.min.css') }}"/>
+
     <!-- Slick -->
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick.css') }}"/>
     <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick-theme.css') }}"/>
@@ -392,6 +395,8 @@
 
     <!-- ##### All Javascript Script ##### -->
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox-plus-jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap.min.js') }}"></script>

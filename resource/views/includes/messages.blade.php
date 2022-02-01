@@ -13,14 +13,14 @@
 @if(isset($success))
 <div class="alert alert-success d-flex align-items-center" role="alert">
 	<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-  	<p class="m-0 p-0">{{ $success }}</p>
+  	<p class="m-0 p-0">{!! $success !!}</p>
 </div>
 @endif
 
 @if(isset($error))
 <div class="alert alert-danger d-flex align-items-center" role="alert">
   	<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-  	<p class="m-0 p-0">{{ $error }}</p>
+  	<p class="m-0 p-0">{!! $error !!}</p>
 </div>
 @endif
 
@@ -28,7 +28,7 @@
 	@foreach($errors as $error)
 	<div class="alert alert-danger d-flex align-items-center" role="alert">
 	  	<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-	  	<p class="m-0 p-0">{{ $error }}</p>
+	  	<p class="m-0 p-0">{!! $error !!}</p>
 	</div>
 	@endforeach
 @endif

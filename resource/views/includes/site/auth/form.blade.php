@@ -12,7 +12,7 @@
 		'title' => 'Nome',
 		'name' => 'name',
 		'type' => 'text',
-		'value' => (session()->has('facebook_auth') ? session('facebook_auth')->getName() : (session()->has('google_auth') ? session('google_auth')->getName() : null)),
+		'value' => ($auth_user ? $auth_user->getName() : null),
 		'class' => 'required',
 		'required' => true
 	])
@@ -23,7 +23,7 @@
 				'title' => 'E-Mail',
 				'name' => 'email',
 				'type' => 'email',
-				'value' => (session()->has('facebook_auth') ? session('facebook_auth')->getEmail() : (session()->has('google_auth') ? session('google_auth')->getEmail() : null)),
+				'value' => ($auth_user ? $auth_user->getEmail() : null),
 				'class' => 'required email',
 				'required' => true
 			])
@@ -85,7 +85,7 @@
 		'title' => 'CEP',
 		'name' => 'postal_code',
 		'type' => 'text',
-		'class' => 'required cep-mask',
+		'class' => 'required cep-mask postal-code-search',
 		'required' => true
 	])
 
@@ -118,27 +118,6 @@
 		'required' => true
 	])
 
-	{{-- <div class="row">
-		<div class="col-md-6">
-			@include('includes.components.form.select', [
-				'title' => 'Cidade',
-				'name' => 'city',
-				'options' => [],
-				'class' => 'required',
-				'required' => true
-			])
-		</div>
-		<div class="col-md-6">
-			@include('includes.components.form.select', [
-				'title' => 'Estado',
-				'name' => 'state',
-				'options' => [],
-				'class' => 'required',
-				'required' => true
-			])
-		</div>
-	</div> --}}
-
 	<div class="row">
 		<div class="col-md-6">
 			@include('includes.components.form.input', [
@@ -150,10 +129,10 @@
 			])
 		</div>
 		<div class="col-md-6">
-			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => 'state', 
-				'title' => 'Estado', 
+			@include('includes.components.form.select', [
+				'title' => 'Estado',
+				'name' => 'state',
+				'options' => config('states.BRL'),
 				'class' => 'required',
 				'required' => true
 			])

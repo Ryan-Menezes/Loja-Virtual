@@ -16,6 +16,7 @@
 
 	<!-- Plugins CSS -->
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/plugins/Trumbowyg/ui/trumbowyg.min.css') }}">
+	<link type="text/css" rel="stylesheet" href="{{ public_path('assets/js/libs/plugins/lightbox/css/lightbox.min.css') }}"/>
 
 	<!-- FontAwesome CSS -->
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/libs/fontawesome/css/all.min.css') }}">
@@ -46,6 +47,8 @@
 	</section>
 
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.min.js') }}"></script>
+	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox.min.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox-plus-jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
 	<script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>

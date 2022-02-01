@@ -96,6 +96,8 @@ class Client extends Model{
 
 	public function checkValidateAccount(){
 		// Verifica se a conta desse cliente já foi validada
+		$client = $this;
+
 		if(!$this->validated){
 			Mail::isHtml(true)
 					->charset(config('mail.charset'))

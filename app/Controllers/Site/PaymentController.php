@@ -64,9 +64,10 @@ class PaymentController extends Controller{
 
     public function notificationMercadopago(){
         $request = new Request();
+        $response = json_decode(trim(file_get_contents('php://input')));
 
-        if($request->has('data_id') || $request->has('data')){
-            $id = ($request->has('data_id') ? $request->input('data_id') : $request->has('data')['id']);
+        if($request->has('data_id') || isset($response->data)){
+            $id = ($request->has('data_id') ? $request->input('data_id') : $response->data->id);
 
             \MercadoPago\SDK::setAccessToken(config('store.payment.credentials.mercadopago.access_token'));
 
@@ -98,7 +99,7 @@ class PaymentController extends Controller{
     }
 
     public function notificationPicPay(){
-        $content = trim(file_get_contents("php://input"));
+        $content = trim(file_get_contents('php://input'));
 	    $pay = json_decode($content);
 
         if(isset($pay->referenceId)){

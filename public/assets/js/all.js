@@ -98,6 +98,30 @@ $(document).ready(function(){
         })
     })
 
+    // Busca de endereço por CEP
+    $('.postal-code-search').change(function(){
+        const postal_code = $(this).val().replace(/\D/ig, '')
+
+        if(postal_code.length == 8){
+            $.ajax({
+                url: `https://viacep.com.br/ws/${postal_code}/json/`,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response){
+                    if(!response.error){
+                        $('input[name=street]').val(response.logradouro)
+                        $('input[name=district]').val(response.bairro)
+                        $('input[name=city]').val(response.localidade)
+                        $('input[name=state]').val(response.uf)
+                        $('input[name=complement]').val(response.complemento)
+
+                        $('select[name=state]').find(`option[value=${response.uf}]`).attr('selected', true)
+                    }
+                }
+            })
+        }
+    })
+
     // Masked input
     $('.phone-mask').mask('(99)9999-9999')
     $('*').delegate('.phone-mask', 'focus load', function(){

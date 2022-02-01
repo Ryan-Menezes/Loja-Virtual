@@ -11,6 +11,7 @@ use App\Models\{
 	Product,
 	Rating,
 	Request as RequestModel,
+	RequestProduct,
 	Notice,
 	Comment,
 	SubComment,
@@ -40,6 +41,15 @@ class PanelController extends Controller{
  		}, array_keys($pages_access));
 		$pages_access = array_combine($keys, $pages_access);
 
+		// Produtos mais vendidos
+		$products_requests = RequestProduct::select('product_id', DB::raw('COUNT(quantity) as amount'))->groupBy('product_id')->orderBy(DB::raw('COUNT(product_id)'), 'DESC')->limit(5)->pluck('amount', 'product_id')->toArray();
+		$products = Product::select('id', 'name')->whereIn('id', array_keys($products_requests))->get();
+		foreach($products as $product){
+			$products_requests[$product->name] = $products_requests[$product->id];
+			unset($products_requests[$product->id]);
+		}
+		arsort($products_requests);
+
 		// Produtos mais acessados
 		$products_access = Lgpd::select('url', DB::raw('COUNT(*) as amount'))->where('url', 'REGEXP', '/produtos/[a-z|A-Z|0-9]+')->groupBy('url')->orderBy(DB::raw('COUNT(*)'), 'DESC')->limit(5)->pluck('amount', 'url')->toArray();
 		$keys = array_map(function($value){
@@ -49,7 +59,7 @@ class PanelController extends Controller{
 		$products_access = array_combine($keys, $products_access);
 
 		// Produtos mais bem avaliados
-		$products_rating = Rating::select('product_id', DB::raw('AVG(stars) as avg'))->where('visible', true)->groupBy('product_id')->orderBy(DB::raw('AVG(stars)'), 'DESC')->limit(5)->pluck('avg', 'product_id')->toArray();
+		$products_rating = Rating::select('product_id', DB::raw('AVG(stars) as avg'))->groupBy('product_id')->orderBy(DB::raw('AVG(stars)'), 'DESC')->limit(5)->pluck('avg', 'product_id')->toArray();
 		$products = Product::select('id', 'name')->whereIn('id', array_keys($products_rating))->get();
 		foreach($products as $product){
 			$products_rating[$product->name] = $products_rating[$product->id];
@@ -57,7 +67,7 @@ class PanelController extends Controller{
 		}
 		arsort($products_rating);
 
-		// Produtos mais bem avaliados
+		// Noticias mais acessadas
 		$notices_access = Notice::select('title', 'visits')->orderBy('visits', 'DESC')->limit(5)->pluck('visits', 'title')->toArray();
 
 		$data = [
@@ -79,6 +89,7 @@ class PanelController extends Controller{
 			'permissionsCount' 	=> Permission::count(),
 			'pages_access'		=> $pages_access,
 			'products_access'	=> $products_access,
+			'products_requests'	=> $products_requests,
 			'products_rating'	=> $products_rating,
 			'notices_access'	=> $notices_access
 		];

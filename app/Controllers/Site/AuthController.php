@@ -52,11 +52,35 @@ class AuthController extends Controller{
 	}
 
 	public function createPF(){
-		return view('site.auth.pf.create');
+		$auth_user = null;
+
+		// Verifica se houve um login com o facebook
+		if(session()->has('facebook_auth')){
+			$auth_user = unserialize(session('facebook_auth'));
+		}
+
+		// Verifica se houve um login com o google
+		if(session()->has('google_auth')){
+			$auth_user = unserialize(session('google_auth'));
+		}
+
+		return view('site.auth.pf.create', compact('auth_user'));
 	}
 
 	public function createPJ(){
-		return view('site.auth.pj.create');
+		$auth_user = null;
+
+		// Verifica se houve um login com o facebook
+		if(session()->has('facebook_auth')){
+			$auth_user = unserialize(session('facebook_auth'));
+		}
+
+		// Verifica se houve um login com o google
+		if(session()->has('google_auth')){
+			$auth_user = unserialize(session('google_auth'));
+		}
+
+		return view('site.auth.pj.create', compact('auth_user'));
 	}
 
 	public function store(){
@@ -105,7 +129,7 @@ class AuthController extends Controller{
 	}
 
 	public function validate($token){
-		$client = $this->client->where('token', $token)->where('validated', true)->firstOrFail();
+		$client = $this->client->where('token', $token)->firstOrFail();
 
 		$client->token = null;
 		$client->validated = true;
@@ -197,7 +221,7 @@ class AuthController extends Controller{
 
 		if($code && !session()->has('facebook_auth')){
 			try{
-				$token = $facebook->getAccessToken('auhorization_code', [
+				$token = $facebook->getAccessToken('authorization_code', [
 					'code' => $code
 				]);
 
@@ -258,7 +282,7 @@ class AuthController extends Controller{
 
 		if($code && !session()->has('google_auth')){
 			try{
-				$token = $google->getAccessToken('auhorization_code', [
+				$token = $google->getAccessToken('authorization_code', [
 					'code' => $code
 				]);
 
@@ -286,7 +310,7 @@ class AuthController extends Controller{
 		if($client){
 			$client->checkValidateAccount();
 
-			redirect(route('site.login'), ['success' => "Olá {$google_user->getFirstName()}, faça login para conectar seu google!"]);
+			redirect(route('site.login'), ['success' => "Olá {$google_user->getFirstName()}, faça login para conectar sua conta google!"]);
 		}
 
 		// Register if not

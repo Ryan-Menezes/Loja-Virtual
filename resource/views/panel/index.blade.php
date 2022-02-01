@@ -138,7 +138,7 @@
 @section('scripts')
 <script type="text/javascript">
 	createChart('bar', 'Páginas mais acessadas', '#pages_access', 'Número de Acessos', [{{ implode(', ', $pages_access) }}], '#f56342', ['{!! implode('\', \'', array_keys($pages_access)) !!}'])
-	createChart('bar', 'Produtos mais vendidos', '#products_store', 'Total de Vendas', [31, 40, 28, 51, 42], '#007d21', ['PC Gamer', 'Celular', 'Creme Pra Cabelo', 'Mouse', 'Teclado'])
+	createChart('bar', 'Produtos mais vendidos', '#products_store', 'Total de Vendas', [{{ implode(', ', $products_requests) }}], '#007d21', ['{!! implode('\', \'', array_keys($products_requests)) !!}'])
 	createChart('bar', 'Produtos mais acessados', '#products_access', 'Número de Acessos', [{{ implode(', ', $products_access) }}], '#f5ce42', ['{!! implode('\', \'', array_keys($products_access)) !!}'])
 	createChart('bar', 'Produtos mais bem avaliados', '#products_rating', 'Média de Avaliações', [{{ implode(', ', $products_rating) }}], '#ed186a', ['{!! implode('\', \'', array_keys($products_rating)) !!}'])
 	createChart('area', 'Pedidos feitos nos últimos meses', '#request_amount', 'Total de Pedidos', [31, 40, 28, 51, 42, 109, 100, 40, 28, 51, 42, 100], '#1858ed', ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'])
