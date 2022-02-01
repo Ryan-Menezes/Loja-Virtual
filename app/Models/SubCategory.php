@@ -10,14 +10,14 @@ class SubCategory extends Model{
 
 	public function getRolesCreateAttribute(){
 		return [
-			'name' 	=> "required|min:1|max:100|unique:{$this->table},name",
+			'name' 	=> "required|min:1|max:100",
 			'description' => 'required|min:1'
 		];
 	}
 
 	public function getRolesUpdateAttribute(){
 		return [
-			'name' 	=> "required|min:1|max:100|unique:{$this->table},name,{$this->id},id",
+			'name' 	=> "required|min:1|max:100",
 			'description' => 'required|min:1'
 		];
 	}
@@ -27,7 +27,6 @@ class SubCategory extends Model{
 			'name.required' 		=> 'O preenchimento do campo nome é obrigatório!',
 			'name.min' 				=> 'O campo nome deve conter no mínimo %min% caracteres!',
 			'name.max' 				=> 'O campo nome deve conter no máximo %max% caracteres!',
-			'name.unique' 			=> 'Este nome já está sendo utilizado, Tente outro nome!',
 			'description.required' 	=> 'O preenchimento do campo descrição é obrigatório!',
 			'description.min' 		=> 'O campo descrição deve conter no mínimo %min% caracteres!'
 		];

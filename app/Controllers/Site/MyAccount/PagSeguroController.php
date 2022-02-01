@@ -154,7 +154,6 @@ class PagSeguroController extends Controller{
             }
             
             $response = $pagseguro->checkout(route('site.myaccount.requests.show', ['id' => $requestmodel->id]), $groups, $excludes);
-            
             $code = $response->code ?? null;
         }catch(Exception $e){
             $code = null;

@@ -118,7 +118,7 @@ class PagSeguro{
     public function addItem(string $id, string $description, float $amount, int $quantity){
         $this->itens[] = [
             'id'            => $id,
-            'description'   => $description,
+            'description'   => mb_substr($description, 0, 100),
             'amount'        => number_format($amount, 2, '.', ''),
             'quantity'      => $quantity
         ];

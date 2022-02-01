@@ -57,6 +57,11 @@ class SubCategoryController extends Controller{
 		$data['slug'] = slugify($data['name']);
 		$data['category_id'] = $category->id;
 
+		// Verificando se há existem uma sub categória com o mesmo nome
+		if($this->subcategory->where('name', $data['name'])->where('category_id', $category->id)->exists()){
+			redirect(route('panel.categories.subcategories.create', ['category' => $category->id]), ['error' => "A categoria {$category->name} já possui uma sub categoria {$data['name']}!"], true);
+		}
+
 		if($this->subcategory->create($data)){
 			redirect(route('panel.categories.subcategories.create', ['category' => $category->id]), ['success' => 'Sub Categoria cadastrada com sucesso']);
 		}
@@ -84,6 +89,11 @@ class SubCategoryController extends Controller{
 
 		$this->validator($data, $subcategory->rolesUpdate, $subcategory->messages);
 		$data['slug'] = slugify($data['name']);
+
+		// Verificando se há existem uma sub categória com o mesmo nome
+		if($subcategory->where('name', $data['name'])->where('category_id', $category->id)->where('id', '!=', $subcategory->id)->exists()){
+			redirect(route('panel.categories.subcategories.edit', ['category' => $category->id, 'id' => $subcategory->id]), ['error' => "A categoria {$category->name} já possui uma sub categoria {$data['name']}"], true);
+		}
 
 		if($subcategory->update($data)){
 			redirect(route('panel.categories.subcategories.edit', ['category' => $category->id, 'id' => $subcategory->id]), ['success' => 'Sub Categoria editada com sucesso']);

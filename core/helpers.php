@@ -963,7 +963,31 @@ if(!function_exists('slugify')){
 			'/' => $separator,
 			' ' => $separator,
 			'.' => $separator,
-			'?' => $separator
+			'?' => $separator,
+			'+' => $separator,
+			'*' => $separator,
+			'\\' => $separator,
+			'=' => $separator,
+			'{' => $separator,
+			'}' => $separator,
+			'º' => $separator,
+			'ª' => $separator,
+			']' => $separator,
+			'[' => $separator,
+			'`' => $separator,
+			'´' => $separator,
+			'&' => $separator,
+			'%' => $separator,
+			'$' => $separator,
+			'#' => $separator,
+			'@' => $separator,
+			'!' => $separator,
+			'"' => $separator,
+			'\'' => $separator,
+			'+' => $separator,
+			';' => $separator,
+			':' => $separator,
+			'|' => $separator
 		];
 
 		$string = strtr($string, $list);
