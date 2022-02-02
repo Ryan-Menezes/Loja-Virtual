@@ -497,18 +497,18 @@ if(!function_exists('freight_format')){
 					}
 
 					if($freight['error']['code'] == FreteCorreios::ERROR_CODE){
-						$html = 'NÃO FOI POSSÍVEL CALCULAR O FRETE, OCORREU UM ERRO NO CÁLCULO!';
+						$html = 'NÃO FOI POSSÍVEL CALCULAR O FRETE, OU O FRETE INFORMADO É INVÁLIDO, OU OS PRODUTOS DO CARRINHO ÚLTRAPASSARAM OS LIMITES DE TAMANHO E PESO PERMITIDO PELOS CORREIOS!';
 						break;
 					}
 				}
 
 				if(empty($freights) && empty($html)){
-					$html = 'NÃO FAZEMOS ENTREGA PARA O CEP INFORMADO!';
+					$html = 'NÃO FAZEMOS ENTREGA PARA O CEP INFORMADO, POR FAVOR ENTRE EM CONTATO CONOSCO PARA RESOLVERMOS ESTE PROBLEMA!';
 				}
 
 				return $html;
 			}catch(Exception $error){
-				return 'NÃO FOI POSSÍVEL CALCULAR O FRETE!';
+				return 'NÃO FOI POSSÍVEL CALCULAR O FRETE, OCORREU UM ERRO NO CÁLCULO!';
 			}
 		}
 

@@ -73,6 +73,13 @@ class Cart{
 	}
 
 	public function all() : array{
+		foreach($this->cart as $cart){
+			if(!ProductSize::find($cart->size->id)){
+				$this->remove($cart->size->id);
+			}
+		}
+		session(self::KEY, $this->cart);
+
 		return $this->cart;
 	}
 
@@ -85,39 +92,45 @@ class Cart{
 		$weight = 0;
 
 		foreach($this->cart as $cart){
-			$weight += $cart->quantity * $cart->size->weight;
+			$weight += $cart->size->weight * $cart->quantity;
 		}
 		
-		return $weight;
+		return $weight < 0.1 ? 0.1 : $weight; // Mínimo 0.1 kg
 	}
 	
 	public function width(){
+		$min = 16;
+		$max = 105;
 		$width = 0;
 
 		foreach($this->cart as $cart){
-			$width += $cart->quantity * $cart->size->width;
+			$width += ($cart->size->width + $cart->size->height + $cart->size->depth) * $cart->quantity;
 		}
 
-		return $width;
+		return max($min, min($max, round(pow($width, 1/3), 2)));
 	}
 
 	public function height(){
+		$min = 2;
+		$max = 105;
 		$height = 0;
 
 		foreach($this->cart as $cart){
-			$height += $cart->quantity * $cart->size->height;
+			$height += ($cart->size->width + $cart->size->height + $cart->size->depth) * $cart->quantity;
 		}
 
-		return $height;
+		return max($min, min($max, round(pow($height, 1/3), 2)));
 	}
 
 	public function depth(){
+		$min = 11;
+		$max = 105;
 		$depth = 0;
 
 		foreach($this->cart as $cart){
-			$depth += $cart->quantity * $cart->size->depth;
+			$depth += ($cart->size->width + $cart->size->height + $cart->size->depth) * $cart->quantity;
 		}
 
-		return $depth;
+		return max($min, min($max, round(pow($depth, 1/3), 2)));
 	}
 }

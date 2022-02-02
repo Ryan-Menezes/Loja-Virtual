@@ -252,8 +252,24 @@ class MercadoPagoController extends Controller{
                 ]);
             }
 
+			// Desconto pela parcela selecionada
+            $discount_percent = 0;
+            foreach($products as $product){
+                $product = $product->product;
+                $discount = $product->getDiscount($data['installments']);
+
+                if($discount){
+                    $discount_percent += $discount / $products->count();
+                }
+            }
+
+			$discount_installment = 0;
+            if($discount_percent > 0){
+                $discount_installment = ($payment->amountFormat * ($discount_percent / 100));
+            }
+
             // Configurando checkout
-            $payment_mp->transaction_amount = number_format($payment->amountFormat, 2, '.', '');;
+            $payment_mp->transaction_amount = number_format($payment->amountFormat - $discount_installment, 2, '.', '');;
 			$payment_mp->token = $data['credit_card_token'];
 			$payment_mp->installments = (int)$data['installments'];
 			$payment_mp->payment_method_id = $data['brand'];
@@ -297,6 +313,9 @@ class MercadoPagoController extends Controller{
             update_payment_request_mercadopago($requestmodel);
 			
 			if($payment_mp->status && $payment_mp->status != 'rejected'){
+				$payment->discount_installment = $discount_installment;
+				$payment->save();
+
 				return json_encode([
 					'result'	=> true,
 					'data' 		=> $payment_mp,

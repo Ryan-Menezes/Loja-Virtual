@@ -286,7 +286,9 @@ class ProductController extends Controller{
 			// excluindo todas as cores, imagens e tamanhos do produto
 			foreach($product->colors as $color){
 				foreach($color->sizes as $size){
-					$size->delete();
+					if(!in_array($size->id, $data['id-sizes'])){
+						$size->delete();
+					}
 				}
 
 				foreach(explode(',', $data['images-remove']) as $source){
@@ -332,6 +334,7 @@ class ProductController extends Controller{
 
 				if($color){
 					// cadastrando tamanhos
+					$id_sizes = $data["id-sizes-color-{$id}"];
 					$descriptions = $data["description-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
@@ -341,18 +344,35 @@ class ProductController extends Controller{
 					$depths = $data["depth-size-{$id}"];
 					$weights = $data["weight-size-{$id}"];
 
-					for($j = 0; $j < count($descriptions); $j++){
+					for($j = 0; $j < count($id_sizes); $j++){
+						$id_size = $id_sizes[$j];
+
 						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
-							$size = $color->sizes()->create([
-								'description' 		=> trim($descriptions[$j]),
-								'price' 			=> number($prices[$j]),
-								'price_previous' 	=> number($pricesPrevious[$j]),
-								'quantity'			=> number($quanties[$j]),
-								'width'				=> number($widths[$j]),
-								'height'			=> number($heights[$j]),
-								'depth'				=> number($depths[$j]),
-								'weight'			=> number($weights[$j])
-							]);
+							$size = $color->sizes->find($id_size);
+
+							if($size){
+								$size->update([
+									'description' 		=> trim($descriptions[$j]),
+									'price' 			=> number($prices[$j]),
+									'price_previous' 	=> number($pricesPrevious[$j]),
+									'quantity'			=> number($quanties[$j]),
+									'width'				=> number($widths[$j]),
+									'height'			=> number($heights[$j]),
+									'depth'				=> number($depths[$j]),
+									'weight'			=> number($weights[$j])
+								]);
+							}else{
+								$size = $color->sizes()->create([
+									'description' 		=> trim($descriptions[$j]),
+									'price' 			=> number($prices[$j]),
+									'price_previous' 	=> number($pricesPrevious[$j]),
+									'quantity'			=> number($quanties[$j]),
+									'width'				=> number($widths[$j]),
+									'height'			=> number($heights[$j]),
+									'depth'				=> number($depths[$j]),
+									'weight'			=> number($weights[$j])
+								]);
+							}
 						}
 					}
 

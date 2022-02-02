@@ -221,10 +221,10 @@ class CartController extends Controller{
 		}
 
 		// Validando o frete
-		$freights = freight($address->postal_code, $cart->weight(), $cart->width(), $cart->height(), $cart->depth());
+		$freights = freight($address->postal_code, $this->cart->weight(), $this->cart->width(), $this->cart->height(), $this->cart->depth());
 
 		if(!isset($data['freight']) || empty($data['freight'])){
-			redirect(route('site.cart'), ['error' => 'Por favor selecione o tipo de frete que deseja!']);
+			redirect(route('site.cart'), ['error' => 'Por favor selecione o tipo de frete desejado!']);
 		}
 		
 		if(strpos($data['freight'], '-')){
@@ -283,6 +283,9 @@ class CartController extends Controller{
 							'quantity'			=> $cart_product->quantity, 
 							'product_id'		=> $cart_product->product->id
 						]);
+
+						$cart_product->size->quantity -= $cart_product->quantity;
+						$cart_product->size->save();
 					}
 
 					$cart->clear();

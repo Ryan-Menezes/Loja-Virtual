@@ -69,6 +69,7 @@ class PagSeguroController extends Controller{
                     $installment_no_interest += $product->installment_no_interest;
                 }
             }
+            $installment_no_interest = floor($installment_no_interest / $products->count());
 
             if($installment_no_interest > 1){
                 $groups['CREDIT_CARD'] = [
@@ -186,6 +187,7 @@ class PagSeguroController extends Controller{
 				$installment_no_interest += $product->installment_no_interest;
 			}
 		}
+        $installment_no_interest = floor($installment_no_interest / $$requestmodel->products->count());
 
         // Descontos das parcelas
         $installments_discounts = [];
@@ -313,6 +315,7 @@ class PagSeguroController extends Controller{
                     $installment_no_interest += $product->installment_no_interest;
                 }
             }
+            $installment_no_interest = floor($installment_no_interest / $products->count());
 
             // Configurando checkout
             $sender_doc = !empty($client->cpf) ? $client->cpf : $client->cnpj;

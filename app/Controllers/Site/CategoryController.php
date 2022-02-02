@@ -42,7 +42,7 @@ class CategoryController extends Controller{
 
 	public function productSubCategory($category, $subcategory){
 		$category = $this->category->where('slug', $category)->firstOrFail();
-		$subcategory = $category->subcategories->where('slug', $subcategory)->firstOrFail();
+		$subcategory = $category->subcategories()->where('slug', $subcategory)->firstOrFail();
 		
 		$request = new Request();
 
@@ -70,7 +70,7 @@ class CategoryController extends Controller{
 
 	public function noticeSubCategory($category, $subcategory){
 		$category = $this->category->where('slug', $category)->firstOrFail();
-		$subcategory = $category->subcategories->where('slug', $subcategory)->firstOrFail();
+		$subcategory = $category->subcategories()->where('slug', $subcategory)->firstOrFail();
 		
 		$request = new Request();
 

@@ -58,6 +58,7 @@
 				@if(isset($sizes) && (is_array($sizes) || is_object($sizes)))
 					@foreach($sizes as $size)
 						@include('includes.components.form.sizeeditor', [
+							'id_size' => $size->id,
 							'description' => $size->description,
 							'price' => $size->price,
 							'price_previous' => $size->price_previous,

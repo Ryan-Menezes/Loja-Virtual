@@ -1,10 +1,14 @@
+@php
+	$id_size = $id_size ?? md5(uniqid() . time());
+@endphp
 <div class="card content-group mb-2 p-0 {{ $class ?? null }}">
 	<input type="hidden" name="elements[]" value="SIZEEDITOR">
+	<input type="hidden" name="id-sizes[]" value="{{ $id_size }}">
+	<input type="hidden" name="id-sizes-color-{{ $id }}[]" value="{{ $id_size }}">
 
 	@if(!isset($notoptions))
 	<div class="card-header">
 		<button type="button" class="btn btn-sm btn-danger btn-remove-element float-end" title="Remover Elemento"><i class="fas fa-trash-alt"></i></button>
-		<button type="button" class="btn btn-sm btn-dark btn-duplicate-element float-end" title="Duplicar Elemento"><i class="fas fa-clone"></i></button>
 	</div>
 	@endif
 	<div class="card-body form-group">
@@ -63,8 +67,6 @@
 						'name' => isset($id) ? "width-size-{$id}[]" : 'width-size[]', 
 						'title' => 'Largura(centímetros)',
 						'value' => $width ?? null,
-						'min' => 1,
-						'max' => 999999,
 						'class' => 'required float-mask',
 						'required' => true
 					])
@@ -75,8 +77,6 @@
 						'name' => isset($id) ? "height-size-{$id}[]" : 'height-size[]', 
 						'title' => 'Altura(centímetros)',
 						'value' => $height ?? null,
-						'min' => 1,
-						'max' => 999999,
 						'class' => 'required float-mask',
 						'required' => true
 					])
@@ -85,10 +85,8 @@
 					@include('includes.components.form.input', [
 						'type' => 'text', 
 						'name' => isset($id) ? "depth-size-{$id}[]" : 'depth-size[]', 
-						'title' => 'Profundidade(centímetros)',
+						'title' => 'Comprimento(centímetros)',
 						'value' => $depth ?? null,
-						'min' => 1,
-						'max' => 999999,
 						'class' => 'required float-mask',
 						'required' => true
 					])
@@ -100,8 +98,6 @@
 				'name' => isset($id) ? "weight-size-{$id}[]" : 'weight-size[]', 
 				'title' => 'Peso(quilogramas)',
 				'value' => $weight ?? null,
-				'min' => 1,
-				'max' => 999999,
 				'class' => 'required float-mask',
 				'required' => true
 			])

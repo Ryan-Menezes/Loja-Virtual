@@ -67,6 +67,10 @@ class PanelController extends Controller{
 		}
 		arsort($products_rating);
 
+		// Pedidos feitos nos útimos meses
+		$request_amount = RequestModel::select(DB::raw('COUNT(*) as amount'), DB::raw('CONCAT(MONTH(created_at), "/", YEAR(created_at)) as cd'))->groupBy(DB::raw('CONCAT(YEAR(created_at), "-", MONTH(created_at))'))->orderBy('id', 'DESC')->limit(5)->pluck('amount', 'cd')->toArray();
+		$request_amount = array_reverse($request_amount, true);
+
 		// Noticias mais acessadas
 		$notices_access = Notice::select('title', 'visits')->orderBy('visits', 'DESC')->limit(5)->pluck('visits', 'title')->toArray();
 
@@ -91,6 +95,7 @@ class PanelController extends Controller{
 			'products_access'	=> $products_access,
 			'products_requests'	=> $products_requests,
 			'products_rating'	=> $products_rating,
+			'request_amount'	=> $request_amount,
 			'notices_access'	=> $notices_access
 		];
 

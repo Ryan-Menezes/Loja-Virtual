@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01-Fev-2022 às 20:56
+-- Tempo de geração: 02-Fev-2022 às 18:40
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 8.1.2
 
@@ -502,17 +502,17 @@ INSERT INTO `products_related` (`id`, `product_id`, `product_related_id`) VALUES
 (12, 42, 37),
 (13, 42, 38),
 (14, 42, 35),
-(34, 45, 37),
-(35, 45, 38),
-(36, 45, 40),
-(37, 45, 43),
-(38, 45, 42),
 (39, 44, 34),
 (40, 44, 44),
-(41, 43, 37),
-(42, 43, 38),
-(43, 43, 40),
-(44, 43, 41);
+(50, 45, 37),
+(51, 45, 38),
+(52, 45, 40),
+(53, 45, 43),
+(54, 45, 42),
+(99, 43, 37),
+(100, 43, 38),
+(101, 43, 40),
+(102, 43, 41);
 
 -- --------------------------------------------------------
 
@@ -611,11 +611,11 @@ INSERT INTO `product_discounts` (`id`, `installment`, `percent`, `expiration`, `
 (120, 1, 10, NULL, 41),
 (121, 2, 5, NULL, 41),
 (123, 4, 2, NULL, 41),
-(124, 1, 50, NULL, 34),
 (125, 1, 5, NULL, 42),
-(132, 1, 10, NULL, 45),
 (133, 1, 5, NULL, 44),
-(134, 1, 10, NULL, 43);
+(136, 1, 10, NULL, 45),
+(148, 1, 10, NULL, 43),
+(149, 1, 50, NULL, 34);
 
 -- --------------------------------------------------------
 
@@ -743,12 +743,12 @@ INSERT INTO `product_sizes` (`id`, `description`, `price`, `price_previous`, `qu
 (545, 'G', '20.00', '40.00', 3, '50.00', '50.00', '50.00', '50.00', 37),
 (546, 'GG', '20.00', '40.00', 0, '50.00', '50.00', '50.00', '50.00', 37),
 (547, 'P', '30.00', '90.00', 6, '50.00', '50.00', '50.00', '50.00', 38),
-(548, 'Único', '500.00', '800.00', 5, '30.00', '30.00', '30.00', '1.00', 46),
-(559, 'Único', '1200.00', '2000.00', 5, '100.00', '100.00', '100.00', '5.00', 49),
+(548, 'Único', '500.00', '800.00', 4, '30.00', '30.00', '30.00', '1.00', 46),
 (560, 'P', '50.00', '100.00', 20, '50.00', '50.00', '50.00', '2.00', 48),
 (561, 'M', '60.00', '120.00', 5, '50.00', '50.00', '50.00', '2.00', 48),
 (562, 'G', '70.00', '140.00', 50, '50.00', '50.00', '50.00', '2.00', 48),
-(563, 'Único', '150.00', '300.00', 50, '100.00', '50.00', '60.00', '2.00', 47);
+(565, 'Único', '1200.00', '2000.00', 3, '20.00', '20.00', '20.00', '10.00', 49),
+(566, 'Único', '100.00', '200.00', 50, '10.00', '10.00', '10.00', '5.00', 47);
 
 -- --------------------------------------------------------
 
@@ -796,7 +796,7 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`id`, `status`, `client_id`, `request_address_id`, `request_payment_id`, `created_at`, `updated_at`) VALUES
-(82, 'CA', 9, 87, 88, '2022-01-26 18:48:28', '2022-01-26 18:48:30'),
+(82, 'CA', 9, 87, 88, '2021-01-26 18:48:28', '2022-02-02 12:51:15'),
 (83, 'PA', 9, 88, 89, '2022-01-26 18:50:40', '2022-01-26 18:50:43'),
 (84, 'PA', 9, 89, 90, '2022-01-26 18:51:45', '2022-01-26 18:51:48'),
 (85, 'AP', 9, 90, 91, '2022-01-26 18:54:01', '2022-01-26 18:54:01'),
@@ -849,7 +849,12 @@ INSERT INTO `requests` (`id`, `status`, `client_id`, `request_address_id`, `requ
 (133, 'CA', 9, 138, 139, '2022-01-29 22:56:28', '2022-01-31 14:17:26'),
 (134, 'PA', 9, 139, 140, '2022-01-31 12:44:30', '2022-01-31 14:59:32'),
 (135, 'CA', 9, 140, 141, '2022-01-31 16:04:57', '2022-01-31 16:06:41'),
-(136, 'AP', 9, 141, 142, '2022-02-01 01:41:18', '2022-02-01 01:41:18');
+(136, 'AP', 9, 141, 142, '2022-02-01 01:41:18', '2022-02-01 01:41:18'),
+(137, 'PA', 9, 142, 143, '2022-02-02 14:49:37', '2022-02-02 16:04:39'),
+(138, 'PA', 9, 143, 144, '2022-02-02 16:06:20', '2022-02-02 16:08:54'),
+(139, 'PA', 9, 144, 145, '2022-02-02 16:12:31', '2022-02-02 16:15:17'),
+(140, 'AP', 9, 145, 146, '2022-02-02 16:37:48', '2022-02-02 16:37:48'),
+(141, 'AP', 9, 146, 147, '2022-02-02 16:38:25', '2022-02-02 16:38:25');
 
 -- --------------------------------------------------------
 
@@ -964,7 +969,20 @@ INSERT INTO `requests_products` (`id`, `color`, `size`, `price`, `quantity`, `re
 (182, 'Preto', '12 Polegadas', '800.30', 1, 135, 41),
 (183, 'Preto', 'M', '500.00', 1, 135, 40),
 (184, 'Preto', '10x40', '800.00', 1, 136, 39),
-(185, 'Preto com Led', 'Único', '150.00', 1, 136, 43);
+(185, 'Preto com Led', 'Único', '150.00', 1, 136, 43),
+(186, 'Preto', 'Único', '500.00', 2, 137, 42),
+(187, 'Preta', 'P', '50.00', 1, 137, 44),
+(188, 'Preto com Led', 'Único', '150.00', 1, 137, 43),
+(189, 'Preto', 'Único', '1200.00', 2, 137, 45),
+(190, 'Preto', 'Único', '1200.00', 1, 138, 45),
+(191, 'Preta', 'P', '50.00', 1, 138, 44),
+(192, 'Preto', 'Único', '1200.00', 1, 139, 45),
+(193, 'Preta', 'P', '50.00', 1, 139, 44),
+(194, 'Preto com Led', 'Único', '150.00', 1, 139, 43),
+(195, 'Preto', 'Único', '500.00', 1, 140, 42),
+(196, 'Preto', 'Único', '500.00', 1, 141, 42),
+(197, 'Preto', 'Único', '1200.00', 2, 141, 45),
+(198, 'Preto com Led', 'Único', '150.00', 4, 141, 43);
 
 -- --------------------------------------------------------
 
@@ -1105,7 +1123,12 @@ INSERT INTO `request_address` (`id`, `postal_code`, `street`, `number`, `distric
 (138, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
 (139, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
 (140, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
-(141, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', '');
+(141, '11111111', 'Rua Batista', '21', 'Jardim Batista', 'São Paulo', 'SP', ''),
+(142, '04472205', 'Rua Socialista', '14', 'Jardim Novo Pantanal', 'São Paulo', 'SP', ''),
+(143, '04472205', 'Rua Socialista', '14', 'Jardim Novo Pantanal', 'São Paulo', 'SP', ''),
+(144, '04472205', 'Rua Socialista', '14', 'Jardim Novo Pantanal', 'São Paulo', 'SP', ''),
+(145, '04472205', 'Rua Socialista', '14', 'Jardim Novo Pantanal', 'São Paulo', 'SP', ''),
+(146, '04472205', 'Rua Socialista', '14', 'Jardim Novo Pantanal', 'São Paulo', 'SP', '');
 
 -- --------------------------------------------------------
 
@@ -1199,7 +1222,12 @@ INSERT INTO `request_payment` (`id`, `code`, `type`, `method`, `status`, `status
 (139, '1245729818', 'MP', 'BO', 'cancelled', 'CA', 1, 2, '120.00', '0.00', '129.00', '12.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245729818&payment_method_reference_id=9914268609&caller_id=130141172&hash=eb7566cc-ce62-4f50-9370-b055e53eb3d8', NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23792888300000129003380260991426860900633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-29T18:57:00.670-04:00\",\"date_last_updated\":\"2022-01-31T10:17:36.194-04:00\",\"date_of_expiration\":\"2022-02-01T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_133\",\"fee_details\":[],\"id\":1245729818,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"cancelled\",\"status_detail\":\"by_collector\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":129,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245729818&payment_method_reference_id=9914268609&caller_id=130141172&hash=eb7566cc-ce62-4f50-9370-b055e53eb3d8\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9914268609\",\"total_paid_amount\":129,\"verification_code\":\"9914268609\"}}', '2022-01-29 22:56:28', '2022-01-31 14:17:26'),
 (140, '837B1A94-BB02-4ECF-81AD-22D07178D134', 'PS', 'DO', '3', 'PA', 1, 2, '800.30', '0.00', '72.03', '80.03', 'PE', '0.00', 5, NULL, 'https://sandbox.pagseguro.uol.com.br/checkout/payment/eft/print.jhtml?c=d6114b299672e478e469a5da4feeecdbac3347dcbfe98bb466c7072c3b89505a2e982c4bbd4a45df', NULL, NULL, '{\"date\":\"2022-01-31T11:58:57.000-03:00\",\"code\":\"837B1A94-BB02-4ECF-81AD-22D07178D134\",\"reference\":\"request_134\",\"type\":\"1\",\"status\":\"3\",\"lastEventDate\":\"2022-01-31T11:59:32.000-03:00\",\"paymentMethod\":{\"type\":\"3\",\"code\":\"301\"},\"paymentLink\":\"https:\\/\\/sandbox.pagseguro.uol.com.br\\/checkout\\/payment\\/eft\\/print.jhtml?c=d6114b299672e478e469a5da4feeecdbac3347dcbfe98bb466c7072c3b89505a2e982c4bbd4a45df\",\"grossAmount\":\"720.27\",\"discountAmount\":\"72.03\",\"creditorFees\":{\"intermediationRateAmount\":\"0.40\",\"intermediationFeeAmount\":\"32.35\"},\"netAmount\":\"615.49\",\"extraAmount\":\"-80.03\",\"escrowEndDate\":\"2022-02-14T11:59:32.000-03:00\",\"installmentCount\":\"1\",\"itemCount\":\"1\",\"items\":{\"item\":{\"id\":\"2302d39c909793e04e6b01806c3bd60d\",\"description\":\"Tablet | COR: Preto | TAMANHO: 12 Polegadas\",\"quantity\":\"1\",\"amount\":\"800.30\"}},\"sender\":{\"name\":\"Ryan Menezes\",\"email\":\"ryan@gmail.com\",\"phone\":{\"areaCode\":\"11\",\"number\":\"999999999\"},\"documents\":{\"document\":{\"type\":\"CPF\",\"value\":\"53881489800\"}}},\"shipping\":{\"address\":{\"street\":\"Rua Batista\",\"number\":\"21\",\"complement\":{},\"district\":\"Jardim Batista\",\"city\":\"S\\u00e3o Paulo\",\"state\":\"SP\",\"country\":\"BRA\",\"postalCode\":\"11111111\"},\"type\":\"3\",\"cost\":\"0.00\"},\"primaryReceiver\":{\"publicKey\":\"PUBFD3757E636D341E0B4BA2E83589F6498\"}}', '2022-01-31 12:44:30', '2022-01-31 21:46:52'),
 (141, '1245750681', 'MP', 'CC', 'refunded', 'DE', 1, 2, '1300.30', '0.00', '0.00', '130.03', 'PE', '150.00', 5, NULL, NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-01-31T12:06:12.000-04:00\",\"date_last_updated\":\"2022-01-31T12:06:12.000-04:00\",\"expiration_month\":12,\"expiration_year\":2025,\"first_six_digits\":\"423564\",\"id\":null,\"last_four_digits\":\"5682\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-01-31T12:06:12.643-04:00\",\"date_created\":\"2022-01-31T12:06:12.519-04:00\",\"date_last_updated\":\"2022-01-31T12:06:42.576-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_135\",\"fee_details\":[{\"amount\":65.88,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245750681,\"installments\":1,\"integrator_id\":null,\"issuer_id\":\"25\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-01-31T12:06:12.643-04:00\",\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"visa\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[{\"adjustment_amount\":0,\"amount\":1320.27,\"date_created\":\"2022-01-31T12:06:42.576-04:00\",\"external_refund_id\":null,\"funder\":null,\"id\":1245746350,\"labels\":[],\"metadata\":{},\"partition_details\":[],\"payment_id\":1245750681,\"reason\":null,\"refund_mode\":\"standard\",\"source\":{\"id\":\"774678190\",\"name\":\"Burch Mcmillan\",\"type\":\"collector\"},\"status\":\"approved\",\"unique_sequence_number\":null}],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"refunded\",\"status_detail\":\"refunded\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1320.27,\"transaction_amount_refunded\":1320.27,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1320.27,\"net_received_amount\":1254.39,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":1320.27}}', '2022-01-31 16:04:57', '2022-01-31 16:06:32'),
-(142, '1245762111', 'MP', 'BO', 'pending', 'AP', 1, 2, '950.00', '0.00', '50.25', '95.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245762111&payment_method_reference_id=9915054616&caller_id=130141172&hash=cf8f747c-5b26-446a-86f8-3df681d7cd96', NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23791888500000954753380260991505461600633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-31T21:48:03.705-04:00\",\"date_last_updated\":\"2022-01-31T21:48:03.705-04:00\",\"date_of_expiration\":\"2022-02-03T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_136\",\"fee_details\":[],\"id\":1245762111,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"pending\",\"status_detail\":\"pending_waiting_payment\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":954.75,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245762111&payment_method_reference_id=9915054616&caller_id=130141172&hash=cf8f747c-5b26-446a-86f8-3df681d7cd96\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9915054616\",\"total_paid_amount\":954.75,\"verification_code\":\"9915054616\"}}', '2022-02-01 01:41:18', '2022-02-01 01:47:56');
+(142, '1245762111', 'MP', 'BO', 'pending', 'AP', 1, 2, '950.00', '0.00', '50.25', '95.00', 'PE', '150.00', 5, NULL, 'https://www.mercadopago.com/mlb/payments/sandbox/ticket/helper?payment_id=1245762111&payment_method_reference_id=9915054616&caller_id=130141172&hash=cf8f747c-5b26-446a-86f8-3df681d7cd96', NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"barcode\":{\"content\":\"23791888500000954753380260991505461600633330\"},\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":null,\"date_created\":\"2022-01-31T21:48:03.705-04:00\",\"date_last_updated\":\"2022-01-31T21:48:03.705-04:00\",\"date_of_expiration\":\"2022-02-03T22:59:59.000-04:00\",\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_136\",\"fee_details\":[],\"id\":1245762111,\"installments\":1,\"integrator_id\":null,\"issuer_id\":null,\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":null,\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"bolbradesco\",\"payment_type_id\":\"ticket\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":null,\"status\":\"pending\",\"status_detail\":\"pending_waiting_payment\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":954.75,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":\"https:\\/\\/www.mercadopago.com\\/mlb\\/payments\\/sandbox\\/ticket\\/helper?payment_id=1245762111&payment_method_reference_id=9915054616&caller_id=130141172&hash=cf8f747c-5b26-446a-86f8-3df681d7cd96\",\"financial_institution\":\"\",\"installment_amount\":0,\"net_received_amount\":0,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":\"9915054616\",\"total_paid_amount\":954.75,\"verification_code\":\"9915054616\"}}', '2022-02-01 01:41:18', '2022-02-01 01:47:56'),
+(143, '1245786667', 'MP', 'CC', 'approved', 'PA', 1, 2, '3600.00', '0.00', '0.00', '360.00', 'SX', '121.10', 10, 'O CEP de destino está sujeito a condições especiais de entrega pela  ECT e será realizada com o acréscimo de até 5 (cinco) dias úteis ao prazo regular.', NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-02-02T12:04:52.000-04:00\",\"date_last_updated\":\"2022-02-02T12:04:52.000-04:00\",\"expiration_month\":11,\"expiration_year\":2025,\"first_six_digits\":\"423564\",\"id\":null,\"last_four_digits\":\"5682\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-02-02T12:04:52.839-04:00\",\"date_created\":\"2022-02-02T12:04:52.725-04:00\",\"date_last_updated\":\"2022-02-02T12:04:52.839-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_137\",\"fee_details\":[{\"amount\":155.14,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245786667,\"installments\":1,\"integrator_id\":null,\"issuer_id\":\"25\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-02-02T12:04:52.839-04:00\",\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"visa\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"approved\",\"status_detail\":\"accredited\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":3109.02,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":3109.02,\"net_received_amount\":2953.88,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":3109.02}}', '2022-02-02 14:49:37', '2022-02-02 16:04:39'),
+(144, '1245785787', 'MP', 'CC', 'approved', 'PA', 1, 2, '1250.00', '0.00', '0.00', '125.00', 'PC', '55.30', 6, 'O CEP de destino está sujeito a condições especiais de entrega pela  ECT e será realizada com o acréscimo de até 5 (cinco) dias úteis ao prazo regular.', NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-02-02T12:09:04.000-04:00\",\"date_last_updated\":\"2022-02-02T12:09:04.000-04:00\",\"expiration_month\":11,\"expiration_year\":2025,\"first_six_digits\":\"423564\",\"id\":null,\"last_four_digits\":\"5682\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-02-02T12:09:04.445-04:00\",\"date_created\":\"2022-02-02T12:09:04.338-04:00\",\"date_last_updated\":\"2022-02-02T12:09:04.445-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_138\",\"fee_details\":[{\"amount\":54.48,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245785787,\"installments\":1,\"integrator_id\":null,\"issuer_id\":\"25\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-02-02T12:09:04.445-04:00\",\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"visa\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"approved\",\"status_detail\":\"accredited\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1091.78,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1091.78,\"net_received_amount\":1037.3,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":1091.78}}', '2022-02-02 16:06:20', '2022-02-02 16:08:54'),
+(145, '1245785843', 'MP', 'CC', 'approved', 'PA', 1, 2, '1400.00', '0.00', '110.56', '140.00', 'PC', '66.70', 6, 'O CEP de destino está sujeito a condições especiais de entrega pela  ECT e será realizada com o acréscimo de até 5 (cinco) dias úteis ao prazo regular.', NULL, NULL, NULL, '{\"acquirer_reconciliation\":[],\"additional_info\":{\"authentication_code\":null,\"available_balance\":null,\"nsu_processadora\":null},\"authorization_code\":null,\"binary_mode\":false,\"brand_id\":null,\"call_for_authorize_id\":null,\"captured\":true,\"card\":{\"cardholder\":{\"identification\":{\"number\":\"53881489800\",\"type\":\"CPF\"},\"name\":\"Ryan Menezes\"},\"date_created\":\"2022-02-02T12:15:28.000-04:00\",\"date_last_updated\":\"2022-02-02T12:15:28.000-04:00\",\"expiration_month\":11,\"expiration_year\":2025,\"first_six_digits\":\"423564\",\"id\":null,\"last_four_digits\":\"5682\"},\"charges_details\":[],\"collector_id\":774678190,\"corporation_id\":null,\"counter_currency\":null,\"coupon_amount\":0,\"currency_id\":\"BRL\",\"date_approved\":\"2022-02-02T12:15:28.135-04:00\",\"date_created\":\"2022-02-02T12:15:28.036-04:00\",\"date_last_updated\":\"2022-02-02T12:15:28.135-04:00\",\"date_of_expiration\":null,\"deduction_schema\":null,\"description\":null,\"differential_pricing_id\":null,\"external_reference\":\"request_139\",\"fee_details\":[{\"amount\":60.69,\"fee_payer\":\"collector\",\"type\":\"mercadopago_fee\"}],\"id\":1245785843,\"installments\":1,\"integrator_id\":null,\"issuer_id\":\"25\",\"live_mode\":false,\"marketplace_owner\":null,\"merchant_account_id\":null,\"merchant_number\":null,\"metadata\":{},\"money_release_date\":\"2022-02-02T12:15:28.135-04:00\",\"money_release_schema\":null,\"notification_url\":\"http:\\/\\/www.lojavirtual.com.br\\/notificacao\\/mercadopago\",\"operation_type\":\"regular_payment\",\"order\":{},\"payer\":{\"first_name\":null,\"last_name\":null,\"email\":\"test_user_80507629@testuser.com\",\"identification\":{\"number\":\"32659430\",\"type\":\"DNI\"},\"phone\":{\"area_code\":null,\"number\":null,\"extension\":null},\"type\":null,\"entity_type\":null,\"id\":\"130141172\"},\"payment_method_id\":\"visa\",\"payment_type_id\":\"credit_card\",\"platform_id\":null,\"point_of_interaction\":{\"business_info\":{\"sub_unit\":\"sdk\",\"unit\":\"online_payments\"},\"type\":\"UNSPECIFIED\"},\"pos_id\":null,\"processing_mode\":\"aggregator\",\"refunds\":[],\"shipping_amount\":0,\"sponsor_id\":null,\"statement_descriptor\":\"ELECTRO\",\"status\":\"approved\",\"status_detail\":\"accredited\",\"store_id\":null,\"taxes_amount\":0,\"transaction_amount\":1216.14,\"transaction_amount_refunded\":0,\"transaction_details\":{\"acquirer_reference\":null,\"external_resource_url\":null,\"financial_institution\":null,\"installment_amount\":1216.14,\"net_received_amount\":1155.45,\"overpaid_amount\":0,\"payable_deferral_period\":null,\"payment_method_reference_id\":null,\"total_paid_amount\":1216.14}}', '2022-02-02 16:12:31', '2022-02-02 16:15:17'),
+(146, NULL, NULL, NULL, NULL, 'AP', 1, 2, '3500.00', '0.00', '0.00', '350.00', 'SX', '136.40', 10, 'O CEP de destino está sujeito a condições especiais de entrega pela  ECT e será realizada com o acréscimo de até 5 (cinco) dias úteis ao prazo regular.', NULL, NULL, NULL, NULL, '2022-02-02 16:37:48', '2022-02-02 16:37:48'),
+(147, NULL, NULL, NULL, NULL, 'AP', 1, 2, '3500.00', '0.00', '0.00', '350.00', 'SX', '136.40', 10, 'O CEP de destino está sujeito a condições especiais de entrega pela  ECT e será realizada com o acréscimo de até 5 (cinco) dias úteis ao prazo regular.', NULL, NULL, NULL, NULL, '2022-02-02 16:38:25', '2022-02-02 16:38:25');
 
 -- --------------------------------------------------------
 
@@ -1511,7 +1539,7 @@ CREATE TABLE `system_freight` (
 --
 
 INSERT INTO `system_freight` (`id`, `type`, `postal_code_origin`) VALUES
-(1, 'P', '04796355');
+(1, 'C', '04796355');
 
 -- --------------------------------------------------------
 
@@ -1533,11 +1561,11 @@ CREATE TABLE `system_freight_custom` (
 --
 
 INSERT INTO `system_freight_custom` (`id`, `postal_code_min`, `postal_code_max`, `value`, `days`, `system_freight_id`) VALUES
-(587, '11111111', '22222222', '150.00', 5, 1),
-(588, '33333333', '44444444', '200.00', 10, 1),
-(589, '55555555', '66666666', '5.00', 5, 1),
-(590, '66666666', '77777777', '6.00', 5, 1),
-(591, '88888888', '99999999', '7.00', 5, 1);
+(592, '11111111', '22222222', '150.00', 5, 1),
+(593, '33333333', '44444444', '200.00', 10, 1),
+(594, '55555555', '66666666', '5.00', 5, 1),
+(595, '66666666', '77777777', '6.00', 5, 1),
+(596, '88888888', '99999999', '7.00', 5, 1);
 
 -- --------------------------------------------------------
 
@@ -2237,7 +2265,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT de tabela `products_related`
 --
 ALTER TABLE `products_related`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT de tabela `products_subcategories`
@@ -2255,7 +2283,7 @@ ALTER TABLE `product_colors`
 -- AUTO_INCREMENT de tabela `product_discounts`
 --
 ALTER TABLE `product_discounts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=150;
 
 --
 -- AUTO_INCREMENT de tabela `product_images`
@@ -2267,7 +2295,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT de tabela `product_sizes`
 --
 ALTER TABLE `product_sizes`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=564;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=568;
 
 --
 -- AUTO_INCREMENT de tabela `ratings`
@@ -2279,25 +2307,25 @@ ALTER TABLE `ratings`
 -- AUTO_INCREMENT de tabela `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
 
 --
 -- AUTO_INCREMENT de tabela `requests_products`
 --
 ALTER TABLE `requests_products`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=186;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT de tabela `request_address`
 --
 ALTER TABLE `request_address`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT de tabela `request_payment`
 --
 ALTER TABLE `request_payment`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
 
 --
 -- AUTO_INCREMENT de tabela `roles`
@@ -2363,7 +2391,7 @@ ALTER TABLE `system_freight`
 -- AUTO_INCREMENT de tabela `system_freight_custom`
 --
 ALTER TABLE `system_freight_custom`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=592;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=597;
 
 --
 -- AUTO_INCREMENT de tabela `system_ftp`
