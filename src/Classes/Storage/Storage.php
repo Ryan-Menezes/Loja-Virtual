@@ -28,7 +28,32 @@ class Storage{
 	  * @return bool
 	  */
 	public static function exists(string $filename) : bool{
-		return file_exists(self::dir() . '/' . $filename);
+		// Caso o FTP estiver ligado será verificado o arquivo do servidor informado
+		if(config('ftp.active') && !empty(config('ftp.server')) && !empty(config('ftp.username')) && !empty(config('ftp.password'))){
+			$server = config('ftp.server');
+			$port = empty(config('ftp.port')) ? 21 : config('ftp.port');
+			$username = config('ftp.username');
+			$password = config('ftp.password');
+			$directory = empty(trim(config('ftp.directory'), '/')) ? '/' : trim(config('ftp.directory'), '/');
+
+			$dirname = config('upload.dir');
+			$directories = config('upload.directories');
+			$dirComplete = '/' . $directory . '/' .trim($directories[$dirname], '/');
+
+			$ftp = ftp_connect($server, $port);
+
+			if($ftp && ftp_login($ftp, $username, $password)){
+				return (ftp_size($ftp, $dirComplete . '/' . $filename) >= 0);
+			}
+
+			if($ftp){
+				ftp_close($ftp);
+			}
+		}
+		// Verifica se o arquivo existe
+		else{
+			return file_exists(self::dir() . '/' . $filename);
+		}
 	}
 
 	/**

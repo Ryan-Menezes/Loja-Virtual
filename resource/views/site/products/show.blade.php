@@ -264,7 +264,7 @@
 								<!-- Review Form -->
 								<div class="col-md-12" style="margin-bottom: 50px;">
 									<div id="review-form">
-										@if($client && $client->ratings->where('product_id', $product->id)->count() == 0)
+										@if($client && $client->ratings->where('product_id', $product->id)->count() == 0 && $client->products_requests()->where('product_id', $product->id)->where('status', 'CO')->count() > 0)
 										@include('includes.messages')
 
 										<form action="{{ route('site.products.show.ratings.send', ['slug' => $product->slug]) }}" method="POST" class="review-form">
@@ -282,7 +282,7 @@
 											<button type="submit" class="primary-btn">Enviar</button>
 										</form>
 										@else
-										<p>Para avaliar este produto, você precisa estar logado, ter no minímo feita a compra de uma ou mais unidades desse produto e só é possível avaliar uma única vez por produto!</p>
+										<p class="alert alert-info">Para avaliar este produto, você precisa estar logado, ter no minímo feita a compra de uma ou mais unidades desse produto e só é possível avaliar uma única vez por produto!</p>
 										@endif
 									</div>
 								</div>
@@ -314,7 +314,7 @@
 													<i class="fa fa-star"></i>
 												</div>
 												<div class="rating-progress">
-													<div style="width: 80%;"></div>
+													<div style="width: {{ $product->getPercentStars(5) }}%;"></div>
 												</div>
 												<span class="sum">{{ $product->ratings->where('visible', true)->where('stars', 5)->count() }}</span>
 											</li>
@@ -327,7 +327,7 @@
 													<i class="fa fa-star-o"></i>
 												</div>
 												<div class="rating-progress">
-													<div style="width: 60%;"></div>
+													<div style="width:  {{ $product->getPercentStars(4) }}%;"></div>
 												</div>
 												<span class="sum">{{ $product->ratings->where('visible', true)->where('stars', 4)->count() }}</span>
 											</li>
@@ -340,7 +340,7 @@
 													<i class="fa fa-star-o"></i>
 												</div>
 												<div class="rating-progress">
-													<div></div>
+													<div style="width:  {{ $product->getPercentStars(3) }}%;"></div>
 												</div>
 												<span class="sum">{{ $product->ratings->where('visible', true)->where('stars', 3)->count() }}</span>
 											</li>
@@ -353,7 +353,7 @@
 													<i class="fa fa-star-o"></i>
 												</div>
 												<div class="rating-progress">
-													<div></div>
+													<div style="width:  {{ $product->getPercentStars(2) }}%;"></div>
 												</div>
 												<span class="sum">{{ $product->ratings->where('visible', true)->where('stars', 2)->count() }}</span>
 											</li>
@@ -366,7 +366,7 @@
 													<i class="fa fa-star-o"></i>
 												</div>
 												<div class="rating-progress">
-													<div></div>
+													<div style="width:  {{ $product->getPercentStars(1) }}%;"></div>
 												</div>
 												<span class="sum">{{ $product->ratings->where('visible', true)->where('stars', 1)->count() }}</span>
 											</li>
@@ -405,7 +405,7 @@
 								</div>
 								<!-- /Reviews -->
 								@else
-								<p>Este produto ainda não possui nenhuma avaliação!</p>
+								<p class="text-center"><strong>Este produto ainda não possui nenhuma avaliação!</strong></p>
 								@endif
 							</div>
 						</div>

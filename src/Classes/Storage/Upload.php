@@ -41,7 +41,7 @@ class Upload{
 				$ftp = ftp_connect($server, $port);
 
 				if($ftp && ftp_login($ftp, $username, $password)){
-					if(!ftp_nlist($ftp, $dirComplete)){
+					if(ftp_nlist($ftp, $dirComplete) !== false){
 						ftp_mkdir($ftp, $dirComplete);
 					}
 

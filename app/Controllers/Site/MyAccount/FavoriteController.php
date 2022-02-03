@@ -24,14 +24,11 @@ class FavoriteController extends Controller{
 
 		if($this->client)
 			$this->client = Client::find($this->client->id);
-
-		if($this->client)
-			$this->client = Client::find($this->client->id);
 	}
 
 	public function index(){
 		if(!$this->client)
-			abort(404);
+			redirect(route('site.login'));
 
 		$request = new Request();
 

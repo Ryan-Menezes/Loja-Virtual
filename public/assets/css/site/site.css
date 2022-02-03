@@ -18,6 +18,7 @@ form span.error{
   padding: 4px 8px;
   font-weight: bold;
   font-size: 12px;
+  margin-top: -12px;
 }
 .bg-twitter{
   background-color: #2AA9E0;
@@ -25,6 +26,7 @@ form span.error{
   padding: 4px 8px;
   font-weight: bold;
   font-size: 12px;
+  margin-top: -12px;
 }
 
 .bg-whatsapp:hover,

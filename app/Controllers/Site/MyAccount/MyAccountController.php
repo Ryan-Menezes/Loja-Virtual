@@ -22,7 +22,7 @@ class MyAccountController extends Controller{
 			$this->client = Client::find($this->client->id);
 
 		if(!$this->client)
-			abort(404);
+			redirect(route('site.login'));
 	}
 
 	public function index(){;

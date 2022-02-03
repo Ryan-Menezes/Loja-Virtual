@@ -29,7 +29,6 @@
                         <th>ID</th>
                         <th>Status</th>
                         <th>Criado em</th>
-                        <th>Atualizado em</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -39,7 +38,6 @@
                         <td>#{{ $request->id }}</td>
                         <td>{{ $request->statusFormat }}</td>
                         <td>{{ $request->createdAtFormat }}</td>
-                        <td>{{ $request->updatedAtFormat }}</td>
                         <td>
                             <a href="{{ route('site.myaccount.requests.show', ['id' => $request->id]) }}" class="btn btn-sm btn-warning" title="Detalhes do Pedido"><i class="fa fa-info-circle"></i></a>
 

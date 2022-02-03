@@ -118,6 +118,10 @@ class Product extends Model{
 		return $discount->percent;
 	}
 
+	public function getPercentStars(int $stars){
+		return ((100 * $this->ratings()->where('visible', true)->where('stars', $stars)->count()) / $this->ratings()->where('visible', true)->count());
+	}	
+
 	public function subcategories(){
 		return $this->belongsToMany(SubCategory::class, 'products_subcategories', 'product_id', 'subcategory_id');
 	}

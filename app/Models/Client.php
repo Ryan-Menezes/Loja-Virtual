@@ -139,4 +139,8 @@ class Client extends Model{
 	public function requests(){
 		return $this->hasMany(Request::class, 'client_id', 'id');
 	}
+
+	public function products_requests(){
+		return $this->hasManyThrough(RequestProduct::class, Request::class);
+	}
 }
