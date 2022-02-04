@@ -283,6 +283,9 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
+	// ROUTE CONTACT SEND
+	Route::post('/', [SiteController::class, 'sendMail'])->name('site.contact.send');
+
 	// ROUTE SITEMAP
 	Route::get('/sitemap', [SiteMapController::class, 'index'])->name('site.sitemap');
 
@@ -442,7 +445,7 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	Route::group(['prefix' => 'blog'], function(){
 		Route::get('/', [NoticeControllerSite::class, 'index'])->name('site.notices');
 
-		// ROUTE CATEGORIES PRODUCTS
+		// ROUTE CATEGORIES NOTICES
 		Route::group(['prefix' => '/{category}'], function(){
 			Route::any('/{subcategory}', [CategoryControllerSite::class, 'noticeSubCategory'])->name('site.notices.category.subcategory');
 		});

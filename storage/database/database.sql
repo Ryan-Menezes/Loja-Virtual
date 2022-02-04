@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 03-Fev-2022 às 20:40
+-- Tempo de geração: 04-Fev-2022 às 21:12
 -- Versão do servidor: 10.4.22-MariaDB
 -- versão do PHP: 8.1.2
 
@@ -283,6 +283,7 @@ CREATE TABLE `lgpd` (
   `browser` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `device` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `so` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `referer` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `server` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -1619,7 +1620,7 @@ CREATE TABLE `system_lgpd` (
   `active` tinyint(1) NOT NULL DEFAULT 1,
   `privacy_policy` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `terms_conditions` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `return_policy` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL
+  `return_policy` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --

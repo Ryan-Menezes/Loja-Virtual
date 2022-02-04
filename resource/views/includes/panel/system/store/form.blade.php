@@ -21,8 +21,7 @@
 				'name' => 'cart_amount_promotion', 
 				'title' => 'Valor da Promoção(Caso o total do carrinho últrapasse esse valor, será aplicado um desconto por porcentagem ou frete grátis)',
 				'value' => (isset($system) && $system->store ? $system->store->cart_amount_promotion : 0),
-				'class' => 'required float-mask',
-				'required' => true
+				'class' => 'float-mask'
 			])
 
 			<div class="row">
@@ -33,9 +32,7 @@
 						'title' => 'Desconto Aplicado Na Compra(%)',
 						'value' => (isset($system) && $system->store ? $system->store->cart_discount_percent_promotion : 0),
 						'min' => 0,
-						'max' => 100,
-						'class' => 'required',
-						'required' => true
+						'max' => 100
 					])
 				</div>
 				<div class="col-md-6">
@@ -93,8 +90,7 @@
 				'name' => 'freight_range',
 				'title' => 'Faixa de Cep(Para o frete personalizado)',
 				'value' => $freight_range,
-				'class' => 'required freight_range',
-				'required' => true
+				'class' => 'freight_range'
 			])
 			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFreightRange">Adicionar Faixa <i class="fas fa-plus-circle"></i></button>
 

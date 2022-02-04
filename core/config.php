@@ -1,6 +1,8 @@
 <?php
 use Src\Classes\Database;
 
+ini_set('session.referer_check', 'TRUE');
+
 // Starts a database connection
 Database::start();
 

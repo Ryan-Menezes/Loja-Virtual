@@ -6,7 +6,7 @@
 		'name' => 'postal_code', 
 		'title' => 'CEP', 
 		'value' => (isset($system) && $system->address ? $system->address->postal_code : null),
-		'class' => 'required',
+		'class' => 'required cep-mask postal-code-search',
 		'required' => true
 	])
 
@@ -54,10 +54,10 @@
 			])
 		</div>
 		<div class="col-md-6">
-			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => 'state', 
-				'title' => 'Estado', 
+			@include('includes.components.form.select', [
+				'title' => 'Estado',
+				'name' => 'state',
+				'options' => config('states.BRL'),
 				'value' => (isset($system) && $system->address ? $system->address->state : null),
 				'class' => 'required',
 				'required' => true
