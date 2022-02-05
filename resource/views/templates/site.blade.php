@@ -142,11 +142,11 @@
                                 <select class="input-select select-url">
                                     <option value="0" data-url="{{ route('site.products') }}">Todos</option>
                                     @foreach($categories as $category)
-                                        @if($category->subcategories->count())
+                                        @if($category->subcategories->count() && $category->products()->count()))
                                         <optgroup label="{{ $category->name }}">
                                             @foreach($category->subcategories as $subcategory)
-                                                @if($category->products()->count())
-                                                <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}</option>
+                                                @if($subcategory->products->count())
+                                                <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}({{ $subcategory->products->count() }})</option>
                                                 @endif
                                             @endforeach
                                         </optgroup>
@@ -166,7 +166,7 @@
                             @if($client)
                             <!-- Wishlist -->
                             <div>
-                                <a href="{{ route('site.myaccount.favorites') }}">
+                                <a href="{{ route('site.myaccount.favorites') }}" title="Seus Favoritos">
                                     <i class="fa fa-heart-o"></i>
                                     <span>Favoritos</span>
                                     @if($client->favorites->count())

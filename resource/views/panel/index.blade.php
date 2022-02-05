@@ -68,11 +68,11 @@
 				@endif
 	
 				@if(can('view.requests'))
-					@include('includes.components.card', ['title' => 'Pedidos', 'link' => route('panel.requests'), 'class' => 'text-info', 'amount' => $requestsCount, 'icon' => 'fas fa-list'])
+					@include('includes.components.card', ['title' => 'Pedidos', 'link' => route('panel.requests'), 'class' => 'text-info', 'amount' => $requestsCount, 'icon' => 'fas fa-clipboard-list'])
 				@endif
 	
 				@if(can('view.coupons'))
-					@include('includes.components.card', ['title' => 'Cupons', 'link' => route('panel.coupons'), 'class' => 'text-dark', 'amount' => $couponsCount, 'icon' => 'fas fa-percent'])
+					@include('includes.components.card', ['title' => 'Cupons', 'link' => route('panel.coupons'), 'class' => 'text-dark', 'amount' => $couponsCount, 'icon' => 'fas fa-ticket-alt'])
 				@endif
 			</div>
 	

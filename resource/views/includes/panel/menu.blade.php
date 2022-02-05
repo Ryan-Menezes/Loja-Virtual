@@ -73,15 +73,15 @@
 		@endif
 
 		@if(can('view.requests'))
-			<a href="{{ route('panel.requests') }}" title="Página de Pedidos"><li><i class="fas fa-list"></i> Pedidos</li></a>
+			<a href="{{ route('panel.requests') }}" title="Página de Pedidos"><li><i class="fas fa-clipboard-list"></i> Pedidos</li></a>
 		@else
-			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-list"></i> Pedidos</li></a>
+			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-clipboard-list"></i> Pedidos</li></a>
 		@endif
 
 		@if(can('view.coupons'))
-			<a href="{{ route('panel.coupons') }}" title="Página de Cupons de Desconto"><li><i class="fas fa-percent"></i> Cupons</li></a>
+			<a href="{{ route('panel.coupons') }}" title="Página de Cupons de Desconto"><li><i class="fas fa-ticket-alt"></i> Cupons</li></a>
 		@else
-			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-percent"></i> Cupons</li></a>
+			<a href="javascript:void(0)"><li class="disabled"><i class="fas fa-ticket-alt"></i> Cupons</li></a>
 		@endif
 
 		<div class="menu-header">

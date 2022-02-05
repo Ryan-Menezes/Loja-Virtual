@@ -23,11 +23,10 @@
 					<h3 class="aside-title">Categorias</h3>
 					<ul class="checkbox-filter">
 						@foreach($categories as $category)
-							@if($category->products()->count())
+							@if($category->products()->count() && $category->subcategories->count())
 							<li>
 								<p><strong>{{ $category->name }} ({{ $category->products()->count() }})</strong></p>
 
-								@if($category->subcategories->count())
 								<ul style="margin-left: 40px;">
 									@foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
 										@if($subcategory->products->count())
@@ -37,7 +36,6 @@
 										@endif
 									@endforeach
 								</ul>
-								@endif
 							</li>
 							@endif
 						@endforeach

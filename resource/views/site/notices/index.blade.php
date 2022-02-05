@@ -24,11 +24,10 @@
             </div>
             <ul class="card-content">
                 @foreach($categories as $category)
-                    @if($category->notices()->count())
+                    @if($category->notices()->count() && $category->subcategories->count())
                     <li>
                         <p><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></p>
                         
-                        @if($category->subcategories->count())
                         <ul style="margin-left: 30px;">
                             @foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
                                 @if($subcategory->notices()->count())
@@ -36,7 +35,6 @@
                                 @endif
                             @endforeach
                         </ul>
-                        @endif
                     </li>
                     @endif
                 @endforeach

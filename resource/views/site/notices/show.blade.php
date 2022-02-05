@@ -124,7 +124,7 @@
                            <div class="comment-header">
                                <p><strong>{{ $comment->name }}</strong></p>
                                <p><strong>{{ $comment->createdAtFormat }}</strong></p>
-                               <p><a href="javascript:void(0)" title="Responder Comentário" data-startresponse="form-response-{{ $comment->id }}">Responder</a></p>
+                               <p><a href="javascript:void(0)" title="Responder Comentário" data-startresponse="form-response-{{ $comment->id }}"><i class="fa fa-reply"></i></a></p>
                            </div>
                            <div class="comment-content">
                                <p>{!! str_ireplace("\n", '<br/>', $comment->content) !!}</p>
@@ -139,7 +139,7 @@
                                    <div class="comment-header">
                                        <p><strong>{{ $subcomment->name }}</strong></p>
                                        <p><strong>{{ $subcomment->createdAtFormat }}</strong></p>
-                                       <p><a href="javascript:void(0)" title="Responder Comentário" data-startresponse="form-response-{{ $comment->id }}">Responder</a></p>
+                                       <p><a href="javascript:void(0)" title="Responder Comentário" data-startresponse="form-response-{{ $comment->id }}"><i class="fa fa-reply"></i></a></p>
                                    </div>
                                    <div class="comment-content">
                                        <p>{!! str_ireplace("\n", '<br/>', $subcomment->content) !!}</p>
@@ -191,11 +191,10 @@
                 </div>
                 <ul class="card-content">
                     @foreach($categories as $category)
-                        @if($category->notices()->count())
+                        @if($category->notices()->count() && $category->subcategories->count())
                         <li>
                             <p><strong>{{ $category->name }}({{ $category->notices()->count() }})</strong></p>
                             
-                            @if($category->subcategories->count())
                             <ul style="margin-left: 30px;">
                                 @foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
                                     @if($subcategory->notices()->count())
@@ -203,7 +202,6 @@
                                     @endif
                                 @endforeach
                             </ul>
-                            @endif
                         </li>
                         @endif
                     @endforeach
