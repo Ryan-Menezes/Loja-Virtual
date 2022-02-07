@@ -1,16 +1,23 @@
 *{
-  outline: none!important;
+	outline: none!important;
 }
 .content{
 	display: grid;
-	grid-template-columns: 200px 1fr;
+	grid-template-columns: 1fr;
+}
+.content h1{
+	font-size: 40px;
 }
 .content .menu-content{
-	display: block;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 .content .menu-content li{
 	padding: 20px;
-	border-bottom: 1px solid #cccccc;
+	border: 1px solid #cccccc;
+	display: inline-block;
 }
 .content .cont-content{
 	padding: 0px 40px;
@@ -27,6 +34,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-direction: row;
 }
 .content .cards .card .card-title{
 	font-size: 20px;

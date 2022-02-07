@@ -25,6 +25,10 @@ class SiteController extends Controller{
 		return view('site.index', compact('products', 'products_showcase', 'notices', 'banners', 'slideshow'));
 	}
 
+	public function contact(){
+		return view('site.contact.index');
+	}
+
 	public function sendMail(){
 		$data = (new Request())->all();
 		$form = new FormContact();
