@@ -283,6 +283,9 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
+	// ROUTE LGPD
+	Route::post('/lgpd', [SiteController::class, 'lgpd'])->name('site.lgpd');
+
 	// ROUTE CONTACT SEND
 	Route::get('/contato', [SiteController::class, 'contact'])->name('site.contact');
 	Route::post('/contato', [SiteController::class, 'sendMail'])->name('site.contact.send');

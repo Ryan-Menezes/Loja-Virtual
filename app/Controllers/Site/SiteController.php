@@ -11,7 +11,8 @@ use App\Models\{
 	Notice,
 	Banner,
 	SlideShow,
-	FormContact
+	FormContact,
+	Lgpd
 };
 
 class SiteController extends Controller{
@@ -23,6 +24,29 @@ class SiteController extends Controller{
 		$slideshow = SlideShow::all();
 
 		return view('site.index', compact('products', 'products_showcase', 'notices', 'banners', 'slideshow'));
+	}
+
+	public function lgpd(){
+		$request = new Request();
+		$server = $request->server();
+		$url = $request->input('url_current');
+		$method = $server['REQUEST_METHOD'];
+		$ip = $server['REMOTE_ADDR'];
+		$user_agent = $server['HTTP_USER_AGENT'];
+		$referer = $request->input('url_next');
+
+		if(!preg_match('/\.(css|js|jpg|jpeg|gif|png)$/mi', $url) && !strstr($referer, trim(config('app.url'), '/'))){
+			Lgpd::create([
+				'url' 		=> $url,
+				'method'	=> $method,
+				'ip' 		=> $ip,
+				'browser' 	=> browser($user_agent),
+				'device' 	=> device($user_agent),
+				'so' 		=> so($user_agent),
+				'referer' 	=> $referer,
+				'server' 	=> json_encode($server)
+			]);
+		}
 	}
 
 	public function contact(){

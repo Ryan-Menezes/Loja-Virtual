@@ -3,21 +3,18 @@
 }
 .content{
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 200px 1fr;
 }
 .content h1{
 	font-size: 40px;
 }
 .content .menu-content{
 	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
+	flex-direction: column;
 }
 .content .menu-content li{
 	padding: 20px;
-	border: 1px solid #cccccc;
-	display: inline-block;
+	border-bottom: 1px solid #cccccc;
 }
 .content .cont-content{
 	padding: 0px 40px;
