@@ -23,9 +23,11 @@ class NoticeController extends Controller{
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$limit = config('paginate.limit');
-		$pages = ceil($this->notice->where('visible', true)->count() / $limit);
+		$search = $request->input('search');
+		$query = $this->notice->search(1, $search, $this->notice->where('visible', true)->count());
+		$pages = ceil($query->where('visible', true)->count() / $limit);
 
-		$notices = $this->notice->where('visible', true)->orderBy('id', 'DESC')->offset(($page - 1) * $limit)->limit($limit)->get();
+		$notices = $this->notice->search($page, $search)->where('visible', true)->get();
 		$categories = Category::orderBy('name')->get();
 
 		return view('site.notices.index', compact('notices', 'categories', 'page', 'pages', 'builder'));

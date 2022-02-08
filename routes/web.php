@@ -284,7 +284,8 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
 	// ROUTE CONTACT SEND
-	Route::post('/', [SiteController::class, 'sendMail'])->name('site.contact.send');
+	Route::get('/contato', [SiteController::class, 'contact'])->name('site.contact');
+	Route::post('/contato', [SiteController::class, 'sendMail'])->name('site.contact.send');
 
 	// ROUTE SITEMAP
 	Route::get('/sitemap', [SiteMapController::class, 'index'])->name('site.sitemap');
@@ -443,7 +444,7 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 
 	// ROUTE NOTICES
 	Route::group(['prefix' => 'blog'], function(){
-		Route::get('/', [NoticeControllerSite::class, 'index'])->name('site.notices');
+		Route::any('/', [NoticeControllerSite::class, 'index'])->name('site.notices');
 
 		// ROUTE CATEGORIES NOTICES
 		Route::group(['prefix' => '/{category}'], function(){
