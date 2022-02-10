@@ -29,13 +29,13 @@ class SiteController extends Controller{
 	public function lgpd(){
 		$request = new Request();
 		$server = $request->server();
-		$url = $request->input('url_current');
-		$method = $server['REQUEST_METHOD'];
+		$url = $request->input('url_next');
+		$method = 'GET';
 		$ip = $server['REMOTE_ADDR'];
 		$user_agent = $server['HTTP_USER_AGENT'];
-		$referer = $request->input('url_next');
+		$referer = $request->input('url_current');
 
-		if(!preg_match('/\.(css|js|jpg|jpeg|gif|png)$/mi', $url) && !strstr($referer, trim(config('app.url'), '/'))){
+		if(!preg_match('/\.(css|js|jpg|jpeg|gif|png)$/mi', $referer) && !strstr($url, trim(config('app.url'), '/'))){
 			Lgpd::create([
 				'url' 		=> $url,
 				'method'	=> $method,

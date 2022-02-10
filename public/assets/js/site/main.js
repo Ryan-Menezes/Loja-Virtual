@@ -9,7 +9,7 @@ $(document).ready(function(){
 
         if(element.href){
             $.ajax({
-                url: '/lgpd',
+                url: window.location.origin + '/lgpd',
                 method: 'POST',
                 data: {
                     url_current: window.location.href,
