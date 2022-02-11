@@ -11,7 +11,7 @@
 
     <section style="margin-bottom: 40px;">
         <div style="padding: 20px; border: 1px solid #bfbfbf; border-radius: 5px;">
-            <p style="font-size: 20px;">Status atualizado para: <stroing>{{ $requestmodel->statusFormat }}</strong></p>
+            <p style="font-size: 20px;">Status atualizado para: <strong>{{ $requestmodel->statusFormat }}</strong></p>
 
             <h3 style="margin-bottom: 10px; margin-top: 30px;">Produtos</h3><hr />
             <table style="margin-top: 40px; border-collapse: collapse; border: 1px solid black; width: 100%;">
