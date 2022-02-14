@@ -149,13 +149,37 @@ class CartController extends Controller{
 	public function couponValidate(){
 		$request = new Request();
 		$data = $request->all();
+		$cart_products = $this->cart->all();
 
 		if(isset($data['code'])){
 			$coupon = Coupon::where('code', mb_strtoupper($data['code']))->first();
+			$valid = true;		
 
 			if($coupon){
+				if($coupon->subcategories->count() || $coupon->products->count()){
+					foreach($cart_products as $cart_product){
+						$product = $cart_product->product;
+
+						// Valida produtos fora do desconto
+						if($coupon->products()->where('coupons_products.product_id', $product->id)->exists()){
+							$valid = false;
+							break;
+						}
+
+						// Valida catagorias dos produtos
+						if(!$coupon->subcategories->intersect($product->subcategories)->count()){
+							$valid = false;
+							break;
+						}
+					}
+				}
+
+				if(!$valid){
+					return 'O CUPOM NÃO É VÁLIDO PARA OS PRODUTOS EM SEU CARRINHO!';
+				}
+
 				return "PARABÉNS O VOCÊ RECEBEU {$coupon->percent}% DE DESCONTO EM SUA COMPRA, PARA QUE O DESCONTO SEJA APLICADO, BASTA FINALIZAR O PEDIDO!";
-			}			
+			}
 		}
 		
 		return 'O CUPOM INFORMADO É INVÁLIDO!';
@@ -196,8 +220,25 @@ class CartController extends Controller{
 		$discount_coupon = 0;
 		if(isset($data['code']) && !empty($data['code'])){
 			$coupon = Coupon::where('code', mb_strtoupper($data['code']))->first();
+			$valid = false;		
 
 			if($coupon){
+				if($coupon->subcategories->count()){
+					foreach($cart_products as $cart_product){
+						$product = $cart_product->product;
+						foreach($coupon->subcategories as $subcategory){
+							if($product->subcategories()->where('products_subcategories.subcategory_id', $subcategory->id)->exists() && !$coupon->products()->where('coupons_products.product_id', $product->id)->exists()){
+								$valid = true;
+								break;
+							}
+						}
+					}
+				}else{
+					$valid = true;
+				}
+			}
+
+			if($valid){
 				$discount_coupon = $amount * ($coupon->percent / 100);
 			}
 		}

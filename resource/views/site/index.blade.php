@@ -64,7 +64,7 @@
 	<a class="right carousel-control" href="#carousel-example" role="button" data-slide="next">
 	  <span class="sr-only">Next</span>
 	</a>
-  </div>
+</div>
 
 <!-- SECTION -->
 <div class="section">

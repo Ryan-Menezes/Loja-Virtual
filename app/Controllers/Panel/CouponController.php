@@ -6,7 +6,8 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\{
-	Coupon,
+    Category,
+    Coupon,
 	Role
 };
 
@@ -34,8 +35,9 @@ class CouponController extends Controller{
 
 	public function create(){
 		$this->coupon->verifyPermission('create.coupons');
+		$categories = Category::all();
 
-		return view('panel.coupons.create');
+		return view('panel.coupons.create', compact('categories'));
 	}
 
 	public function store(){
@@ -53,6 +55,12 @@ class CouponController extends Controller{
 		$coupon = $this->coupon->create($data);
 
 		if($coupon){
+			// Cadastrando subcategorias voltadas para o cupom
+			$coupon->subcategories()->sync($data['subcategories']);
+
+			// Cadastrando produtos que ficarão de fora desse desconto
+			$coupon->products()->sync($data['products_related']);
+
 			redirect(route('panel.coupons.create'), ['success' => 'Cupom cadastrado com sucesso']);
 		}
 
@@ -63,8 +71,9 @@ class CouponController extends Controller{
 		$this->coupon->verifyPermission('edit.coupons');
 
 		$coupon = $this->coupon->findOrFail($id);
+		$categories = Category::all();
 
-		return view('panel.coupons.edit', compact('coupon'));
+		return view('panel.coupons.edit', compact('coupon', 'categories'));
 	}
 
 	public function update($id){
@@ -82,6 +91,12 @@ class CouponController extends Controller{
 		}
 
 		if($coupon->update($data)){
+			// Cadastrando subcategorias voltadas para o cupom
+			$coupon->subcategories()->sync($data['subcategories']);
+
+			// Cadastrando produtos que ficarão de fora desse desconto
+			$coupon->products()->sync($data['products_related']);
+
 			redirect(route('panel.coupons.edit', ['id' => $coupon->id]), ['success' => 'Cupom editado com sucesso']);
 		}
 

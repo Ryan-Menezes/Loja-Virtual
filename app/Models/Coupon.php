@@ -56,4 +56,12 @@ class Coupon extends Model{
 			abort(404);
 		}
 	}
+
+	public function products(){
+		return $this->belongsToMany(Product::class, 'coupons_products', 'coupon_id', 'product_id');
+	}
+
+	public function subcategories(){
+		return $this->belongsToMany(SubCategory::class, 'coupons_subcategories', 'coupon_id', 'subcategory_id');
+	}
 }
