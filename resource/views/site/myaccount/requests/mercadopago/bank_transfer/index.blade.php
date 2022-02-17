@@ -14,7 +14,7 @@
         @include('includes.site.account.menu')
         <div class="cont-content">
             @if($discount_percent > 0)
-            <div class="alert alert-success"><strong>Ao efetuar o pagamento por transferência bancária, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+            <div class="alert alert-success"><strong>Ao efetuar o pagamento por transferência bancária, você terá {{ number_format($discount_percent, 2, ',', '.') }}% de desconto na compra</strong></div>
             @endif
 
             <h1 style="margin-top: 20px;">Pagamento por transferência bancária</h1><hr />

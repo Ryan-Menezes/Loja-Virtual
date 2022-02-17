@@ -15,11 +15,14 @@
             @include('includes.site.account.menu')
             <div class="cont-content">
                 @if($discount_percent > 0)
-                <div class="alert alert-success"><strong>Ao efetuar o pagamento por boleto, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+                <div class="alert alert-success"><strong>Ao efetuar o pagamento por boleto, você terá {{ number_format($discount_percent, 2, ',', '.') }}% de desconto na compra</strong></div>
                 @endif
 
                 <h1 style="margin-top: 20px;">Pagamento por Boleto</h1><hr />
-                <p>Ao clicar no botão abaixo você irá gerar o seu boleto de pagamento</p>
+
+                <p>O pedido será confirmado apenas após a confirmação do pagamento.</p>
+                <p><strong>Taxa:</strong> R$ 1,00 (taxa aplicada para cobrir custos de gestão de risco do meio de pagamento).</p>
+                <p>* Após clicar em "Gerar boleto" você receberá o seu boleto bancário, é possível imprimi-lo e pagar pelo site do seu banco ou por uma casa lotérica.</p>
     
                 <div class="alert alert-danger" id="message-request" style="display: none;"></div>
     

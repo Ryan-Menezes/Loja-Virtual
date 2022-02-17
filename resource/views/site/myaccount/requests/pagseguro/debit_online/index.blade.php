@@ -15,11 +15,11 @@
             @include('includes.site.account.menu')
             <div class="cont-content">
                 @if($discount_percent > 0)
-                <div class="alert alert-success"><strong>Ao efetuar o pagamento por débito online, você terá {{ $discount_percent }}% de desconto na compra</strong></div>
+                <div class="alert alert-success"><strong>Ao efetuar o pagamento por débito online, você terá {{ number_format($discount_percent, 2, ',', '.') }}% de desconto na compra</strong></div>
                 @endif
 
                 <h1 style="margin-top: 20px;">Pagamento por débito online</h1><hr />
-                <p>Ao clicar no botão abaixo você irá gerar o link de pagamento para o banco selecionado:</p>
+                <p>* Após clicar em "Efetuar pagamento por débito online" você receberá acesso ao link que o levará ao site do seu banco, assim é possível realizar o pagamento em total segurança.</p>
 
                 <div class="alert alert-danger" id="message-request" style="display: none;"></div>
 
