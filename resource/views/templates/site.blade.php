@@ -44,6 +44,7 @@
     <meta name="twitter:card" content="summary" />
     {{-- <meta name="twitter:site" content="@news" /> --}}
     {{-- <meta name="twitter:creator" content="@news" /> --}}
+    @yield('metatags')
 
     <!-- Title -->
     <title>{{ config('app.name') }} | @yield('title')</title>

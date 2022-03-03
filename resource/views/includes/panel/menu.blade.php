@@ -14,6 +14,10 @@
 			<p><strong>Site</strong></p>
 		</div>
 
+		@if(can('view.pages'))
+			<a href="{{ route('panel.pages') }}" title="Páginas"><li><i class="fas fa-file"></i> Páginas</li></a>
+		@endif
+
 		@if(can('view.clients'))
 			<a href="{{ route('panel.clients') }}" title="Página de Clientes"><li><i class="fas fa-user-circle"></i> Clientes</li></a>
 		@else

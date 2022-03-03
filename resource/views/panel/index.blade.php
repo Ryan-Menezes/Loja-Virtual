@@ -20,6 +20,10 @@
 		<div class="card-header p-3"><strong>Site</strong></div>
 		<div class="card-body">
 			<div class="cards-container">
+				@if(can('view.pages'))
+					@include('includes.components.card', ['title' => 'Páginas', 'link' => route('panel.pages'), 'class' => 'text-secondary', 'amount' => $pagesCount, 'icon' => 'fas fa-file'])
+				@endif
+
 				@if(can('view.clients'))
 					@include('includes.components.card', ['title' => 'Clientes', 'link' => route('panel.clients'), 'class' => 'text-warning', 'amount' => $clientsCount, 'icon' => 'fas fa-user-circle'])
 				@endif

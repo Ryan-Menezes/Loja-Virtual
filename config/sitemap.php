@@ -46,7 +46,7 @@ return [
             'loc' => route('site.products'),
             'changefreq' => 'weekly',
             'priority' => '0.80'
-        ],
+        ]
     ],
     'images' => [
         'filename' => 'sitemap-images.xml',

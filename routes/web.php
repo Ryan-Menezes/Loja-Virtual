@@ -5,6 +5,7 @@ use App\Controllers\Panel\{
 	PanelController,
 	AuthController,
 	UserController,
+	PageController,
 	ClientController,
 	ProductController,
 	RatingController,
@@ -26,6 +27,7 @@ use App\Controllers\Panel\{
 };
 use App\Controllers\Site\{
 	SiteController,
+	PageController as PageControllerSite,
 	AuthController as AuthControllerSite,
 	ProductController as ProductControllerSite,
 	NoticeController as NoticeControllerSite,
@@ -53,6 +55,7 @@ use App\Middlewares\{
 	Maintenance,
 	Lgpd
 };
+use App\Models\Page;
 
 // ------------------------------------------------------------------------------
 // ROUTE PANEL
@@ -74,6 +77,17 @@ Route::group(['prefix' => 'painel', 'middleware' => [Expiration::class, Authenti
 
 	// ROUTE SITE
 	Route::group(['prefix' => 'site'], function(){
+		// ROUTE PAGES
+		Route::group(['prefix' => 'paginas'], function(){
+			Route::any('/', [PageController::class, 'index'])->name('panel.pages');
+			Route::any('/componente/{name}', [PageController::class, 'component'])->name('panel.pages.component');
+			Route::get('/novo', [PageController::class, 'create'])->name('panel.pages.create');
+			Route::post('/novo/salvar', [PageController::class, 'store'])->name('panel.pages.store');
+			Route::get('/{id}/editar', [PageController::class, 'edit'])->name('panel.pages.edit');
+			Route::put('/{id}/editar/salvar', [PageController::class, 'update'])->name('panel.pages.update');
+			Route::delete('/{id}/deletar', [PageController::class, 'destroy'])->name('panel.pages.destroy');
+		});
+
 		// ROUTE CLIENTS
 		Route::group(['prefix' => 'clientes'], function(){
 			Route::any('/', [ClientController::class, 'index'])->name('panel.clients');
@@ -496,4 +510,9 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, 
 		Route::any('/mercadopago', [PaymentController::class, 'notificationMercadopago'])->name('site.notification.mercadopago');
 		Route::any('/picpay', [PaymentController::class, 'notificationPicpay'])->name('site.notification.picpay');
 	});
+
+	// PAGES
+	foreach(Page::where('visible', true)->get() as $page){
+		Route::get("/{$page->url}", [PageControllerSite::class, 'index'])->name("site.{$page->id}");
+	}
 });

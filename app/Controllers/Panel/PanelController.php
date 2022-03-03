@@ -7,6 +7,7 @@ use Src\Classes\{
 };
 use App\Models\{
 	User,
+	Page,
 	Client,
 	Product,
 	Rating,
@@ -35,6 +36,7 @@ class PanelController extends Controller{
 
 		$data = [
 			'usersCount' 		=> User::count(),
+			'pagesCount'		=> Page::count(),
 			'clientsCount' 		=> Client::count(),
 			'productsCount'		=> Product::count(),
 			'ratingsCount'		=> Rating::count(),
@@ -89,7 +91,8 @@ class PanelController extends Controller{
 				'delete'
 			],
 			[
-				'users', 
+				'users',
+				'pages', 
 				'clients', 
 				'products', 
 				'ratings', 
