@@ -33,6 +33,17 @@ class GaleryController extends Controller{
 		return view('panel.galleries.index', compact('galleries', 'pages', 'builder'));
 	}
 
+	public function component($name){
+		$data = (new Request())->all();
+
+		$file = dirname(__DIR__, 3) . '/' . trim(config('view.dir'), '/') . '/' . str_ireplace('.', '/', "includes.components.{$name}") . '.blade.php';
+
+		if(!file_exists($file))
+			return null;
+		
+		return view("includes.components.{$name}", $data);
+	}
+
 	public function create(){
 		$this->galery->verifyPermission('create.galleries');
 

@@ -70,8 +70,8 @@
 		<div class="col-md-6">
 			@include('includes.components.form.input', [
 				'type' => 'text', 
-				'name' => 'WhatsApp', 
-				'title' => 'whatsapp', 
+				'name' => 'whatsapp', 
+				'title' => 'WhatsApp', 
 				'value' => (isset($system) && $system->social ? $system->social->whatsapp : null),
 				'class' => 'cell-mask'
 			])

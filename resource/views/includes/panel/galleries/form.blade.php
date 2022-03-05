@@ -33,7 +33,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" alt="Adicionar nova imagem" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}" data-nottitle="true" data-container=".product-images" data-class="col-md-4">NOVA IMAGEM <i class="fas fa-plus-circle"></i></div>
+		<div class="col-md-12 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" alt="Adicionar nova imagem" data-urlajax="{{ route('panel.galleries.component', ['name' => 'form.imageeditor']) }}" data-nottitle="true" data-container=".product-images" data-class="col-md-4">NOVA IMAGEM <i class="fas fa-plus-circle"></i></div>
 	</div>
 
 	<br>

@@ -130,9 +130,9 @@
 
 			<div class="row text-center mt-5 bg-white">
 				<div class="col-md-12 row">
-					<div class="col-md-4 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo parágrafo" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.notices.component', ['name' => 'form.texteditor']) }}">NOVO TEXTO <i class="fas fa-paragraph"></i></div>
-					<div class="col-md-4 text-center p-4 bg-success text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.imageeditor']) }}">NOVA IMAGEM <i class="fas fa-image"></i></div>
-					<div class="col-md-4 text-center p-4 bg-danger text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo video" data-urlajax="{{ route('panel.notices.component', ['name' => 'form.youtubeeditor']) }}" data-required="true">NOVO VIDEO DO YOUTUBE <i class="fas fa-video"></i></div>
+					<div class="col-md-4 text-center p-4 bg-primary text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo parágrafo" data-name="texts[]" data-class="text" data-title="Digite o texto do parágrafo..." data-urlajax="{{ route('panel.pages.component', ['name' => 'form.texteditor']) }}">NOVO TEXTO <i class="fas fa-paragraph"></i></div>
+					<div class="col-md-4 text-center p-4 bg-success text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" data-urlajax="{{ route('panel.pages.component', ['name' => 'form.imageeditor']) }}">NOVA IMAGEM <i class="fas fa-image"></i></div>
+					<div class="col-md-4 text-center p-4 bg-danger text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo video" data-urlajax="{{ route('panel.pages.component', ['name' => 'form.youtubeeditor']) }}" data-required="true">NOVO VIDEO DO YOUTUBE <i class="fas fa-video"></i></div>
 				</div>
 			</div>
 		</div>

@@ -138,6 +138,7 @@ Route::group(['prefix' => 'painel', 'middleware' => [Expiration::class, Authenti
 		// ROUTE GALLERIES
 		Route::group(['prefix' => 'galerias'], function(){
 			Route::any('/', [GaleryController::class, 'index'])->name('panel.galleries');
+			Route::any('/componente/{name}', [GaleryController::class, 'component'])->name('panel.galleries.component');
 			Route::get('/novo', [GaleryController::class, 'create'])->name('panel.galleries.create');
 			Route::post('/novo/salvar', [GaleryController::class, 'store'])->name('panel.galleries.store');
 			Route::get('/{id}/editar', [GaleryController::class, 'edit'])->name('panel.galleries.edit');
