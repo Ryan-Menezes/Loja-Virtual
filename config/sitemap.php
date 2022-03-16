@@ -58,7 +58,10 @@ return [
             'storage/app/public/notices',
             'storage/app/public/slideshow',
             'storage/app/public/banners',
-            'storage/app/public/floater'
+            'storage/app/public/floater',
+            'storage/app/public/partners',
+            'storage/app/public/galleries',
+            'storage/app/public/pages'
         ]
     ]
 ];
