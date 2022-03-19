@@ -2,10 +2,10 @@ $(document).ready(function(){
     // Modal Load
     hideLoad()
 
-    $('a[href^="#"]').attr('data-linkdisable', true)
-
     // Carregamento sem refresh
     /*
+    $('a[href^="#"]').attr('data-linkdisable', true)
+
     $('a:not([data-linkdisable])').click(function(e){
         e.preventDefault()
 
