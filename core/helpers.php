@@ -601,6 +601,10 @@ if(!function_exists('update_payment_request_pagseguro')){
 
 if(!function_exists('update_payment_request_mercadopago')){
 	function update_payment_request_mercadopago($requestmodel): bool{
+		if(!config('store.payment.credentials.mercadopago.access_token')){
+			return false;
+		}
+
 		$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
 
 		$response = $mercadopago->transaction(config('store.reference_prefix') . $requestmodel->id);

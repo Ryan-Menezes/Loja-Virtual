@@ -30,7 +30,9 @@ class MercadoPagoController extends Controller{
 		
 		$this->requestmodel = new RequestModel();
 
-		\MercadoPago\SDK::setAccessToken(config('store.payment.credentials.mercadopago.access_token'));
+		if(config('store.payment.credentials.mercadopago.access_token')){
+			\MercadoPago\SDK::setAccessToken(config('store.payment.credentials.mercadopago.access_token'));
+		}
 	}
 
 	public function checkout($id){
