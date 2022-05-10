@@ -1956,7 +1956,7 @@ CREATE TABLE `system_mercadopago` (
 --
 
 INSERT INTO `system_mercadopago` (`id`, `active`, `public_key`, `access_token`, `type_checkout`, `header_color`, `elements_color`) VALUES
-(1, 1, 'TEST-b373a2b1-7f2a-4f7c-b6f7-e815ea8797a5', 'TEST-1541154418522225-012712-072f7db6f08c326e64541943194176c7-774678190', 'LB', '#449d44', '#449d44');
+(1, 1, '', '', 'LB', '#449d44', '#449d44');
 
 -- --------------------------------------------------------
 
@@ -1979,7 +1979,7 @@ CREATE TABLE `system_pagseguro` (
 --
 
 INSERT INTO `system_pagseguro` (`id`, `active`, `email`, `token`, `app_id`, `app_key`, `type_checkout`) VALUES
-(1, 1, 'menezesryan1010@gmail.com', '97C3FCEEDB4C4AC1A8A90E17307260DA', '', '', 'LB');
+(1, 1, '', '', '', '', 'LB');
 
 -- --------------------------------------------------------
 
@@ -2000,7 +2000,7 @@ CREATE TABLE `system_paypal` (
 --
 
 INSERT INTO `system_paypal` (`id`, `active`, `secret_key`, `email`, `client_id`) VALUES
-(1, 1, '', 'menezesryan1010@gmail.com', '');
+(1, 1, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -2021,7 +2021,7 @@ CREATE TABLE `system_picpay` (
 --
 
 INSERT INTO `system_picpay` (`id`, `active`, `token`, `seller_token`, `expiration_minutes`) VALUES
-(1, 1, 'a83ecef9-11ce-4679-a2f3-06170f1dec91', '0fa6c571-16fd-45d7-afc9-41d630cbbf2c', 50);
+(1, 1, '', '', 50);
 
 -- --------------------------------------------------------
 
