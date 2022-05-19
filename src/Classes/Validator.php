@@ -19,8 +19,8 @@ class Validator{
 		'required' 	=> 'O campo %key% é de preenchimento obrigatório!',
 		'email' 	=> 'O campo %key% deve ser um email válido!',
 		'numeric' 	=> 'O campo %key% deve ser do tipo numérico',
-		'min' 		=> 'O campo %key% deve conter no minímo %min% caractertes',
-		'max' 		=> 'O campo %key% deve conter no máximo %max% caractertes',
+		'min' 		=> 'O campo %key% deve conter no minímo %min% caracteres',
+		'max' 		=> 'O campo %key% deve conter no máximo %max% caracteres',
 		'unique' 	=> 'O campo %key% já está existe, Tente outro valor!'
 	];
 
@@ -38,7 +38,7 @@ class Validator{
 	  */
 	public static function make(array $data, array $roles, array $messages = []) : bool{;
 		if(!empty($messages))
-			self::$messages = $messages;
+			self::$messages = array_merge(self::$messages, $messages);
 
 		foreach($data as $name => $value){
 			if(array_key_exists($name, $roles)){

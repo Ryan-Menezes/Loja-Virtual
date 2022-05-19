@@ -22,7 +22,7 @@ class Auth{
 			return false;
 
 		if(password_needs_rehash($user->password, PASSWORD_DEFAULT)){
-			$user = password_hash($password, PASSWORD_DEFAULT);
+			$user->password = password_hash($password, PASSWORD_DEFAULT);
 			$user->save();
 		}
 
