@@ -95,7 +95,7 @@ class Route{
 				throw new Exception('the controller informed is invalid', 1);
 			}
 		}catch(Exception $error){
-			self::$addError($error->getCode(), $error->getMessage(), $error->getLine(), $error->getFile());
+			self::addError($error->getCode(), $error->getMessage(), $error->getLine(), $error->getFile());
 		}
 	}
 
