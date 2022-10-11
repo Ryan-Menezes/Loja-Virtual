@@ -187,7 +187,7 @@ class PagSeguroController extends Controller{
 				$installment_no_interest += $product->installment_no_interest;
 			}
 		}
-        $installment_no_interest = floor($installment_no_interest / $$requestmodel->products->count());
+        $installment_no_interest = floor($installment_no_interest / $requestmodel->products->count());
 
         // Descontos das parcelas
         $installments_discounts = [];
