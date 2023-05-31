@@ -18,7 +18,7 @@
         }
     },
     "require": {
-        "php": ">=7",
+        "php": ">=7.4",
         "jenssegers/blade": "^1.4",
         "illuminate/database": "^8.70",
         "mercadopago/dx-php": "^2.4",
