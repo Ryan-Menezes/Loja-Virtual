@@ -52,8 +52,7 @@ use App\Controllers\Site\MyAccount\{
 use App\Middlewares\{
 	Authenticate,
 	Expiration,
-	Maintenance,
-	Lgpd
+	Maintenance
 };
 use App\Models\Page;
 
@@ -294,12 +293,12 @@ Route::group(['prefix' => 'painel'], function(){
 // ROUTE SITE
 // ------------------------------------------------------------------------------
 
-Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Lgpd::class, Maintenance::class]], function(){
+Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Maintenance::class]], function(){
 	// ROUTE HOME
 	Route::get('/', [SiteController::class, 'index'])->name('site');
 
 	// ROUTE LGPD
-	Route::post('/lgpd', [SiteController::class, 'lgpd'])->name('site.lgpd');
+	// Route::post('/lgpd', [SiteController::class, 'lgpd'])->name('site.lgpd');
 
 	// ROUTE CONTACT SEND
 	Route::get('/contato', [SiteController::class, 'contact'])->name('site.contact');

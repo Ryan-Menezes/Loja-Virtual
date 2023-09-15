@@ -2,29 +2,29 @@ $(document).ready(function(){
     // Inicia floater
     $('#floater').modal('show')
 
-    $('a').click(function(){
-        event.preventDefault()
+    // $('a').click(function(){
+    //     event.preventDefault()
 
-        const element = this
+    //     const element = this
 
-        if(element.href){
-            $.ajax({
-                url: window.location.origin + '/lgpd',
-                method: 'POST',
-                data: {
-                    url_current: window.location.href,
-                    url_next: element.href
-                },
-                complete: function(){
-                    if(element.target == '_blank'){
-                        window.open(element.href, '_blank')
-                    }else{
-                        window.location.href = element.href
-                    }
-                }
-            })
-        }
-    })
+    //     if(element.href){
+    //         $.ajax({
+    //             url: window.location.origin + '/lgpd',
+    //             method: 'POST',
+    //             data: {
+    //                 url_current: window.location.href,
+    //                 url_next: element.href
+    //             },
+    //             complete: function(){
+    //                 if(element.target == '_blank'){
+    //                     window.open(element.href, '_blank')
+    //                 }else{
+    //                     window.location.href = element.href
+    //                 }
+    //             }
+    //         })
+    //     }
+    // })
 
     // LGPD
     $('.lgpd-close').click(function(){
