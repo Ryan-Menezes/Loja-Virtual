@@ -6,10 +6,7 @@ use Src\Classes\{
 	Controller
 };
 use Src\Classes\Storage\Storage;
-use App\Models\{
-	Partner,
-	Role
-};
+use App\Models\Partner;
 
 class PartnerController extends Controller{
 	private $partner;

@@ -9,8 +9,6 @@ use Src\Classes\{
 };
 use App\Models\{
 	Client,
-	ClientAddress,
-	ClientCard,
     Request as RequestModel
 };
 use App\Classes\Payment\PagSeguro;

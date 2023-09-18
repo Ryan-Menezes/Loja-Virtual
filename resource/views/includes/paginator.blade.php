@@ -1,4 +1,4 @@
-@if($pages > 0)
+@if($pages > 1)
 <nav class="m-0">
 	<ul class="pagination m-0">
 		@if(empty($builder))

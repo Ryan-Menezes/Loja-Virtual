@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use App\Models\{
 	Comment,
-    SubComment,
-	Role
+    SubComment
 };
 
 class SubCommentController extends Controller{

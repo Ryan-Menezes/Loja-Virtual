@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use App\Models\{
 	Category,
-    SubCategory,
-	Role
+    SubCategory
 };
 
 class SubCategoryController extends Controller{

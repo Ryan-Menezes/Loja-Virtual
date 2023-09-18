@@ -46,13 +46,18 @@
 		@include('includes.panel.menu')
 		<div>
 			@include('includes.panel.header')
-
+			
 			<section class="content-main">
+				@php 
+					$routeComplete = '';
+					$routes = explode('/', route());
+				@endphp
+			
+				@if(!empty($routes) && !empty($routes[0]))				
 				<main class="content-breadcrumb">
 					<nav aria-label="breadcrumb" class="p-3 border bg-white">
 						<ol class="breadcrumb p-0 m-0">
-							@php $routeComplete = '' @endphp
-							@foreach(explode('/', route()) as $route)
+							@foreach($routes as $route)
 								@php $routeComplete .= $route . '/' @endphp
 
 								@if(!$loop->last)
@@ -65,6 +70,8 @@
 						</ol>
 					</nav>
 				</main>
+				@endif
+
 				<main class="content-view">
 					@yield('container')
 				</main>

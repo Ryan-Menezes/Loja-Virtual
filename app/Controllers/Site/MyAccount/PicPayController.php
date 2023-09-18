@@ -2,22 +2,12 @@
 namespace App\Controllers\Site\MyAccount;
 
 use Exception;
-use Src\Classes\{
-	Request,
-	Controller,
-    Validator
-};
-use App\Models\{
-	Client,
-	ClientAddress,
-	ClientCard,
-    Request as RequestModel
-};
+use Src\Classes\Controller;
+use App\Models\Client;
 use App\Classes\Payment\PicPay;
 
 class PicPayController extends Controller{
 	private $client;
-	private $requestmodel;
 
 	public function __construct(){
 		$this->client = auth('site');
@@ -27,8 +17,6 @@ class PicPayController extends Controller{
 
 		if(!$this->client)
 			abort(404);
-		
-		$this->requestmodel = new RequestModel();
 	}
 
 	public function pix($id){

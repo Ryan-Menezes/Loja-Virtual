@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use Src\Classes\Storage\Storage;
 use App\Models\{
-	Banner,
-	Role
+	Banner
 };
 
 class BannerController extends Controller{

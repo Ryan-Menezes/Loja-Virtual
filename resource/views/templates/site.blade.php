@@ -256,6 +256,12 @@
     </nav>
     <!-- /NAVIGATION -->
 
+    @php 
+        $routeComplete = '';
+        $routes = explode('/', route());
+    @endphp
+
+    @if(!empty($routes) && !empty($routes[0]))
     <!-- BREADCRUMB -->
     <div id="breadcrumb" class="section">
         <!-- container -->
@@ -268,8 +274,7 @@
                         <li class="active">inicio</li>
                         @else
                         <li><a href="{{ url() }}">inicio</a></li>
-                        @php $routeComplete = '' @endphp
-                        @foreach(explode('/', route()) as $route)
+                        @foreach($routes as $route)
                             @php $routeComplete .= $route . '/' @endphp
 
                             @if(!$loop->last)
@@ -288,6 +293,7 @@
         <!-- /container -->
     </div>
     <!-- /BREADCRUMB -->
+    @endif
 
     <!-- SECTION -->
     <div class="section">

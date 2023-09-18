@@ -27,14 +27,14 @@ $(document).ready(function(){
     // })
 
     // LGPD
-    $('.lgpd-close').click(function(){
-        event.preventDefault()
+    $('.lgpd-close').click(function(e){
+        e.preventDefault()
 
         $('.lgpd-container').remove()
     })
 
-    $('.lgpd-accept').click(function(){
-        event.preventDefault()
+    $('.lgpd-accept').click(function(e){
+        e.preventDefault()
 
         $('.lgpd-container').remove()
 
@@ -45,8 +45,8 @@ $(document).ready(function(){
     })
 
     // Adicionar ao carrinho
-    $('.add-to-cart-btn-ajax[data-url]').click(function(){
-        event.preventDefault()
+    $('.add-to-cart-btn-ajax[data-url]').click(function(e){
+        e.preventDefault()
 
         let element = this
         let data = $(this).data()
@@ -74,8 +74,8 @@ $(document).ready(function(){
     })
 
     // Adicionar aos favoritos
-    $('.add-favorite-btn-ajax[data-url]').click(function(){
-        event.preventDefault()
+    $('.add-favorite-btn-ajax[data-url]').click(function(e){
+        e.preventDefault()
 
         let element = this
         let data = $(this).data()
@@ -103,8 +103,8 @@ $(document).ready(function(){
     })
 
     // Carregar frete
-    $('form[data-container]').submit(function(){
-        event.preventDefault()
+    $('form[data-container]').submit(function(e){
+        e.preventDefault()
 
         let element = this
         let container = $(element).data().container

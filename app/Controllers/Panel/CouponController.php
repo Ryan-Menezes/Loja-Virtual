@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use App\Models\{
     Category,
-    Coupon,
-	Role
+    Coupon
 };
 
 class CouponController extends Controller{

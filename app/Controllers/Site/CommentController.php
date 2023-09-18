@@ -9,8 +9,7 @@ use Src\Classes\{
 use App\Models\{
 	Notice,
 	Comment,
-	SubComment,
-	Role
+	SubComment
 };
 
 class CommentController extends Controller{

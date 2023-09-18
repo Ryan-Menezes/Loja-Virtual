@@ -15,15 +15,16 @@
 	background-color: #e62942;
 }
 .content .alert{
-	width: 400px;
+	width: 500px;
 	border-radius: 0px;
 }
 .content form{
 	background-color: white;
 	border: none!important;
 	color: #171717;
-	width: 400px;
+	width: 500px;
 	padding: 60px 40px;
+	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
 	box-shadow: 0px 10px 20px #c7001b;
@@ -44,6 +45,7 @@
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 30px;
+	border-radius: 10px;
 }
 .content form .box-input input[type=email], 
 .content form .box-input input[type=password]{
@@ -55,4 +57,5 @@
 	border: none;
 	background-color: #e62942;
 	color: white;
+	border-radius: 50px;
 }

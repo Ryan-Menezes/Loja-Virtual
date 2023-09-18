@@ -5,11 +5,7 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\{
-	Client,
-	ClientAddress,
-	ClientCard
-};
+use App\Models\Client;
 
 class ClientController extends Controller{
 	private $client;

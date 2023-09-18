@@ -1,10 +1,7 @@
 <?php
 namespace App\Controllers\Site;
 
-use Src\Classes\{
-	Request,
-	Controller
-};
+use Src\Classes\Controller;
 
 class LgpdController extends Controller{
 	public function privacy_policy(){

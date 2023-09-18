@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use Src\Classes\Storage\Storage;
 use App\Models\{
-	Galery,
-	Role
+	Galery
 };
 
 class GaleryController extends Controller{

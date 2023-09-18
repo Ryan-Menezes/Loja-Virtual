@@ -113,6 +113,12 @@ blockquote{
   grid-template-columns: 1fr 100px;
 }
 .input-container form input,
+.input-container form select{
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  width: 100%;
+}
+.input-container form input,
 .input-container form select,
 .input-container form button{
   padding: 10px;
@@ -122,6 +128,8 @@ blockquote{
   background-color: #005bdb;
   border: 1px solid #005bdb;
   color: white;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .frete-info{
@@ -134,7 +142,10 @@ blockquote{
   margin-top: 10px;
 }
 .form-control{
-  border-radius: 0px!important;
+  border-radius: 5px!important;
+}
+input.form-control{
+  padding: 20px 15px;
 }
 .login-types{
   display: grid;
@@ -142,8 +153,9 @@ blockquote{
   grid-gap: 10px;
 }
 .login-types a{
-  padding: 15px;
+  padding: 10px 20px;
   color: white;
+  border-radius: 50px;
 }
 .login-types a i{
   font-size: 20px;
@@ -170,4 +182,10 @@ blockquote{
 	text-align: center;
 	line-height: 19px;
 	font-weight: bold;
+}
+
+@media (max-width: 800px) {
+  .container {
+    padding: 0 40px; 
+  }
 }

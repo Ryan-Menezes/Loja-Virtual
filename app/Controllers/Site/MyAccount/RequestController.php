@@ -5,21 +5,10 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\{
-	Client,
-	ClientAddress,
-	ClientCard,
-    Request as RequestModel
-};
-use App\Classes\Payment\{
-	PagSeguro,
-	MercadoPago,
-	PicPay
-};
+use App\Models\Client;
 
 class RequestController extends Controller{
 	private $client;
-	private $requestmodel;
 
 	public function __construct(){
 		$this->client = auth('site');
@@ -29,8 +18,6 @@ class RequestController extends Controller{
 
 		if(!$this->client)
 			redirect(route('site.login'));
-		
-		$this->requestmodel = new RequestModel();
 	}
 
 	public function index(){;

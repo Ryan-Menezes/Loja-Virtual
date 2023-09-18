@@ -7,8 +7,7 @@ use Src\Classes\{
 };
 use App\Models\{
 	Client,
-	ClientAddress,
-	ClientCard
+	ClientAddress
 };
 
 class AddressController extends Controller{

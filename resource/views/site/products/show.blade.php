@@ -149,7 +149,7 @@
 					<div>
 						<h2 class="product-price">
 							<span class="product-current-price">R$ {{ $product->priceFormat }}</span>
-							@if(!empty($product->sizes->first()->price_previous))
+							@if(!empty($product->sizes->first()->price_previous) && $product->sizes->first()->price_previous > 0)
 							<del class="product-old-price">R$ {{ $product->pricePreviousFormat }}</del>
 							@else
 							<del class="product-old-price"></del>
@@ -526,10 +526,16 @@
 				currency: 'BRL'
 			}))
 
-			$('.product-old-price').text((Number(size.price_previous)).toLocaleString('pt-BR', {
-				style: 'currency', 
-				currency: 'BRL'
-			}))
+			const pricePrevious = Number(size.price_previous);
+
+			if (pricePrevious > 0) {
+				$('.product-old-price').text(pricePrevious.toLocaleString('pt-BR', {
+					style: 'currency', 
+					currency: 'BRL'
+				}))
+			} else {
+				$('.product-old-price').text('')
+			}
 
 			if(size.quantity > 0){
 				$('.product-available').text('Produto Disponível')

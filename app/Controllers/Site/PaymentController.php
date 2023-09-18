@@ -10,12 +10,7 @@ use App\Classes\Payment\{
     PagSeguro,
     PicPay
 };
-use App\Models\{
-	Request as RequestModel,
-	RequestPayment,
-	RequestAddress,
-	RequestProduct
-};
+use App\Models\Request as RequestModel;
 
 class PaymentController extends Controller{
 	private $requestmodel;

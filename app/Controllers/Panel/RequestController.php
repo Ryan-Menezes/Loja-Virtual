@@ -5,15 +5,7 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\{
-	Request as RequestModel,
-	Role
-};
-use App\Classes\Payment\{
-	PagSeguro,
-	MercadoPago,
-	PicPay
-};
+use App\Models\Request as RequestModel;
 
 class RequestController extends Controller{
 	private $requestmodel;

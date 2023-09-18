@@ -1,10 +1,7 @@
 <?php
 namespace App\Controllers\Panel;
 
-use Src\Classes\{
-	Request,
-	Controller
-};
+use Src\Classes\Controller;
 use App\Models\{
 	User,
 	Page,
@@ -12,7 +9,6 @@ use App\Models\{
 	Product,
 	Rating,
 	Request as RequestModel,
-	RequestProduct,
 	Notice,
 	Comment,
 	SubComment,
@@ -25,8 +21,7 @@ use App\Models\{
 	Category,
 	SubCategory,
 	Role,
-	Permission,
-	Lgpd
+	Permission
 };
 use Illuminate\Database\Capsule\Manager as DB;
 

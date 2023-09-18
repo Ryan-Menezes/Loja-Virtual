@@ -5,9 +5,7 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Models\{
-	Category
-};
+use App\Models\Category;
 
 class CategoryController extends Controller{
 	private $category;

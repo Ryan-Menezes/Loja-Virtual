@@ -1,10 +1,7 @@
 <?php
 namespace App\Controllers\Site;
 
-use Src\Classes\{
-	Request,
-	Controller
-};
+use Src\Classes\Controller;
 use App\Models\{
 	Product,
 	Notice,

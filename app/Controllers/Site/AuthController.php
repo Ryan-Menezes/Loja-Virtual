@@ -13,9 +13,7 @@ use App\Models\{
 };
 
 use League\OAuth2\Client\Provider\Facebook;
-use League\OAuth2\Client\Provider\FacebookUser;
 use League\OAuth2\Client\Provider\Google;
-use League\OAuth2\Client\Provider\GoogleUser;
 
 class AuthController extends Controller{
 	private $client;

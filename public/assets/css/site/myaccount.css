@@ -78,6 +78,9 @@ form span.error{
 }
 .products_cards .product_card .product_image img{
 	width: 100%;
+	height: 250px;
+	object-fit: cover;
+	object-position: center;
 }
 .products_cards .product_card .product_content{
 	padding: 15px;
@@ -136,4 +139,31 @@ form span.error{
 	border-color: #007024;
 	background-color: #00912e;
 	color: white;
+}
+
+@media (max-width: 1000px) {
+	.content{
+		grid-template-columns: 1fr;
+	}
+	.menu-content{
+		margin-bottom: 40px;
+	}
+	.cont-content {
+		padding: 0px!important;
+	}
+	.cont-content h1 {
+		font-size: 20px;
+	}
+	.content .cards {
+		grid-template-columns: 1fr;
+	}
+	.products_cards{
+		grid-template-columns: 1fr 1fr;
+	}
+}
+
+@media (max-width: 500px) {
+	.products_cards{
+		grid-template-columns: 1fr;
+	}
 }

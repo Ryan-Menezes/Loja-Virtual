@@ -47,12 +47,12 @@ $(document).ready(function(){
     })
 
     // Tooltip
-    $('[title]').tooltip({
-        delay: {
-            show: 100, 
-            hide: 0
-        }
-    })
+    // $('[title]').tooltip({
+    //     delay: {
+    //         show: 100, 
+    //         hide: 0
+    //     }
+    // })
 
     // Configurações do form validade
     $('*').delegate('.form-validate', 'load focus blur', function(){

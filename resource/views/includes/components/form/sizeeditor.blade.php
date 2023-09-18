@@ -41,8 +41,8 @@
 						'name' => isset($id) ? "price-previous-size-{$id}[]" : 'price-previous-size[]', 
 						'title' => 'Preço Anterior',
 						'value' => $price_previous ?? null,
-						'class' => 'required float-mask',
-						'required' => true
+						'class' => 'float-mask',
+						'required' => false
 					])
 				</div>
 			</div>

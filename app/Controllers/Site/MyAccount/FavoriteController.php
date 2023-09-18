@@ -5,15 +5,9 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Classes\Cart;
 use App\Models\{
 	Client,
-	ClientAddress,
-	ClientCard,
-	Product,
-	ProductColor,
-	ProductImage,
-	ProductSize
+	Product
 };
 
 class FavoriteController extends Controller{

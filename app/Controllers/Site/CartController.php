@@ -10,13 +10,9 @@ use App\Classes\{
 	FreteCorreios
 };
 use App\Models\{
-	Request as RequestModel,
 	RequestPayment,
 	RequestAddress,
-	RequestProduct,
 	Product,
-	ProductColor,
-	ProductImage,
 	ProductSize,
 	Coupon,
 	Client

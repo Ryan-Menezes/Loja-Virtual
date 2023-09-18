@@ -3,8 +3,6 @@ namespace App\Classes;
 
 use App\Models\{
 	Product,
-	ProductColor,
-	ProductImage,
 	ProductSize
 };
 

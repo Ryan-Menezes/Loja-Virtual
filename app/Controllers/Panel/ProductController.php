@@ -8,10 +8,7 @@ use Src\Classes\{
 use Src\Classes\Storage\Storage;
 use App\Models\{
 	Product,
-	ProductColor,
 	ProductImage,
-	ProductSize,
-	ProductDiscount,
 	Category
 };
 

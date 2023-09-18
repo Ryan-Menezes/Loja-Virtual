@@ -57,3 +57,6 @@
 .ui-tabs .ui-tabs-panel{
   height: auto!important;
 }
+.alert {
+  border-radius: 10px!important;
+}

@@ -10,8 +10,6 @@ use Src\Classes\{
 use App\Classes\Payment\MercadoPago;
 use App\Models\{
 	Client,
-	ClientAddress,
-	ClientCard,
     Request as RequestModel
 };
 

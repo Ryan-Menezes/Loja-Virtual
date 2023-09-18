@@ -6,10 +6,7 @@ use Src\Classes\{
 	Controller
 };
 use Src\Classes\Storage\Storage;
-use App\Models\{
-	SlideShow,
-	Role
-};
+use App\Models\SlideShow;
 
 class SlideShowController extends Controller{
 	private $slideshow;

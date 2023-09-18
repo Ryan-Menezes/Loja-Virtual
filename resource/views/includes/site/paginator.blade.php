@@ -1,4 +1,4 @@
-@if($pages > 0)
+@if($pages > 1)
 <div class="store-filter clearfix">
 	<ul class="store-pagination">
 		@if(empty($builder))

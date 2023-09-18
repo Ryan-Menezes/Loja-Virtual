@@ -10,7 +10,6 @@ use App\Models\{
 	Product,
 	ProductColor,
 	Category,
-	SubCategory,
 	Rating
 };
 
@@ -24,23 +23,24 @@ class ProductController extends Controller{
 	public function index(){
 		$request = new Request();
 
+		$limit = 9;
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
-		$query = $this->product->search(1, $search, $this->product->where('visible', true)->count());
+		$query = $this->product->search(1, $search, $this->product->where('visible', true)->count(), $limit);
 
 		if($request->has('freight_free')){
 			$query = $query->where('freight_free', true);
 		}
 
-		$pages = ceil($query->where('visible', true)->count() / config('paginate.limit'));
-		
-		$query = $this->product->search($page, $search)->where('visible', true);
+		$pages = ceil($query->where('visible', true)->count() / $limit);
+		$query = $this->product->search($page, $search, $limit)->where('visible', true);
+
 		if($request->has('freight_free')){
 			$query = $query->where('freight_free', true);
 		}
+
 		$products = $query->get();
-
 		$categories = Category::orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));

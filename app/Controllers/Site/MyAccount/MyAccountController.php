@@ -1,16 +1,9 @@
 <?php
 namespace App\Controllers\Site\MyAccount;
 
-use Src\Classes\{
-	Request,
-	Controller
-};
+use Src\Classes\Controller;
 use App\Classes\Cart;
-use App\Models\{
-	Client,
-	ClientAddress,
-	ClientCard
-};
+use App\Models\Client;
 
 class MyAccountController extends Controller{
 	private $client;
