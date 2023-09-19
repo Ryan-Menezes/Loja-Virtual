@@ -86,6 +86,11 @@ class AuthController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+
+		$first_name = $data['first_name'] ?? '';
+		$last_name = $data['last_name'] ?? '';
+		$data['name'] = "{$first_name} {$last_name}";
+
 		$data['cell'] = preg_replace('/[^\d]/i', '', $data['cell']);
 		$data['telephone'] = preg_replace('/[^\d]/i', '', $data['telephone']);
 

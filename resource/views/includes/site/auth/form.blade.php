@@ -8,14 +8,60 @@
 	@endif
 	<hr />
 
-	@include('includes.components.form.input', [
-		'title' => 'Nome',
-		'name' => 'name',
-		'type' => 'text',
-		'value' => ($auth_user ? $auth_user->getName() : null),
-		'class' => 'required',
-		'required' => true
-	])
+	@php
+		$first_name = null;
+		$last_name = null;
+
+		if ($auth_user) {
+			$parts = explode(' ', $auth_user->getName());
+			$first_name = isset($parts[0]) ? $parts[0] : null;
+			array_shift($parts);
+			$last_name = !empty($parts) ? implode(' ', $parts) : null;
+		}
+	@endphp
+
+	<div class="row">
+		<div class="col-md-6">
+			@include('includes.components.form.input', [
+				'title' => 'Nome',
+				'name' => 'first_name',
+				'type' => 'text',
+				'value' => $first_name,
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+		<div class="col-md-6">
+			@include('includes.components.form.input', [
+				'title' => 'Sobrenome',
+				'name' => 'last_name',
+				'type' => 'text',
+				'value' => $last_name,
+				'class' => 'required',
+				'required' => true
+			])
+		</div>
+	</div>
+
+	@if($type == 1)
+		<input type="hidden" name="redirect" value="pf">
+		@include('includes.components.form.input', [
+			'title' => 'CPF',
+			'name' => 'cpf',
+			'type' => 'text',
+			'class' => 'required cpf-mask',
+			'required' => true
+		])
+	@else
+		<input type="hidden" name="redirect" value="pj">
+		@include('includes.components.form.input', [
+			'title' => 'CNPJ',
+			'name' => 'cnpj',
+			'type' => 'text',
+			'class' => 'required cnpj-mask',
+			'required' => true
+		])
+	@endif
 
 	<div class="row">
 		<div class="col-md-6">
@@ -58,26 +104,6 @@
 			])
 		</div>
 	</div>
-
-	@if($type == 1)
-		<input type="hidden" name="redirect" value="pf">
-		@include('includes.components.form.input', [
-			'title' => 'CPF',
-			'name' => 'cpf',
-			'type' => 'text',
-			'class' => 'required cpf-mask',
-			'required' => true
-		])
-	@else
-		<input type="hidden" name="redirect" value="pj">
-		@include('includes.components.form.input', [
-			'title' => 'CNPJ',
-			'name' => 'cnpj',
-			'type' => 'text',
-			'class' => 'required cnpj-mask',
-			'required' => true
-		])
-	@endif
 
 	<br /><h3>Endereço</h3><hr />
 

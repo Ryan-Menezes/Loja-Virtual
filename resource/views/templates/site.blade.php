@@ -50,7 +50,7 @@
     <title>{{ config('app.name') }} | @yield('title')</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ public_path('assets/img/logo.png') }}">
+    <link rel="icon" href="{{ public_path('assets/img/favicon.png') }}">
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -106,7 +106,7 @@
                 <ul class="header-links pull-left">
                     <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
                     <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
-                    <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ config('app.address.postal_code') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
+                    <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ mask(config('app.address.postal_code'), '#####-###') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
                 </ul>
                 <ul class="header-links pull-right">
                     @if(!auth('site'))
@@ -317,7 +317,7 @@
                         <div class="footer">
                             <h3 class="footer-title">Contato</h3>
                             <ul class="footer-links">
-                                <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ config('app.address.postal_code') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
+                                <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ mask(config('app.address.postal_code'), '#####-###') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
                                 <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
                                 <li><a href="callto:{{ config('app.contact.cell') }}" title="Entrar em Contato por Celular"><i class="fa fa-phone"></i> {{ mask(config('app.contact.cell'), '(##)#####-####') }}</a></li>
                                 <li><a href="https://wa.me/{{ config('app.social.whatsapp') }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>

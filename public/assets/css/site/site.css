@@ -162,8 +162,8 @@ input.form-control{
   margin-right: 10px;
 }
 .product-details .product-options .product-color{
-	width: 25px;
-	height: 25px;
+	width: 30px;
+	height: 30px;
 	border-radius: 50%;
 	border: 1px solid #dedddc;
 	display: inline-block;
@@ -177,11 +177,15 @@ input.form-control{
 	border-radius: 20px;
 	font-size: 12px;
 	cursor: pointer;
-	min-width: 30px;
-	min-width: 30px;
+	min-width: 40px;
 	text-align: center;
 	line-height: 19px;
 	font-weight: bold;
+}
+
+#sizes {
+  display: flex;
+  gap: 10px;
 }
 
 @media (max-width: 800px) {

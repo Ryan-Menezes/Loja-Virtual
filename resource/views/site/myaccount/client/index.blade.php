@@ -20,14 +20,35 @@
 
 				<h2>Dados Pessoais</h2><hr />
 
-				@include('includes.components.form.input', [
-					'title' => 'Nome',
-					'name' => 'name',
-					'type' => 'text',
-					'value' => $client->name,
-					'class' => 'required',
-					'required' => true
-				])
+				@php
+					$parts = explode(' ', $client->name);
+					$first_name = isset($parts[0]) ? $parts[0] : null;
+					array_shift($parts);
+					$last_name = !empty($parts) ? implode(' ', $parts) : null;
+				@endphp
+
+				<div class="row">
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'Nome',
+							'name' => 'first_name',
+							'type' => 'text',
+							'value' => $first_name,
+							'class' => 'required',
+							'required' => true
+						])
+					</div>
+					<div class="col-md-6">
+						@include('includes.components.form.input', [
+							'title' => 'Sobrenome',
+							'name' => 'last_name',
+							'type' => 'text',
+							'value' => $last_name,
+							'class' => 'required',
+							'required' => true
+						])
+					</div>
+				</div>
 
 				@include('includes.components.form.input', [
 					'title' => 'E-Mail',

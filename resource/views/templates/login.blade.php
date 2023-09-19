@@ -30,7 +30,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/panel/auth/config.css') }}">
 
 	<!-- Favicon -->
-    <link rel="icon" href="{{ public_path('assets/img/logo.png') }}">
+    <link rel="icon" href="{{ public_path('assets/img/favicon.png') }}">
 
 	<title>{{ config('app.name') }} | @yield('title')</title>
 </head>

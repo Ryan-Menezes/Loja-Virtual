@@ -180,6 +180,8 @@ if(!function_exists('abort')){
 				$message = null;
 		}
 
+		header("HTTP/1.1 {$code}");
+
 		require __DIR__ . '/../storage/framework/views/error.php';
 		die();
 	}

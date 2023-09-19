@@ -470,11 +470,15 @@ textarea.input {
 
 .header-search form {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .header-search form .input-select {
   margin-right: -4px;
   border-radius: 40px 0px 0px 40px;
+  max-width: 150px;
 }
 
 .header-search form .input {
