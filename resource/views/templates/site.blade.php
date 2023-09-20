@@ -98,14 +98,31 @@
         ])
     @endif
 
+    @php
+        $phone = config('app.contact.phone');
+        $cell = config('app.contact.cell');
+        $email = config('app.contact.email');
+        $whatsapp = config('app.social.whatsapp');
+        $facebook = config('app.social.facebook');
+        $instagram = config('app.social.instagram');
+        $linkedin = config('app.social.linkedin');
+        $twitter = config('app.social.twitter');
+    @endphp
+
     <!-- HEADER -->
     <header>
         <!-- TOP HEADER -->
         <div id="top-header">
             <div class="container">
                 <ul class="header-links pull-left">
-                    <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
-                    <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
+                    @if(!empty($phone))
+                    <li><a href="tel:{{ $phone }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask($phone, '(##)####-####') }}</a></li>
+                    @endif
+                    
+                    @if(!empty($email))
+                    <li><a href="mailto:{{ $email }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ $email }}</a></li>
+                    @endif
+                    
                     <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ mask(config('app.address.postal_code'), '#####-###') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
                 </ul>
                 <ul class="header-links pull-right">
@@ -318,10 +335,22 @@
                             <h3 class="footer-title">Contato</h3>
                             <ul class="footer-links">
                                 <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ mask(config('app.address.postal_code'), '#####-###') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
-                                <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
-                                <li><a href="callto:{{ config('app.contact.cell') }}" title="Entrar em Contato por Celular"><i class="fa fa-phone"></i> {{ mask(config('app.contact.cell'), '(##)#####-####') }}</a></li>
-                                <li><a href="https://wa.me/{{ config('app.social.whatsapp') }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask(config('app.social.whatsapp'), '(##)####-####') }}</a></li>
-                                <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
+                                
+                                @if(!empty($phone))
+                                <li><a href="tel:{{ $phone }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask($phone, '(##)####-####') }}</a></li>
+                                @endif
+                                
+                                @if(!empty($cell))
+                                <li><a href="tel:{{ $cell }}" title="Entrar em Contato por Celular"><i class="fa fa-phone"></i> {{ mask($cell, '(##)#####-####') }}</a></li>
+                                @endif
+                                
+                                @if(!empty($whatsapp))
+                                <li><a href="https://wa.me/{{ $whatsapp }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask($whatsapp, '(##)####-####') }}</a></li>
+                                @endif
+
+                                @if(!empty($email))
+                                <li><a href="mailto:{{ $email }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ $email }}</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -330,10 +359,21 @@
                         <div class="footer">
                             <h3 class="footer-title">Redes Sociais</h3>
                             <ul class="footer-links">
-                                <li><a href="{{ config('app.social.facebook') }}" title="Nosso Facebook" target="_blank"><i class="fa fa-facebook"></i> Facebook</a></li>
-                                <li><a href="{{ config('app.social.instagram') }}" title="Nosso Instagram" target="_blank"><i class="fa fa-instagram"></i> Instagram</a></li>
-                                <li><a href="{{ config('app.social.twitter') }}" title="Nosso Twitter" target="_blank"><i class="fa fa-twitter"></i> Twitter</a></li>
-                                <li><a href="{{ config('app.social.linkedin') }}" title="Nosso Linkedin" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></li>
+                                @if(!empty($facebook))
+                                <li><a href="{{ $facebook }}" title="Nosso Facebook" target="_blank"><i class="fa fa-facebook"></i> Facebook</a></li>
+                                @endif
+                                
+                                @if(!empty($instagram))
+                                <li><a href="{{ $instagram }}" title="Nosso Instagram" target="_blank"><i class="fa fa-instagram"></i> Instagram</a></li>
+                                @endif
+                               
+                                @if(!empty($twitter))
+                                <li><a href="{{ $twitter }}" title="Nosso Twitter" target="_blank"><i class="fa fa-twitter"></i> Twitter</a></li>
+                                @endif
+                                
+                                @if(!empty($linkedin))
+                                <li><a href="{{ $linkedin }}" title="Nosso Linkedin" target="_blank"><i class="fa fa-linkedin"></i> Linkedin</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -358,9 +398,14 @@
                         <div class="footer">
                             <h3 class="footer-title">Serviços</h3>
                             <ul class="footer-links">
-                                <li><a href="{{ route('site.myaccount') }}" title="Minha Conta">Minha Conta</a></li>
                                 <li><a href="{{ route('site.cart') }}" title="Carrinho de Compras">Carrinho</a></li>
+                                @if(!auth('site'))
+                                <li><a href="{{ route('site.login') }}" title="Fazer Login em Minha Conta">Login</a></li>
+                                <li><a href="{{ route('site.account.pf.create') }}" title="Criar Minha Conta">Criar Conta</a></li>
+                                @else
+                                <li><a href="{{ route('site.myaccount') }}" title="Minha Conta"><i class="fa fa-user-circle"></i> Minha Conta</a></li>
                                 <li><a href="{{ route('site.myaccount.favorites') }}" title="Seus Produtos Favoritos">Favoritos</a></li>
+                                @endif
                             </ul>
                         </div>
                     </div>
@@ -378,14 +423,14 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <ul class="footer-payments">
-                            <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
-                            <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
-                            <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
-                            <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
-                            <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
-                            <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+                            <li><a><i class="fa fa-cc-visa"></i></a></li>
+                            <li><a><i class="fa fa-credit-card"></i></a></li>
+                            <li><a><i class="fa fa-cc-paypal"></i></a></li>
+                            <li><a><i class="fa fa-cc-mastercard"></i></a></li>
+                            <li><a><i class="fa fa-cc-discover"></i></a></li>
+                            <li><a><i class="fa fa-cc-amex"></i></a></li>
                         </ul>
-                        <span class="copyright">{{ config('app.name') }} &copy; {{ date('Y') }} Todos os direitos reservados | Site desenvolvido por <a href="https://ryan-menezes.github.io/" target="_blank" title="Portfólio do Desenvolvedor">Ryan Menezes</a></span>
+                        <span class="copyright">{{ config('app.name') }} &copy; {{ date('Y') }} Todos os direitos reservados | Site desenvolvido por <a href="https://ryan-menezes.github.io/" target="_blank" title="Portfólio do Desenvolvedor" style="color: #fff;">Ryan Menezes</a></span>
                     </div>
                 </div>
                     <!-- /row -->
