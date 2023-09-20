@@ -5,7 +5,7 @@ class SiteMap{
     /** @var array */
     private $urls;
 
-    /** @var array */
+    /** @var string */
     private $xml;
 
     public function __construct(){

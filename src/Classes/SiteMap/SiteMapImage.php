@@ -8,6 +8,9 @@ class SiteMapImage{
     /** @var array */
     private $urls;
 
+    /** @var string */
+    private $xml;
+
     public function __construct(string $location){
         $this->location = $location;
         $this->urls = [];

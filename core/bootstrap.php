@@ -1,9 +1,7 @@
 <?php
 use Src\Classes\{
 	Route,
-	View,
-	Session,
-	Request
+	Session
 };
 
 ob_start();
