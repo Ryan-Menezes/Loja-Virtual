@@ -43,7 +43,7 @@
     </div>
 
     <div class="col-md-12">
-       @include('includes.site.paginator', ['route' => 'site.notices']) 
+       @include('includes.site.paginator') 
     </div>
 </section>
 @endsection

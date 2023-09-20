@@ -44,6 +44,7 @@ class CategoryController extends Controller{
 		
 		$request = new Request();
 
+		$limit = 9;
 		$builder = $request->except('page');
 		$page = $request->input('page') ?? 1;
 		$search = $request->input('search');
@@ -53,9 +54,9 @@ class CategoryController extends Controller{
 			$query = $query->where('freight_free', true);
 		}
 
-		$pages = ceil($query->count() / config('paginate.limit'));
+		$pages = ceil($query->count() / $limit);
 		
-		$query = $this->searchProduct($subcategory->products(), $page, $search);
+		$query = $this->searchProduct($subcategory->products(), $page, $search, $limit);
 		if($request->has('freight_free')){
 			$query = $query->where('freight_free', true);
 		}

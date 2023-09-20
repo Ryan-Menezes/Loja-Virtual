@@ -71,7 +71,7 @@
 				</div>
 
 				<!-- store bottom filter -->
-				@include('includes.site.paginator', ['route' => 'site.products'])
+				@include('includes.site.paginator')
 				<!-- /store bottom filter -->
 			</div>
 			<!-- /STORE -->
