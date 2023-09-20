@@ -320,7 +320,7 @@
                                 <li><a href="javascript:void(0)" title="Visite nossa loja nesse endereço"><i class="fa fa-map-marker"></i> {{ mask(config('app.address.postal_code'), '#####-###') }} - {{ config('app.address.street') }}, {{ config('app.address.number') }}, {{ config('app.address.district') }}, {{ config('app.address.city') }} - {{ config('app.address.state') }}</a></li>
                                 <li><a href="callto:{{ config('app.contact.phone') }}" title="Entrar em Contato por Telefone"><i class="fa fa-phone"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
                                 <li><a href="callto:{{ config('app.contact.cell') }}" title="Entrar em Contato por Celular"><i class="fa fa-phone"></i> {{ mask(config('app.contact.cell'), '(##)#####-####') }}</a></li>
-                                <li><a href="https://wa.me/{{ config('app.social.whatsapp') }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask(config('app.contact.phone'), '(##)####-####') }}</a></li>
+                                <li><a href="https://wa.me/{{ config('app.social.whatsapp') }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask(config('app.social.whatsapp'), '(##)####-####') }}</a></li>
                                 <li><a href="mailto:{{ config('app.contact.email') }}" title="Entrar em Contato por E-Mail"><i class="fa fa-envelope-o"></i> {{ config('app.contact.email') }}</a></li>
                             </ul>
                         </div>

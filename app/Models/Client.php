@@ -6,7 +6,7 @@ use Src\Classes\Mail;
 
 class Client extends Model{
 	public $table = 'clients';
-	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj', 'token', 'google_id', 'facebook_id', 'shipping_address_id', 'billing_address_id'];
+	protected $fillable = ['name', 'email', 'password', 'telephone', 'cell', 'cpf', 'cnpj', 'token', 'google_id', 'facebook_id', 'validated', 'shipping_address_id', 'billing_address_id'];
 	public $timestamps = true;
 
 	public function getRolesCreateAttribute(){

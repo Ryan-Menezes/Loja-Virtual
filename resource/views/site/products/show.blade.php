@@ -169,7 +169,11 @@
 						<p><small>Em até {{ $product->installment_no_interest }} vezes sem juros</small></p>
 					</div>
 					
+					@if(mb_strlen($product->description) <= 200)
 					<p style="margin-top: 20px;">{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
+					@else
+					<p style="margin-top: 20px;">{!! str_ireplace("\n", '<br/>', substr($product->description, 0, 200)) !!}... <a href="#tab1">Leia mais</a></p>
+					@endif
 
 					<div class="product-options">
 						<div>
