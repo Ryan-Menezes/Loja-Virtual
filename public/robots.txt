@@ -1,0 +1,6 @@
+User-agent: *
+
+Disallow: /painel/
+
+Sitemap: https://www.yourdomain.br/sitemap.xml
+Sitemap: https://www.yourdomain.br/sitemap-images.xml

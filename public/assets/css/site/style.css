@@ -2069,7 +2069,7 @@ textarea.input {
   margin-right: 5px;
 }
 
-.footer-payments li a {
+.footer-payments li span {
   color: #15161D;
   font-size: 36px;
   display: block;

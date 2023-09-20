@@ -453,12 +453,12 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <ul class="footer-payments">
-                            <li><a><i class="fa fa-cc-visa"></i></a></li>
-                            <li><a><i class="fa fa-credit-card"></i></a></li>
-                            <li><a><i class="fa fa-cc-paypal"></i></a></li>
-                            <li><a><i class="fa fa-cc-mastercard"></i></a></li>
-                            <li><a><i class="fa fa-cc-discover"></i></a></li>
-                            <li><a><i class="fa fa-cc-amex"></i></a></li>
+                            <li><span><i class="fa fa-cc-visa"></i></span></li>
+                            <li><span><i class="fa fa-credit-card"></i></span></li>
+                            <li><span><i class="fa fa-cc-paypal"></i></a></li>
+                            <li><span><i class="fa fa-cc-mastercard"></i></span></li>
+                            <li><span><i class="fa fa-cc-discover"></i></span></li>
+                            <li><span><i class="fa fa-cc-amex"></i></span></li>
                         </ul>
                         <span class="copyright">{{ config('app.name') }} &copy; {{ date('Y') }} Todos os direitos reservados | Site desenvolvido por <a href="https://ryan-menezes.github.io/" target="_blank" title="Portfólio do Desenvolvedor" style="color: #fff;">Ryan Menezes</a></span>
                     </div>
