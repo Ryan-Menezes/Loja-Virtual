@@ -37,9 +37,9 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#form-payment').submit(function(){
-            event.preventDefault()
+            event.preventDefault();
 
-            let form = this
+            let form = this;
 
             $.ajax({
                 url: form.action,
@@ -48,26 +48,26 @@
                 dataType: 'json',
                 processData: false,
                 beforeSend: function(){
-                    showLoad('Validando dados, aguarde...')
+                    showLoad('Validando dados, aguarde...');
                 },
                 success: function(response){
                     if(response.result){
-                        $('.cont-content').html('<h2>Pagamento por transferência bancária</h2>')
-                        $('.cont-content').append('<p>Você selecionou o pagamento por transferência bancária, para que seu pedido seja confirmado para entrega, efetue o pagamento, para mais informações clique no botão abaixo:</p>')
-                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Mais informações sobre à transferência bancária" class="btn btn-success" style="margin-top: 20px;">Mais informações sobre à transferência bancária <i class="fa fa-external-link"></i></a>`)
+                        $('.cont-content').html('<h2>Pagamento por transferência bancária</h2>');
+                        $('.cont-content').append('<p>Você selecionou o pagamento por transferência bancária, para que seu pedido seja confirmado para entrega, efetue o pagamento, para mais informações clique no botão abaixo:</p>');
+                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Mais informações sobre à transferência bancária" class="btn btn-success" style="margin-top: 20px;">Mais informações sobre à transferência bancária <i class="fa fa-external-link"></i></a>`);
                     }else{
-                        $('#message-request').text(response.message).show()
+                        $('#message-request').text(response.message).show();
                     }
                 },
                 error: function(response){
-                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
+                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show();
                 },
                 complete: function(){
-                    hideLoad()
+                    hideLoad();
                 }
-            })
-        })
-    })
+            });
+        });
+    });
 </script>
 @endsection
 

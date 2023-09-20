@@ -38,9 +38,9 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $('#form-payment').submit(function(){
-            event.preventDefault()
+            event.preventDefault();
 
-            let form = this
+            let form = this;
 
             $.ajax({
                 url: form.action,
@@ -49,26 +49,26 @@
                 dataType: 'json',
                 processData: false,
                 beforeSend: function(){
-                    showLoad('Gerando boleto, aguarde...')
+                    showLoad('Gerando boleto, aguarde...');
                 },
                 success: function(response){
                     if(response.result){
-                        $('.cont-content').html('<h2>Boleto Gerado com Sucesso!</h2>')
-                        $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>')
-                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`)
+                        $('.cont-content').html('<h2>Boleto Gerado com Sucesso!</h2>');
+                        $('.cont-content').append('<p>Para imprimir o seu boleto basta clicar no botão abaixo:</p>');
+                        $('.cont-content').append(`<a href="${response.paymentLink}" target="_blank" title="Imprimir Boleto" class="btn btn-success" style="margin-top: 20px;">Imprimir Boleto <i class="fa fa-print"></i></a>`);
                     }else{
-                        $('#message-request').text(response.message).show()
+                        $('#message-request').text(response.message).show();
                     }
                 },
                 error: function(response){
-                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show()
+                    $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O SEU BOLETO, FAVOR TENTAR NOVAMENTE!').show();
                 },
                 complete: function(){
-                    hideLoad()
+                    hideLoad();
                 }
-            })
-        })
-    })
+            });
+        });
+    });
 </script>
 @endsection
 

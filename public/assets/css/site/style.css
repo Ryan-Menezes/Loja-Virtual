@@ -949,6 +949,7 @@ textarea.input {
   font-size: 70%;
   font-weight: 400;
   color: #8D99AE;
+  margin-left: 5px;
 }
 
 .product .product-body .product-rating {
@@ -1145,6 +1146,7 @@ textarea.input {
   font-size: 70%;
   font-weight: 400;
   color: #8D99AE;
+  margin-left: 5px;
 }
 
 .product-widget .product-body .product-price .qty {
@@ -1514,6 +1516,7 @@ textarea.input {
   font-size: 70%;
   font-weight: 400;
   color: #8D99AE;
+  margin-left: 5px;
 }
 
 .product-details .product-available {

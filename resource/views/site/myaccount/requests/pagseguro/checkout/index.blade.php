@@ -42,25 +42,25 @@
 
             <script type="text/javascript">
                 $('.btn-payment').click(function(){
-                    event.preventDefault()
+                    event.preventDefault();
 
-                    // Chamada do lightbox passando o código de checkout e os comandos para o callback
+                    /* Chamada do lightbox passando o código de checkout e os comandos para o callback */
                     let isOpenLightbox = PagSeguroLightbox('{{ $code }}', {
                         success: function(transactionCode) {
-                            window.document.location.reload(true)
+                            window.document.location.reload(true);
                         },
                         abort: function(){}
-                    })
+                    });
 
-                    // Redireciona o comprador, caso o navegador não tenha suporte ao Lightbox
+                    /* Redireciona o comprador, caso o navegador não tenha suporte ao Lightbox */
                     if(!isOpenLightbox){
                         @if(config('store.payment.production'))
-                        window.open('https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}', '_blank')
+                        window.open('https://pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}', '_blank');
                         @else
-                        window.open('https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}', '_blank')
+                        window.open('https://sandbox.pagseguro.uol.com.br/v2/checkout/payment.html?code={{ $code }}', '_blank');
                         @endif
                     }
-                })
+                });
             </script>
         @endsection
     @endif

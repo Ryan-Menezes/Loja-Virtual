@@ -214,7 +214,7 @@
 
 @section('scripts')
 <script type="text/javascript">
-    // Facebook
+    /* Facebook */
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -223,30 +223,30 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    // Outros compartilhamentos
+    /* Outros compartilhamentos */
     window.document.addEventListener("DOMContentLoaded", function() {
         $('.share-btn').click(function(){
-            event.preventDefault()
+            event.preventDefault();
 
-            window.open(this.href, '_blank', 'width=700,height=350')
-        })
+            window.open(this.href, '_blank', 'width=700,height=350');
+        });
     }, false);
 
-    // Script para responder um comentário
+    /* Script para responder um comentário */
     $('[data-startresponse]').click(function(){
-        $('.form-response').hide()
+        $('.form-response').hide();
 
-        let data = $(this).data()
+        let data = $(this).data();
 
-        $(`#${data.startresponse}`).show()
-    })
+        $(`#${data.startresponse}`).show();
+    });
 
     $('[data-cancelresponse]').click(function(){
-        $('.form-response').hide()
+        $('.form-response').hide();
         
-        let data = $(this).data()
+        let data = $(this).data();
 
-        $(`#${data.cancelresponse}`).hide()
-    })
+        $(`#${data.cancelresponse}`).hide();
+    });
 </script>
 @endsection

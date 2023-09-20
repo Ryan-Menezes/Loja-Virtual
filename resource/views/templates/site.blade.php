@@ -20,6 +20,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <meta name="title" content="{{ config('app.name') }} | @yield('title')" />
+    <meta name="author" content="{{ config('app.url') }}" />
+    <meta name="geo.region" content="BR-{{ config('app.address.state') }}" />
+    <meta name="geo.position" content="{{ config('app.address.latitude') }};{{ config('app.address.longitude') }}" />
+    <meta name="ICBM" content="{{ config('app.address.latitude') }};{{ config('app.address.longitude') }}" />
+
+    <meta name="language" content="{{ config('app.lang') }}" />
+    <meta name="copyright" content="{{ config('app.name') }}" />
+    <meta name="distribution" content="global" />
+    <meta name="audience" content="all" />
+    <meta name="url" content="{{ config('app.url') }}" />
+    <meta name="classification" content="{{ config('app.description') }}" />
+    <meta name="category" content="{{ config('app.description') }}" />
+    <meta name="Page-Topic" content="{{ config('app.name') }} | @yield('title')" />
+    <meta name="rating" content="general" />
+    <meta name="fone" content="{{ config('app.contact.phone') }}" />
+    <meta name="city" content="{{ config('app.address.city') }}" />
+    <meta name="country" content="Brasil" />
+    <meta property="publisher" content="{{ config('app.name') }}" />
+
+    <meta name="robots" content="index, follow>" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="theme-color" content="#D10024">
+
+    <link rel="canonical" href="{{ config('app.url') }}" />
+    <meta name="geo.placename" content="Brasil" />
+    <meta name="geo.region" content="{{ config('app.address.city') }}" />
+    <meta name="name" content="{{ config('app.name') }}" />
+    <meta name="image" content="@yield('image')" />
+
     <meta property="og:url" content="@yield('url')" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ config('app.name') }} | @yield('title')" />

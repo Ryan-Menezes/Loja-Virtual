@@ -137,76 +137,76 @@
         <script type="text/javascript" src="{{ public_path('assets/js/site/pagseguro.js') }}"></script>
 
         <script type="text/javascript">
-            const amount = Number({{ $requestmodel->payment->amountFormat }})
+            const amount = Number({{ $requestmodel->payment->amountFormat }});
             const installments_discounts = {
                 @foreach($installments_discounts as $key => $value)
                 {{ $key }}: {{ $value }},
                 @endforeach
-            }
+            };
 
             $(document).ready(function(){
-                setSessionId($('#session_id').val())
+                setSessionId($('#session_id').val());
 
-                // Pega a bandeira do cartão
+                /* Pega a bandeira do cartão */
                 $('.number_card').keyup(function(){
-                    $('#brand').val('')
-                    $('.brand-card').empty()
-                    $('.installments_card').empty()
-                    $('#message-request').empty().hide()
+                    $('#brand').val('');
+                    $('.brand-card').empty();
+                    $('.installments_card').empty();
+                    $('#message-request').empty().hide();
 
-                    let number = $(this).val().replace(/\D/ig, '')
+                    let number = $(this).val().replace(/\D/ig, '');
 
                     getBrand(number, function(response){
-                        $('#brand').val(response.brand.name)
-                        $('.brand-card').html(`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/${response.brand.name}.png" alt="${response.brand.name}" title="${response.brand.name}" />`)
+                        $('#brand').val(response.brand.name);
+                        $('.brand-card').html(`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/42x20/${response.brand.name}.png" alt="${response.brand.name}" title="${response.brand.name}" />`);
 
-                        const brand = response.brand.name
+                        const brand = response.brand.name;
 
-                        // Buscar pelas parcelas disponíveis
+                        /* Buscar pelas parcelas disponíveis */
                         getInstallments(amount, {{ $installment_no_interest }}, brand, function(response){
                             if(response.error){
-                                $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show()
-                                return
+                                $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show();
+                                return;
                             }
                             
                             $.each(response.installments[brand], function(index, value){
-                                $('.installments_card').append(optionInstallment(index + 1, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree))
-                            })
+                                $('.installments_card').append(optionInstallment(index + 1, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree));
+                            });
 
-                            replaceInstallments(brand)
+                            replaceInstallments(brand);
                         },
                         function(response){
-                            $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show()
-                        })
+                            $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR AS PARCELAS DESTE CARTÃO, POR FAVOR INFORME O NÚMERO DO CARTÃO NOVAMENTE!').show();
+                        });
                     },
                     function(response){
-                        $('#message-request').text('O CARTÃO INFORMADO É INVÁLIDO!').show()
-                    })
-                })
+                        $('#message-request').text('O CARTÃO INFORMADO É INVÁLIDO!').show();
+                    });
+                });
 
-                // Gera o hash do sender e executa a criação do link de pagamento
+                /* Gera o hash do sender e executa a criação do link de pagamento */
                 $('#form-payment').submit(function(){
-                    event.preventDefault()
+                    event.preventDefault();
 
-                    const form            = this
-                    const brand           = $('#brand').val()
-                    const name            = $(form).find('input[name=name]').val()
-                    const number          = $(form).find('input[name=number]').val().replace(/\D/ig, '')
-                    const cvv             = $(form).find('input[name=cvv]').val()
-                    const month           = $(form).find('select[name=month]').val()
-                    const year            = $(form).find('select[name=year]').val()
-                    const document        = $(form).find('input[name=document]').val().replace(/\D/ig, '')
-                    const birth           = $(form).find('input[name=birth]').val()
-                    const telephone       = $(form).find('input[name=telephone]').val().replace(/\D/ig, '')
-                    const installments    = $(form).find('select[name=installments]').val()
+                    const form            = this;
+                    const brand           = $('#brand').val();
+                    const name            = $(form).find('input[name=name]').val();
+                    const number          = $(form).find('input[name=number]').val().replace(/\D/ig, '');
+                    const cvv             = $(form).find('input[name=cvv]').val();
+                    const month           = $(form).find('select[name=month]').val();
+                    const year            = $(form).find('select[name=year]').val();
+                    const document        = $(form).find('input[name=document]').val().replace(/\D/ig, '');
+                    const birth           = $(form).find('input[name=birth]').val();
+                    const telephone       = $(form).find('input[name=telephone]').val().replace(/\D/ig, '');
+                    const installments    = $(form).find('select[name=installments]').val();
 
                     if(brand && name && number.length >= 15 && cvv.length >= 3 && month && year && document.length >= 11 && birth.length == 10 && telephone.length >= 10 && installments){
                         getCardToken(number, brand, cvv, month, '20' + year, function(response){
-                            $('#credit_card_token').val(response.card.token)
+                            $('#credit_card_token').val(response.card.token);
 
                             getSenderHash(function(response){
                                 if(response.status == 'error') {
-                                    $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR VERIFIQUE SE OS DADOS DO CARTÃO ESTÃO CORRETOS!').show()
+                                    $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR VERIFIQUE SE OS DADOS DO CARTÃO ESTÃO CORRETOS!').show();
                                     return false;
                                 }
 
@@ -219,57 +219,57 @@
                                     dataType: 'json',
                                     processData: false,
                                     beforeSend: function(){
-                                        showLoad('Validando Pagamento, aguarde...')
+                                        showLoad('Validando Pagamento, aguarde...');
                                     },
                                     success: function(response){
                                         if(response.result){
-                                            $('.cont-content').html('<h2>Os dados do cartão foram enviados com sucesso!</h2>')
-                                            $('.cont-content').append('<p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>')
-                                            $('.cont-content').append(`<a href="{{ route('site.myaccount.requests.show', ['id' => $requestmodel->id]) }}" title="Voltar Para o Pedido" class="btn btn-success" style="margin-top: 20px;">Voltar Para o Pedido</a>`)
+                                            $('.cont-content').html('<h2>Os dados do cartão foram enviados com sucesso!</h2>');
+                                            $('.cont-content').append('<p>Estamos analisando o seu pagamento, caso esteja tudo correto vamos confirmar o seu pagamento e liberar seu pedido para entrega.</p>');
+                                            $('.cont-content').append(`<a href="{{ route('site.myaccount.requests.show', ['id' => $requestmodel->id]) }}" title="Voltar Para o Pedido" class="btn btn-success" style="margin-top: 20px;">Voltar Para o Pedido</a>`);
                                         }else{
-                                            $('#message-request').text(response.message).show()
+                                            $('#message-request').text(response.message).show();
                                         }
                                     },
                                     error: function(response){
-                                        $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR VERIFIQUE SE OS DADOS DO CARTÃO ESTÃO CORRETOS!').show()
+                                        $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR VERIFIQUE SE OS DADOS DO CARTÃO ESTÃO CORRETOS!').show();
                                     },
                                     complete: function(response){
-                                        hideLoad()
+                                        hideLoad();
                                     }
                                 })
                             })
                         },
                         function(response){
-                            $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR TENTE EXECUTAR O FORMULÁRIO NOVAMENTE!').show()
-                        })
+                            $('#message-request').text('NÃO FOI POSSÍVEL EXECUTAR O PAGAMENTO, POR FAVOR TENTE EXECUTAR O FORMULÁRIO NOVAMENTE!').show();
+                        });
                     }else{
-                        $('#message-request').text('PREENCHA TODOS OS CAMPOS CORRETAMENTE!').show()
+                        $('#message-request').text('PREENCHA TODOS OS CAMPOS CORRETAMENTE!').show();
                     }
-                })
-            })
+                });
+            });
 
             function optionInstallment(installment, quantity, totalAmount, installmentAmount, interestFree, discount = 0){
-                return `<option value="${quantity}x${installmentAmount}" id="installment_${installment}">${quantity} ${quantity > 1 ? 'parcelas' : 'parcela'} de ${installmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} = ${totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}${discount ? (' com ' + (String(discount).replace('.', ',')) + '% desconto') : ''} - ${interestFree ? 'Sem' : 'Com'} Juros</option>`
+                return `<option value="${quantity}x${installmentAmount}" id="installment_${installment}">${quantity} ${quantity > 1 ? 'parcelas' : 'parcela'} de ${installmentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} = ${totalAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}${discount ? (' com ' + (String(discount).replace('.', ',')) + '% desconto') : ''} - ${interestFree ? 'Sem' : 'Com'} Juros</option>`;
             }
 
             async function replaceInstallments(brand){
-                // Substituindo parcelas com desconto
+                /* Substituindo parcelas com desconto */
                 for(let installment in installments_discounts){
-                    const discount = installments_discounts[installment]
+                    const discount = installments_discounts[installment];
 
                     if(discount){
                         const value = await new Promise((resolve, reject) => {
                             getInstallments(amount - (amount * (discount  / 100)), {{ $installment_no_interest }}, brand, function(response){
                                 if(response.error){
-                                    reject('Erro')
+                                    reject('Erro');
                                 }
                                 
-                                resolve(response.installments[brand][installment - 1])
-                            })
-                        })
+                                resolve(response.installments[brand][installment - 1]);
+                            });
+                        });
 
                         await $(`option#installment_${installment}`)
-                                    .replaceWith(optionInstallment(installment, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree, discount))
+                                    .replaceWith(optionInstallment(installment, value.quantity, value.totalAmount, value.installmentAmount, value.interestFree, discount));
                     }
                 }
             }

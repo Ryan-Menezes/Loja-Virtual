@@ -37,7 +37,7 @@
 
         <script type="text/javascript">
             $(document).ready(function(){
-                setPublicKey("{{ config('store.payment.credentials.mercadopago.public_key') }}")
+                setPublicKey("{{ config('store.payment.credentials.mercadopago.public_key') }}");
 
                 const checkout = mp.checkout({
                     preference: {
@@ -53,14 +53,14 @@
                         headerColor: "{{ config('store.payment.credentials.mercadopago.header_color') }}",
                         elementsColor: "{{ config('store.payment.credentials.mercadopago.elements_color') }}"
                     }
-                })
+                });
 
                 $('.btn-payment').click(function(){
-                    event.preventDefault()
+                    event.preventDefault();
 
-                    checkout.open()
-                })
-            })
+                    checkout.open();
+                });
+            });
         </script>
         @endsection
     @endif

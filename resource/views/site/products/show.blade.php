@@ -463,22 +463,22 @@
 
 @section('scripts')
 <script type="text/javascript">
-	let sizes
+	let sizes;
 
 	$(document).ready(function(){
 		$('[data-colorurl]').click(function(){
-			getInfo($(this).data().colorurl)
-		})
+			getInfo($(this).data().colorurl);
+		});
 
 		$('*').delegate('[data-size]', 'click', function(){
-			let value = $(this).data().size.split('-')
+			let value = $(this).data().size.split('-');
 
-			renderSize(sizes[value[1]])
-			return false
-		})
+			renderSize(sizes[value[1]]);
+			return false;
+		});
 
-		getInfo($('[data-colorurl]:first').data().colorurl)
-	})
+		getInfo($('[data-colorurl]:first').data().colorurl);
+	});
 
 	function getInfo(url){
 		$.ajax({
@@ -486,49 +486,49 @@
 			method: 'POST',
 			dataType: 'json',
 			beforeSend(){
-				showLoad()
+				showLoad();
 			},
 			complete: function(){
-				hideLoad()
+				hideLoad();
 			}
 		})
 		.done(function(result){
 			if(result.success){
-				$('#product-imgs').empty().removeAttr('class')
-				$('#product-main-img').empty().removeAttr('class')
-				$('#sizes').empty()
+				$('#product-imgs').empty().removeAttr('class');
+				$('#product-main-img').empty().removeAttr('class');
+				$('#sizes').empty();
 
 				$.each(result.images, function(index, image){
-					let html = `<div class="product-preview"><img src="${image}" alt="{{ $product->name }}" title="{{ $product->name }}"/></div>`
+					let html = `<div class="product-preview"><img src="${image}" alt="{{ $product->name }}" title="{{ $product->name }}"/></div>`;
 
-					$('#product-imgs').append(html)
-					$('#product-main-img').append(html)
-				})
+					$('#product-imgs').append(html);
+					$('#product-main-img').append(html);
+				});
 
 				$.each(result.sizes, function(index, size){
-					let html = `<div class="product-size" data-size="${size.id}-${index}">${size.description}</div>`
+					let html = `<div class="product-size" data-size="${size.id}-${index}">${size.description}</div>`;
 
-					$('#sizes').append(html)
-				})
+					$('#sizes').append(html);
+				});
 
-				sizes = result.sizes
-				renderSize(result.sizes[0])
-				restart()
+				sizes = result.sizes;
+				renderSize(result.sizes[0]);
+				restart();
 			}
 		})
 		.fail(function(){
-			alert('FALHA AO TENTAR CARREGAR AS IMAGENS E TAMANHOS DO PRODUTO!')
+			alert('FALHA AO TENTAR CARREGAR AS IMAGENS E TAMANHOS DO PRODUTO!');
 		})
 	}
 
 	function renderSize(size){
 		if(size != undefined){
-			$('input[name=size_id]').val(size.id)
+			$('input[name=size_id]').val(size.id);
 
 			$('.product-current-price').text((Number(size.price)).toLocaleString('pt-BR', {
 				style: 'currency', 
 				currency: 'BRL'
-			}))
+			}));
 
 			const pricePrevious = Number(size.price_previous);
 
@@ -536,30 +536,30 @@
 				$('.product-old-price').text(pricePrevious.toLocaleString('pt-BR', {
 					style: 'currency', 
 					currency: 'BRL'
-				}))
+				}));
 			} else {
-				$('.product-old-price').text('')
+				$('.product-old-price').text('');
 			}
 
 			if(size.quantity > 0){
-				$('.product-available').text('Produto Disponível')
-				$('.add-to-cart').show()
+				$('.product-available').text('Produto Disponível');
+				$('.add-to-cart').show();
 			}else{
-				$('.product-available').text('Produto Indisponível')
-				$('.add-to-cart').hide()
+				$('.product-available').text('Produto Indisponível');
+				$('.add-to-cart').hide();
 			}
 
 			$('.price-discount').text((Number(size.priceDiscount)).toLocaleString('pt-BR', {
 				style: 'currency', 
 				currency: 'BRL'
-			}))
+			}));
 
-			let form = window.document.querySelector('.add-to-cart')
+			let form = window.document.querySelector('.add-to-cart');
 
 			if(form){
-				let url = form.action
-				url = url.replace(/^(.*)(\/.*)$/ig, '$1/' + size.id)
-				form.action = url
+				let url = form.action;
+				url = url.replace(/^(.*)(\/.*)$/ig, '$1/' + size.id);
+				form.action = url;
 			}
 		}
 	}
@@ -572,9 +572,9 @@
 	    	arrows: true,
 	    	fade: true,
 	    	asNavFor: '#product-imgs'
-	  	})
+	  	});
 
-		// Product imgs Slick
+		/* Product imgs Slick */
 		$('#product-imgs').slick({
 		    slidesToShow: 3,
 		    slidesToScroll: 1,
@@ -592,9 +592,9 @@
 					dots: true,
 		        }
 		    }]
-		})
+		});
 
-		// Product img zoom
+		/* Product img zoom */
 		var zoomMainProduct = document.getElementById('product-main-img');
 		if (zoomMainProduct) {
 			$('#product-main-img .product-preview').zoom();
@@ -602,7 +602,7 @@
 	}
 </script>
 <script type="text/javascript">
-    // Facebook
+    /* Facebook */
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -611,30 +611,30 @@
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    // Outros compartilhamentos
+    /* Outros compartilhamentos */
     window.document.addEventListener("DOMContentLoaded", function() {
         $('.share-btn').click(function(){
-            event.preventDefault()
+            event.preventDefault();
 
-            window.open(this.href, '_blank', 'width=700,height=350')
-        })
+            window.open(this.href, '_blank', 'width=700,height=350');
+        });
     }, false);
 
-    // Script para responder um comentário
+    /* Script para responder um comentário */
     $('[data-startresponse]').click(function(){
-        $('.form-response').hide()
+        $('.form-response').hide();
 
-        let data = $(this).data()
+        let data = $(this).data();
 
-        $(`#${data.startresponse}`).show()
-    })
+        $(`#${data.startresponse}`).show();
+    });
 
     $('[data-cancelresponse]').click(function(){
-        $('.form-response').hide()
+        $('.form-response').hide();
         
-        let data = $(this).data()
+        let data = $(this).data();
 
-        $(`#${data.cancelresponse}`).hide()
-    })
+        $(`#${data.cancelresponse}`).hide();
+    });
 </script>
 @endsection

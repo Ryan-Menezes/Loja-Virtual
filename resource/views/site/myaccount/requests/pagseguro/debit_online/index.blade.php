@@ -51,32 +51,32 @@
 
         <script type="text/javascript">
             $(document).ready(function(){
-                setSessionId($('#session_id').val())
+                setSessionId($('#session_id').val());
 
-                // Busca os bancos aceitos pelo pagamento por débito online
+                /* Busca os bancos aceitos pelo pagamento por débito online */
                 getPaymentMethods({{ $requestmodel->payment->amountFormat }}, function(response){
                     if(response.error){
-                        $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR OS BANCOS DISPONÍVEIS, POR FAVOR RECARREGUE A PÁGINA!').show()
-                        return
+                        $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR OS BANCOS DISPONÍVEIS, POR FAVOR RECARREGUE A PÁGINA!').show();
+                        return;
                     }
                     
                     $.each(response.paymentMethods.ONLINE_DEBIT.options, function(index, value){
-                        $('#banks').append(`<option value="${value.name}">${value.displayName}</option>`)
-                    })
+                        $('#banks').append(`<option value="${value.name}">${value.displayName}</option>`);
+                    });
                 },
                 function(response){
-                    $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR OS BANCOS DISPONÍVEIS, POR FAVOR RECARREGUE A PÁGINA!').show()
-                })
+                    $('#message-request').text('OCORREU UM ERRO AO TENTAR CARREGAR OS BANCOS DISPONÍVEIS, POR FAVOR RECARREGUE A PÁGINA!').show();
+                });
 
-                // Gera o hash do sender e executa a criação do link de pagamento
+                /* Gera o hash do sender e executa a criação do link de pagamento */
                 $('#form-payment').submit(function(){
-                    event.preventDefault()
+                    event.preventDefault();
 
-                    let form = this
+                    let form = this;
 
                     getSenderHash(function(response){
                         if(response.status == 'error') {
-                            $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O LINK DE PAGAMENTO, FAVOR TENTAR NOVAMENTE!').show()
+                            $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O LINK DE PAGAMENTO, FAVOR TENTAR NOVAMENTE!').show();
                             return false;
                         }
 
@@ -89,27 +89,27 @@
                             dataType: 'json',
                             processData: false,
                             beforeSend: function(){
-                                showLoad('Gerando link de pagamento, aguarde...')
+                                showLoad('Gerando link de pagamento, aguarde...');
                             },
                             success: function(response){
                                 if(response.result){
-                                    $('.cont-content').html('<h2>Link de Pagamento Gerado com Sucesso!</h2>')
-                                    $('.cont-content').append('<p>Para finalmente finalizar a sua compra, efetue o seu pagamento por débito online pelo link abaixo:</p>')
-                                    $('.cont-content').append(`<a href="${response.data.paymentLink}" target="_blank" title="Finalizar Pagamento Por Débito Online" class="btn btn-success" style="margin-top: 20px;">Finalizar Pagamento Por Débito Online <i class="fa fa-external-link"></i></a>`)
+                                    $('.cont-content').html('<h2>Link de Pagamento Gerado com Sucesso!</h2>');
+                                    $('.cont-content').append('<p>Para finalmente finalizar a sua compra, efetue o seu pagamento por débito online pelo link abaixo:</p>');
+                                    $('.cont-content').append(`<a href="${response.data.paymentLink}" target="_blank" title="Finalizar Pagamento Por Débito Online" class="btn btn-success" style="margin-top: 20px;">Finalizar Pagamento Por Débito Online <i class="fa fa-external-link"></i></a>`);
                                 }else{
-                                    $('#message-request').text(response.message).show()
+                                    $('#message-request').text(response.message).show();
                                 }
                             },
                             error: function(response){
-                                $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O LINK DE PAGAMENTO, FAVOR TENTAR NOVAMENTE!').show()
+                                $('#message-request').text('OCORREU UM ERRO AO TENTAR GERAR O LINK DE PAGAMENTO, FAVOR TENTAR NOVAMENTE!').show();
                             },
                             complete: function(){
-                                hideLoad()
+                                hideLoad();
                             }
-                        })
-                    })
-                })
-            })
+                        });
+                    });
+                });
+            });
         </script>
     @endsection
 @else
