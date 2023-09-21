@@ -30,7 +30,7 @@
     <meta name="copyright" content="{{ config('app.name') }}" />
     <meta name="distribution" content="global" />
     <meta name="audience" content="all" />
-    <meta name="url" content="{{ config('app.url') }}" />
+    <meta name="url" content="@yield('url', config('app.url'))" />
     <meta name="classification" content="{{ config('app.description') }}" />
     <meta name="category" content="{{ config('app.description') }}" />
     <meta name="Page-Topic" content="{{ config('app.name') }} | @yield('title')" />
@@ -44,7 +44,7 @@
     <meta name="googlebot" content="index, follow" />
     <meta name="theme-color" content="#D10024">
 
-    <link rel="canonical" href="{{ config('app.url') }}" />
+    <link rel="canonical" href="@yield('url', config('app.url'))" />
     <meta name="geo.placename" content="Brasil" />
     <meta name="geo.region" content="{{ config('app.address.city') }}" />
     <meta name="name" content="{{ config('app.name') }}" />
