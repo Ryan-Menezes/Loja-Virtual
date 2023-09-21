@@ -375,7 +375,7 @@
                                 @endif
                                 
                                 @if(!empty($whatsapp))
-                                <li><a href="https://wa.me/{{ $whatsapp }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask($whatsapp, '(##)####-####') }}</a></li>
+                                <li><a href="https://wa.me/55{{ $whatsapp }}?text={{ urlencode('Olá, gostária de tirar algumas dúvida!') }}" title="Entrar em Contato por Whatsapp" target="_blank"><i class="fa fa-whatsapp"></i> {{ mask($whatsapp, '(##)#####-####') }}</a></li>
                                 @endif
 
                                 @if(!empty($email))
