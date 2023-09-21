@@ -135,12 +135,21 @@ class FreteCorreios{
 				'StrRetorno'			=> 'xml'
 			];
 
-			$url = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa={$this->nCdEmpresa}&sDsSenha={$this->sDsSenha}&" . http_build_query($data);
-			
-			$curl = curl_init($url);
+			$url_wscorreios = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa={$this->nCdEmpresa}&sDsSenha={$this->sDsSenha}&" . http_build_query($data);
+			$url_shoppingcorreios = "https://shopping.correios.com.br/wbm/shopping/script/CalcPrecoPrazo.asmx/CalcPrecoPrazo?nCdEmpresa={$this->nCdEmpresa}&sDsSenha={$this->sDsSenha}&" . http_build_query($data);
+
+			$curl = curl_init($url_wscorreios);
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 			$response = curl_exec($curl);
 			$response = simplexml_load_string($response);
+
+			if (curl_error($curl)) {
+				$curl = curl_init($url_shoppingcorreios);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+				$response = curl_exec($curl);
+				$response = simplexml_load_string($response);
+				$response = $response->Servicos;
+			}
 
 			return (array)$response->cServico;
 		}catch(Exception $error){

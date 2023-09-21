@@ -404,7 +404,7 @@ if(!function_exists('freight')){
 							'name' 		=> $value,
 							'price'		=> $result['Valor'],
 							'days'		=> $result['PrazoEntrega'],
-							'message'	=> $result['obsFim'],
+							'message'	=> $result['obsFim'] ?? '',
 							'error'	=> [
 								'code' 	=> $result['Erro'],
 								'msg'  	=> $result['MsgErro']
@@ -458,6 +458,10 @@ if(!function_exists('freight_format')){
 					if($freight['error']['code'] == FreteCorreios::ERROR_CODE){
 						$error = true;
 						continue;
+					}
+
+					if($freight['error']['msg']) {
+						return $freight['error']['msg'];
 					}
 
 					if($select){
