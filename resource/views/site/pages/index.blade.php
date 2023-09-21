@@ -2,12 +2,8 @@
 
 @section('title', $page->title)
 @section('tags', $page->tags)
-@section('url', url() . $page->url)
+@section('url', url($page->url))
 @section('description', $page->description)
-@section('image', public_path('assets/img/logo.png'))
-@section('image_width', 100)
-@section('image_height', 100)
-@section('url', url())
 
 @section('ld-json')
     @if(!empty($page->ld_json))

@@ -15,8 +15,8 @@
     @yield('ld-json')
 
     <meta http-equiv="Content-Type" content="text/html; charset={{ config('app.charset') }}" />
-    <meta name="keywords" content="@yield('keywords')">
-    <meta name="description" content="@yield('description')">
+    <meta name="keywords" content="@yield('keywords', config('app.keywords'))">
+    <meta name="description" content="@yield('description', config('app.description'))">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -48,16 +48,16 @@
     <meta name="geo.placename" content="Brasil" />
     <meta name="geo.region" content="{{ config('app.address.city') }}" />
     <meta name="name" content="{{ config('app.name') }}" />
-    <meta name="image" content="@yield('image')" />
+    <meta name="image" content="@yield('image', public_path('assets/img/favicon.png'))" />
 
-    <meta property="og:url" content="@yield('url')" />
+    <meta property="og:url" content="@yield('url', config('app.url'))" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ config('app.name') }} | @yield('title')" />
-    <meta property="og:description" content="@yield('description')" />
-    <meta property="og:image" content="@yield('image')" />
+    <meta property="og:description" content="@yield('description', config('app.description'))" />
+    <meta property="og:image" content="@yield('image', public_path('assets/img/favicon.png'))" />
     <meta property="og:image:alt" content="{{ config('app.name') }} | @yield('title')" />
-    <meta property="og:image:width" content="@yield('image_width')" /> 
-    <meta property="og:image:height" content="@yield('image_height')" /> 
+    <meta property="og:image:width" content="@yield('image_width', 48)" /> 
+    <meta property="og:image:height" content="@yield('image_height', 48)" /> 
     <meta property="og:site_name" content="{{ config('app.name') }}" /> 
     <meta property="og:locale" content="{{ config('app.lang') }}" />
     {{-- <meta property="og:app_id" content="" /> --}}
@@ -68,9 +68,9 @@
     <meta property="twitter:card" content="summary_large_image" /> 
     <meta property="twitter:domain" content="{{ config('app.domain') }}" /> 
     <meta property="twitter:title" content="{{ config('app.name') }} | @yield('title')" /> 
-    <meta property="twitter:description" content="@yield('description')" /> 
-    <meta property="twitter:image" content="@yield('image')" /> 
-    <meta property="twitter:url" content="@yield('url')" />
+    <meta property="twitter:description" content="@yield('description', config('app.description'))" /> 
+    <meta property="twitter:image" content="@yield('image', public_path('assets/img/favicon.png'))" /> 
+    <meta property="twitter:url" content="@yield('url', config('app.url'))" />
     <meta name="twitter:card" content="summary" />
     {{-- <meta name="twitter:site" content="@news" /> --}}
     {{-- <meta name="twitter:creator" content="@news" /> --}}

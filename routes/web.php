@@ -305,10 +305,10 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Maintenance::
 	Route::post('/contato', [SiteController::class, 'sendMail'])->name('site.contact.send');
 
 	// ROUTE SITEMAP
-	Route::get('/sitemap', [SiteMapController::class, 'index'])->name('site.sitemap');
+	Route::get('/sitemap.xml', [SiteMapController::class, 'index'])->name('site.sitemap');
 
 	// ROUTE SITEMAP-IMAGES
-	Route::get('/sitemap-images', [SiteMapController::class, 'images'])->name('site.sitemap-images');
+	Route::get('/sitemap-images.xml', [SiteMapController::class, 'images'])->name('site.sitemap-images');
 
 	// ROUTE PRIVACY POLICY
 	Route::get('/politica-de-privacidade', [LgpdController::class, 'privacy_policy'])->name('site.privacy_policy');

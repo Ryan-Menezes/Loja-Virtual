@@ -3,9 +3,6 @@
 @section('title', 'Produtos')
 @section('url', route('site.products'))
 @section('description', 'Busque por um produto expecífico')
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 <!-- SECTION -->

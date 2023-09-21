@@ -3,9 +3,6 @@
 @section('title', 'Login')
 @section('url', route('site.login'))
 @section('description', 'Faça login  em sua conta')
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 <section class="container">

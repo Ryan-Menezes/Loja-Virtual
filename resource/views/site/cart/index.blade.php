@@ -3,9 +3,6 @@
 @section('title', 'Carrinho')
 @section('url', route('site.cart'))
 @section('description', 'Aqui está o seu carrinho de compras')
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 @include('includes.site.modais.delete', [

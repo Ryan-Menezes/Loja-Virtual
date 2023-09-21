@@ -3,9 +3,6 @@
 @section('title', 'Recuperar Senha')
 @section('url', route('site.forget'))
 @section('description', 'Recuperar Senha')
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 <section class="container" style="margin: 40px auto;">

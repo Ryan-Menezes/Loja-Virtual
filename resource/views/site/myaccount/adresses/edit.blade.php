@@ -2,11 +2,6 @@
 
 @section('title', 'Editar Endereço')
 @section('url', route('site.myaccount'))
-@section('keywords', config('app.keywords'))
-@section('description', config('app.description'))
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 <section class="container">

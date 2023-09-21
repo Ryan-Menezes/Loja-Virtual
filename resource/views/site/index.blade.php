@@ -1,12 +1,6 @@
 @extends('templates.site')
 
 @section('title', 'Início')
-@section('url', route('site'))
-@section('keywords', config('app.keywords'))
-@section('description', config('app.description'))
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @section('container')
 <div id="carousel-example" class="carousel slide" data-ride="carousel" style="width: 100%; margin-bottom: 40px;">

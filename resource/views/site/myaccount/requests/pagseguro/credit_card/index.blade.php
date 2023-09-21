@@ -2,11 +2,6 @@
 
 @section('title', 'Pagamento por cartão de crédito para o pedido #' . $requestmodel->id)
 @section('url', route('site.myaccount.requests.show.credit_card', ['id' => $requestmodel->id]))
-@section('keywords', config('app.keywords'))
-@section('description', config('app.description'))
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @if(isset($session_id) && !empty($session_id))
     @section('container')

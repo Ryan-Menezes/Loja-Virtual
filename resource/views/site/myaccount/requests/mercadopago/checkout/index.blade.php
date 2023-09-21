@@ -2,11 +2,6 @@
 
 @section('title', 'Pagamento por checkout seguro do pagSeguro para o pedido #' . $requestmodel->id)
 @section('url', route('site.myaccount.requests.show.checkout', ['id' => $requestmodel->id]))
-@section('keywords', config('app.keywords'))
-@section('description', config('app.description'))
-@section('image', public_path('assets/img/site/core-img/favicon.ico'))
-@section('image_width', 200)
-@section('image_height', 200)
 
 @if(isset($preference))
     @section('container')

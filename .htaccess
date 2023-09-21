@@ -6,16 +6,41 @@ DirectoryIndex public/index.php
 	RewriteEngine On
 
 	# ROUTER WWW Redirect.
-	#RewriteCond %{HTTP_HOST} !^www\. [NC]
-	#RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+	# RewriteCond %{HTTP_HOST} !^www\. [NC]
+	# RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 	# ROUTER HTTPS Redirect
-	#RewriteCond %{HTTP:X-Forwarded-Proto} !https
-	#RewriteCond %{HTTPS} off
-	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+	# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+	# RewriteCond %{HTTPS} off
+	# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-	# Locking the HTACCESS file
-	<files ^.*>
+	# Locking files
+	<files .htaccess>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files .gitignore>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files composer.json>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files composer.lock>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files LICENSE>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files README.md>
 		order allow,deny
 		deny from all
 	</files>
