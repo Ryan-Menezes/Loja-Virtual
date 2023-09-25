@@ -3,6 +3,7 @@
 @section('title', 'Início')
 
 @section('container')
+@if($slideshow->count())
 <div id="carousel-example" class="carousel slide" data-ride="carousel" style="width: 100%; margin-bottom: 40px;">
 	<ol class="carousel-indicators">
 		@foreach($slideshow as $slide)
@@ -59,7 +60,9 @@
 	  <span class="sr-only">Next</span>
 	</a>
 </div>
+@endif
 
+@if($banners->count())
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
@@ -87,7 +90,9 @@
 	<!-- /container -->
 </div>
 <!-- /SECTION -->
+@endif
 
+@if($products->count())
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
@@ -121,6 +126,7 @@
 	<!-- /container -->
 </div>
 <!-- /SECTION -->
+@endif
 
 <div class="container">
 	<div class="row">
@@ -134,6 +140,7 @@
 	</div>
 </div>
 
+@if($products_showcase->count())
 <!-- SECTION -->
 <div class="section" style="margin-top: 40px;">
 	<!-- container -->
@@ -167,7 +174,9 @@
 	<!-- /container -->
 </div>
 <!-- /SECTION -->
+@endif
 
+@if($notices->count())
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
@@ -200,6 +209,7 @@
 	<!-- /container -->
 </div>
 <!-- /SECTION -->
+@endif
 @endsection
 
 @section('styles')
