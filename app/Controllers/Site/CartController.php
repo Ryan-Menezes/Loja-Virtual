@@ -5,10 +5,8 @@ use Src\Classes\{
 	Request,
 	Controller
 };
-use App\Classes\{
-	Cart,
-	FreteCorreios
-};
+use App\Classes\Cart;
+use App\Classes\Correios\Frete\FreteCorreios;
 use App\Models\{
 	RequestPayment,
 	RequestAddress,

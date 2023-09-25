@@ -16,7 +16,8 @@ use App\Classes\Payment\{
 	MercadoPago,
 	PicPay
 };
-use App\Classes\FreteCorreios;
+use App\Classes\Correios\Frete\FreteCorreios;
+use App\Classes\Correios\Frete\FreteExternoCorreios;
 use App\Models\Permission;
 
 if(!function_exists('config')){
@@ -394,7 +395,7 @@ if(!function_exists('freight')){
 						FreteCorreios::SEDEX 	=> 'SEDEX'
 					];
 
-					$freight = new FreteCorreios(config('store.freight.origin'), $postal_code, $weight, $width, $height, $depth);
+					$freight = new FreteExternoCorreios(config('store.freight.origin'), $postal_code, $weight, $width, $height, $depth);
 
 					foreach($types as $key => $value){
 						$result = $freight->calculate($key);
@@ -458,10 +459,6 @@ if(!function_exists('freight_format')){
 					if($freight['error']['code'] == FreteCorreios::ERROR_CODE){
 						$error = true;
 						continue;
-					}
-
-					if($freight['error']['msg']) {
-						return $freight['error']['msg'];
 					}
 
 					if($select){

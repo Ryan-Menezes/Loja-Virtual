@@ -1,22 +1,22 @@
 <?php
-namespace App\Classes;
+namespace App\Classes\Correios\Frete;
 
 use Exception;
 
-class FreteCorreios{
-	private $sCepOrigem;
-	private $sCepDestino;
-	private $nVlPeso;
-	private $nVlComprimento;
-	private $nVlAltura;
-	private $nVlLargura;
-	private $nVlDiametro;
-	private $nCdEmpresa;
-	private $sDsSenha;
-	private $nCdFormato;
-	private $sCdMaoPropria;
-	private $nVlValorDeclarado;
-	private $sCdAvisoRecebimento;
+abstract class FreteCorreios {
+	protected $sCepOrigem;
+	protected $sCepDestino;
+	protected $nVlPeso;
+	protected $nVlComprimento;
+	protected $nVlAltura;
+	protected $nVlLargura;
+	protected $nVlDiametro;
+	protected $nCdEmpresa;
+	protected $sDsSenha;
+	protected $nCdFormato;
+	protected $sCdMaoPropria;
+	protected $nVlValorDeclarado;
+	protected $sCdAvisoRecebimento;
 
 	public const PAC = '04014';
 	public const SEDEX = '04510';
@@ -26,24 +26,24 @@ class FreteCorreios{
 
 	public const ERROR_CODE = '-888';
 
-	private $services = [
+	protected $services = [
 		'04014' => 'SEDEX à vista',
 		'04510' => 'PAC à vista',
 		'04782' => 'SEDEX 12(à vista)',
 		'04790' => 'SEDEX 10 (à vista)',
 		'04804' => 'SEDEX hoje à vista'
 	];
-	private $formats = [
+	protected $formats = [
 		1 => 'Caixa/Pacote',
 		2 => 'Rolo/Prisma',
 		3 => 'Envelope'
 	];
-	private $options = [
+	protected $options = [
 		'S' => 'SIM',
 		'N' => 'NÃO'
 	];
 
-	private $errors = [];
+	protected $errors = [];
 
 	public function __construct(
 		string $sCepOrigem, 
@@ -109,52 +109,9 @@ class FreteCorreios{
 		}
 	}
 
-	private function addError($error){
+	protected function addError($error){
 		$this->errors[$error->getCode()] = $error;
 	}
 
-	public function calculate(string $nCdServico = self::PAC) : ?array{
-		try{
-			if(!array_key_exists($nCdServico, $this->services)){
-				throw new Exception('O valor informado para o serviço é inválido!');
-			}
-
-			$data = [
-				'sCepOrigem'			=> $this->sCepOrigem,
-				'sCepDestino' 			=> $this->sCepDestino,
-				'nVlPeso' 				=> $this->nVlPeso,
-				'nVlComprimento' 		=> $this->nVlComprimento,
-				'nVlAltura' 			=> $this->nVlAltura,
-				'nVlLargura' 			=> $this->nVlLargura,
-				'nVlDiametro' 			=> $this->nVlDiametro,
-				'nCdServico' 			=> $nCdServico,
-				'nCdFormato' 			=> $this->nCdFormato,
-				'sCdMaoPropria' 		=> $this->sCdMaoPropria,
-				'nVlValorDeclarado' 	=> $this->nVlValorDeclarado,
-				'sCdAvisoRecebimento' 	=> $this->sCdAvisoRecebimento,
-				'StrRetorno'			=> 'xml'
-			];
-
-			$url_wscorreios = "http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx?nCdEmpresa={$this->nCdEmpresa}&sDsSenha={$this->sDsSenha}&" . http_build_query($data);
-			$url_shoppingcorreios = "https://shopping.correios.com.br/wbm/shopping/script/CalcPrecoPrazo.asmx/CalcPrecoPrazo?nCdEmpresa={$this->nCdEmpresa}&sDsSenha={$this->sDsSenha}&" . http_build_query($data);
-
-			$curl = curl_init($url_wscorreios);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			$response = curl_exec($curl);
-			$response = simplexml_load_string($response);
-
-			if (curl_error($curl)) {
-				$curl = curl_init($url_shoppingcorreios);
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				$response = curl_exec($curl);
-				$response = simplexml_load_string($response);
-				$response = $response->Servicos;
-			}
-
-			return (array)$response->cServico;
-		}catch(Exception $error){
-			$this->addError($error);
-			return null;
-		}	
-	}
+	abstract public function calculate(string $nCdServico = self::PAC) : ?array;
 }
