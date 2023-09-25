@@ -395,7 +395,7 @@ if(!function_exists('freight')){
 						FreteCorreios::SEDEX 	=> 'SEDEX'
 					];
 
-					$freight = new FreteExternoCorreios(config('store.freight.origin'), $postal_code, $weight, $width, $height, $depth);
+					$freight = new FreteExternoCorreios(config('store.freight.origin'), $postal_code, $weight, $depth, $height, $width);
 
 					foreach($types as $key => $value){
 						$result = $freight->calculate($key);

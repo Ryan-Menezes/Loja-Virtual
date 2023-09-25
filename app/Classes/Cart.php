@@ -97,7 +97,7 @@ class Cart{
 	}
 	
 	public function width(){
-		$min = 16;
+		$min = 11;
 		$max = 105;
 		$width = 0;
 
@@ -121,7 +121,7 @@ class Cart{
 	}
 
 	public function depth(){
-		$min = 11;
+		$min = 16;
 		$max = 105;
 		$depth = 0;
 
