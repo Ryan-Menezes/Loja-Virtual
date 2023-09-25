@@ -334,4 +334,8 @@ class CartController extends Controller{
 			}
 		}
 	}
+
+	public function dropdown() {
+		return view('includes.site.cart.dropdown');
+	}
 }

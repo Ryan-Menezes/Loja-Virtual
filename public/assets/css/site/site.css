@@ -168,6 +168,7 @@ input.form-control{
 	border: 1px solid #dedddc;
 	display: inline-block;
 	cursor: pointer;
+  margin-right: 5px;
 }
 .product-details .product-options .product-size{
 	display: inline-block;

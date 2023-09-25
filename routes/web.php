@@ -457,6 +457,7 @@ Route::group(['prefix' => '/', 'middleware' => [Expiration::class, Maintenance::
 		Route::post('/frete', [CartController::class, 'freight'])->name('site.cart.freight');
 		Route::post('/cupom/validar', [CartController::class, 'couponValidate'])->name('site.cart.coupon.validate');
 		Route::post('/finalizar-pedido', [CartController::class, 'storeRequest'])->name('site.cart.store.request');
+		Route::get('/dropdown', [CartController::class, 'dropdown'])->name('site.cart.dropdown');
 	});
 
 	// ROUTE NOTICES

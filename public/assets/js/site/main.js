@@ -62,6 +62,7 @@ $(document).ready(function(){
             },
             success: function(respose){
                 createMessage(respose.message)
+                getAllItemsCart();
             },
             error: function(respose){
                 createMessage('Produto não adicionado ao carrinho, Ocorreu um erro no processo!')
@@ -151,4 +152,17 @@ $(document).ready(function(){
             $('#form-request').find('input[name=address_id]').val(data.addressid)
         }
     })
+
+    function getAllItemsCart() {
+        $.ajax({
+            method: 'GET',
+            url: 'carrinho/dropdown',
+            success: function(respose){
+                $('.dropdown').replaceWith(respose)
+            },
+            error: function(respose){
+                createMessage('Ocorreu um erro ao tentar atualizar os itens do carrinho')
+            },
+        })
+    }
 })
