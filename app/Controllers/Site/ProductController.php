@@ -129,6 +129,11 @@ class ProductController extends Controller{
 		$product = $this->product->where('visible', true)->where('slug', $slug)->firstOrFail();
 		$size = $product->sizes()->where('product_sizes.id', $data['size_id'])->firstOrFail();
 
-		return freight_format($data['postal_code'], $size->weight, $size->width, $size->height, $size->depth, $product->freight_free, false);
+		$weight = $size->weight < 0.1 ? 0.1 : $size->weight;
+		$width = max(11, min(105, $size->width, 2));
+		$height = max(2, min(105, $size->height, 2));
+		$depth = max(16, min(105, $size->depth, 2));
+
+		return freight_format($data['postal_code'], $weight, $width, $height, $depth, $product->freight_free, false);
 	}
 }
