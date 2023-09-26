@@ -156,7 +156,7 @@ $(document).ready(function(){
     function getAllItemsCart() {
         $.ajax({
             method: 'GET',
-            url: 'carrinho/dropdown',
+            url: '/carrinho/dropdown',
             success: function(respose){
                 $('.dropdown').replaceWith(respose)
             },
