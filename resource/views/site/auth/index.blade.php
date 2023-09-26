@@ -50,7 +50,7 @@
 				</div>
 				<div class="col-xs-6 col-md-6">
 					<a href="{{ route('site.account.pj.create') }}" class="thumbnail text-center" title="Pessoa Jurídica">
-						<img src="{{ public_path('assets/img/site/pj.jpg') }}" alt="Pessoa Jurídica" title="Pessoa Jurídica" style="width: 400px;">
+						<img src="{{ public_path('assets/img/site/pj.png') }}" alt="Pessoa Jurídica" title="Pessoa Jurídica" style="width: 400px;">
 
 						<h3>Pessoa Jurídica</h3>
 					</a>
