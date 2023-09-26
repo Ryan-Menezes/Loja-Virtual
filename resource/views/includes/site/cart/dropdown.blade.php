@@ -1,5 +1,4 @@
 @php
-    $categories = (new \App\Models\Category())->all();
     $cart = new \App\Classes\Cart();
     $cart_products = $cart->all();
 @endphp
@@ -13,7 +12,7 @@
         <div class="qty">{{ $cart->quantity() }}</div>
         @endif
     </a>
-    <div class="cart-dropdown">
+    <div class="cart-dropdown" @if(auth('site')) style="left: auto; right: -120%;" @endif>
         <div class="cart-list">
             @forelse($cart_products as $cart_product)
             <div class="product-widget">

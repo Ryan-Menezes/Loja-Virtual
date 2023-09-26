@@ -1,6 +1,8 @@
 @php
     use Src\Classes\Storage\Storage;
 
+    $categories = (new \App\Models\Category())->all();
+
     $client = auth('site');
     if($client)
         $client = \App\Models\Client::find($client->id);
@@ -394,7 +396,7 @@
                                 <li><a href="{{ route('site.login') }}" title="Fazer Login em Minha Conta">Login</a></li>
                                 <li><a href="{{ route('site.account.pf.create') }}" title="Criar Minha Conta">Criar Conta</a></li>
                                 @else
-                                <li><a href="{{ route('site.myaccount') }}" title="Minha Conta"><i class="fa fa-user-circle"></i> Minha Conta</a></li>
+                                <li><a href="{{ route('site.myaccount') }}" title="Minha Conta">Minha Conta</a></li>
                                 <li><a href="{{ route('site.myaccount.favorites') }}" title="Seus Produtos Favoritos">Favoritos</a></li>
                                 @endif
                             </ul>
