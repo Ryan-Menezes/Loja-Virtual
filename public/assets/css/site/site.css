@@ -337,6 +337,10 @@ input.form-control{
 }
 
 @media(max-width: 600px) {
+  .header-search form .input-select {
+    max-width: 100px;
+  }
+
   .header-search form .input {
     width: calc(100% - 20px);
     margin-right: -4px;
