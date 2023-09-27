@@ -210,6 +210,8 @@
                     <!-- ACCOUNT -->
                     <div class="col-md-3 clearfix">
                         <div class="header-ctn">
+                            @include('includes.site.cart.dropdown')
+
                             @if($client)
                             <!-- Wishlist -->
                             <div>
@@ -223,8 +225,6 @@
                             </div>
                             <!-- /Wishlist -->
                             @endif
-
-                            @include('includes.site.cart.dropdown')
 
                             <!-- Menu Toogle -->
                             <div class="menu-toggle">

@@ -1,3 +1,7 @@
+html {
+  overflow-x: hidden;
+}
+
 table tr td, 
 table tr{
   vertical-align: middle!important;
@@ -306,6 +310,23 @@ input.form-control{
   font-weight: 300;
 }
 
+@media (max-width: 1250px) {
+  .header-ctn div {
+    margin: 0px!important;
+  }
+}
+
+@media (max-width: 1080px) {
+  .header-ctn div {
+    margin: 0px!important;
+  }
+
+  .header-ctn>div>a {
+    width: auto;
+    margin-left: 15px;
+  }
+}
+
 @media (max-width: 800px) {
   .container {
     padding: 0 40px; 
@@ -337,6 +358,19 @@ input.form-control{
 }
 
 @media(max-width: 600px) {
+  #responsive-nav {
+    height: 150%;
+  }
+
+  .header-ctn {
+    flex-wrap: wrap;
+  }
+
+  .header-ctn>div>a {
+    width: auto;
+    margin: 5px;
+  }
+
   .header-search form .input-select {
     max-width: 100px;
   }
@@ -358,6 +392,10 @@ input.form-control{
 
   .cart-dropdown {
     left: 0;
+  }
+
+  .dropdown.open>.cart-dropdown {
+    width: 250px;
   }
 
   .header-ctn {
