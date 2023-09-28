@@ -999,12 +999,15 @@ if(!function_exists('slugify')){
 			'+' => $separator,
 			';' => $separator,
 			':' => $separator,
-			'|' => $separator
+			'|' => $separator,
+			'(' => $separator,
+			')' => $separator,
 		];
 
 		$string = strtr($string, $list);
 	    $string = preg_replace("/{$separator}{2,}/", $separator, $string);
 	    $string = mb_strtolower($string);
+		$string = trim($string, $separator);
 
 	    return $string;
 	}
