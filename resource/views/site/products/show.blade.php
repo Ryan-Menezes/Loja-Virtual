@@ -170,11 +170,12 @@
 					</div>
 					
 					@if(mb_strlen($product->description) <= 200)
-					<p style="margin-top: 20px;">{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
+					<p style="margin: 20px 0;">{!! str_ireplace("\n", '<br/>', $product->description) !!}</p>
 					@else
-					<p style="margin-top: 20px;">{!! str_ireplace("\n", '<br/>', substr($product->description, 0, 200)) !!}... <a href="#tab1">Leia mais</a></p>
+					<p style="margin: 20px 0;">{!! str_ireplace("\n", '<br/>', substr($product->description, 0, 200)) !!}... <a href="#tab1">Leia mais</a></p>
 					@endif
 
+					@if($product->colors->count() > 1 || $product->sizes->count() > 1)
 					<div class="product-options">
 						<div>
 							@foreach($product->colors as $color)
@@ -189,6 +190,7 @@
 							@endforeach
 						</div>
 					</div>
+					@endif
 					
 					<form action="{{ route('site.cart.store', ['product_id' => $product->id, 'size_id' => $product->sizes->first()->id]) }}" method="POST" class="add-to-cart" @if($product->sizes->first()->quantity == 0) style="display: none" @endif>
 						<div class="qty-label">
@@ -462,6 +464,7 @@
 @endsection
 
 @section('scripts')
+@if($product->colors->count() > 1 || $product->sizes->count() > 1)
 <script type="text/javascript">
 	let sizes;
 
@@ -601,6 +604,8 @@
 		}
 	}
 </script>
+@endif
+
 <script type="text/javascript">
     /* Facebook */
     (function(d, s, id) {

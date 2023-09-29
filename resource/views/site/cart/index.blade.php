@@ -37,6 +37,8 @@
 						
 							<div class="description">
 								<span><a href="{{ route('site.products.show', ['slug' => $product->product->slug]) }}" title="Var mais sobre: {{ $product->product->name }}" target="_blank">{{ $product->product->name }} <i class="fa fa-external-link"></i></a></span>
+								
+								@if($product->product->colors->count() > 1 || $product->product->sizes->count() > 1)
 								<select class="form-control" name="size" style="max-width: 200px">
 									@foreach($product->product->colors as $color)
 										@if($color->sizes->where('quantity', '>', 0)->count())
@@ -52,6 +54,9 @@
 										@endif
 									@endforeach
 								</select>
+								@else
+								<input type="hidden" name="size" value="{{ $product->product->sizes->first()->id }}" />
+								@endif
 							</div>
 						
 							<div class="quantity">
