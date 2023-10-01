@@ -1241,6 +1241,21 @@ textarea.input {
 
 /*-- checkbox Filter --*/
 
+.checkbox-filter ul {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.checkbox-filter ul::-webkit-scrollbar {
+  width: 5px;
+  background-color: #FBFBFC;
+}
+
+.checkbox-filter ul::-webkit-scrollbar-thumb {
+  background-color: #D10024;
+  border-radius: 30px;
+}
+
 .checkbox-filter>div+div {
   margin-top: 10px;
 }
