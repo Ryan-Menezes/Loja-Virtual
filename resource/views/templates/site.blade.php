@@ -1,7 +1,7 @@
 @php
     use Src\Classes\Storage\Storage;
 
-    $categories = (new \App\Models\Category())->all();
+    $categories = (new \App\Models\Category())->with('subcategories')->get();
 
     $client = auth('site');
     if($client)

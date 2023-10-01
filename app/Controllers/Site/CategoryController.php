@@ -62,7 +62,7 @@ class CategoryController extends Controller{
 		}
 		$products = $query->get();
 
-		$categories = $this->category->orderBy('name')->get();
+		$categories = $this->category->with('subcategories')->orderBy('name')->get();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
 	}
@@ -79,7 +79,7 @@ class CategoryController extends Controller{
 		$pages = ceil($this->searchNotice($subcategory->notices(), 1, $search, $subcategory->notices->where('visible', true)->count())->count() / config('paginate.limit'));
 		
 		$notices = $this->searchNotice($subcategory->notices(), $page, $search)->get();
-		$categories = $this->category->orderBy('name')->get();
+		$categories = $this->category->with('subcategories')->orderBy('name')->get();
 
 		return view('site.notices.index', compact('notices', 'categories', 'search', 'pages', 'builder'));
 	}
