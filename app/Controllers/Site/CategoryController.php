@@ -19,6 +19,7 @@ class CategoryController extends Controller{
 		$page = ($page - 1) * $limit;
 
 		return $query
+					->with('ratings')
 					->where('name', 'LIKE', "%{$filter}%")
 					->where('visible', true)
 					->orderBy('id', 'DESC')

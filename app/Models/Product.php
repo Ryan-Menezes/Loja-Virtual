@@ -95,6 +95,7 @@ class Product extends Model{
 		$page = ($page - 1) * $limit;
 
 		return $query
+					->with('ratings')
 					->orWhere('name', 'LIKE', "%{$filter}%")
 					->orWhere('slug', 'LIKE', "%{$filter}%")
 					->orWhere('description', 'LIKE', "%{$filter}%")

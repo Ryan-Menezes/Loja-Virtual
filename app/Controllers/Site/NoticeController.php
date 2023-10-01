@@ -28,7 +28,7 @@ class NoticeController extends Controller{
 		$pages = ceil($query->where('visible', true)->count() / $limit);
 
 		$notices = $this->notice->search($page, $search)->where('visible', true)->get();
-		$categories = Category::orderBy('name')->get();
+		$categories = Category::with('subcategories')->orderBy('name')->get();
 
 		return view('site.notices.index', compact('notices', 'categories', 'page', 'pages', 'builder'));
 	}
@@ -39,7 +39,7 @@ class NoticeController extends Controller{
 		$notice->visits++;
 		$notice->save();
 
-		$categories = Category::orderBy('name')->get();
+		$categories = Category::with('subcategories')->orderBy('name')->get();
 
 		return view('site.notices.show', compact('notice', 'categories'));
 	}

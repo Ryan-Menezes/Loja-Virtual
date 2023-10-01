@@ -20,15 +20,15 @@
 					<h3 class="aside-title">Categorias</h3>
 					<ul class="checkbox-filter">
 						@foreach($categories as $category)
-							@if($category->products()->count() && $category->subcategories->count())
+							@if($category->products()->count() && $category->subcategories()->count())
 							<li>
-								<p><strong>{{ $category->name }} ({{ $category->products()->count() }})</strong></p>
+								<p><strong>{{ $category->name }}</strong></p>
 
 								<ul style="margin-left: 40px;">
 									@foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
-										@if($subcategory->products->count())
+										@if($subcategory->products()->count())
 										<li>
-											<a href="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}" title="Produtos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}({{ $subcategory->products->count() }})</a>
+											<a href="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}" title="Produtos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}</a>
 										</li>
 										@endif
 									@endforeach
