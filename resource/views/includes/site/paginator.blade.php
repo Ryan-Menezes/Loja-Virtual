@@ -1,7 +1,8 @@
 @php
-	$currentPage = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT) ?? 1;
+	$currentPage = (int) (filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT) ?? 1);
 	$limitPage = 4;
 	$limitPageItems = $currentPage + $limitPage;
+	$pages = (int) $pages;
 @endphp
 
 @if($pages > 1)
