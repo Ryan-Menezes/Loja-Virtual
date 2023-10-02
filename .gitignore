@@ -1,4 +1,5 @@
 #/storage/app/public/*
 /storage/framework/cache/*
 /storage/logs/*
+/storage/.cache/
 /vendor/
