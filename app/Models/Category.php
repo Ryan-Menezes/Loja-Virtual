@@ -84,7 +84,7 @@ class Category extends Model{
 				->orderBy('name')
 				->get()
 				->map(function ($category) {
-					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->products()->count());
+					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->products()->where('visible', true)->count());
 
 					return $category;
 				})
@@ -100,7 +100,7 @@ class Category extends Model{
 				->orderBy('name')
 				->get()
 				->map(function ($category) {
-					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->notices()->count());
+					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->notices()->where('visible', true)->count());
 					return $category;
 				})
 				->filter(fn ($category) => $category->subcategories->count())
