@@ -81,4 +81,13 @@ class Notice extends Model{
 	public function subcategories(){
 		return $this->belongsToMany(SubCategory::class, 'notices_subcategories', 'notice_id', 'subcategory_id');
 	}
+
+	protected static function booted(): void
+    {
+		$fn = fn () => cache()->forget('site-categories-notices');
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

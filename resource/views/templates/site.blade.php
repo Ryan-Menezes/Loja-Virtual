@@ -1,9 +1,7 @@
 @php
     use Src\Classes\Storage\Storage;
 
-    if (!isset($categories)) {
-        $categories = (new \App\Models\Category())->with('subcategories')->get();
-    }
+    $categories = (new \App\Models\Category())->cachedProducts();
 
     $client = auth('site');
     if($client)
@@ -191,12 +189,10 @@
                                 <select class="input-select select-url">
                                     <option value="0" data-url="{{ route('site.products') }}">Todos</option>
                                     @foreach($categories as $category)
-                                        @if($category->subcategories()->count() && $category->products()->count())
+                                        @if(count($category->subcategories))
                                         <optgroup label="{{ $category->name }}">
                                             @foreach($category->subcategories as $subcategory)
-                                                @if($subcategory->products()->count())
                                                 <option value="{{ $subcategory->id }}" data-url="{{ route('site.products.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}">{{ $subcategory->name }}</option>
-                                                @endif
                                             @endforeach
                                         </optgroup>
                                         @endif

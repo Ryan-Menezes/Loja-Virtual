@@ -5,7 +5,8 @@ use Src\Classes\{
 	View,
 	Session,
 	Validator,
-	Auth
+	Auth,
+    Cache
 };
 use Src\Classes\SiteMap\{
 	SiteMap,
@@ -356,7 +357,7 @@ if(!function_exists('browser')){
 }
 
 if(!function_exists('number')){
-	function number($number) : string{
+	function number($number) : float{
 	   	$number = str_ireplace('.', ',', trim($number));
 
 	   	$index = strrpos($number, ',');
@@ -364,7 +365,7 @@ if(!function_exists('number')){
 	   		$number[$index] = '.';
 	   	}
 
-	   	return str_ireplace(',', '', trim($number));
+	   	return (float) str_ireplace(',', '', trim($number));
 	}
 }
 
@@ -889,6 +890,12 @@ if(!function_exists('update_payment')){
 			// Verifica se a transação para este pedido já foi feita
 			update_payment_request_picpay($picpay, $requestmodel);
 		}
+	}
+}
+
+if(!function_exists('cache')) {
+	function cache(): Cache {
+		return new Cache();
 	}
 }
 

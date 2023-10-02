@@ -19,15 +19,13 @@
             </div>
             <ul class="card-content">
                 @foreach($categories as $category)
-                    @if($category->notices()->count() && $category->subcategories()->count())
+                    @if(count($category->subcategories))
                     <li>
                         <p><strong>{{ $category->name }}</strong></p>
                         
                         <ul style="margin-left: 30px;">
-                            @foreach($category->subcategories()->orderBy('name')->get() as $subcategory)
-                                @if($subcategory->notices()->count())
+                            @foreach($category->subcategories as $subcategory)
                                 <li><a href="{{ route('site.notices.category.subcategory', ['category' => $category->slug, 'subcategory' => $subcategory->slug]) }}" title="Artigos da Sub Categoria: {{ $subcategory->name }}">{{ $subcategory->name }}</a></li>
-                                @endif
                             @endforeach
                         </ul>
                     </li>

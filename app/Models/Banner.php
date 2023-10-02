@@ -53,4 +53,18 @@ class Banner extends Model{
 			abort(404);
 		}
 	}
+
+	public static function cached()
+	{
+		return cache()->rememberForever('site-banners', fn () => self::all());
+	}
+
+	protected static function booted(): void
+    {
+		$fn = fn () => cache()->forget('site-banners');
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

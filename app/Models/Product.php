@@ -150,4 +150,13 @@ class Product extends Model{
 	public function relateds(){
 		return $this->hasMany(ProductRelated::class, 'product_id', 'id');
 	}
+
+	protected static function booted(): void
+    {
+		$fn = fn () => cache()->forget('site-categories-products');
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

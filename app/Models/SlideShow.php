@@ -53,4 +53,18 @@ class SlideShow extends Model{
 			abort(404);
 		}
 	}
+
+	public static function cached()
+	{
+		return cache()->rememberForever('site-slideshow', fn () => self::all());
+	}
+
+	protected static function booted(): void
+    {
+		$fn = fn () => cache()->forget('site-slideshow');
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

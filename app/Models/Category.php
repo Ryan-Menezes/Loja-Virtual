@@ -76,4 +76,47 @@ class Category extends Model{
 
 		return $products;
 	}
+
+	public static function cachedProducts()
+	{
+		return cache()->rememberForever('site-categories-products', function () {
+			return self::with('subcategories')
+				->orderBy('name')
+				->get()
+				->map(function ($category) {
+					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->products()->count());
+
+					return $category;
+				})
+				->filter(fn ($category) => $category->subcategories->count())
+				->toArray();
+		});
+	}
+
+	public static function cachedNotices()
+	{
+		return cache()->rememberForever('site-categories-notices', function () {
+			return self::with('subcategories')
+				->orderBy('name')
+				->get()
+				->map(function ($category) {
+					$category->subcategories = $category->subcategories->filter(fn ($subcategory) => $subcategory->notices()->count());
+					return $category;
+				})
+				->filter(fn ($category) => $category->subcategories->count())
+				->toArray();
+		});
+	}
+
+	protected static function booted(): void
+    {
+		$fn = function () {
+			cache()->forget('site-categories-products');
+            cache()->forget('site-categories-notices');
+        };
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

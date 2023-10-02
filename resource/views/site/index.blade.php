@@ -3,7 +3,7 @@
 @section('title', 'Início')
 
 @section('container')
-@if($slideshow->count())
+@if(count($slideshow))
 <div id="carousel-example" class="carousel slide" data-ride="carousel" style="width: 100%; margin-bottom: 40px;">
 	<ol class="carousel-indicators">
 		@foreach($slideshow as $slide)
@@ -62,7 +62,7 @@
 </div>
 @endif
 
-@if($banners->count())
+@if(count($banners))
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->

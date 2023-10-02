@@ -20,8 +20,8 @@ class SiteController extends Controller{
 		$products = Product::with('ratings')->where('visible', true)->orderBy('id', 'DESC')->limit(20)->get();
 		$products_showcase = Product::with('ratings')->where('visible', true)->where('showcase', true)->orderBy('id', 'DESC')->get();
 		$notices = Notice::orderBy('id', 'DESC')->limit(3)->get();
-		$banners = Banner::all();
-		$slideshow = SlideShow::all();
+		$banners = Banner::cached();
+		$slideshow = SlideShow::cached();
 
 		return view('site.index', compact('products', 'products_showcase', 'notices', 'banners', 'slideshow'));
 	}

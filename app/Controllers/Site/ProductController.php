@@ -41,7 +41,7 @@ class ProductController extends Controller{
 		}
 
 		$products = $query->get();
-		$categories = Category::with('subcategories')->orderBy('name')->get();
+		$categories = Category::cachedProducts();
 
 		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
 	}
