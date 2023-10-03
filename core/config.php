@@ -1,7 +1,10 @@
 <?php
 use Src\Classes\Database;
 
+// Session settings
 ini_set('session.referer_check', 'TRUE');
+ini_set('session.gc_maxlifetime', 84600); // 84600 - 1 Day
+ini_set('session.cookie_lifetime', 84600);
 
 // Starts a database connection
 Database::start();
