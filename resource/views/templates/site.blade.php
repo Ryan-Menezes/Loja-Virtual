@@ -84,31 +84,8 @@
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
-    <!-- jQuery CSS -->
-    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.structure.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.theme.min.css') }}">
-
-    <!-- Bootstrap -->
-    <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/bootstrap.min.css') }}"/>
-
-    <!-- Plugins CSS -->
-	<link type="text/css" rel="stylesheet" href="{{ public_path('assets/js/libs/plugins/lightbox/css/lightbox.min.css') }}"/>
-
-    <!-- Slick -->
-    <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick.css') }}"/>
-    <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/slick-theme.css') }}"/>
-
-    <!-- nouislider -->
-    <link type="text/css" rel="stylesheet" href="{{ public_path('assets/css/libs/nouislider.min.css') }}"/>
-
-    <!-- Font Awesome Icon -->
-    <link rel="stylesheet" href="{{ public_path('assets/css/libs/font-awesome.min.css') }}">
-
     <!-- Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/css/all.css') }}">
-    <link rel="stylesheet" href="{{ public_path('assets/css/site/style.css') }}">
-    <link rel="stylesheet" href="{{ public_path('assets/css/site/site.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ public_path('assets/dist/site.css') }}">
     @yield('styles')
 </head>
 <body>
@@ -437,19 +414,7 @@
     @endif
 
     <!-- ##### All Javascript Script ##### -->
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/lightbox/js/lightbox-plus-jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/jquery/jquery.validate.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/slick.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/nouislider.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.zoom.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/libs/plugins/jquery.maskedinput.min.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/site/script.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/all.js') }}"></script>
-    <script type="text/javascript" src="{{ public_path('assets/js/site/main.js') }}"></script>
+    <script type="text/javascript" src="{{ public_path('assets/dist/site.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

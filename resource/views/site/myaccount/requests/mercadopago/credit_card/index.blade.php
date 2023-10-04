@@ -195,7 +195,7 @@
             }
         });
 
-        // Gera o token do cartão e executa o pagamento
+        /* Gera o token do cartão e executa o pagamento */
         $('#form-payment').submit(function(){
             event.preventDefault();
 

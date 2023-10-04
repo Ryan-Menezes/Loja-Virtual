@@ -1,0 +1,36 @@
+{
+  "name": "loja-virtual",
+  "version": "1.0.0",
+  "description": "Uma loja virtual simples, para à venda de diversos produtos.",
+  "private": true,
+  "scripts": {
+    "dev": "set NODE_ENV=development&npx webpack-cli",
+    "build": "set NODE_ENV=production&npx webpack-cli"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ryan-Menezes/Loja-Virtual.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ryan-Menezes/Loja-Virtual/issues"
+  },
+  "homepage": "https://github.com/Ryan-Menezes/Loja-Virtual#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@webpack-cli/generators": "^3.0.7",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "mini-css-extract-plugin": "^2.7.6",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "jquery": "^3.6.0"
+  }
+}

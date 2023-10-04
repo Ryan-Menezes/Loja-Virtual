@@ -49,7 +49,7 @@ class ProductController extends Controller{
 		$data = (new Request())->all();
 		$search = $data['search'] ?? null;
 
-		$products = $this->product->where('name', 'LIKE', "%{$search}%")->get();
+		$products = $this->product->where('name', 'LIKE', "%{$search}%")->limit(20)->get();
 
 		$html = '';
 		foreach($products as $product){

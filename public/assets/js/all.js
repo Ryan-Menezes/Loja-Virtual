@@ -249,3 +249,9 @@ function setHtml(url){
         }
     })
 }
+
+window.showLoad = showLoad;
+window.hideLoad = hideLoad;
+window.setHtml = setHtml;
+window.createChart = createChart;
+window.createMessage = createMessage;
