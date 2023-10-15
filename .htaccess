@@ -35,12 +35,32 @@ DirectoryIndex public/index.php
 		deny from all
 	</files>
 
+    <files package.json>
+		order allow,deny
+		deny from all
+	</files>
+
+	<files package-lock.json>
+		order allow,deny
+		deny from all
+	</files>
+
 	<files LICENSE>
 		order allow,deny
 		deny from all
 	</files>
 
 	<files README.md>
+		order allow,deny
+		deny from all
+	</files>
+
+    <files webpack.config.js>
+		order allow,deny
+		deny from all
+	</files>
+
+    <files .babelrc>
 		order allow,deny
 		deny from all
 	</files>
