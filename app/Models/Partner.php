@@ -70,4 +70,18 @@ class Partner extends Model{
 			abort(404);
 		}
 	}
+
+	public static function cached()
+	{
+		return cache()->rememberForever('site-partners', fn () => self::all());
+	}
+
+	protected static function booted(): void
+    {
+		$fn = fn () => cache()->forget('site-partners');
+
+        static::created($fn);
+		static::deleted($fn);
+		static::updated($fn);
+    }
 }

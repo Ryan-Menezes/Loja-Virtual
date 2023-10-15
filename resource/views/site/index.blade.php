@@ -62,7 +62,12 @@
 </div>
 @endif
 
-@if(count($banners))
+@php
+	$bannersCount = count($banners);
+	$md = max(ceil(12 / $bannersCount), 3);
+@endphp
+
+@if($bannersCount)
 <!-- SECTION -->
 <div class="section">
 	<!-- container -->
@@ -71,7 +76,7 @@
 		<div class="row">
 			@foreach($banners as $banner)
 			<!-- shop -->
-			<div class="col-md-4 col-xs-6">
+			<div class="col-md-{{ $md }} col-xs-6">
 				<div class="shop">
 					<div class="shop-img">
 						<img src="{{ url('storage/app/public/' . $banner->image) }}" alt="{{ $banner->title }}" title="{{ $banner->title }}">
