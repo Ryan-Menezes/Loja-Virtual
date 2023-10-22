@@ -53,7 +53,7 @@ class Depoiment extends Model{
 
 	public static function cached()
 	{
-		return cache()->rememberForever('site-depoiments', fn () => self::all());
+		return cache()->rememberForever('site-depoiments', fn () => self::where('visible', true)->get());
 	}
 
 	protected static function booted(): void

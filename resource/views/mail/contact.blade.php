@@ -15,7 +15,7 @@
                 <span><strong>{{ $name }}</strong> | </span>
                 <span><strong>{{ $email }}</strong></span>
             </div>
-            <p style="margin-top: 10px;">{!! str_ireplace("\n", '<br>', $message) !!}</p>
+            <p style="margin-top: 10px;">{!! str_ireplace("\n", '<br>', $content) !!}</p>
         </div>
     </section>
 </body>
