@@ -3,3 +3,4 @@
 /storage/logs/*
 /storage/.cache/
 /vendor/
+/node_modules/
