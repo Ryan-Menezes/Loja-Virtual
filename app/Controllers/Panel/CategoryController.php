@@ -6,6 +6,7 @@ use Src\Classes\{
 	Controller
 };
 use App\Models\Category;
+use Src\Classes\Storage\Storage;
 
 class CategoryController extends Controller{
 	private $category;
@@ -42,7 +43,13 @@ class CategoryController extends Controller{
 		$data = $request->all();
 
 		$this->validator($data, $this->category->rolesCreate, $this->category->messages);
+
 		$data['slug'] = slugify($data['name']);
+		$image = $request->file('image');
+
+		if ($image && $image->error == 0) {
+			$data['image'] = $image->store('categories');
+		}
 
 		if($this->category->create($data)){
 			redirect(route('panel.categories.create'), ['success' => 'Categoria cadastrada com sucesso']);
@@ -64,12 +71,29 @@ class CategoryController extends Controller{
 
 		$request = new Request();
 		$data = $request->all();
+		$image = $request->file('image');
+		$imagePrev = $category->image;
 
 		$this->validator($data, $category->rolesUpdate, $category->messages);
 		$data['slug'] = slugify($data['name']);
 
+		if(!is_null($image) && mb_strlen($image->type) > 0){
+			$data['image'] = $image->store('categories');
+		}else{
+			unset($data['image']);
+			$imagePrev = null;
+		}
+
 		if($category->update($data)){
+			if(!empty($imagePrev)){
+				Storage::delete($imagePrev);
+			}
+
 			redirect(route('panel.categories.edit', ['id' => $category->id]), ['success' => 'Categoria editada com sucesso']);
+		}
+
+		if(!empty($imagePrev)){
+			Storage::delete($data['image']);
 		}
 
 		redirect(route('panel.categories.edit', ['id' => $category->id]), ['error' => 'Categoria NÃO editada, Ocorreu um erro no processo de edição!'], true);
@@ -79,7 +103,14 @@ class CategoryController extends Controller{
 		$this->category->verifyPermission('delete.categories');
 		$category = $this->category->findOrFail($id);
 
+		$image = $category->image;
+
 		if($category->delete()){
+			// Deletando imagem da subcategoria
+			if(!empty($image)){
+				Storage::delete($image);
+			}
+
 			redirect(route('panel.categories'), ['success' => 'Categoria deletada com sucesso']);
 		}
 

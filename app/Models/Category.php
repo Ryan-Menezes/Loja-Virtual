@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Category extends Model{
 	public $table = 'categories';
-	protected $fillable = ['name', 'slug', 'description'];
+	protected $fillable = ['name', 'slug', 'emphasis', 'image', 'description'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){
