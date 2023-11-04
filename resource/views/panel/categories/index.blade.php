@@ -27,6 +27,7 @@
 			<thead>
 				<tr>
 					<th>ID</th>
+					<th>Image</th>
 					<th>Nome</th>
 					<th></th>
 				</tr>
@@ -35,6 +36,13 @@
 				@foreach($categories as $category)
 				<tr>
 					<td>{{ $category->id }}</td>
+					<td>
+						@if($category->image)
+						<img src="{{ url('storage/app/public/' . $category->image, config('ftp.active')) }}" title="{{ $category->title }}" alt="{{ $category->title }}">
+						@else
+						<img src="{{ url('public/assets/img/no-image.jpg') }}" title="{{ $category->title }}" alt="{{ $category->title }}">
+						@endif
+					</td>
 					<td>{{ $category->name }}</td>
 					<td>
 						<a href="{{ route('panel.categories.subcategories', ['category' => $category->id]) }}" style="margin-right: 5px;" title="Ver Sub Categorias">Sub Categorias({{ $category->subcategories->count() }}) <i class="fas fa-tag"></i></a>
