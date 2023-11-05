@@ -29,6 +29,7 @@
 					<th>ID</th>
 					<th>Image</th>
 					<th>Nome</th>
+					<th>Destaque</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -38,12 +39,19 @@
 					<td>{{ $category->id }}</td>
 					<td>
 						@if($category->image)
-						<img src="{{ url('storage/app/public/' . $category->image, config('ftp.active')) }}" title="{{ $category->title }}" alt="{{ $category->title }}">
+						<img src="{{ url('storage/app/public/' . $category->image, config('ftp.active')) }}" title="{{ $category->name }}" alt="{{ $category->name }}">
 						@else
-						<img src="{{ url('public/assets/img/no-image.jpg') }}" title="{{ $category->title }}" alt="{{ $category->title }}">
+						<img src="{{ url('public/assets/img/no-image.jpg') }}" title="{{ $category->name }}" alt="{{ $category->name }}">
 						@endif
 					</td>
 					<td>{{ $category->name }}</td>
+					<td>
+						@if($category->emphasis)
+						<i class="fas fa-check-circle text-success"></i>
+						@else
+						<i class="fas fa-times-circle text-danger"></i>
+						@endif
+					</td>
 					<td>
 						<a href="{{ route('panel.categories.subcategories', ['category' => $category->id]) }}" style="margin-right: 5px;" title="Ver Sub Categorias">Sub Categorias({{ $category->subcategories->count() }}) <i class="fas fa-tag"></i></a>
 
