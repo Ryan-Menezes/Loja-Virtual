@@ -27,7 +27,7 @@
 			<thead>
 				<tr>
 					<th>ID</th>
-					<th>Image</th>
+					<th>Imagem</th>
 					<th>Nome</th>
 					<th>Destaque</th>
 					<th></th>
