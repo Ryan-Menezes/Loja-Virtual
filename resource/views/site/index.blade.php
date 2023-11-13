@@ -64,7 +64,8 @@
 
 @php
 	$bannersCount = count($banners);
-	$md = max(ceil(12 / $bannersCount), 3);
+	$bCount = $bannersCount ? $bannersCount : 1;
+	$md = max(ceil(12 / $bCount), 3);
 @endphp
 
 @if($bannersCount)
