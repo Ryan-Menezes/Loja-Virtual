@@ -464,7 +464,7 @@
 						'title' => 'Minutos para expirar o pagamento', 
 						'value' => (isset($system) && $system->store && $system->store->picpay ? $system->store->picpay->expiration_minutes : null),
 						'min' => 1,
-						'max' => 360
+						'max' => 8000,
 					])
 				</div>
 			</div>

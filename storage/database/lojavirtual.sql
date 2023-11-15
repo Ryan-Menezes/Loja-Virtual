@@ -1387,7 +1387,7 @@ CREATE TABLE `system_picpay` (
   `active` tinyint(1) NOT NULL DEFAULT 1,
   `token` varchar(191) DEFAULT NULL,
   `seller_token` varchar(191) DEFAULT NULL,
-  `expiration_minutes` tinyint(3) UNSIGNED DEFAULT NULL
+  `expiration_minutes` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -1395,7 +1395,7 @@ CREATE TABLE `system_picpay` (
 --
 
 INSERT INTO `system_picpay` (`id`, `active`, `token`, `seller_token`, `expiration_minutes`) VALUES
-(1, 1, '', '', 50);
+(1, 1, '', '', 5000);
 
 -- --------------------------------------------------------
 

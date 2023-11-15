@@ -219,6 +219,7 @@ class MercadoPagoController extends Controller{
 
             // Configurando checkout
 			$payment_mp = new \MercadoPago\Payment();
+			$payment_mp->setCustomHeader('X-Idempotency-Key', $requestmodel->id);
 
             // Verifica se a transação para este pedido já foi feita
             if(update_payment_request_mercadopago($requestmodel)){
@@ -370,6 +371,7 @@ class MercadoPagoController extends Controller{
 
             // Configurando checkout
 			$payment_mp = new \MercadoPago\Payment();
+			$payment_mp->setCustomHeader('X-Idempotency-Key', $requestmodel->id);
 
             // Verifica se a transação para este pedido já foi feita
             if(update_payment_request_mercadopago($requestmodel)){
@@ -496,6 +498,7 @@ class MercadoPagoController extends Controller{
 
             // Configurando checkout
 			$payment_mp = new \MercadoPago\Payment();
+			$payment_mp->setCustomHeader('X-Idempotency-Key', $requestmodel->id);
 
             // Verifica se a transação para este pedido já foi feita
             if(update_payment_request_mercadopago($requestmodel)){
@@ -604,6 +607,7 @@ class MercadoPagoController extends Controller{
 
             // Configurando checkout
 			$payment_mp = new \MercadoPago\Payment();
+			$payment_mp->setCustomHeader('X-Idempotency-Key', $requestmodel->id);
 
             // Verifica se a transação para este pedido já foi feita
 			if(update_payment_request_mercadopago($requestmodel)){
