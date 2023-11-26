@@ -29,9 +29,9 @@
 		"@type": "Brand",
 		"name": "{{ $product->brand }}"
 	},
-	@if($product->ratings->count())
+	@if($product->ratings->where('visible', true)->count())
 	"review": [
-		@foreach($product->ratings as $rating)
+		@foreach($product->ratings->where('visible', true)->get() as $rating)
 			{
 				"@type": "Review",
 				"reviewRating": {
@@ -49,12 +49,12 @@
 			@endif
 		@endforeach
 	],
-	@endif
 	"aggregateRating": {
 		"@type": "AggregateRating",
 		"ratingValue": "{{ number_format(($product->ratings()->where('visible', true)->avg('stars') ?? 0), 2) }}",
 		"reviewCount": "{{ $product->ratings()->where('visible', true)->count() }}"
 	},
+	@endif
 	@if($product->freight_free)
 	"shippingDetails": {
 		"@type": "OfferShippingDetails",
