@@ -177,7 +177,7 @@ class Mail{
         if (!empty(self::$attachments)) {
             self::$header .= "Content-Type: multipart/mixed; boundary=". self::$boundary . "\r\n";
         } else {
-            self::$header .= "Content-Type: " . self::$contentType . "; charset=" . self::$charset . "\r\n";
+            self::$header .= "Content-Type: " . self::$contentType . "; charset=\"" . self::$charset . "\"\r\n";
         }
 
         self::$header .= 'To: ' . self::$name .  ' <' . self::$to . '>' . "\r\n";
@@ -206,9 +206,9 @@ class Mail{
         $message = self::$message;
 
         self::$message  = '--' . self::$boundary . "\r\n";
-        self::$message .= "Content-Type: text/html; charset='utf-8'" . PHP_EOL;
+        self::$message .= "Content-Transfer-Encoding: 8bits\r\n"; 
+        self::$message .= "Content-Type: text/html; charset=\"" . self::$charset . "\"\r\n";
         self::$message .= $message;
-        self::$message .= '--' . self::$boundary . "\r\n";
 
         foreach (self::$attachments as $attachment) {
             // Get file content
@@ -217,11 +217,15 @@ class Mail{
             $content = chunk_split(base64_encode($content));
             fclose($fp);
 
-            self::$message .= "Content-Type: ". $attachment->type ."; name=\"". $attachment->name . "\"\r\n";
+            self::$message .= '--' . self::$boundary . "\r\n";
+            self::$message .= "Content-Type: ". $attachment->type ."\r\n";
             self::$message .= "Content-Transfer-Encoding: base64\r\n";
             self::$message .= "Content-Disposition: attachment; filename=\"". $attachment->name . "\"\r\n" ;
             self::$message .= "$content\r\n";
-            self::$message .= '--' . self::$boundary . "\r\n";
+        }
+
+        if (!empty(self::$attachments)) {
+            self::$message .= '--' . self::$boundary . "--\r\n";
         }
     }
 
@@ -250,6 +254,8 @@ class Mail{
         self::$name = $name;
         self::setHeader();
         self::setMessage();
+
+        dd(self::$message);
 
         return mail(self::$to, self::$subject, self::$message, self::$header);
     }
