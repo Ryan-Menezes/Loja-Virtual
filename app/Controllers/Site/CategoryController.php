@@ -65,7 +65,7 @@ class CategoryController extends Controller{
 
 		$categories = $this->category->cachedProducts();
 
-		return view('site.products.index', compact('products', 'categories', 'search', 'pages', 'builder'));
+		return view('site.products.index', compact('products', 'categories', 'subcategory', 'search', 'pages', 'builder'));
 	}
 
 	public function noticeSubCategory($category, $subcategory){
@@ -82,6 +82,6 @@ class CategoryController extends Controller{
 		$notices = $this->searchNotice($subcategory->notices(), $page, $search)->get();
 		$categories = $this->category->cachedProducts();
 
-		return view('site.notices.index', compact('notices', 'categories', 'search', 'pages', 'builder'));
+		return view('site.notices.index', compact('notices', 'categories', 'subcategory', 'search', 'pages', 'builder'));
 	}
 }

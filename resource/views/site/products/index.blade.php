@@ -1,7 +1,7 @@
 @extends('templates.site')
 
-@section('title', 'Produtos')
-@section('url', route('site.products'))
+@section('title', isset($subcategory) ? $subcategory->name : 'Produtos')
+@section('url', isset($subcategory) ? route('site.products.category.subcategory', ['category' => $subcategory->category->slug, 'subcategory' => $subcategory->slug]) : route('site.products'))
 @section('description', 'Busque por um produto expecífico')
 
 @section('container')

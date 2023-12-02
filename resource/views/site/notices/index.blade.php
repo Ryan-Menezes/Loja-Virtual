@@ -1,7 +1,7 @@
 @extends('templates.site')
 
-@section('title', 'Blog')
-@section('url', route('site.notices'))
+@section('title', isset($subcategory) ? $subcategory->name : 'Blog')
+@section('url', isset($subcategory) ? route('site.notices.category.subcategory', ['category' => $subcategory->category->slug, 'subcategory' => $subcategory->slug]) : route('site.notices'))
 
 @section('container')
 <section class="container">
