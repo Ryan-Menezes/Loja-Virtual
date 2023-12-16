@@ -41,7 +41,7 @@ class ProductController extends Controller{
 
 		if(!file_exists($file))
 			return null;
-		
+
 		return view("includes.components.{$name}", $data);
 	}
 
@@ -289,7 +289,7 @@ class ProductController extends Controller{
 				}
 
 				foreach(explode(',', $data['images-remove']) as $source){
-					$image = ProductImage::where('source', $source)->first();	
+					$image = ProductImage::where('source', $source)->first();
 
 					if($image){
 						Storage::delete($image->source);
@@ -413,6 +413,12 @@ class ProductController extends Controller{
 	public function destroy($id){
 		$this->product->verifyPermission('delete.products');
 		$product = $this->product->findOrFail($id);
+
+        $hasRequestProducts = $product->requestProducts()->exists();
+
+        if ($hasRequestProducts) {
+            redirect(route('panel.products'), ['error' => 'Não é possível deletar um produto que possua pedidos relacionados, remova esses pedidos e então você poderá deletá-lo']);
+        }
 
 		$colors = $product->colors;
 		$images = [];
