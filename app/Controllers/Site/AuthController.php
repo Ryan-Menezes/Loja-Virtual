@@ -162,11 +162,11 @@ class AuthController extends Controller{
 		$client->save();
 
 		Mail::isHtml(true)
-				->charset(config('mail.charset'))
-				->addFrom(config('mail.to'), config('app.name'))
-				->subject('Recuperação de senha: ' . config('app.name'))
-				->message(view('mail.account.forget', compact('client')))
-				->send($client->email, $client->name);
+            ->charset(config('mail.charset'))
+            ->addFrom(config('mail.from'), config('app.name'))
+            ->subject('Recuperação de senha: ' . config('app.name'))
+            ->message(view('mail.account.forget', compact('client')))
+            ->send($client->email, $client->name);
 
 		redirect(route('site.forget'), ['success' => 'Enviamos um link de recuperação para o e-mail informado, Por favor verifque sua caixa de entrada e spam!']);
 	}
@@ -325,7 +325,7 @@ class AuthController extends Controller{
 		// Verifica se houve um login com o facebook
 		if(session()->has('facebook_auth')){
 			$facebook_user = unserialize(session('facebook_auth'));
-			
+
 			$client->facebook_id = $facebook_user->getId();
 			$client->save();
 

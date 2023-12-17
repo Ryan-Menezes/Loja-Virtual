@@ -45,11 +45,11 @@ class CommentController extends Controller{
 
 		if($comment){
 			Mail::isHtml(true)
-					->charset(config('mail.charset'))
-					->addFrom(config('app.contact.email'), config('app.name'))
-					->subject('Alguém fez um comentário na sua notícia: ' . $notice->title)
-					->message(view('mail.comment.comment', compact('notice', 'comment')))
-					->send(config('mail.to'), config('app.name'));
+                ->charset(config('mail.charset'))
+                ->addFrom(config('mail.from'), config('app.name'))
+                ->subject('Alguém fez um comentário na sua notícia: ' . $notice->title)
+                ->message(view('mail.comment.comment', compact('notice', 'comment')))
+                ->send(config('mail.from'), config('app.name'));
 
 			redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['success' => 'Comentário enviado com sucesso']);
 		}
@@ -63,7 +63,7 @@ class CommentController extends Controller{
 							->where('visible', true)
 							->where('comments_active', true)
 							->firstOrFail();
-							
+
 		$comment = $notice->comments()->where('visible', true)->findOrFail($id);
 
 		$request = new Request();
@@ -81,26 +81,15 @@ class CommentController extends Controller{
 
 		if($subcomment){
 			Mail::isHtml(true)
-					->charset(config('mail.charset'))
-					->addFrom(config('app.contact.email'), config('app.name'))
-					->subject('Alguém respondeu o seu comentário na notícia: ' . $notice->title)
-					->message(view('mail.comment.response', [
-						'notice' => $notice,
-						'subcomment' => $subcomment,
-						'panel' => false
-					]))
-					->send($comment->email, $comment->name);
-
-			Mail::isHtml(true)
-					->charset(config('mail.charset'))
-					->addFrom(config('app.contact.email'), config('app.name'))
-					->subject('Alguém respondeu o seu comentário na notícia: ' . $notice->title)
-					->message(view('mail.comment.response', [
-						'notice' => $notice,
-						'subcomment' => $subcomment,
-						'panel' => true
-					]))
-					->send(config('mail.to'), config('app.name'));
+                ->charset(config('mail.charset'))
+                ->addFrom(config('mail.from'), config('app.name'))
+                ->subject('Alguém respondeu o seu comentário na notícia: ' . $notice->title)
+                ->message(view('mail.comment.response', [
+                    'notice' => $notice,
+                    'subcomment' => $subcomment,
+                    'panel' => false
+                ]))
+                ->send($comment->email, $comment->name);
 
 			redirect(route('site.notices.show', ['slug' => $notice->slug]) . '#commentsarea', ['success' => 'Resposta enviada com sucesso']);
 		}

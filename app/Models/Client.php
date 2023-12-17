@@ -89,8 +89,8 @@ class Client extends Model{
 					->orWhere('cnpj', 'LIKE', "%{$filter}%")
 					->orderBy('id', 'DESC')
 					->offset($page)
-		
-		
+
+
 					->limit($limit);
 	}
 
@@ -100,11 +100,11 @@ class Client extends Model{
 
 		if(!$this->validated){
 			Mail::isHtml(true)
-					->charset(config('mail.charset'))
-					->addFrom(config('mail.to'), config('app.name'))
-					->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
-					->message(view('mail.account.validate', compact('client')))
-					->send($this->email, $this->name);
+                ->charset(config('mail.charset'))
+                ->addFrom(config('mail.from'), config('app.name'))
+                ->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
+                ->message(view('mail.account.validate', compact('client')))
+                ->send($this->email, $this->name);
 
 			redirect(route('site.login'), ['error' => 'Esta conta não está validada, Verique seu e-mail e veja se tem um link de validação!'], true);
 		}
@@ -115,7 +115,7 @@ class Client extends Model{
 			abort(404);
 		}
 	}
-	
+
 	public function adresses(){
 		return $this->hasMany(ClientAddress::class, 'client_id', 'id');
 	}

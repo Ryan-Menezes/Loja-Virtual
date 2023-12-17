@@ -60,11 +60,11 @@ class SiteController extends Controller{
 		$this->validator($data, $form->rolesCreate, $form->messages);
 
 		$result = Mail::isHtml(true)
-						->charset(config('mail.charset'))
-						->addFrom($data['email'], $data['name'])
-						->subject('Contato via formulário ' . config('app.name') . ': ' . $data['subject'])
-						->message(view('mail.contact', $data))
-						->send(config('mail.to'), config('app.name'));
+            ->charset(config('mail.charset'))
+            ->addFrom($data['email'], $data['name'])
+            ->subject('Contato via formulário ' . config('app.name') . ': ' . $data['subject'])
+            ->message(view('mail.contact', $data))
+            ->send(config('mail.from'), config('app.name'));
 
 		if($result){
 			$form->create($data);

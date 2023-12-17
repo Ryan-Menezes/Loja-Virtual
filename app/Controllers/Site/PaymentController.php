@@ -46,7 +46,7 @@ class PaymentController extends Controller{
                         if($status != $requestmodel->status){
                             Mail::isHtml(true)
                                 ->charset(config('mail.charset'))
-                                ->addFrom(config('mail.to'), config('app.name'))
+                                ->addFrom(config('mail.from'), config('app.name'))
                                 ->subject('Seu pedido teve seu status atualizado: ' . $requestmodel->statusFormat)
                                 ->message(view('mail.request.update_status', compact('requestmodel')))
                                 ->send($requestmodel->client->email, $requestmodel->client->name);
@@ -82,7 +82,7 @@ class PaymentController extends Controller{
                         if($status != $requestmodel->status){
                             Mail::isHtml(true)
                                 ->charset(config('mail.charset'))
-                                ->addFrom(config('mail.to'), config('app.name'))
+                                ->addFrom(config('mail.from'), config('app.name'))
                                 ->subject('Seu pedido teve seu status atualizado: ' . $requestmodel->statusFormat)
                                 ->message(view('mail.request.update_status', compact('requestmodel')))
                                 ->send($requestmodel->client->email, $requestmodel->client->name);
@@ -117,7 +117,7 @@ class PaymentController extends Controller{
                     if($status != $requestmodel->status){
                         Mail::isHtml(true)
                             ->charset(config('mail.charset'))
-                            ->addFrom(config('mail.to'), config('app.name'))
+                            ->addFrom(config('mail.from'), config('app.name'))
                             ->subject('Seu pedido teve seu status atualizado: ' . $requestmodel->statusFormat)
                             ->message(view('mail.request.update_status', compact('requestmodel')))
                             ->send($requestmodel->client->email, $requestmodel->client->name);

@@ -1,5 +1,10 @@
-<?php 
+<?php
 return [
-    'charset' 	=> 'utf-8',
-    'to' 		=> config('app.contact.email')
+    'host'          => 'smtp.example.com',
+    'charset' 	    => 'utf-8',
+    'from' 		    => config('app.contact.email'),
+    'username'      => 'user@example.com',
+    'password'      => 'secret',
+    'port'          => '465',
+    'encryption'    => 'ssl', // ssl | tls
 ];
