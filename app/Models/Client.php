@@ -102,6 +102,7 @@ class Client extends Model{
 			Mail::isHtml(true)
                 ->charset(config('mail.charset'))
                 ->addFrom(config('mail.from'), config('app.name'))
+                ->addReplyTo(config('mail.from'), config('app.name'))
                 ->subject('Parabéns por criar sua conta em nosso site, agora basta validá-la!: ' . config('app.name'))
                 ->message(view('mail.account.validate', compact('client')))
                 ->send($this->email, $this->name);

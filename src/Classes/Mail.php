@@ -23,6 +23,9 @@ class Mail{
     private static $from = [];
 
     /** @var string|array */
+    private static $replyTo = [];
+
+    /** @var string|array */
     private static $cc = [];
 
     /** @var string|array */
@@ -73,6 +76,20 @@ class Mail{
      */
     public static function addFrom(string $email, string $name) : self{
         self::$from[$name] = $email;
+
+        return new static;
+    }
+
+    /**
+     * Method that informs who the sender will be
+     *
+     * @param string
+     * @param string
+     *
+     * @return \Src\Classes\Mail
+     */
+    public static function addReplyTo(string $email, string $name) : self{
+        self::$replyTo[$name] = $email;
 
         return new static;
     }
@@ -174,6 +191,9 @@ class Mail{
 
             foreach (self::$from as $name => $address) {
                 $mail->setFrom($address, $name);
+            }
+
+            foreach (self::$replyTo as $name => $address) {
                 $mail->addReplyTo($address, $name);
             }
 

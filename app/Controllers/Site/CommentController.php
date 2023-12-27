@@ -47,6 +47,7 @@ class CommentController extends Controller{
 			Mail::isHtml(true)
                 ->charset(config('mail.charset'))
                 ->addFrom(config('mail.from'), config('app.name'))
+                ->addReplyTo(config('mail.from'), config('app.name'))
                 ->subject('Alguém fez um comentário na sua notícia: ' . $notice->title)
                 ->message(view('mail.comment.comment', compact('notice', 'comment')))
                 ->send(config('mail.from'), config('app.name'));
@@ -83,6 +84,7 @@ class CommentController extends Controller{
 			Mail::isHtml(true)
                 ->charset(config('mail.charset'))
                 ->addFrom(config('mail.from'), config('app.name'))
+                ->addReplyTo(config('mail.from'), config('app.name'))
                 ->subject('Alguém respondeu o seu comentário na notícia: ' . $notice->title)
                 ->message(view('mail.comment.response', [
                     'notice' => $notice,

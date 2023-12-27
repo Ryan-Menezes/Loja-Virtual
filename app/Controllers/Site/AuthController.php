@@ -164,6 +164,7 @@ class AuthController extends Controller{
 		Mail::isHtml(true)
             ->charset(config('mail.charset'))
             ->addFrom(config('mail.from'), config('app.name'))
+            ->addReplyTo(config('mail.from'), config('app.name'))
             ->subject('Recuperação de senha: ' . config('app.name'))
             ->message(view('mail.account.forget', compact('client')))
             ->send($client->email, $client->name);

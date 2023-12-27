@@ -61,7 +61,8 @@ class SiteController extends Controller{
 
 		$result = Mail::isHtml(true)
             ->charset(config('mail.charset'))
-            ->addFrom($data['email'], $data['name'])
+            ->addFrom(config('mail.from'), $data['name'])
+            ->addReplyTo($data['email'], config('app.name'))
             ->subject('Contato via formulário ' . config('app.name') . ': ' . $data['subject'])
             ->message(view('mail.contact', $data))
             ->send(config('mail.from'), config('app.name'));
