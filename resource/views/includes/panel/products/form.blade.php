@@ -4,7 +4,7 @@
 
 <form action="{{ $action }}" method="{{ ($method != 'GET' && $method != 'POST') ? 'POST' : $method }}" class="form-validate" enctype="multipart/form-data">
 	@include('includes.messages')
-	
+
 	<div class="tabs">
 		<ul>
 			<li><a href="#tab-product">Produto</a></li>
@@ -18,18 +18,18 @@
 			<input type="hidden" name="_method" value="{{ $method }}">
 			<div class="row">
 				@include('includes.components.form.input', [
-					'type' => 'text', 
-					'name' => 'name', 
-					'title' => 'Nome', 
+					'type' => 'text',
+					'name' => 'name',
+					'title' => 'Nome',
 					'class' => 'required',
 					'value' => (isset($product) ? $product->name : null),
 					'required' => true
 				])
 
 				@include('includes.components.form.input', [
-					'type' => 'text', 
-					'name' => 'brand', 
-					'title' => 'Marca', 
+					'type' => 'text',
+					'name' => 'brand',
+					'title' => 'Marca',
 					'class' => 'required',
 					'value' => (isset($product) ? $product->brand : null),
 					'required' => true
@@ -37,7 +37,7 @@
 
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
-						'name' => 'visible', 
+						'name' => 'visible',
 						'title' => 'Visibilidade',
 						'value' => (isset($product) ? $product->visible : 1),
 						'options' => [
@@ -50,7 +50,7 @@
 				</div>
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
-						'name' => 'ratings_active', 
+						'name' => 'ratings_active',
 						'title' => 'Avaliações',
 						'value' => (isset($product) ? $product->ratings_active : 1),
 						'options' => [
@@ -63,7 +63,7 @@
 				</div>
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
-						'name' => 'freight_free', 
+						'name' => 'freight_free',
 						'title' => 'Frete Grátis',
 						'value' => (isset($product) ? $product->freight_free : 0),
 						'options' => [
@@ -77,7 +77,7 @@
 
 				<div class="col-md-6">
 					@include('includes.components.form.select', [
-						'name' => 'showcase', 
+						'name' => 'showcase',
 						'title' => 'Vitrine',
 						'value' => (isset($product) ? $product->showcase : 0),
 						'options' => [
@@ -90,7 +90,7 @@
 				</div>
 
 				@include('includes.components.form.select', [
-					'name' => 'installment_no_interest', 
+					'name' => 'installment_no_interest',
 					'title' => 'Quantidade de Parcelas sem Juros',
 					'value' => (isset($product) ? $product->installment_no_interest : 2),
 					'options' => array_combine(range(2, $installments_amount), range(2, $installments_amount)),

@@ -14,8 +14,8 @@
 		<div class="row">
 			<div class="col-md-1">
 				@include('includes.components.form.input', [
-					'type' => 'color', 
-					'name' => 'hex-colors[]', 
+					'type' => 'color',
+					'name' => 'hex-colors[]',
 					'title' => 'Cor',
 					'value' => $hex ?? null,
 					'class' => 'required',
@@ -24,8 +24,8 @@
 			</div>
 			<div class="col-md-11">
 				@include('includes.components.form.input', [
-					'type' => 'text', 
-					'name' => 'description-colors[]', 
+					'type' => 'text',
+					'name' => 'description-colors[]',
 					'title' => 'Descrição da Cor',
 					'value' => $description ?? null,
 					'class' => 'required',
@@ -33,7 +33,7 @@
 				])
 			</div>
 		</div>
-		
+
 		<div class="accordion">
 			<h3>Imagens</h3>
 			<div id="product-images-{{ $id }}" class="product-images row">
@@ -48,11 +48,11 @@
 							'class' => 'col-md-6'
 						])
 					@endforeach
-	
+
 					<input type="hidden" name="images-remove">
 				@endif
 			</div>
-	
+
 			<h3>Tamanhos</h3>
 			<div id="product-sizes-{{ $id }}" class="product-sizes row">
 				@if(isset($sizes) && (is_array($sizes) || is_object($sizes)))
@@ -60,6 +60,8 @@
 						@include('includes.components.form.sizeeditor', [
 							'id_size' => $size->id,
 							'description' => $size->description,
+                            'gtin' => $size->gtin,
+                            'mpn' => $size->mpn,
 							'price' => $size->price,
 							'price_previous' => $size->price_previous,
 							'quantity' => $size->quantity,
@@ -74,7 +76,7 @@
 				@endif
 			</div>
 		</div>
-	
+
 		<div class="row text-center mt-5">
 			<div class="col-md-6 text-center p-4 bg-danger text-white" style="cursor: pointer;" title="Clique aqui para adicionar uma nova imagem" data-urlajax="{{ $urlimage }}" data-nottitle="true" data-container="#product-images-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">NOVA IMAGEM <i class="fas fa-image"></i></div>
 			<div class="col-md-6 text-center p-4 bg-success text-white" style="cursor: pointer;" title="Clique aqui para adicionar um novo tamanho" data-urlajax="{{ $urlsize }}" data-container="#product-sizes-{{ $id }}" data-id="{{ $id }}" data-class="col-md-6">NOVO TAMANHO <i class="fas fa-search"></i></div>

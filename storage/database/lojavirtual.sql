@@ -772,6 +772,8 @@ INSERT INTO `product_images` (`id`, `source`, `product_color_id`) VALUES
 CREATE TABLE `product_sizes` (
   `id` int(10) UNSIGNED NOT NULL,
   `description` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mpn` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gtin` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `price` decimal(10,2) UNSIGNED NOT NULL,
   `price_previous` decimal(10,2) UNSIGNED DEFAULT NULL,
   `quantity` smallint(5) UNSIGNED NOT NULL DEFAULT 0,

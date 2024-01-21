@@ -14,21 +14,35 @@
 	<div class="card-body form-group">
 		<div class="col-md-12">
 			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => isset($id) ? "description-size-{$id}[]" : 'description-size[]', 
+				'type' => 'text',
+				'name' => isset($id) ? "description-size-{$id}[]" : 'description-size[]',
 				'title' => 'Descrição do Tamanho',
 				'value' => $description ?? null,
 				'class' => 'required',
 				'required' => true
 			])
 
-			<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script> 
+            @include('includes.components.form.input', [
+                'type' => 'text',
+                'name' => isset($id) ? "mpn-size-{$id}[]" : 'mpn-size[]',
+                'title' => 'MPN',
+                'value' => $mpn ?? null,
+            ])
+
+            @include('includes.components.form.input', [
+                'type' => 'text',
+                'name' => isset($id) ? "gtin-size-{$id}[]" : 'gtin-size[]',
+                'title' => 'GTIN',
+                'value' => $gtin ?? null,
+            ])
+
+			<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>
 
 			<div class="row">
 				<div class="col-md-6">
 					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => isset($id) ? "price-size-{$id}[]" : 'price-size[]', 
+						'type' => 'text',
+						'name' => isset($id) ? "price-size-{$id}[]" : 'price-size[]',
 						'title' => 'Preço',
 						'value' => $price ?? null,
 						'class' => 'required float-mask',
@@ -37,8 +51,8 @@
 				</div>
 				<div class="col-md-6">
 					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => isset($id) ? "price-previous-size-{$id}[]" : 'price-previous-size[]', 
+						'type' => 'text',
+						'name' => isset($id) ? "price-previous-size-{$id}[]" : 'price-previous-size[]',
 						'title' => 'Preço Anterior',
 						'value' => $price_previous ?? null,
 						'class' => 'float-mask',
@@ -48,8 +62,8 @@
 			</div>
 
 			@include('includes.components.form.input', [
-				'type' => 'number', 
-				'name' => isset($id) ? "quantity-size-{$id}[]" : 'quantity-size[]', 
+				'type' => 'number',
+				'name' => isset($id) ? "quantity-size-{$id}[]" : 'quantity-size[]',
 				'title' => 'Quantidade em Estoque',
 				'min' => 0,
 				'max' => 999999,
@@ -63,8 +77,8 @@
 			<div class="row">
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => isset($id) ? "width-size-{$id}[]" : 'width-size[]', 
+						'type' => 'text',
+						'name' => isset($id) ? "width-size-{$id}[]" : 'width-size[]',
 						'title' => 'Largura(centímetros)',
 						'value' => $width ?? null,
 						'class' => 'required float-mask',
@@ -73,8 +87,8 @@
 				</div>
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => isset($id) ? "height-size-{$id}[]" : 'height-size[]', 
+						'type' => 'text',
+						'name' => isset($id) ? "height-size-{$id}[]" : 'height-size[]',
 						'title' => 'Altura(centímetros)',
 						'value' => $height ?? null,
 						'class' => 'required float-mask',
@@ -83,8 +97,8 @@
 				</div>
 				<div class="col-md-4">
 					@include('includes.components.form.input', [
-						'type' => 'text', 
-						'name' => isset($id) ? "depth-size-{$id}[]" : 'depth-size[]', 
+						'type' => 'text',
+						'name' => isset($id) ? "depth-size-{$id}[]" : 'depth-size[]',
 						'title' => 'Comprimento(centímetros)',
 						'value' => $depth ?? null,
 						'class' => 'required float-mask',
@@ -94,8 +108,8 @@
 			</div>
 
 			@include('includes.components.form.input', [
-				'type' => 'text', 
-				'name' => isset($id) ? "weight-size-{$id}[]" : 'weight-size[]', 
+				'type' => 'text',
+				'name' => isset($id) ? "weight-size-{$id}[]" : 'weight-size[]',
 				'title' => 'Peso(quilogramas)',
 				'value' => $weight ?? null,
 				'class' => 'required float-mask',

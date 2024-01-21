@@ -36,7 +36,7 @@ if(!function_exists('config')){
 				if(is_array($values) && array_key_exists($key, $values)){
 					$values = $values[$key];
 				}
-			}	
+			}
 
 			return $values;
 		}else if(count($config) === 1){
@@ -168,7 +168,7 @@ if(!function_exists('can')){
 		if(auth()->hasAuthenticate()){
 			return auth()->user()->can($permission);
 		}
-		
+
 		return false;
 	}
 }
@@ -224,7 +224,7 @@ if(!function_exists('sitemapImages')){
 			'tiff',
 			'raw',
 			'webp',
-			'exif'	
+			'exif'
 		];
 
 		foreach($directories as $directory){
@@ -262,7 +262,7 @@ if(!function_exists('mask')){
 
 			return $mask;
 		}
-		
+
 		return null;
 	}
 }
@@ -536,14 +536,14 @@ if(!function_exists('update_payment_request_pagseguro')){
 		$response = $pagseguro->transaction(config('store.reference_prefix') . $requestmodel->id);
 		if($response && isset($response->transactions) && !empty($response->transactions)){
 			$transaction = $response->transactions->transaction;
-			
+
 			$transaction = $pagseguro->transactionDetails($transaction->code);
 			if($transaction->code){
 				$status = [
 					'AP',
-					'EA', 
+					'EA',
 					'PA',
-					'DI', 
+					'DI',
 					'ED',
 					'DE',
 					'CA'
@@ -587,7 +587,7 @@ if(!function_exists('update_payment_request_pagseguro')){
 					if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
 						$requestmodel->update([
 							'status' => $status[$sta]
-						]);	
+						]);
 					}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
 						$requestmodel->update([
 							'status' => $status[$sta]
@@ -613,13 +613,13 @@ if(!function_exists('update_payment_request_mercadopago')){
 
 		$response = $mercadopago->transaction(config('store.reference_prefix') . $requestmodel->id);
 		if($response && isset($response->results) && !empty($response->results)){
-			$transaction = end($response->results);	
+			$transaction = end($response->results);
 			$transaction = $mercadopago->transactionDetails($transaction->id);
 
 			if($transaction->id && parse_object($transaction->status) != 'rejected'){
 				$status = [
 					'pending'			=> 'AP',
-					'in_process' 		=> 'EA', 
+					'in_process' 		=> 'EA',
 					'approved' 			=> 'PA',
 					'refunded'			=> 'DE',
 					'cancelled'			=> 'CA'
@@ -664,7 +664,7 @@ if(!function_exists('update_payment_request_mercadopago')){
 					if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
 						$requestmodel->update([
 							'status' => $status[$sta]
-						]);	
+						]);
 					}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
 						$requestmodel->update([
 							'status' => $status[$sta]
@@ -686,7 +686,7 @@ if(!function_exists('update_payment_request_picpay')){
 
 		if($response && isset($response->referenceId)){
 			$transaction = $response;
-			
+
 			$status = [
 				'created' 		=> 'AP',
 				'expired' 		=> 'CA',
@@ -723,7 +723,7 @@ if(!function_exists('update_payment_request_picpay')){
 				if($status[$sta] == 'PA' && $requestmodel->status == 'AP'){
 					$requestmodel->update([
 						'status' => $status[$sta]
-					]);	
+					]);
 				}elseif($status[$sta] == 'AP' || $status[$sta] == 'CA'){
 					$requestmodel->update([
 						'status' => $status[$sta]
@@ -755,7 +755,7 @@ if(!function_exists('cancel_payment')){
 
 					// Verifica se a transação para este pedido já foi feita
 					update_payment_request_pagseguro($pagseguro, $requestmodel);
-					
+
 					if(!empty($response) && !isset($response->error)){
 						$requestmodel->status = 'CA';
 						$requestmodel->save();
@@ -764,16 +764,16 @@ if(!function_exists('cancel_payment')){
 					}
 				}else if($requestmodel->payment->type == 'MP'){
 					$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
-	
+
 					$response = $mercadopago->cancel($requestmodel->payment->code);
-	
+
 					// Verifica se a transação para este pedido já foi feita
 					update_payment_request_mercadopago($requestmodel);
-					
+
 					if($response){
 						$requestmodel->status = 'CA';
 						$requestmodel->save();
-	
+
 						return true;
 					}
 				}
@@ -790,7 +790,7 @@ if(!function_exists('cancel_payment')){
 
 				// Verifica se a transação para este pedido já foi feita
 				update_payment_request_picpay($picpay, $requestmodel);
-				
+
 				if(!empty($response) && isset($response->cancellationId)){
 					$requestmodel->status = 'CA';
 					$requestmodel->save();
@@ -826,7 +826,7 @@ if(!function_exists('refund_payment')){
 
 					// Verifica se a transação para este pedido já foi feita
 					update_payment_request_pagseguro($pagseguro, $requestmodel);
-					
+
 					if(!empty($response) && !isset($response->error)){
 						$requestmodel->status = 'CA';
 						$requestmodel->save();
@@ -835,12 +835,12 @@ if(!function_exists('refund_payment')){
 					}
 				}else if($requestmodel->payment->type == 'MP'){
 					$mercadopago = new MercadoPago(config('store.payment.credentials.mercadopago.access_token'));
-	
+
 					$response = $mercadopago->refund($requestmodel->payment->code);
-	
+
 					// Verifica se a transação para este pedido já foi feita
 					update_payment_request_mercadopago($requestmodel);
-					
+
 					if(!empty($response) && !isset($response->id)){
 						$requestmodel->status = 'CA';
 						$requestmodel->save();
@@ -878,7 +878,7 @@ if(!function_exists('update_payment')){
 			// Verifica se a transação para este pedido já foi feita
 			update_payment_request_mercadopago($requestmodel);
 		}
-		
+
 		if(config('store.methods.pix') || $requestmodel->payment->type == 'PC'){
 			// Objeto do picpay
             $token = config('store.payment.credentials.picpay.token');
@@ -1039,4 +1039,13 @@ if(!function_exists('sanitize_output')){
 		$buffer = preg_replace($search, $replace, $buffer);
 		return $buffer;
 	}
+}
+
+if(!function_exists('mb_ucfirst')){
+    function mb_ucfirst($string, $encoding = 'UTF-8')
+    {
+        $firstChar = mb_substr($string, 0, 1, $encoding);
+        $then = mb_substr($string, 1, null, $encoding);
+        return mb_strtoupper($firstChar, $encoding) . $then;
+    }
 }

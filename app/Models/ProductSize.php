@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductSize extends Model{
 	public $table = 'product_sizes';
-	protected $fillable = ['description', 'price', 'price_previous', 'quantity', 'width', 'height', 'depth', 'weight', 'product_color_id'];
+	protected $fillable = ['description', 'mpn', 'gtin', 'price', 'price_previous', 'quantity', 'width', 'height', 'depth', 'weight', 'product_color_id'];
 	public $timestamps = false;
 
 	public function getRolesCreateAttribute(){

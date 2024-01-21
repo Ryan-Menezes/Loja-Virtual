@@ -152,6 +152,8 @@ class ProductController extends Controller{
 				if($color){
 					// cadastrando tamanhos
 					$descriptions = $data["description-size-{$id}"];
+                    $mpns = $data["mpn-size-{$id}"];
+                    $gtins = $data["gtin-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
 					$quanties = $data["quantity-size-{$id}"];
@@ -164,6 +166,8 @@ class ProductController extends Controller{
 						if(!empty(trim($descriptions[$j])) && !empty(trim($prices[$j])) && !empty(trim($pricesPrevious[$j])) && !empty(trim($quanties[$j])) && !empty(trim($widths[$j])) && !empty(trim($heights[$j])) && !empty(trim($depths[$j])) || !empty(trim($weights[$j]))){
 							$size = $color->sizes()->create([
 								'description' 		=> trim($descriptions[$j]),
+                                'mpn' 		        => trim($mpns[$j]),
+                                'gtin' 		        => trim($gtins[$j]),
 								'price' 			=> number($prices[$j]),
 								'price_previous' 	=> number($pricesPrevious[$j]),
 								'quantity'			=> number($quanties[$j]),
@@ -333,6 +337,8 @@ class ProductController extends Controller{
 					// cadastrando tamanhos
 					$id_sizes = $data["id-sizes-color-{$id}"];
 					$descriptions = $data["description-size-{$id}"];
+                    $mpns = $data["mpn-size-{$id}"];
+                    $gtins = $data["gtin-size-{$id}"];
 					$prices = $data["price-size-{$id}"];
 					$pricesPrevious = $data["price-previous-size-{$id}"];
 					$quanties = $data["quantity-size-{$id}"];
@@ -350,6 +356,8 @@ class ProductController extends Controller{
 							if($size){
 								$size->update([
 									'description' 		=> trim($descriptions[$j]),
+                                    'mpn' 		        => trim($mpns[$j]),
+                                    'gtin' 		        => trim($gtins[$j]),
 									'price' 			=> number($prices[$j]),
 									'price_previous' 	=> number($pricesPrevious[$j]),
 									'quantity'			=> number($quanties[$j]),
@@ -361,6 +369,8 @@ class ProductController extends Controller{
 							}else{
 								$size = $color->sizes()->create([
 									'description' 		=> trim($descriptions[$j]),
+                                    'mpn' 		        => trim($mpns[$j]),
+                                    'gtin' 		        => trim($gtins[$j]),
 									'price' 			=> number($prices[$j]),
 									'price_previous' 	=> number($pricesPrevious[$j]),
 									'quantity'			=> number($quanties[$j]),
