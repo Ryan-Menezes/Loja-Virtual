@@ -10,7 +10,11 @@
     <nav class="m-0">
         <ul class="pagination m-0">
             @if($currentPage !== 1)
-                <li class="page-item"><a class="page-link" href="?page=1" title="Primeira página">Primeiro</a></li>
+                @if (empty($builder))
+                    <li class="page-item"><a class="page-link" href="?page=1" title="Primeira página">Primeiro</a></li>
+                @else
+                    <li class="page-item"><a class="page-link" href="?page=1&{{ http_build_query($builder) }}" title="Primeira página">Primeiro</a></li>
+                @endif
             @endif
 
             @if(empty($builder))
@@ -40,7 +44,11 @@
             @endif
 
             @if($currentPage !== $pages)
-                <li class="page-item"><a class="page-link" href="?page={{$pages}}" title="Última página">Último</a></li>
+                @if (empty($builder))
+                    <li class="page-item"><a class="page-link" href="?page={{$pages}}" title="Última página">Último</a></li>
+                @else
+                    <li class="page-item"><a class="page-link" href="?page={{$pages}}&{{ http_build_query($builder) }}" title="Última página">Último</a></li>
+                @endif
             @endif
         </ul>
     </nav>
