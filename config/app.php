@@ -3,7 +3,7 @@ $system = (new \App\Models\System())->firstOrFail();
 
 return [
 	'name' 			=> $system->name,
-	'url' 			=> 'http://localhost/Loja-Virtual/',
+	'url' 			=> 'http://localhost:8000',
 	'domain' 		=> 'localhost',
 	'timezone' 		=> 'America/Sao_Paulo',
 	'charset'		=> 'utf-8',

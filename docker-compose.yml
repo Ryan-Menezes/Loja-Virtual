@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lojavirtual_app
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+      - /var/www/vendor
+      - /var/www/node_modules
+      - /var/www/public/assets/dist
+    networks:
+      - lojavirtual
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: lojavirtual_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: lojavirtual
+      MYSQL_USER: lojavirtual
+      MYSQL_PASSWORD: lojavirtual
+      MYSQL_ROOT_PASSWORD: lojavirtual
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - lojavirtual
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: lojavirtual_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: lojavirtual
+      PMA_PASSWORD: lojavirtual
+    ports:
+      - "8081:80"
+    depends_on:
+      - mysql
+    networks:
+      - lojavirtual
+
+volumes:
+  mysql_data:
+
+networks:
+  lojavirtual:
+    driver: bridge

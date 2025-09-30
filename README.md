@@ -26,6 +26,13 @@ npm run dev
 npm run build
 ```
 
+## Docker
+Uma alternativa melhor é rodar o projeto pelo [Docker](https://www.docker.com/)
+```sh
+docker-compose up -d --build
+```
+Ao rodar o projeto pelo Docker você ainda vai precisar criar o banco de dados, o backup do banco está em "storage/database/database.sql", após a criação do container, vá para o phpmyadmin que estará na porta 8081 e importe o backup
+
 ## OBS!!!
 Quando você conseguir acessar o painel de controle faça as configurações dos métodos de pagamento na rota "/painel/configuracoes/sistema/loja-online", por padrão os pagamentos vem desabilitados, pela falta das credências que são disponibilizadas nas plataformas de seus respectivos donos que são o pagseguro, mercadopago e picpay
 
